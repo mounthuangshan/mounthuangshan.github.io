@@ -1,0 +1,1522 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="以下是完整的 Linux 命令大全，适用于 Debian、Ubuntu 及其衍生系统，涵盖系统管理、文件操作、磁盘管理、用户管理、网络调试、安全、进程管理等多个方面。  目录  基本命令 关机与重启 文件和目录管理 文件搜索 挂载文件系统 磁盘空间管理 用户和群组管理 文件和目录权限 文件的特殊属性 打包和压缩文件 DEB 包管理 查看文件内容 文本处理 字符设置和文件格式转换 文件系统分析 初始">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Debian常用命令">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/Debian%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="以下是完整的 Linux 命令大全，适用于 Debian、Ubuntu 及其衍生系统，涵盖系统管理、文件操作、磁盘管理、用户管理、网络调试、安全、进程管理等多个方面。  目录  基本命令 关机与重启 文件和目录管理 文件搜索 挂载文件系统 磁盘空间管理 用户和群组管理 文件和目录权限 文件的特殊属性 打包和压缩文件 DEB 包管理 查看文件内容 文本处理 字符设置和文件格式转换 文件系统分析 初始">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.851Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Debian常用命令 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Debian常用命令"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          60 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Debian常用命令</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>以下是<strong>完整的 Linux 命令大全</strong>，适用于 Debian、Ubuntu 及其衍生系统，涵盖系统管理、文件操作、磁盘管理、用户管理、网络调试、安全、进程管理等多个方面。</p>
+<hr>
+<h3 id="目录">目录</h3>
+<ol>
+<li><a href="#1-%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4">基本命令</a></li>
+<li><a href="#2-%E5%85%B3%E6%9C%BA%E4%B8%8E%E9%87%8D%E5%90%AF">关机与重启</a></li>
+<li><a href="#3-%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86">文件和目录管理</a></li>
+<li><a href="#4-%E6%96%87%E4%BB%B6%E6%90%9C%E7%B4%A2">文件搜索</a></li>
+<li><a href="#5-%E6%8C%82%E8%BD%BD%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F">挂载文件系统</a></li>
+<li><a href="#6-%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E7%AE%A1%E7%90%86">磁盘空间管理</a></li>
+<li><a href="#7-%E7%94%A8%E6%88%B7%E5%92%8C%E7%BE%A4%E7%BB%84%E7%AE%A1%E7%90%86">用户和群组管理</a></li>
+<li><a href="#8-%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95%E6%9D%83%E9%99%90">文件和目录权限</a></li>
+<li><a href="#9-%E6%96%87%E4%BB%B6%E7%9A%84%E7%89%B9%E6%AE%8A%E5%B1%9E%E6%80%A7">文件的特殊属性</a></li>
+<li><a href="#10-%E6%89%93%E5%8C%85%E5%92%8C%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6">打包和压缩文件</a></li>
+<li><a href="#11-DEB-%E5%8C%85%E7%AE%A1%E7%90%86">DEB 包管理</a></li>
+<li><a href="#12-%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9">查看文件内容</a></li>
+<li><a href="#13-%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86">文本处理</a></li>
+<li><a href="#14-%E5%AD%97%E7%AC%A6%E8%AE%BE%E7%BD%AE%E5%92%8C%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2">字符设置和文件格式转换</a></li>
+<li><a href="#15-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90">文件系统分析</a></li>
+<li><a href="#16-%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F">初始化文件系统</a></li>
+<li><a href="#17-SWAP-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F">SWAP 文件系统</a></li>
+<li><a href="#18-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D">备份与恢复</a></li>
+<li><a href="#19-%E5%85%89%E7%9B%98%E6%93%8D%E4%BD%9C">光盘操作</a></li>
+<li><a href="#20-%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86%E4%B8%8E%E8%B0%83%E8%AF%95">网络管理与调试</a></li>
+<li><a href="#21-%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7%E4%B8%8E%E6%80%A7%E8%83%BD">系统监控与性能</a></li>
+<li><a href="#22-%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86">进程管理</a></li>
+<li><a href="#23-%E7%A1%AC%E4%BB%B6%E7%AE%A1%E7%90%86">硬件管理</a></li>
+<li><a href="#24-%E5%AE%89%E5%85%A8%E4%B8%8E%E6%9D%83%E9%99%90">安全与权限</a></li>
+<li><a href="#25-%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86">日志管理</a></li>
+<li><a href="#26-VIM-%E7%BC%96%E8%BE%91%E5%99%A8">VIM 编辑器</a></li>
+<li><a href="#27-%E8%BF%9B%E9%98%B6%E5%B7%A5%E5%85%B7">进阶工具</a></li>
+<li><a href="#28-%E9%99%84%E5%BD%95%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E5%91%BD%E4%BB%A4">附录：常用快捷命令</a></li>
+<li><a href="#29-%E6%80%BB%E7%BB%93">总结</a></li>
+</ol>
+<hr>
+<h3 id="1-基本命令">1. 基本命令</h3>
+<ul>
+<li><code>uname -m</code>：显示机器的处理器架构</li>
+<li><code>uname -r</code>：显示正在使用的内核版本</li>
+<li><code>dmidecode -q</code>：显示硬件系统部件 (SMBIOS / DMI)</li>
+<li><code>hdparm -i /dev/hda</code>：列出磁盘的架构特性</li>
+<li><code>hdparm -tT /dev/sda</code>：在磁盘上执行测试性读取操作</li>
+<li><code>arch</code>：显示机器的处理器架构</li>
+<li><code>cat /proc/cpuinfo</code>：显示 CPU 信息</li>
+<li><code>cat /proc/interrupts</code>：显示中断</li>
+<li><code>cat /proc/meminfo</code>：检查内存使用</li>
+<li><code>cat /proc/swaps</code>：显示哪些 swap 被使用</li>
+<li><code>cat /proc/version</code>：显示内核的版本</li>
+<li><code>cat /proc/net/dev</code>：显示网络适配器及统计</li>
+<li><code>cat /proc/mounts</code>：显示已加载的文件系统</li>
+<li><code>lspci -tv</code>：列出 PCI 设备</li>
+<li><code>lsusb -tv</code>：显示 USB 设备</li>
+<li><code>date</code>：显示系统日期</li>
+<li><code>cal 2007</code>：显示 2007 年的日历表</li>
+<li><code>date 041217002007.00</code>：设置日期和时间（格式：月日时分年.秒）</li>
+<li><code>clock -w</code>：将时间修改保存到 BIOS</li>
+</ul>
+<h3 id="2-关机与重启">2. 关机与重启</h3>
+<ul>
+<li><code>shutdown -h now</code>：立即关闭系统</li>
+<li><code>init 0</code> 或 <code>telinit 0</code>：关闭系统</li>
+<li><code>shutdown -h hh:mm &amp;</code>：按预定时间关闭系统</li>
+<li><code>shutdown -c</code>：取消按预定时间关闭系统</li>
+<li><code>shutdown -r now</code>：立即重启系统</li>
+<li><code>reboot</code>：重启系统</li>
+<li><code>logout</code>：注销当前用户</li>
+</ul>
+<h3 id="3-文件和目录管理">3. 文件和目录管理</h3>
+<h4 id="导航">导航</h4>
+<ul>
+<li><code>cd /home</code>：进入 <code>/home</code> 目录</li>
+<li><code>cd ..</code>：返回上一级目录</li>
+<li><code>cd ../..</code>：返回上两级目录</li>
+<li><code>cd</code> 或 <code>cd ~</code>：进入个人的主目录</li>
+<li><code>cd ~user1</code>：进入指定用户 <code>user1</code> 的主目录</li>
+<li><code>cd -</code>：返回上次所在的目录</li>
+<li><code>pwd</code>：显示当前工作路径</li>
+</ul>
+<h4 id="查看目录">查看目录</h4>
+<ul>
+<li><code>ls</code>：列出当前目录文件（不包括隐藏文件）</li>
+<li><code>ls -a</code>：列出当前目录文件（包括隐藏文件）</li>
+<li><code>ls -F</code>：列出当前目录文件，并附加文件类型标志</li>
+<li><code>ls -l</code>：显示文件和目录的详细资料</li>
+<li><code>ls *[0-9]*</code>：显示包含数字的文件名和目录名</li>
+<li><code>tree</code>：显示目录树（需安装 <code>tree</code> 工具）</li>
+</ul>
+<h4 id="创建与删除">创建与删除</h4>
+<ul>
+<li><code>mkdir dir1</code>：创建目录 <code>dir1</code></li>
+<li><code>mkdir dir1 dir2</code>：同时创建多个目录</li>
+<li><code>mkdir -p /tmp/dir1/dir2</code>：创建一个目录树</li>
+<li><code>rm -f file1</code>：强制删除文件 <code>file1</code></li>
+<li><code>rmdir dir1</code>：删除空目录 <code>dir1</code></li>
+<li><code>rm -rf dir1</code>：删除目录 <code>dir1</code> 及其内容</li>
+</ul>
+<h4 id="复制与移动">复制与移动</h4>
+<ul>
+<li><code>mv dir1 new_dir</code>：重命名或移动目录</li>
+<li><code>mv 路径/文件 /路径/文件</code>：移动文件到指定路径</li>
+<li><code>mv file1 file2</code>：在当前目录下重命名文件</li>
+<li><code>cp file1 file2</code>：复制文件</li>
+<li><code>cp -a /tmp/dir1 .</code>：复制目录到当前工作目录</li>
+<li><code>cp -r source_dir destination_dir</code>：递归复制目录</li>
+</ul>
+<h4 id="链接">链接</h4>
+<ul>
+<li><code>ln -s file1 lnk1</code>：创建指向文件或目录的软链接</li>
+<li><code>ln file1 lnk1</code>：创建物理链接</li>
+</ul>
+<h4 id="时间戳与类型">时间戳与类型</h4>
+<ul>
+<li><code>touch -t 0712250000 file1</code>：修改文件的时间戳</li>
+<li><code>file file1</code>：输出文件的 MIME 类型</li>
+</ul>
+<h4 id="编码转换">编码转换</h4>
+<ul>
+<li><code>iconv -l</code>：列出已知的编码</li>
+<li><code>iconv -f fromEncoding -t toEncoding inputFile &gt; outputFile</code>：转换文件编码</li>
+<li><code>iconv -f gbk -t utf8 $i &gt; newfile</code>：转换文件内容由 GBK 到 UTF8</li>
+</ul>
+<h4 id="批量操作">批量操作</h4>
+<ul>
+<li><code>find . -maxdepth 1 -name &quot;*.jpg&quot; -print -exec convert &quot;&#123;&#125;&quot; -resize 80x60 &quot;thumbs/&#123;&#125;&quot; \;</code>：批量调整文件大小（需安装 ImageMagick）</li>
+</ul>
+<h3 id="4-文件搜索">4. 文件搜索</h3>
+<ul>
+<li><code>find / -name file1</code>：从根目录开始搜索文件</li>
+<li><code>find / -user user1</code>：搜索属于用户 <code>user1</code> 的文件和目录</li>
+<li><code>find /home/user1 -name &quot;*.bin&quot;</code>：在 <code>/home/user1</code> 目录中搜索 <code>.bin</code> 文件</li>
+<li><code>find /usr/bin -type f -atime +100</code>：搜索过去 100 天内未被使用过的文件</li>
+<li><code>find /usr/bin -type f -mtime -10</code>：搜索 10 天内被创建或修改的文件</li>
+<li><code>find / -name &quot;*.rpm&quot; -exec chmod 755 '&#123;&#125;' \;</code>：搜索 <code>.rpm</code> 文件并更改权限</li>
+<li><code>find / -xdev -name &quot;*.rpm&quot;</code>：搜索 <code>.rpm</code> 文件，忽略可移动设备</li>
+<li><code>locate &quot;*.ps&quot;</code>：使用 <code>locate</code> 工具搜索 <code>.ps</code> 文件（需先运行 <code>updatedb</code>）</li>
+<li><code>whereis halt</code>：显示 <code>halt</code> 的位置</li>
+<li><code>which halt</code>：显示 <code>halt</code> 命令的路径</li>
+</ul>
+<h3 id="5-挂载文件系统">5. 挂载文件系统</h3>
+<ul>
+<li><code>mount /dev/hda2 /mnt/hda2</code>：挂载 <code>/dev/hda2</code> 到 <code>/mnt/hda2</code></li>
+<li><code>umount /dev/hda2</code>：卸载 <code>/dev/hda2</code></li>
+<li><code>fuser -km /mnt/hda2</code>：强制卸载磁盘（设备繁忙时）</li>
+<li><code>mount /dev/fd0 /mnt/floppy</code>：挂载软盘</li>
+<li><code>mount /dev/cdrom /mnt/cdrom</code>：挂载 CD/DVD</li>
+<li><code>mount /dev/hdc /mnt/cdrecorder</code>：挂载 CDRW/DVD</li>
+<li><code>mount /dev/hdb /mnt/cdrecorder</code>：挂载 CDRW/DVD</li>
+<li><code>mount -o loop file.iso /mnt/cdrom</code>：挂载 ISO 镜像文件</li>
+<li><code>mount -t vfat /dev/hda5 /mnt/hda5</code>：挂载 Windows FAT32 文件系统</li>
+<li><code>mount /dev/sda1 /mnt/usbdisk</code>：挂载 USB 闪存设备</li>
+<li><code>mount -t smbfs -o username=user,password=pass //WinClient/share /mnt/share</code>：挂载 Windows 网络共享</li>
+</ul>
+<h3 id="6-磁盘空间管理">6. 磁盘空间管理</h3>
+<ul>
+<li><code>df -h</code>：显示已挂载的分区列表</li>
+<li><code>ls -lSr | more</code>：按尺寸大小排列文件和目录</li>
+<li><code>du -sh dir1</code>：估算目录 <code>dir1</code> 的磁盘使用情况</li>
+<li><code>du -sk * | sort -rn</code>：按磁盘使用大小排序显示文件和目录</li>
+<li><code>dpkg-query -W -f='$&#123;Installed-Size&#125;\t$&#123;Package&#125;\n' | sort -k1,1n</code>：显示已安装的 DEB 包的大小</li>
+<li><code>free -h</code>：查看内存和交换空间使用情况</li>
+</ul>
+<h3 id="7-用户和群组管理">7. 用户和群组管理</h3>
+<ul>
+<li><code>groupadd group_name</code>：创建一个新用户组</li>
+<li><code>groupdel group_name</code>：删除一个用户组</li>
+<li><code>groupmod -n new_group_name old_group_name</code>：重命名一个用户组</li>
+<li><code>useradd -c &quot;Name Surname&quot; -g admin -d /home/user1 -s /bin/bash user1</code>：创建属于 <code>admin</code> 用户组的用户</li>
+<li><code>useradd user1</code>：创建一个新用户</li>
+<li><code>userdel -r user1</code>：删除用户及其主目录</li>
+<li><code>usermod -c &quot;User FTP&quot; -g system -d /ftp/user1 -s /bin/nologin user1</code>：修改用户属性</li>
+<li><code>passwd user1</code>：修改用户的口令（需 root 权限）</li>
+<li><code>chage -E 2005-12-31 user1</code>：设置用户口令的失效期限</li>
+<li><code>pwck</code>：检查 <code>/etc/passwd</code> 的文件格式和语法</li>
+<li><code>grpck</code>：检查群组文件格式和语法</li>
+<li><code>newgrp group_name</code>：切换至新群组</li>
+</ul>
+<h3 id="8-文件和目录权限">8. 文件和目录权限</h3>
+<ul>
+<li><code>ls -lh</code>：显示文件权限</li>
+<li><code>chmod ugo+rwx directory1</code>：设置所有用户的读、写、执行权限</li>
+<li><code>chmod go-rwx directory1</code>：删除群组和其他用户的所有权限</li>
+<li><code>chown user1 file1</code>：改变文件所有者</li>
+<li><code>chown -R user1 directory1</code>：递归改变目录及其内容的所有者</li>
+<li><code>chgrp group1 file1</code>：改变文件的群组</li>
+<li><code>chown user1:group1 file1</code>：改变文件的所有者和群组</li>
+<li><code>find / -perm -u+s</code>：列出所有使用了 SUID 位控制的文件</li>
+<li><code>chmod u+s /bin/file1</code>：设置文件的 SUID 位</li>
+<li><code>chmod u-s /bin/file1</code>：禁用文件的 SUID 位</li>
+<li><code>chmod g+s /home/public</code>：设置目录的 SGID 位</li>
+<li><code>chmod g-s /home/public</code>：禁用目录的 SGID 位</li>
+<li><code>chmod o+t /home/public</code>：设置文件的 Sticky 位</li>
+<li><code>chmod o-t /home/public</code>：禁用文件的 Sticky 位</li>
+</ul>
+<h4 id="添加或删除执行权限">添加或删除执行权限</h4>
+<ul>
+<li><code>chmod +x 文件路径</code>：为所有用户添加执行权限</li>
+<li><code>chmod -x 文件路径</code>：删除所有用户的执行权限</li>
+<li><code>chmod u+x 文件路径</code>：为所有者添加执行权限</li>
+<li><code>chmod g+x 文件路径</code>：为群组添加执行权限</li>
+<li><code>chmod o+x 文件路径</code>：为其他用户添加执行权限</li>
+<li><code>chmod ug+x 文件路径</code>：为所有者和群组添加执行权限</li>
+<li><code>chmod =wx 文件路径</code>：为所有用户添加写、执行权限，取消读权限</li>
+<li><code>chmod ug=wx 文件路径</code>：为所有者和群组添加写、执行权限，取消读权限</li>
+</ul>
+<h3 id="9-文件的特殊属性">9. 文件的特殊属性</h3>
+<ul>
+<li>使用 “+” 设置属性，使用 “-” 取消属性：
+<ul>
+<li><code>chattr +a file1</code>：只允许以追加方式读写文件</li>
+<li><code>chattr +c file1</code>：允许文件被内核自动压缩/解压</li>
+<li><code>chattr +d file1</code>：在文件系统备份时忽略该文件</li>
+<li><code>chattr +i file1</code>：设置文件为不可变，不能删除、修改或重命名</li>
+<li><code>chattr +s file1</code>：允许文件被安全删除</li>
+<li><code>chattr +S file1</code>：写操作立即写入磁盘</li>
+<li><code>chattr +u file1</code>：允许删除后恢复文件</li>
+</ul>
+</li>
+<li><code>lsattr</code>：显示文件的特殊属性</li>
+</ul>
+<h3 id="10-打包和压缩文件">10. 打包和压缩文件</h3>
+<h4 id="解压缩">解压缩</h4>
+<ul>
+<li><code>bunzip2 file1.bz2</code>：解压 <code>.bz2</code> 文件</li>
+<li><code>gunzip file1.gz</code>：解压 <code>.gz</code> 文件</li>
+<li><code>unzip file1.zip</code>：解压 <code>.zip</code> 文件</li>
+<li><code>tar -zxvf xxx.tar.gz</code>：解压缩 <code>.tar.gz</code> 文件</li>
+<li><code>tar -jxvf xxx.tar.bz2</code>：解压缩 <code>.tar.bz2</code> 文件</li>
+<li><code>unrar x aaaa.rar</code>：解压 RAR 文件（需安装 <code>unrar</code>）</li>
+</ul>
+<h4 id="压缩">压缩</h4>
+<ul>
+<li><code>bzip2 file1</code>：压缩文件为 <code>.bz2</code> 格式</li>
+<li><code>gzip file1</code>：压缩文件为 <code>.gz</code> 格式</li>
+<li><code>gzip -9 file1</code>：以最高压缩率压缩文件</li>
+<li><code>rar a file1.rar test_file</code>：创建 <code>.rar</code> 压缩包</li>
+<li><code>rar a file1.rar file1 file2 dir1</code>：同时压缩多个文件和目录</li>
+</ul>
+<h4 id="打包">打包</h4>
+<ul>
+<li><code>tar -cvf archive.tar file1</code>：创建 <code>.tar</code> 包</li>
+<li><code>tar -cvf archive.tar file1 file2 dir1</code>：创建包含多个文件和目录的 <code>.tar</code> 包</li>
+<li><code>tar -cvfj archive.tar.bz2 dir1</code>：创建 <code>.tar.bz2</code> 格式的压缩包</li>
+<li><code>tar -cvfz archive.tar.gz dir1</code>：创建 <code>.tar.gz</code> 格式的压缩包</li>
+<li><code>zip -r file1.zip file1 file2 dir1</code>：递归压缩多个文件和目录</li>
+<li><code>zip file1.zip file1</code>：创建 <code>.zip</code> 压缩包</li>
+</ul>
+<h4 id="查看与解压">查看与解压</h4>
+<ul>
+<li><code>tar -tf archive.tar</code>：查看 <code>.tar</code> 包内容</li>
+<li><code>tar -xvf archive.tar</code>：解压 <code>.tar</code> 包</li>
+<li><code>tar -xvfj archive.tar.bz2</code>：解压 <code>.tar.bz2</code> 包</li>
+<li><code>tar -xvfz archive.tar.gz</code>：解压 <code>.tar.gz</code> 包</li>
+<li><code>unzip file1.zip</code>：解压 <code>.zip</code> 文件</li>
+</ul>
+<h4 id="其他">其他</h4>
+<ul>
+<li><code>tar -cPzf backup.tar.gz /path/to/directory</code>：创建带绝对路径的压缩包</li>
+<li><code>tar -C /path/to/extract -xzf backup.tar.gz</code>：在指定目录解压压缩包</li>
+</ul>
+<h3 id="11-DEB-包管理">11. DEB 包管理</h3>
+<h4 id="dpkg-命令"><code>dpkg</code> 命令</h4>
+<ul>
+<li><code>dpkg -i package.deb</code>：安装或更新 DEB 包</li>
+<li><code>dpkg -r package_name</code>：从系统删除 DEB 包</li>
+<li><code>dpkg -l</code>：列出系统中所有已安装的 DEB 包</li>
+<li><code>dpkg -l | grep httpd</code>：列出名称包含 “httpd” 的 DEB 包</li>
+<li><code>dpkg -s package_name</code>：获取已安装包的详细信息</li>
+<li><code>dpkg -L package_name</code>：列出已安装包提供的文件</li>
+<li><code>dpkg --contents package.deb</code>：列出未安装包提供的文件</li>
+<li><code>dpkg -S /bin/ping</code>：查找文件所属的 DEB 包</li>
+</ul>
+<h4 id="APT-工具">APT 工具</h4>
+<ul>
+<li><code>apt-get install package_name</code>：安装 DEB 包</li>
+<li><code>apt-cdrom install package_name</code>：从光盘安装 DEB 包</li>
+<li><code>apt-get update</code>：更新软件包列表</li>
+<li><code>apt-get upgrade</code>：升级所有已安装的软件包</li>
+<li><code>apt-get remove package_name</code>：删除 DEB 包</li>
+<li><code>apt-get purge package_name</code>：删除 DEB 包，包括配置文件</li>
+<li><code>apt-get autoremove</code>：删除系统不再使用的孤立软件</li>
+<li><code>apt-get clean</code>：清理下载的包缓存</li>
+<li><code>apt-get autoclean</code>：清理无用的软件包</li>
+<li><code>apt-get check</code>：检查依赖关系</li>
+<li><code>apt-cache search searched-package</code>：搜索软件包</li>
+<li><code>apt-cache show package</code>：获取包的相关信息，如说明、大小、版本等</li>
+<li><code>apt-cache depends package</code>：了解包的依赖</li>
+<li><code>apt-cache rdepends package</code>：查看该包被哪些包依赖</li>
+<li><code>apt-get build-dep package</code>：安装相关的编译环境</li>
+<li><code>apt-get source package</code>：下载该包的源代码</li>
+</ul>
+<h4 id="其他-APT-命令">其他 APT 命令</h4>
+<ul>
+<li><code>dpkg --get-selections | grep -v deinstall &gt; ~/somefile</code>：备份当前系统安装的所有包的列表</li>
+<li><code>dpkg --set-selections &lt; ~/somefile &amp;&amp; sudo dselect</code>：从备份的安装包列表文件恢复所有包</li>
+<li><code>apt-get -qq --print-uris install ssh | cut -d\' -f2</code>：查看包在服务器上的地址</li>
+<li><code>apt-cdrom add</code>：增加一个光盘源</li>
+</ul>
+<h3 id="12-查看文件内容">12. 查看文件内容</h3>
+<ul>
+<li><code>cat file1</code>：查看文件内容</li>
+<li><code>tac file1</code>：反向查看文件内容</li>
+<li><code>more file1</code>：分页显示文件内容（只能向下翻页）</li>
+<li><code>less file1</code>：分页查看文件内容（支持上下翻页）</li>
+<li><code>head -2 file1</code>：查看文件的前两行</li>
+<li><code>tail -2 file1</code>：查看文件的最后两行</li>
+<li><code>tail -f /var/log/messages</code>：实时查看文件内容（适用于日志文件）</li>
+<li><code>od -c file1</code>：以八进制显示文件内容</li>
+<li><code>strings file1</code>：输出文件中的字符串内容</li>
+</ul>
+<h3 id="13-文本处理">13. 文本处理</h3>
+<h4 id="管道与重定向">管道与重定向</h4>
+<ul>
+<li><code>cat file1 | command &gt; result.txt</code>：将命令输出写入新文件</li>
+<li><code>cat file1 | command &gt;&gt; result.txt</code>：将命令输出追加到已有文件</li>
+</ul>
+<h4 id="搜索与替换">搜索与替换</h4>
+<ul>
+<li><code>grep Aug /var/log/messages</code>：搜索包含 “Aug” 的行</li>
+<li><code>grep ^Aug /var/log/messages</code>：搜索以 “Aug” 开头的行</li>
+<li><code>grep [0-9] /var/log/messages</code>：搜索包含数字的行</li>
+<li><code>grep Aug -R /var/log/*</code>：递归搜索包含 “Aug” 的行</li>
+<li><code>sed 's/stringa1/stringa2/g' example.txt</code>：替换 “stringa1” 为 “stringa2”</li>
+<li><code>sed '/^$/d' example.txt</code>：删除所有空白行</li>
+<li><code>sed '/ *#/d; /^$/d' example.txt</code>：删除所有注释和空白行</li>
+</ul>
+<h4 id="字符转换">字符转换</h4>
+<ul>
+<li><code>echo 'esempio' | tr '[:lower:]' '[:upper:]'</code>：将小写转换为大写</li>
+</ul>
+<h4 id="行处理">行处理</h4>
+<ul>
+<li><code>sed -e '1d' result.txt</code>：删除第一行</li>
+<li><code>sed -n '/stringa1/p' example.txt</code>：只显示包含 “stringa1” 的行</li>
+<li><code>sed -e 's/ *$//' example.txt</code>：删除每行末尾的空白字符</li>
+<li><code>sed -e 's/stringa1//g' example.txt</code>：删除 “stringa1”</li>
+<li><code>sed -n '1,5p;5q' example.txt</code>：显示前五行</li>
+<li><code>sed -n '5p;5q' example.txt</code>：显示第五行</li>
+<li><code>sed -e 's/00*/0/g' example.txt</code>：将多个零替换为单个零</li>
+</ul>
+<h4 id="列与合并">列与合并</h4>
+<ul>
+<li><code>cat -n file1</code>：显示文件行号</li>
+<li><code>awk 'NR%2==1' example.txt</code>：显示所有奇数行</li>
+<li><code>echo a b c | awk '&#123;print $1&#125;'</code>：显示第一列</li>
+<li><code>echo a b c | awk '&#123;print $1,$3&#125;'</code>：显示第一和第三列</li>
+<li><code>paste file1 file2</code>：合并两个文件的内容</li>
+<li><code>paste -d '+' file1 file2</code>：以 “+” 分隔合并两个文件的内容</li>
+</ul>
+<h4 id="排序与唯一">排序与唯一</h4>
+<ul>
+<li><code>sort file1 file2</code>：排序两个文件的内容</li>
+<li><code>sort file1 file2 | uniq</code>：去重后显示并集</li>
+<li><code>sort file1 file2 | uniq -u</code>：删除交集，显示唯一行</li>
+<li><code>sort file1 file2 | uniq -d</code>：显示交集</li>
+<li><code>comm -1 file1 file2</code>：比较两个文件，删除 <code>file1</code> 独有的部分</li>
+<li><code>comm -2 file1 file2</code>：比较两个文件，删除 <code>file2</code> 独有的部分</li>
+<li><code>comm -3 file1 file2</code>：比较两个文件，删除共有的部分</li>
+</ul>
+<h3 id="14-字符设置和文件格式转换">14. 字符设置和文件格式转换</h3>
+<ul>
+<li><code>dos2unix filedos.txt fileunix.txt</code>：将文件从 DOS 格式转换为 UNIX 格式</li>
+<li><code>unix2dos fileunix.txt filedos.txt</code>：将文件从 UNIX 格式转换为 DOS 格式</li>
+<li><code>recode ..HTML &lt; page.txt &gt; page.html</code>：将文本文件转换为 HTML</li>
+<li><code>recode -l | more</code>：显示所有支持的转换格式</li>
+<li><code>iconv -f gbk -t utf8 $i &gt; newfile</code>：转换文件内容由 GBK 到 UTF8</li>
+</ul>
+<h3 id="15-文件系统分析">15. 文件系统分析</h3>
+<ul>
+<li><code>badblocks -v /dev/hda1</code>：检查磁盘 <code>/dev/hda1</code> 上的坏块</li>
+<li><code>fsck /dev/hda1</code>：检查并修复文件系统</li>
+<li><code>fsck.ext2 /dev/hda1</code>：检查 Ext2 文件系统</li>
+<li><code>e2fsck /dev/hda1</code>：检查 Ext2 文件系统</li>
+<li><code>e2fsck -j /dev/hda1</code>：检查 Ext3 文件系统</li>
+<li><code>fsck.ext3 /dev/hda1</code>：检查 Ext3 文件系统</li>
+<li><code>fsck.vfat /dev/hda1</code>：检查 FAT 文件系统</li>
+<li><code>fsck.msdos /dev/hda1</code>：检查 MSDOS 文件系统</li>
+<li><code>dosfsck /dev/hda1</code>：检查 DOS 文件系统</li>
+</ul>
+<h3 id="16-初始化文件系统">16. 初始化文件系统</h3>
+<ul>
+<li><code>mkfs /dev/hda1</code>：在分区 <code>/dev/hda1</code> 创建文件系统</li>
+<li><code>mke2fs /dev/hda1</code>：创建 Ext2 文件系统</li>
+<li><code>mke2fs -j /dev/hda1</code>：创建 Ext3 文件系统</li>
+<li><code>mkfs -t vfat /dev/hda1</code>：创建 FAT32 文件系统</li>
+<li><code>fdformat -n /dev/fd0</code>：格式化软盘</li>
+<li><code>mkswap /dev/hda3</code>：创建 swap 文件系统</li>
+</ul>
+<h3 id="17-SWAP-文件系统">17. SWAP 文件系统</h3>
+<ul>
+<li><code>mkswap /dev/hda3</code>：创建 swap 文件系统</li>
+<li><code>swapon /dev/hda3</code>：启用 swap</li>
+<li><code>swapon /dev/hda2 /dev/hdb3</code>：同时启用多个 swap 分区</li>
+<li><code>swapoff /dev/hda3</code>：禁用 swap</li>
+</ul>
+<h3 id="18-备份与恢复">18. 备份与恢复</h3>
+<h4 id="使用-dump-和-restore">使用 <code>dump</code> 和 <code>restore</code></h4>
+<ul>
+<li><code>dump -0aj -f /tmp/home0.bak /home</code>：制作 <code>/home</code> 目录的完整备份</li>
+<li><code>dump -1aj -f /tmp/home0.bak /home</code>：制作 <code>/home</code> 目录的交互式备份</li>
+<li><code>restore -if /tmp/home0.bak</code>：还原交互式备份</li>
+</ul>
+<h4 id="使用-rsync">使用 <code>rsync</code></h4>
+<ul>
+<li><code>rsync -rogpav --delete /home /tmp</code>：同步两个目录</li>
+<li><code>rsync -rogpav -e ssh --delete /home user@ip_address:/tmp</code>：通过 SSH 同步</li>
+<li><code>rsync -az -e ssh --delete user@ip_addr:/home/public /home/local</code>：通过 SSH 和压缩同步远程目录到本地</li>
+<li><code>rsync -az -e ssh --delete /home/local user@ip_addr:/home/public</code>：通过 SSH 和压缩同步本地目录到远程</li>
+</ul>
+<h4 id="使用-dd">使用 <code>dd</code></h4>
+<ul>
+<li><code>dd bs=1M if=/dev/hda | gzip | ssh user@ip_addr 'dd of=hda.gz'</code>：通过 SSH 备份本地磁盘到远程主机</li>
+<li><code>dd if=/dev/sda of=/tmp/file1</code>：备份磁盘内容到文件</li>
+<li><code>dd if=/dev/hda of=/dev/fd0 bs=512 count=1</code>：复制 MBR 到软盘</li>
+<li><code>dd if=/dev/fd0 of=/dev/hda bs=512 count=1</code>：从软盘恢复 MBR</li>
+</ul>
+<h4 id="使用-tar">使用 <code>tar</code></h4>
+<ul>
+<li><code>tar -Puf backup.tar /home/user</code>：交互式备份</li>
+<li><code>(cd /tmp/local/ &amp;&amp; tar c . ) | ssh -C user@ip_addr 'cd /home/share/ &amp;&amp; tar x -p'</code>：通过 SSH 复制目录内容</li>
+<li><code>tar cf - . | (cd /tmp/backup ; tar xf - )</code>：本地复制目录，保留权限及链接</li>
+<li><code>tar -cvf backup.tar /path/to/directory</code>：创建备份包</li>
+<li><code>tar -xvf backup.tar -C /path/to/extract</code>：解压备份包</li>
+<li><code>tar -cvf archive.tar file1 file2 dir1</code>：创建包含多个文件和目录的 <code>.tar</code> 包</li>
+<li><code>tar -cvfj archive.tar.bz2 dir1</code>：创建 <code>.tar.bz2</code> 格式的压缩包</li>
+<li><code>tar -cvfz archive.tar.gz dir1</code>：创建 <code>.tar.gz</code> 格式的压缩包</li>
+<li><code>tar -xvfj archive.tar.bz2</code>：解压 <code>.tar.bz2</code> 包</li>
+<li><code>tar -xvfz archive.tar.gz</code>：解压 <code>.tar.gz</code> 包</li>
+<li><code>tar -tf archive.tar</code>：查看 <code>.tar</code> 包内容</li>
+<li><code>tar -xvf archive.tar</code>：解压 <code>.tar</code> 包</li>
+</ul>
+<h4 id="使用-find">使用 <code>find</code></h4>
+<ul>
+<li><code>find /home/user1 -name '*.txt' | xargs cp -av --target-directory=/home/backup/ --parents</code>：查找并复制 <code>.txt</code> 文件</li>
+<li><code>find /var/log -name '*.log' | tar cv --files-from=- | bzip2 &gt; log.tar.bz2</code>：查找并打包 <code>.log</code> 文件</li>
+</ul>
+<h3 id="19-光盘操作">19. 光盘操作</h3>
+<ul>
+<li><code>cdrecord -v gracetime=2 dev=/dev/cdrom -eject blank=fast -force</code>：清空可复写光盘</li>
+<li><code>mkisofs /dev/cdrom &gt; cd.iso</code>：创建光盘 ISO 镜像</li>
+<li><code>mkisofs /dev/cdrom | gzip &gt; cd_iso.gz</code>：创建并压缩光盘 ISO 镜像</li>
+<li><code>mkisofs -J -allow-leading-dots -R -V &quot;Label CD&quot; -iso-level 4 -o ./cd.iso data_cd</code>：创建带标签的 ISO 镜像</li>
+<li><code>cdrecord -v dev=/dev/cdrom cd.iso</code>：刻录 ISO 镜像</li>
+<li><code>gzip -dc cd_iso.gz | cdrecord dev=/dev/cdrom -</code>：解压并刻录 ISO 镜像</li>
+<li><code>mount -o loop cd.iso /mnt/iso</code>：挂载 ISO 镜像</li>
+<li><code>cd-paranoia -B</code>：转录 CD 音轨到 WAV 文件（需安装 <code>cdparanoia</code>）</li>
+<li><code>cd-paranoia -- &quot;-3&quot;</code>：转录指定音轨</li>
+<li><code>cdrecord --scanbus</code>：扫描 SCSI 总线</li>
+<li><code>dd if=/dev/hdc | md5sum</code>：校验设备的 MD5 值</li>
+</ul>
+<h3 id="20-网络管理与调试">20. 网络管理与调试</h3>
+<h4 id="网络接口">网络接口</h4>
+<ul>
+<li><code>ifconfig eth0</code>：显示以太网卡配置</li>
+<li><code>ifup eth0</code>：启用网络接口</li>
+<li><code>ifdown eth0</code>：禁用网络接口</li>
+<li><code>ifconfig eth0 192.168.1.1 netmask 255.255.255.0</code>：配置 IP 地址和子网掩码</li>
+<li><code>ifconfig eth0 promisc</code>：设置混杂模式</li>
+<li><code>dhclient eth0</code>：通过 DHCP 获取 IP</li>
+<li><code>ip link show</code>：显示所有网络接口状态</li>
+<li><code>mii-tool eth0</code>：显示网络接口 <code>eth0</code> 状态</li>
+<li><code>ethtool eth0</code>：查看和修改网络接口 <code>eth0</code> 设置</li>
+</ul>
+<h4 id="路由">路由</h4>
+<ul>
+<li><code>route -n</code>：显示路由表</li>
+<li><code>route add -net 0.0.0.0/0 gw IP_Gateway</code>：配置默认网关</li>
+<li><code>route add -net 192.168.0.0 netmask 255.255.0.0 gw 192.168.1.1</code>：配置静态路由</li>
+<li><code>route del default gw IP_gateway</code>：删除默认网关</li>
+<li><code>netstat -rn</code>：查看路由信息</li>
+</ul>
+<h4 id="主机与-DNS">主机与 DNS</h4>
+<ul>
+<li><code>hostname</code>：显示系统主机名</li>
+<li><code>host www.example.com</code>：查询主机名与 IP</li>
+<li><code>nslookup www.example.com</code>：查询 DNS 信息</li>
+<li><code>dig www.example.com</code>：查询 DNS 记录</li>
+<li><code>whois www.example.com</code>：查询 Whois 数据库</li>
+</ul>
+<h4 id="网络工具">网络工具</h4>
+<ul>
+<li><code>ping www.example.com</code>：检测主机连通性</li>
+<li><code>traceroute www.example.com</code>：跟踪路由路径</li>
+<li><code>curl http://www.example.com</code>：发送 HTTP 请求</li>
+<li><code>wget http://www.example.com/file</code>：下载文件</li>
+<li><code>tcpdump tcp port 80</code>：抓取 HTTP 流量</li>
+<li><code>iwlist scan</code>：扫描无线网络</li>
+<li><code>iwconfig eth1</code>：显示无线网络接口配置</li>
+<li><code>netcat (nc)</code>：网络连接调试工具</li>
+<li><code>mtr</code>：结合了 <code>ping</code> 和 <code>traceroute</code> 的网络诊断工具（需安装 <code>mtr</code>）</li>
+<li><code>wireshark</code>：网络协议分析工具（需安装 <code>wireshark</code>）</li>
+<li><code>ss -tuln</code>：查看 socket 状态</li>
+<li><code>lsof -i</code>：列出打开的网络连接</li>
+<li><code>arping IP地址</code>：根据 IP 查网卡地址</li>
+<li><code>ifconfig eth0 | awk '/inet/ &#123;split($2,x,&quot;:&quot;);print x[2]&#125;'</code>：查看当前 IP 地址</li>
+<li><code>w3m -no-cookie -dump www.edu.cn | grep -o '[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;'</code>：查看当前外网的 IP 地址</li>
+</ul>
+<h4 id="NAT-设置">NAT 设置</h4>
+<ul>
+<li><code>sudo echo 1 &gt; /proc/sys/net/ipv4/ip_forward</code>：立即让网络支持 NAT</li>
+<li><code>sudo iptables -t nat -I POSTROUTING -j MASQUERADE</code>：配置 NAT</li>
+</ul>
+<h4 id="路由信息">路由信息</h4>
+<ul>
+<li><code>netstat -rn</code> 或 <code>route -n</code>：查看路由信息</li>
+<li><code>sudo route add -net 192.168.0.0 netmask 255.255.255.0 gw 172.16.0.1</code>：手工增加一条路由</li>
+<li><code>sudo route del -net 192.168.0.0 netmask 255.255.255.0 gw 172.16.0.1</code>：手工删除一条路由</li>
+</ul>
+<h4 id="修改网卡-MAC-地址">修改网卡 MAC 地址</h4>
+<ul>
+<li><code>sudo ifconfig eth0 down</code>：关闭网卡</li>
+<li><code>sudo ifconfig eth0 hw ether 00:AA:BB:CC:DD:EE</code>：修改 MAC 地址</li>
+<li><code>sudo ifconfig eth0 up</code>：启动网卡</li>
+</ul>
+<h4 id="统计-IP-连接">统计 IP 连接</h4>
+<ul>
+<li>统计当前 IP 连接的个数：
+<ul>
+<li><code>netstat -na | grep ESTABLISHED | awk '&#123;print $5&#125;' | awk -F: '&#123;print $1&#125;' | sort | uniq -c | sort -r -n</code></li>
+<li><code>netstat -na | grep SYN | awk '&#123;print $5&#125;' | awk -F: '&#123;print $1&#125;' | sort | uniq -c | sort -r -n</code></li>
+</ul>
+</li>
+<li>统计当前 20000 个 IP 包中大于 100 个 IP 包的 IP 地址：
+<ul>
+<li><code>tcpdump -tnn -c 20000 -i eth0 | awk -F &quot;.&quot; '&#123;print $1&quot;.&quot;$2&quot;.&quot;$3&quot;.&quot;$4&#125;' | sort | uniq -c | sort -nr | awk '$1 &gt; 100'</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="屏蔽-IPV6">屏蔽 IPV6</h4>
+<ul>
+<li><code>echo &quot;blacklist ipv6&quot; | sudo tee /etc/modprobe.d/blacklist-ipv6</code></li>
+</ul>
+<h3 id="21-系统监控与性能">21. 系统监控与性能</h3>
+<ul>
+<li><code>top</code>：实时显示系统任务管理器，包括 CPU、内存使用情况</li>
+<li><code>htop</code>：增强版 <code>top</code>，提供更友好的界面和更多功能（需安装 <code>htop</code>）</li>
+<li><code>uptime</code>：显示系统运行时间和负载</li>
+<li><code>dmesg</code>：查看系统启动信息及内核日志</li>
+<li><code>vmstat</code>：查看内存、交换区、IO、CPU 等统计信息</li>
+<li><code>free -h</code>：查看内存和交换空间使用情况</li>
+<li><code>ps aux</code>：列出所有运行的进程</li>
+<li><code>iostat</code>：显示 CPU 使用率和磁盘 I/O 使用情况（需安装 <code>sysstat</code>）</li>
+<li><code>mpstat</code>：显示多核 CPU 使用情况（需安装 <code>sysstat</code>）</li>
+<li><code>nmon</code>：性能监控工具，支持实时监控（需安装 <code>nmon</code>）</li>
+<li><code>watch -n 1 'df -h'</code>：每秒刷新一次显示磁盘使用情况</li>
+<li><code>sar</code>：系统活动报告，提供详细的 CPU、内存、磁盘等历史信息（需安装 <code>sysstat</code>）</li>
+<li><code>glances</code>：跨平台的系统监控工具（需安装 <code>glances</code>）</li>
+<li><code>nmon</code>：全面的性能监控工具（需安装 <code>nmon</code>）</li>
+</ul>
+<h3 id="22-进程管理">22. 进程管理</h3>
+<ul>
+<li><code>kill &lt;pid&gt;</code>：通过进程 ID 终止进程</li>
+<li><code>killall &lt;process_name&gt;</code>：通过进程名称终止进程</li>
+<li><code>pkill &lt;process_name&gt;</code>：使用更多匹配规则终止进程</li>
+<li><code>nohup command &amp;</code>：后台运行命令，即使关闭终端仍运行</li>
+<li><code>bg</code>：将挂起的进程放到后台</li>
+<li><code>fg</code>：将后台进程放到前台</li>
+<li><code>jobs</code>：列出当前终端的所有作业</li>
+<li><code>time command</code>：显示命令的执行时间</li>
+<li><code>nice</code>：调整进程优先级</li>
+<li><code>renice -n 10 -p 1234</code>：修改进程 <code>1234</code> 的优先级为 10</li>
+<li><code>sleep &lt;seconds&gt;</code>：暂停程序执行指定秒数</li>
+<li><code>ps -A</code>：查看当前有哪些进程</li>
+<li><code>kill -9 &lt;pid&gt;</code> 或 <code>killall -9 &lt;process_name&gt;</code>：强制杀死一个进程</li>
+<li><code>xkill</code>：图形方式中止一个程序，出现骷髅标志的鼠标，点击需要中止的程序即可</li>
+</ul>
+<h3 id="23-硬件管理">23. 硬件管理</h3>
+<ul>
+<li><code>lshw</code>：列出系统硬件（需 root 权限）</li>
+<li><code>lsblk</code>：显示磁盘分区信息</li>
+<li><code>lsusb</code>：列出所有 USB 设备</li>
+<li><code>lspci</code>：列出所有 PCI 设备</li>
+<li><code>inxi -Fx</code>：显示系统信息（需安装 <code>inxi</code>）</li>
+<li><code>hdparm -tT /dev/sda</code>：测试硬盘性能</li>
+<li><code>smartctl -a /dev/sda</code>：查看硬盘健康状况（需安装 <code>smartmontools</code>）</li>
+<li><code>sensors</code>：查看硬件传感器信息（需安装 <code>lm-sensors</code>）</li>
+<li><code>lsmod</code>：查看内核加载的模块</li>
+</ul>
+<h3 id="24-安全与权限">24. 安全与权限</h3>
+<ul>
+<li><code>chmod</code>：更改文件或目录的权限</li>
+<li><code>chown</code>：更改文件或目录的所有者</li>
+<li><code>chgrp</code>：更改文件或目录的所属组</li>
+<li><code>sudo</code>：以超级用户权限运行命令</li>
+<li><code>visudo</code>：编辑 sudo 配置文件</li>
+<li><code>setfacl</code>：设置文件的 ACL（访问控制列表）</li>
+<li><code>getfacl</code>：查看文件的 ACL 设置</li>
+<li><code>ufw</code>：简化的防火墙管理工具</li>
+<li><code>iptables</code>：配置 Linux 内核防火墙</li>
+<li><code>firewalld</code>：使用 firewalld 管理防火墙规则（推荐替代 <code>iptables</code>）</li>
+<li><code>chattr</code>：更改文件的特殊属性</li>
+<li><code>setenforce</code>：设置 SELinux 模式（需安装并配置 SELinux）</li>
+<li><code>selinuxenabled</code>：检查 SELinux 是否启用</li>
+</ul>
+<h3 id="25-日志管理">25. 日志管理</h3>
+<ul>
+<li><code>journalctl</code>：查看系统日志（适用于 systemd 系统）</li>
+<li><code>dmesg</code>：查看内核和系统启动日志</li>
+<li><code>tail -f /var/log/syslog</code>：实时查看系统日志文件</li>
+<li><code>grep</code>：结合管道过滤日志内容</li>
+<li><code>less /var/log/syslog</code>：分页查看日志文件</li>
+<li><code>cat /var/log/auth.log</code>：查看认证相关日志</li>
+<li><code>logrotate</code>：管理日志文件的轮转</li>
+</ul>
+<h3 id="26-VIM-编辑器">26. VIM 编辑器</h3>
+<h4 id="启动与退出">启动与退出</h4>
+<ul>
+<li><code>vim 文件路径</code>：启动 Vim 编辑器</li>
+<li><code>:q</code>：退出 Vim 编辑器</li>
+<li><code>:wq</code>：保存并退出 Vim</li>
+<li><code>:x</code>：保存并退出 Vim</li>
+<li><code>:q!</code>：强制退出，不保存</li>
+<li><code>:w</code>：保存修改</li>
+<li><code>:set number</code>：显示行号</li>
+<li><code>:set nonumber</code>：隐藏行号</li>
+<li><code>:set syntax on</code>：启用语法高亮</li>
+<li><code>:set syntax off</code>：禁用语法高亮</li>
+<li><code>:!</code>：执行系统命令</li>
+<li><code>:sh</code>：切换到命令行</li>
+<li><code>Ctrl + D</code>：切换回 Vim</li>
+</ul>
+<h4 id="VIM-模式">VIM 模式</h4>
+<h5 id="命令模式（常规模式）">命令模式（常规模式）</h5>
+<ul>
+<li><code>i</code>：在光标前插入文本</li>
+<li><code>a</code>：在光标后插入文本</li>
+<li><code>o</code>：在当前行下方插入新行</li>
+<li><code>dd</code>：删除整行</li>
+<li><code>yy</code>：复制当前行</li>
+<li><code>nyy</code>：复制 n 行</li>
+<li><code>p</code>：粘贴</li>
+<li><code>u</code>：撤销</li>
+<li><code>Ctrl + r</code>：重做</li>
+<li><code>r</code>：替换当前字符</li>
+<li><code>/关键字</code>：查找关键字</li>
+</ul>
+<h5 id="插入模式">插入模式</h5>
+<ul>
+<li><code>i</code>：进入插入模式</li>
+<li><code>a</code>：进入插入模式（在光标后）</li>
+<li><code>o</code>：在当前行下方插入新行并进入插入模式</li>
+<li><code>Esc</code>：返回命令模式</li>
+</ul>
+<h5 id="Ex-模式">Ex 模式</h5>
+<ul>
+<li><code>:</code>：进入 Ex 模式</li>
+<li><code>:w</code>：保存修改</li>
+<li><code>:q</code>：退出</li>
+<li><code>:wq!</code>：强制保存并退出</li>
+<li><code>:x</code>：保存并退出</li>
+<li><code>:!</code>：执行系统命令</li>
+<li><code>:sh</code>：切换到命令行</li>
+<li><code>Ctrl + D</code>：切换回 Vim</li>
+</ul>
+<h4 id="配置-VIM">配置 VIM</h4>
+<h5 id="一般设定">一般设定</h5>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-comment">&quot; 设定默认解码</span><br><span class="hljs-keyword">set</span> fenc=utf-<span class="hljs-number">8</span><br><span class="hljs-keyword">set</span> fencs=utf-<span class="hljs-number">8</span>,usc-bom,euc-jp,gb18030,gbk,gb2312,cp936<br><br><span class="hljs-comment">&quot; 不要使用 vi 的键盘模式，而是 vim 自己的</span><br><span class="hljs-keyword">set</span> nocompatible<br><br><span class="hljs-comment">&quot; history 文件中需要记录的行数</span><br><span class="hljs-keyword">set</span> <span class="hljs-keyword">history</span>=<span class="hljs-number">100</span><br><br><span class="hljs-comment">&quot; 在处理未保存或只读文件的时候，弹出确认</span><br><span class="hljs-keyword">set</span> <span class="hljs-keyword">confirm</span><br><br><span class="hljs-comment">&quot; 与 Windows 共享剪贴板</span><br><span class="hljs-keyword">set</span> clipboard+=unnamed<br><br><span class="hljs-comment">&quot; 侦测文件类型</span><br><span class="hljs-keyword">filetype</span> <span class="hljs-keyword">on</span><br><span class="hljs-keyword">filetype</span> plugin <span class="hljs-keyword">on</span><br><span class="hljs-keyword">filetype</span> <span class="hljs-built_in">indent</span> <span class="hljs-keyword">on</span><br><br><span class="hljs-comment">&quot; 保存全局变量</span><br><span class="hljs-keyword">set</span> viminfo+=!<br><br><span class="hljs-comment">&quot; 带有如下符号的单词不要被换行分割</span><br><span class="hljs-keyword">set</span> iskeyword+=_,$,@,%,#,-<br><br><span class="hljs-comment">&quot; 语法高亮</span><br><span class="hljs-keyword">syntax</span> <span class="hljs-keyword">on</span><br><br><span class="hljs-comment">&quot; 高亮字符，让其不受100列限制</span><br><span class="hljs-keyword">highlight</span> OverLength ctermbg=<span class="hljs-keyword">red</span> ctermfg=white guibg=<span class="hljs-keyword">red</span> guifg=white<br><span class="hljs-keyword">match</span> OverLength <span class="hljs-string">&#x27;%101v.*&#x27;</span><br><br><span class="hljs-comment">&quot; 状态行颜色</span><br><span class="hljs-keyword">highlight</span> StatusLine guifg=SlateBlue guibg=Yellow<br><span class="hljs-keyword">highlight</span> StatusLineNC guifg=Gray guibg=White<br><br><span class="hljs-comment">&quot; 在状态行上显示光标所在位置的行号和列号</span><br><span class="hljs-keyword">set</span> ruler<br><span class="hljs-keyword">set</span> rulerformat=%<span class="hljs-number">20</span>(%<span class="hljs-number">2</span>*%&lt;%<span class="hljs-keyword">f</span>%=\ %<span class="hljs-keyword">m</span>%r\ %<span class="hljs-number">3</span><span class="hljs-keyword">l</span>\ %<span class="hljs-keyword">c</span>\ %<span class="hljs-keyword">p</span>%%%)<br><br><span class="hljs-comment">&quot; 命令行（在状态行下）的高度，默认为1，这里是2</span><br><span class="hljs-keyword">set</span> cmdheight=<span class="hljs-number">2</span><br><br><span class="hljs-comment">&quot; 使回格键（backspace）正常处理 indent, eol, start 等</span><br><span class="hljs-keyword">set</span> backspace=<span class="hljs-number">2</span><br><br><span class="hljs-comment">&quot; 允许 backspace 和光标键跨越行边界</span><br><span class="hljs-keyword">set</span> whichwrap+=&lt;,&gt;,h,<span class="hljs-keyword">l</span><br><br><span class="hljs-comment">&quot; 可以在 buffer 的任何地方使用鼠标（类似 Office 中在工作区双击鼠标定位）</span><br><span class="hljs-keyword">set</span> mouse=<span class="hljs-keyword">a</span><br><span class="hljs-keyword">set</span> selection=exclusive<br><span class="hljs-keyword">set</span> selectmode=mouse,key<br><br><span class="hljs-comment">&quot; 启动的时候不显示帮助信息</span><br><span class="hljs-keyword">set</span> shortmess=atI<br><br><span class="hljs-comment">&quot; 通过使用 :commands 命令，告诉我们文件的哪一行被改变过</span><br><span class="hljs-keyword">set</span> report=<span class="hljs-number">0</span><br><br><span class="hljs-comment">&quot; 不让 vim 发出讨厌的滴滴声</span><br><span class="hljs-keyword">set</span> noerrorbells<br><br><span class="hljs-comment">&quot; 在被分割的窗口间显示空白，便于阅读</span><br><span class="hljs-keyword">set</span> fillchars=<span class="hljs-keyword">vert</span>:\ ,stl:\ ,stlnc:\<br></code></pre></td></tr></table></figure>
+<h5 id="文件设置">文件设置</h5>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-comment">&quot; 不要备份文件（根据自己需要取舍）</span><br><span class="hljs-keyword">set</span> nobackup<br><br><span class="hljs-comment">&quot; 不要生成 swap 文件，当 buffer 被丢弃的时候隐藏它</span><br><span class="hljs-keyword">setlocal</span> noswapfile<br><span class="hljs-keyword">set</span> bufhidden=<span class="hljs-keyword">hide</span><br><br><span class="hljs-comment">&quot; 字符间插入的像素行数目</span><br><span class="hljs-keyword">set</span> linespace=<span class="hljs-number">0</span><br><br><span class="hljs-comment">&quot; 增强模式中的命令行自动完成操作</span><br><span class="hljs-keyword">set</span> wildmenu<br><br><span class="hljs-comment">&quot; 自动缩进</span><br><span class="hljs-keyword">set</span> autoindent<br><span class="hljs-keyword">set</span> smartindent<br><span class="hljs-keyword">set</span> <span class="hljs-built_in">cindent</span><br><br><span class="hljs-comment">&quot; 制表符设置</span><br><span class="hljs-keyword">set</span> tabstop=<span class="hljs-number">4</span><br><span class="hljs-keyword">set</span> softtabstop=<span class="hljs-number">4</span><br><span class="hljs-keyword">set</span> <span class="hljs-built_in">shiftwidth</span>=<span class="hljs-number">4</span><br><span class="hljs-keyword">set</span> noexpandtab<br><br><span class="hljs-comment">&quot; 不要换行</span><br><span class="hljs-keyword">set</span> nowrap<br><br><span class="hljs-comment">&quot; 在行和段开始处使用制表符</span><br><span class="hljs-keyword">set</span> smarttab<br></code></pre></td></tr></table></figure>
+<h5 id="CTags-的设定">CTags 的设定</h5>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-comment">&quot; 按照名称排序</span><br><span class="hljs-keyword">let</span> Tlist_Sort_Type = <span class="hljs-string">&quot;name&quot;</span><br><br><span class="hljs-comment">&quot; 在右侧显示窗口</span><br><span class="hljs-keyword">let</span> Tlist_Use_Right_Window = <span class="hljs-number">1</span><br><br><span class="hljs-comment">&quot; 压缩方式</span><br><span class="hljs-keyword">let</span> Tlist_Compart_Format = <span class="hljs-number">1</span><br><br><span class="hljs-comment">&quot; 如果只有一个 buffer，kill 窗口也 kill 掉 buffer</span><br><span class="hljs-keyword">let</span> Tlist_Exist_OnlyWindow = <span class="hljs-number">1</span><br><br><span class="hljs-comment">&quot; 不要关闭其他文件的 tags</span><br><span class="hljs-keyword">let</span> Tlist_File_Fold_Auto_Close = <span class="hljs-number">0</span><br><br><span class="hljs-comment">&quot; 不要显示折叠树</span><br><span class="hljs-keyword">let</span> Tlist_Enable_Fold_Column = <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+<h5 id="Autocommands">Autocommands</h5>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-comment">&quot; 只在下列文件类型被侦测到的时候显示行号，普通文本文件不显示</span><br><span class="hljs-keyword">if</span> <span class="hljs-built_in">has</span>(<span class="hljs-string">&quot;autocmd&quot;</span>)<br>  <span class="hljs-keyword">autocmd</span> FileType xml,html,<span class="hljs-keyword">c</span>,<span class="hljs-keyword">cs</span>,java,<span class="hljs-keyword">perl</span>,<span class="hljs-keyword">shell</span>,bash,cpp,<span class="hljs-keyword">python</span>,<span class="hljs-keyword">vim</span>,php,<span class="hljs-keyword">ruby</span> <span class="hljs-keyword">set</span> <span class="hljs-keyword">number</span><br>  <span class="hljs-keyword">autocmd</span> FileType xml,html <span class="hljs-keyword">vmap</span><br><span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure>
+<h3 id="27-进阶工具">27. 进阶工具</h3>
+<h4 id="图形化工具">图形化工具</h4>
+<ul>
+<li>
+<p><code>meld</code>：文件比较与合并工具（需安装 <code>meld</code>）</p>
+</li>
+<li>
+<p><code>inxi</code>：显示系统信息（需安装 <code>inxi</code>）</p>
+</li>
+<li>
+<p><code>nmon</code>：全面的性能监控工具（需安装 <code>nmon</code>）</p>
+</li>
+<li>
+<p><code>gnome-search-tool</code>：全盘搜索文件的图形化工具</p>
+</li>
+<li>
+<pre><code class="hljs">firefox
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><br>  ：安装 Flash Player 插件<br><br>  - 下载插件：`install_flash_player_9_linux.tar.gz`<br>  - 解压并安装：`tar -zxf install_flash_player_9_linux.tar.gz`，`./flashplayer-installer`<br>  - 拷贝插件到 Firefox 插件目录：`sudo cp libflashplayer.so /usr/lib/firefox/plugins`<br><br>- ```<br>  filezilla<br></code></pre></td></tr></table></figure>
+
+：FTP 文件传输工具，支持中文目录显示
+
+- 安装：`sudo apt-get install filezilla`
+
+- 设置中文显示：
+
+  1. 下载 FileZilla 中文包到本地目录，如 `~/`
+
+  2. 解压：`unrar x Filezilla3_zhCN.rar`
+
+  3. 如果没有 `unrar`，先安装：`sudo apt-get install rar unrar`
+
+  4. 创建符号链接：`sudo ln -f /usr/bin/rar /usr/bin/unrar`
+
+  5. 备份原语言包并安装新语言包：
+
+     <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">cp</span> /usr/share/locale/zh_CN/filezilla.mo /usr/share/locale/zh_CN/filezilla.mo.bak<br><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">cp</span> ~/locale/zh_CN/filezilla.mo /usr/share/locale/zh_CN/filezilla.mo<br></code></pre></td></tr></table></figure>
+
+  6. 重启 FileZilla 即可
+
+</code></pre>
+</li>
+</ul>
+<h4 id="网络工具-2">网络工具</h4>
+<ul>
+<li><code>netcat (nc)</code>：网络连接调试工具</li>
+<li><code>mtr</code>：结合了 <code>ping</code> 和 <code>traceroute</code> 的网络诊断工具（需安装 <code>mtr</code>）</li>
+<li><code>wireshark</code>：网络协议分析工具（需安装 <code>wireshark</code>）</li>
+</ul>
+<h4 id="性能监控">性能监控</h4>
+<ul>
+<li><code>htop</code>：增强版 <code>top</code>，提供更友好的界面和更多功能（需安装 <code>htop</code>）</li>
+<li><code>glances</code>：跨平台的系统监控工具（需安装 <code>glances</code>）</li>
+<li><code>nmon</code>：全面的性能监控工具（需安装 <code>nmon</code>）</li>
+<li><code>watch -n 1 'df -h'</code>：每秒刷新一次显示磁盘使用情况</li>
+<li><code>sar</code>：系统活动报告，提供详细的 CPU、内存、磁盘等历史信息（需安装 <code>sysstat</code>）</li>
+</ul>
+<h3 id="28-附录：常用快捷命令">28. 附录：常用快捷命令</h3>
+<ul>
+<li>快速查找某个文件
+<ul>
+<li><code>whereis filename</code></li>
+<li><code>find 目录 -name 文件名</code></li>
+</ul>
+</li>
+<li>查看文件类型
+<ul>
+<li><code>file filename</code></li>
+</ul>
+</li>
+<li>让 <code>tail</code> 不停地读取最新内容
+<ul>
+<li><code>tail -n 10 -f /var/log/apache2/access.log</code></li>
+</ul>
+</li>
+<li>查看文件中间的行
+<ul>
+<li><code>sed -n '5,10p' /var/log/apache2/access.log</code>：查看第五行到第十行</li>
+</ul>
+</li>
+<li>通过 SSH 传输文件
+<ul>
+<li>上传：<code>scp -rp /path/filename username@remoteIP:/path</code></li>
+<li>下载：<code>scp -rp username@remoteIP:/path/filename /path</code></li>
+</ul>
+</li>
+<li>查看某个文件被哪些应用程序读写
+<ul>
+<li><code>lsof 文件名</code></li>
+</ul>
+</li>
+<li>批量修改文件名
+<ul>
+<li><code>rename 's/.rm$/.rmvb/' *</code>：将所有文件的后缀由 <code>.rm</code> 改为 <code>.rmvb</code></li>
+<li><code>rename 'tr/A-Z/a-z/' *</code>：将所有文件名中的大写改为小写</li>
+</ul>
+</li>
+<li>删除特殊文件名的文件
+<ul>
+<li><code>rm -- --help.txt</code> 或 <code>rm ./--help.txt</code></li>
+</ul>
+</li>
+<li>查看当前目录的子目录
+<ul>
+<li><code>ls -d */</code> 或 <code>echo */</code></li>
+</ul>
+</li>
+<li>移动最近访问过的文件
+<ul>
+<li><code>find . -type f -atime -30 -exec mv &#123;&#125; ../back \;</code>：将最近 30 天访问过的文件移动到上级 <code>back</code> 目录</li>
+</ul>
+</li>
+<li>显示最近一段时间内的文件
+<ul>
+<li><code>find . -mmin +120 -mmin -480 -exec more &#123;&#125; \;</code>：显示最近 2 小时到 8 小时之内的文件</li>
+</ul>
+</li>
+<li>删除特定条件的文件
+<ul>
+<li><code>find . -type f -mtime +30 -mtime -3600 -exec rm &#123;&#125; \;</code>：删除修改时间在 30 天之前的所有文件</li>
+<li><code>find . -name '*.avi' -o -name '*.rm' -user 'guest' -exec rm &#123;&#125; \;</code>：删除 guest 用户的 <code>.avi</code> 或 <code>.rm</code> 文件</li>
+<li><code>find . ! -name '*.java' ! -name '*.xml' -atime +7 -exec rm &#123;&#125; \;</code>：删除不以 <code>.java</code> 和 <code>.xml</code> 结尾，且 7 天未使用的文件</li>
+</ul>
+</li>
+<li>统计文件和目录
+<ul>
+<li><code>ls /usr/bin | wc -w</code>：统计当前文件个数</li>
+<li><code>ls -l /usr/bin | grep ^d | wc -l</code>：统计当前目录个数</li>
+<li><code>ls -l | grep '2006-01-01' | awk '&#123;print $8&#125;'</code>：显示 2006-01-01 创建的文件名</li>
+</ul>
+</li>
+</ul>
+<h3 id="29-总结">29. 总结</h3>
+<p>这个命令大全涵盖了常见的 Linux 系统管理、文件操作、磁盘管理、用户管理、网络调试、安全、进程管理等方面的命令。掌握这些命令能够帮助您更高效地管理和维护 Linux 系统。如果您有特定需求或需要更深入的操作，欢迎随时咨询！</p>
+<hr>
+<p><strong>注</strong>：部分命令可能需要安装额外的软件包。例如，<code>htop</code>、<code>nmon</code>、<code>inxi</code>、<code>meld</code>、<code>tree</code>、<code>sysstat</code>、<code>smartmontools</code>、<code>lm-sensors</code> 等工具需通过包管理器安装。此外，某些操作需要超级用户权限（使用 <code>sudo</code>）。</p>
+<hr>
+<h3 id="附加信息">附加信息</h3>
+<h4 id="常用软件安装示例">常用软件安装示例</h4>
+<ul>
+<li>
+<p><strong>安装解码器、Flash Player、Java 虚拟机、微软字体</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install ubuntu-restricted-extras<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装 FileZilla FTP 工具</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install filezilla<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装 RAR 压缩和解压工具</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install rar unrar<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装媒体播放器</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install mplayer mozilla-mplayer totem-xine libxine-extracodecs<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装下载工具（多线程下载、BT下载、电驴）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install d4x amule azureus<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装文件名编码转换工具</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install convmv<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装 MP3 标签编码转换工具</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install python-mutagen<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装控制台中文显示工具</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install zhcon<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装支持 QT 的 scim 插件以在 Eva 中输入中文</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install scim-qtimm<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装 Beryl 桌面效果</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install beryl-core beryl-plugins beryl-plugins-data emerald beryl-settings beryl-manager beryl beryl-dev emerald-themes<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装硬件传感器信息查看工具</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install lm-sensors<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装硬盘健康状况查看工具</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install smartmontools<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装系统信息查看工具</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install inxi<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装性能监控工具</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install nmon<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装系统统计工具（包含 <code>iostat</code>、<code>mpstat</code>、<code>sar</code> 等）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install sysstat<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装完整版本的 Vim 编辑器</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install vim-full<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装 GNOME 全盘搜索工具</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install gnome-search-tool<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>安装图形化文件比较工具</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install meld<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" class="category-chain-item">软件工程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Debian常用命令</div>
+      <div>https://mounthuangshan.github.io/软件工程/软件工程/Debian常用命令/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6/" title="初探代理软件">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">初探代理软件</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="Git常用命令">
+                        <span class="hidden-mobile">Git常用命令</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

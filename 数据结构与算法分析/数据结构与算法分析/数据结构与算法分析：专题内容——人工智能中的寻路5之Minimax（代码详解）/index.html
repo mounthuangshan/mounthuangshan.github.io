@@ -1,0 +1,688 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、算法描述 玩家希望搜索程序能够最大化从指定位置开始走，获得胜利的概率（或者至少要保平）。程序不会仅仅考虑当时的局面状态以及当时的可行走法，还需要考虑对手会采取的任何对策。程序需要假设对手会采取最完美的走法，并且不会犯错。程序假设存在一个评估函数score(state，player)，返回一个整数，表示局面状态的得分，分数 越小（可以为负）表示状态越差。 扩展博弈树时也需要考虑n步之后的局面状态">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析：专题内容——人工智能中的寻路5之Minimax（代码详解）">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、算法描述 玩家希望搜索程序能够最大化从指定位置开始走，获得胜利的概率（或者至少要保平）。程序不会仅仅考虑当时的局面状态以及当时的可行走法，还需要考虑对手会采取的任何对策。程序需要假设对手会采取最完美的走法，并且不会犯错。程序假设存在一个评估函数score(state，player)，返回一个整数，表示局面状态的得分，分数 越小（可以为负）表示状态越差。 扩展博弈树时也需要考虑n步之后的局面状态">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C3233325b009040eaab85f52bca98788c.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C0d9f7072cd0649adad41532d0c1639b2.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Cad1cfeb053724b17815483db1d379df3.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.850Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C3233325b009040eaab85f52bca98788c.png">
+  
+  
+  
+  <title>数据结构与算法分析：专题内容——人工智能中的寻路5之Minimax（代码详解） - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析：专题内容——人工智能中的寻路5之Minimax（代码详解）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析：专题内容——人工智能中的寻路5之Minimax（代码详解）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、算法描述</h1>
+<p>玩家希望搜索程序能够最大化从指定位置开始走，获得胜利的概率（或者至少要保平）。程序不会仅仅考虑当时的局面状态以及当时的可行走法，还需要考虑对手会采取的任何对策。程序需要假设对手会采取最完美的走法，并且不会犯错。程序假设存在一个评估函数score(state，player)，返回一个整数，表示局面状态的得分，分数<br>
+越小（可以为负）表示状态越差。<br>
+扩展博弈树时也需要考虑n步之后的局面状态。树的每一级轮流标注为MAX层级（目标是最大化局面状态的得分，使得对玩家有利）和MIN层级（目标是最小化局面状态的得分，使得对对手有利）。在每一级，如果是玩家走，那么程序选择最大化score(state,initial)的走法，如果是对手走的话，那么程序将会假设对手足够聪明，所以选择最小化score(state,initial)的走法。<br>
+Minimax 不 需 要 额外的记录。程序员只需要定义一个score(state,player)方法来为玩家评价局面状态，这个方法返回负数表示这个局面状态质量较差，而正数表示一个较好的局面状态。<br>
+博弈树的规模由每个局面状态的可行走法决定。假设有b个可行走法。如果追寻深度为d，那么需要检查的游戏状态总数为：<br>
+$$\sum_{i=1}^d\frac{b!}{(b-i)!}$$<br>
+假设b=10，d=6，那么需要评价的局面状态总共为187 300个。<br>
+Minimax的性能取决于评估函数的精度。在Minimax的递归调用中，评估函数需要保持一致，不会因为调用者而改变。</p>
+<h1>二、复杂度分析</h1>
+<p><img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C3233325b009040eaab85f52bca98788c.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>下图是一字棋游戏中，玩家O采取Minimax搜索时的追寻深度为2的轨迹。交替的MAX和MIN层级告诉玩家，要避免被秒杀，那么在左上角画一个O是唯一走法。注意这里会扩展出所有可能的棋面状态，即使确定玩家X可以稳赢。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C0d9f7072cd0649adad41532d0c1639b2.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+博弈树的深度是固定的，我们可以根据追寻长度的走法序列，得到一系列可能的局面状态。当每个局面状态都有固定的b个走法时，追寻深度d的Minimax算法需要搜索的局面状态的总数大约是O(bd)，很明显是指数级增长。<br>
+我们看看上图的结果，肯定有办法能够消除掉无用的局面状态。玩家MAX试着最大化局面状态的得分，因为每一步都会被评价，玩家MAX计算出他能够保证的最大值maxValue。因为我们假设对手不会犯错，一旦指向一棵MIN子树的走法得到的结果比maxValue要小，那么就不会搜索这棵子树。同样地，玩家MIN尝试着最小化局面状态的得分，并且计算出他能够保证的最小值minValue，一旦指向一棵MAX子树的走法得到的结果比minValue要大，那么就不会搜索这棵子树。我们不会试着处理这两种情况（MAX或者MIN），我们首先讨论一种评价博弈树的替代方案，这个替代方案将会对局面状态使用同样的评论方法，而不是根据博弈树的层级。</p>
+<h1>三、适用情况</h1>
+<p>算法不能处理在递归搜索中产生的巨大数量的局面状态。在国际象棋中，在棋面上，平均走法的数目是30个（Laramée，2000），也就是说，仅仅向前预计算5步（即b=30，d=5），那么就需要评估25137931个棋面状态。这个值是这样计算出来的：<br>
+$$\sum_{i=0}^db^i$$<br>
+Minimax可以利用局面状态的对称性（例如棋盘的旋转或者反转），缓存已经检查过的状态（以及它们的分数），但是节省的开销因问题而异。</p>
+<h1>四、算法实现</h1>
+<ul>
+<li>输入<br>
+算法从博弈树中的一个初始位置开始，假设它能够（a）选择某个局面状态的所有可行走法，以及（b）评价某个局面状态，表示从玩家来看这个状态的质量。得分越少则质量越差。算法会预测固定步数，这个数目叫做追寻深度。</li>
+<li>输出<br>
+返回所有可行走法中最能使得玩家赢得比赛的走法，由评估函数决定。</li>
+<li>假设<br>
+评估局面状态是非常复杂的，程序员需要依靠评估函数来选择最好的局面状态。事实上，在设计智能程序中，开发一个精确的评估函数，例如象棋、跳棋，或者黑白棋，是一件非常困难的事情。我们假设已经有一些这样的函数。</li>
+</ul>
+<p>Minimax将会探测一个固定的追寻深度，或者当某个局面状态没有可行走法时放弃继续探测。下面的代码返回了给定局面状态下，玩家的最好走法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;vector&gt;<br>#include &lt;memory&gt;<br>#include &lt;iostream&gt;<br>#include &lt;algorithm&gt;<br>#include &lt;climits&gt;<br><br><span class="hljs-comment">// 博弈状态接口</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IGameState</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual ~<span class="hljs-title class_">IGameState</span>() = <span class="hljs-keyword">default</span>;<br>    virtual <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; <span class="hljs-title function_">copy</span>() <span class="hljs-keyword">const</span> = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">print</span>() <span class="hljs-keyword">const</span> = <span class="hljs-number">0</span>;<br>&#125;;<br><br><span class="hljs-comment">// 博弈移动接口</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IGameMove</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual ~<span class="hljs-title class_">IGameMove</span>() = <span class="hljs-keyword">default</span>;<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">execute</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">undo</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">print</span>() <span class="hljs-keyword">const</span> = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 添加打印移动的方法</span><br>&#125;;<br><br><span class="hljs-comment">// 博弈玩家接口</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IPlayer</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual ~<span class="hljs-title class_">IPlayer</span>() = <span class="hljs-keyword">default</span>;<br>    virtual <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt;&gt; <span class="hljs-title function_">validMoves</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) = <span class="hljs-number">0</span>;<br>    virtual int <span class="hljs-built_in">eval</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) = <span class="hljs-number">0</span>;<br>&#125;;<br><br><span class="hljs-comment">// 移动评估类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MoveEvaluation</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt; move;<br>    int score;<br><br>    <span class="hljs-title class_">MoveEvaluation</span>(int score) : <span class="hljs-title function_">move</span>(nullptr), <span class="hljs-title function_">score</span>(<span class="hljs-params">score</span>) &#123;&#125;<br>    <span class="hljs-title class_">MoveEvaluation</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt; move, int score) <br>        : <span class="hljs-title function_">move</span>(move), <span class="hljs-title function_">score</span>(<span class="hljs-params">score</span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-comment">// Minimax评估类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MinimaxEvaluation</span> &#123;<br><span class="hljs-attr">private</span>:<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state;<br>    int ply;  <span class="hljs-comment">// 追寻深度</span><br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IPlayer</span>&gt; original;<br><br>    <span class="hljs-comment">// 递归执行Minimax算法</span><br>    <span class="hljs-title class_">MoveEvaluation</span> <span class="hljs-title function_">minimax</span>(<span class="hljs-params">int ply, bool isMax, </span><br><span class="hljs-params">                          std::shared_ptr&lt;IPlayer&gt; player, </span><br><span class="hljs-params">                          std::shared_ptr&lt;IPlayer&gt; opponent</span>) &#123;<br>        <span class="hljs-comment">// 获取所有可行走法</span><br>        auto moves = player-&gt;<span class="hljs-title function_">validMoves</span>(state);<br>        <br>        <span class="hljs-comment">// 基础情况：叶子节点或无可行走法</span><br>        <span class="hljs-keyword">if</span> (ply == <span class="hljs-number">0</span> || moves.<span class="hljs-title function_">empty</span>()) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-title class_">MoveEvaluation</span>(original-&gt;<span class="hljs-built_in">eval</span>(state));<br>        &#125;<br><br>        <span class="hljs-comment">// 初始化最佳评估</span><br>        <span class="hljs-title class_">MoveEvaluation</span> <span class="hljs-title function_">best</span>(isMax ? <span class="hljs-variable constant_">INT_MIN</span> : <span class="hljs-variable constant_">INT_MAX</span>);<br><br>        <span class="hljs-comment">// 遍历所有可行走法</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> auto&amp; move : moves) &#123;<br>            <span class="hljs-comment">// 执行当前走法</span><br>            move-&gt;<span class="hljs-title function_">execute</span>(state);<br>            <br>            <span class="hljs-comment">// 递归评价状态</span><br>            <span class="hljs-title class_">MoveEvaluation</span> me = <span class="hljs-title function_">minimax</span>(ply - <span class="hljs-number">1</span>, !isMax, opponent, player);<br>            <br>            <span class="hljs-comment">// 撤销当前走法</span><br>            move-&gt;<span class="hljs-title function_">undo</span>(state);<br><br>            <span class="hljs-comment">// 更新最佳评估</span><br>            bool shouldUpdate = isMax ? me.<span class="hljs-property">score</span> &gt; best.<span class="hljs-property">score</span> : me.<span class="hljs-property">score</span> &lt; best.<span class="hljs-property">score</span>;<br>            <span class="hljs-keyword">if</span> (shouldUpdate) &#123;<br>                best = <span class="hljs-title class_">MoveEvaluation</span>(move, me.<span class="hljs-property">score</span>);<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> best;<br>    &#125;<br><br><span class="hljs-attr">public</span>:<br>    <span class="hljs-comment">// 构造函数，设置追寻深度</span><br>    <span class="hljs-title class_">MinimaxEvaluation</span>(int searchDepth) : <span class="hljs-title function_">ply</span>(<span class="hljs-params">searchDepth</span>) &#123;&#125;<br><br>    <span class="hljs-comment">// 获取最佳走法</span><br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt; <span class="hljs-title function_">bestMove</span>(<span class="hljs-params">std::shared_ptr&lt;IGameState&gt; initialState,</span><br><span class="hljs-params">                                      std::shared_ptr&lt;IPlayer&gt; player,</span><br><span class="hljs-params">                                      std::shared_ptr&lt;IPlayer&gt; opponent</span>) &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;开始从初始位置搜索最佳走法：\n&quot;</span>;<br>        initialState-&gt;<span class="hljs-title function_">print</span>();<br>        <br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;\n搜索深度（追寻深度）：&quot;</span> &lt;&lt; ply &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>        <br>        <span class="hljs-comment">// 保存初始状态和当前玩家</span><br>        original = player;<br>        state = initialState-&gt;<span class="hljs-title function_">copy</span>();<br>        <br>        <span class="hljs-comment">// 获取所有可行走法</span><br>        auto moves = player-&gt;<span class="hljs-title function_">validMoves</span>(state);<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;\n可行走法数量：&quot;</span> &lt;&lt; moves.<span class="hljs-title function_">size</span>() &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>        <br>        <span class="hljs-comment">// 执行Minimax搜索</span><br>        <span class="hljs-title class_">MoveEvaluation</span> bestEval = <span class="hljs-title function_">minimax</span>(ply, <span class="hljs-literal">true</span>, player, opponent);<br>        <br>        <span class="hljs-keyword">if</span> (bestEval.<span class="hljs-property">move</span>) &#123;<br>            <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;\n找到最佳走法，评估分数：&quot;</span> &lt;&lt; bestEval.<span class="hljs-property">score</span> &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>            <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;选择的走法：&quot;</span>;<br>            bestEval.<span class="hljs-property">move</span>-&gt;<span class="hljs-title function_">print</span>();<br>            <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;\n未找到有效走法。&quot;</span> &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> bestEval.<span class="hljs-property">move</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 示例：一个简单的演示游戏状态</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SimpleGameState</span> : public <span class="hljs-title class_">IGameState</span> &#123;<br><span class="hljs-attr">public</span>:<br>    int value;<br>    <br>    <span class="hljs-title class_">SimpleGameState</span>(int v) : <span class="hljs-title function_">value</span>(<span class="hljs-params">v</span>) &#123;&#125;<br>    <br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; <span class="hljs-title function_">copy</span>() <span class="hljs-keyword">const</span> override &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">SimpleGameState</span>&gt;(value);<br>    &#125;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">print</span>() <span class="hljs-keyword">const</span> override &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;当前状态值: &quot;</span> &lt;&lt; value;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 示例：简单的游戏移动</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SimpleGameMove</span> : public <span class="hljs-title class_">IGameMove</span> &#123;<br><span class="hljs-attr">public</span>:<br>    int change;<br>    <br>    <span class="hljs-title class_">SimpleGameMove</span>(int c) : <span class="hljs-title function_">change</span>(<span class="hljs-params">c</span>) &#123;&#125;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">execute</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) override &#123;<br>        auto simpleState = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">SimpleGameState</span>&gt;(state);<br>        simpleState-&gt;value += change;<br>    &#125;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">undo</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) override &#123;<br>        auto simpleState = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">SimpleGameState</span>&gt;(state);<br>        simpleState-&gt;value -= change;<br>    &#125;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">print</span>() <span class="hljs-keyword">const</span> override &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;改变值: &quot;</span> &lt;&lt; change;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 示例：简单的游戏玩家</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SimplePlayer</span> : public <span class="hljs-title class_">IPlayer</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt;&gt; <span class="hljs-title function_">validMoves</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) override &#123;<br>        <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt;&gt; moves;<br>        <span class="hljs-comment">// 示例：可以加1或减1</span><br>        moves.<span class="hljs-title function_">push_back</span>(<span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">SimpleGameMove</span>&gt;(<span class="hljs-number">1</span>));<br>        moves.<span class="hljs-title function_">push_back</span>(<span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">SimpleGameMove</span>&gt;(-<span class="hljs-number">1</span>));<br>        <span class="hljs-keyword">return</span> moves;<br>    &#125;<br>    <br>    int <span class="hljs-built_in">eval</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) override &#123;<br>        auto simpleState = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">SimpleGameState</span>&gt;(state);<br>        <span class="hljs-keyword">return</span> simpleState-&gt;value;<br>    &#125;<br>&#125;;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;博弈树搜索算法演示\n\n&quot;</span>;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;输入：\n&quot;</span>;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;- 算法从博弈树中的初始位置开始\n&quot;</span>;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;- 能够选择局面状态的所有可行走法\n&quot;</span>;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;- 能够评价局面状态（从玩家角度）\n&quot;</span>;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;- 预测固定步数（追寻深度）\n\n&quot;</span>;<br>    <br>    <span class="hljs-comment">// 创建初始状态</span><br>    auto initialState = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">SimpleGameState</span>&gt;(<span class="hljs-number">0</span>);<br>    <br>    <span class="hljs-comment">// 创建玩家</span><br>    auto player = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">SimplePlayer</span>&gt;();<br>    auto opponent = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">SimplePlayer</span>&gt;();<br>    <br>    <span class="hljs-comment">// 创建评估器（追寻深度为3）</span><br>    <span class="hljs-title class_">MinimaxEvaluation</span> <span class="hljs-title function_">evaluator</span>(<span class="hljs-number">3</span>);<br>    <br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;输出：\n&quot;</span>;<br>    <span class="hljs-comment">// 获取最佳走法</span><br>    auto bestMove = evaluator.<span class="hljs-title function_">bestMove</span>(initialState, player, opponent);<br>    <br>    <span class="hljs-keyword">if</span> (bestMove) &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;\n返回的最佳走法是能使玩家获得最大收益的走法。\n&quot;</span>;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;这个走法由评估函数决定，评估函数会计算每个状态对玩家的有利程度。\n&quot;</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>MAX和MIN选择器简单地计算出得分，然后按需选出最大的或则最小的分数。实现使用了IComparator接口，如下图所示。这个接口定义了MAX和MIN，使得能够更加正确地为玩家挑选出最优走法。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Cad1cfeb053724b17815483db1d379df3.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+opposite()方法是在MAX和MIN选择器中切换。initialValue()返回这些比较器中最差的分数，根据所处层级属于MAX或是MIN，我们得到不同的实际值。</p>
+<h1>五、算法优化</h1>
+<p>如果博弈树能够完全存储在内存中，那么可以不用设置追寻深度。</p>
+<h1>六、引用及参考文献</h1>
+<p>1.《算法设计手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析：专题内容——人工智能中的寻路5之Minimax（代码详解）</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析：专题内容——人工智能中的寻路5之Minimax（代码详解）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF6%E4%B9%8BNegMax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：专题内容——人工智能中的寻路6之NegMax（代码详解）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析：专题内容——人工智能中的寻路6之NegMax（代码详解）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：专题内容——人工智能中的寻路4之A_搜索（代码详解）">
+                        <span class="hidden-mobile">数据结构与算法分析：专题内容——人工智能中的寻路4之A_搜索（代码详解）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

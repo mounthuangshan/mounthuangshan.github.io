@@ -1,0 +1,719 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、算法描述 给你一堆标上数字的牌,一个通常的排序方法是选择并且拿走最大的牌,然后重复这个 过程直到所有的牌都被拿走。这就是选择排序的过程。 选择排序是我们讲述的排序算法中最慢的,即使在最好情况下(如数组已经有序)它都需要二次方时间。它重复地进行着几乎相同的工作,而不会从每一次选代中学到什么东西。在数组A选择最大的元素max需要n-1次比较,选择第二大的需要n-2次比较。很多比较都是浪费的,因为如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析：你真的理解排序算法吗——选择排序与堆排序（代码详解）">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、算法描述 给你一堆标上数字的牌,一个通常的排序方法是选择并且拿走最大的牌,然后重复这个 过程直到所有的牌都被拿走。这就是选择排序的过程。 选择排序是我们讲述的排序算法中最慢的,即使在最好情况下(如数组已经有序)它都需要二次方时间。它重复地进行着几乎相同的工作,而不会从每一次选代中学到什么东西。在数组A选择最大的元素max需要n-1次比较,选择第二大的需要n-2次比较。很多比较都是浪费的,因为如">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C5e84a6e6f75f487e990633fcac11a2c1.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C7032f08d12534be29665b23b949e1d40.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C53b6cb93d9c9476096777fee8d46de24.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Ccbd6b0ea4efa498db5ff2912171583b8.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Cf7c9cd64dfd0497b9bd788391a5c5794.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C020456aed4e04fb98f51fa07467d01f1.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.850Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C5e84a6e6f75f487e990633fcac11a2c1.png">
+  
+  
+  
+  <title>数据结构与算法分析：你真的理解排序算法吗——选择排序与堆排序（代码详解） - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析：你真的理解排序算法吗——选择排序与堆排序（代码详解）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析：你真的理解排序算法吗——选择排序与堆排序（代码详解）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、算法描述</h1>
+<p>给你一堆标上数字的牌,一个通常的排序方法是选择并且拿走最大的牌,然后重复这个<br>
+过程直到所有的牌都被拿走。这就是选择排序的过程。<br>
+选择排序是我们讲述的排序算法中最慢的,即使在最好情况下(如数组已经有序)它都需要二次方时间。它重复地进行着几乎相同的工作,而不会从每一次选代中学到什么东西。在数组A选择最大的元素max需要n-1次比较,选择第二大的需要n-2次比较。很多比较都是浪费的,因为如果一个元素比第二大的元素小,那么它不可能是最大的元素,所以就不会对max的选择有任何影响。作者将不会阐述关于这个低效算法的更多细节,现在我们看看堆排序,这个算法展示了如何高效地应用选择排序背后隐藏的原理。</p>
+<p>在数组A[0,n)中寻找最大的元素最少需要n-1次比较,但是我们希望能够最少化直接比较的元素。在体育领域,通过锦标赛在n个队伍中寻找“最好的”队伍,而不是强制最终的优胜者和所有其他的n-1支队伍比赛。NCAA冠军锦标赛是美国最流行的篮球赛事之一,这项赛事有64支学校的代表队参加,角逐冠军头衡。最终的冠军队伍在进入决赛之前会和5支队伍进行比赛,所以它需要赢得6场比赛。非常巧合的是$log(64)=6$。堆排序则表明了如何应用这种行为来排序元素。一个堆就是一棵二叉树,它具有以下两个性质:<br>
+<strong>外形的性质：</strong><br>
+如果深度k-1存在2-1个节点,那么深度k(k&gt;0)上存在叶子节点。另外,在一个部分填充的深度级上,节点是“从左到右”添加的。<br>
+<strong>堆的性质：</strong><br>
+树中每一个节点的值都大于或者等于任意一个子节点的值(如果有的话)。</p>
+<p>下图的堆就满足这些性质。二叉树的根节点的值必须是树中最大的,但是,注意到最小的元素可以是任何一个叶子节点。虽然二叉树的有序信息受限于这样一个事实:一个节点大于任意一个子节点。堆排序表明了如何利用这个外形的性质来高效地排<br>
+序元素。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C5e84a6e6f75f487e990633fcac11a2c1.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>给定严格满足外形性质的一个结构,堆能够存储在一个数组A中,而不损失任何结构信<br>
+息。下图描绘了给堆中每一个节点都赋予一个整数值标签。根节点被标记为0。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C7032f08d12534be29665b23b949e1d40.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>对于每一个标记为的节点,其左子节点(存在的话)被标记为$(2<em>i+1)$;其右子节点(如果存在的话)被标记为2</em>i+2。类似地,对于一个标记为的非根节点,其父节点被标记为$((i-1)/2)$。使用这个标记,我们能够将堆存储在一个数组中,节点存储在数组中的位置就是其标签。下图表示了存储在数组中的对。A中元素的顺序从左至右能够被简单地看做节点被发现的深度。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C53b6cb93d9c9476096777fee8d46de24.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+堆排序在排序数组的时候,首先会将数组中的元素放到堆中“合适的位置”。事实上,上面所示的堆是在一个已经有序的数组上执行buildHeap得到的结果。buildHeap执行的过程如下图所示。如果A[i]的两个子节点A$(2<em>i+1)$和A$(2</em>i+2)$至少有一个比A[i]大,heapify(A,i,n)通过交换A[i]和两个子节点中较大的来更新A。如果交换过程发生了,heapify递归地检查其孙子节点来正确地维护A的堆性质。你能够看到,在结果堆中,最终大数会被“抬升”(意思是它们会和左边的较小元素交换)。下图灰色的方格描述了heapify在第9行被交换的元素。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Ccbd6b0ea4efa498db5ff2912171583b8.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+在排序一个大小为n的数组A,堆排序将其切分成两个相异的子数组,A[0,m)和A[m,n),<br>
+分别表示一个大小为m的堆和一个有n-m个元素的有序子数组。随着认n-1选代到1,<br>
+堆排序交换堆中的最大元素(位置是A[0])和A[i],使子数组A[i,n)的大小不断增长,然后<br>
+堆排序执行  heapify重构A[0,i)使其成为一个有效堆。结果非空子数组A[i,n)将会有序,因为堆中的最大的元素保证比这个有序子数组中的任何一个元素都要小。</p>
+<p>以下是堆排序的详细过程：</p>
+<ol>
+<li>建立最大堆<br>
+步骤：<br>
+从最后一个非叶子节点开始，向上至根节点，逐一调整堆，使其满足最大堆的性质。<br>
+非叶子节点的索引可以通过 (n // 2) - 1 计算得到，其中 n 是数组的长度。<br>
+调整堆（Heapify）：<br>
+假设当前要调整的节点索引为 i。<br>
+计算左子节点和右子节点的索引：left = 2 * i + 1，right = 2 * i + 2。<br>
+找到左右子节点中较大的那个（如果存在右子节点）。<br>
+如果较大的子节点的值大于当前节点的值，则交换它们，并继续调整交换后的子节点（递归地调用 Heapify）。</li>
+<li>堆排序<br>
+步骤：<br>
+将数组调整为最大堆。<br>
+将堆顶元素（即最大值）与数组末尾元素交换，并将堆的大小减少1（排除已排序的最大元素）。<br>
+对新的堆顶元素进行 Heapify 操作，使其重新满足最大堆的性质。<br>
+重复步骤2和3，直到堆的大小为1，即所有元素都已排序。</li>
+</ol>
+<h1>二、复杂度分析</h1>
+<p><img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Cf7c9cd64dfd0497b9bd788391a5c5794.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+堆排序不是一个稳定的排序。因为它非常频繁的移动元素，所以它不能使用基于值的数据。堆排序避免了很多导致快速排序性能退化的令人讨厌的情况。尽管如此，平均情况下，快速排序比堆排序表现要好。</p>
+<h1>三、适用情况</h1>
+<p>堆排序（Heap Sort）是一种基于比较的排序算法，它利用堆这种数据结构进行选择排序。堆是一个近似完全二叉树的结构，并同时满足堆积的性质：即子节点的键值或索引总是小于（或大于）它的父节点。<br>
+<strong>堆排序的适用情况主要包括以下几点：</strong><br>
+1.大规模数据排序：堆排序在处理大规模数据时表现良好，因为它的时间复杂度为O(n log n)，对于大数据集来说，这是一个相对高效的排序算法。<br>
+2.不稳定排序需求：堆排序是一种不稳定的排序算法，即如果两个相等的元素在排序前的相对位置在排序后可能会改变。在某些应用场景中，稳定性可能不是必要的，这时堆排序就是一个合适的选择。<br>
+3.内存限制：堆排序是原地排序算法（in-place sort），它只需要一个额外的常数级别的存储空间来维护堆的性质。因此，在内存资源有限的情况下，堆排序是一个较好的选择。<br>
+4.外部排序：堆排序也适用于外部排序，即数据存储在磁盘等外部存储设备上时。通过构建最小堆或最大堆，可以有效地处理大量数据，而不需要一次性将所有数据加载到内存中。<br>
+5.部分排序需求：堆排序可以方便地找到数据集中的最小或最大元素，以及进行部分排序。例如，如果需要找到数据集中的前k个最小（或最大）元素，可以使用堆排序的变体——堆选择算法（Heap Select）。<br>
+<strong>然而，堆排序也有一些不适用的情况：</strong><br>
+1.对稳定性有要求：如果排序算法需要保持相等元素的相对顺序（即稳定性），则堆排序可能不是最佳选择。<br>
+2.小数据集：对于非常小的数据集，堆排序的开销可能相对较大，而其他简单的排序算法（如插入排序或冒泡排序）可能更高效。<br>
+3.数据分布：堆排序的性能对数据分布有一定的依赖性。如果数据已经接近有序，一些其他排序算法（如归并排序或快速排序）可能会表现得更好。<br>
+4.总的来说，堆排序是一种适用于大规模数据、内存受限或部分排序需求的排序算法。在选择排序算法时，应根据具体的应用场景和数据特点进行权衡。</p>
+<h1>四、算法实现</h1>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include&lt;stdio.<span class="hljs-property">h</span>&gt;<br>#include&lt;stdlib.<span class="hljs-property">h</span>&gt;<br><br>int <span class="hljs-title function_">cmp</span>(<span class="hljs-params"><span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* x, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* y</span>)<br>&#123;<br>  int standard;<br>  <span class="hljs-comment">//这里比较时也是需要做强制类型转换</span><br>  standard = *(int*)x - *(int*)y;<br><br>  <span class="hljs-keyword">return</span> standard;<br>&#125;<br><br><span class="hljs-comment">//堆排序的优点在于其heapify函数，它要使用两个不同的空间，虽然都是为一个共同的目的</span><br><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">heapify</span>(<span class="hljs-params"><span class="hljs-keyword">void</span>** ar, int(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*), int idx, int max</span>)<br>&#123;<br>  int left = <span class="hljs-number">2</span> * idx + <span class="hljs-number">1</span>;<br>  int right = <span class="hljs-number">2</span> * idx + <span class="hljs-number">2</span>;<br>  int largest;<br>  <span class="hljs-comment">//在A[idx].A[left]和A[right]寻找最大的元素</span><br>  <span class="hljs-keyword">if</span> (left &lt; max &amp;&amp; <span class="hljs-title function_">cmp</span>(ar[left], ar[idx])&gt;<span class="hljs-number">0</span>)<br>  &#123;<br>    largest = left;<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    largest = idx;<br>  &#125;<br>  <span class="hljs-keyword">if</span> (right &lt; max &amp;&amp; <span class="hljs-title function_">cmp</span>(ar[right], ar[largest])&gt;<span class="hljs-number">0</span>)<br>  &#123;<br>    largest = right;<br>  &#125;<br><br>  <span class="hljs-comment">//如果最大的不是父节点，那么交换并递归执行</span><br>  <span class="hljs-keyword">if</span> (largest != idx)<br>  &#123;<br>    <span class="hljs-keyword">void</span>* tmp;<br>    tmp = ar[idx];<br>    ar[idx] = ar[largest];<br>    ar[largest] = tmp;<br>    <span class="hljs-title function_">heapify</span>(ar, cmp, largest, max);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">buildHeap</span>(<span class="hljs-params"><span class="hljs-keyword">void</span>** ar, int(*cmp)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*), int n</span>)<br>&#123;<br>  int i;<br>  <span class="hljs-keyword">for</span> (i = n / <span class="hljs-number">2</span> - <span class="hljs-number">1</span>;i &gt;= <span class="hljs-number">0</span>;i--)<br>  &#123;<br>    <span class="hljs-title function_">heapify</span>(ar, cmp, i, n);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">sortPointers</span>(<span class="hljs-params"><span class="hljs-keyword">void</span>** ar, int n, int(*cmp)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*)</span>)<br>&#123;<br>  int i;<br>  <span class="hljs-title function_">buildHeap</span>(ar, cmp, n);<br>  <span class="hljs-keyword">for</span> (i = n - <span class="hljs-number">1</span>;i &gt;= <span class="hljs-number">1</span>;i--)<br>  &#123;<br>    <span class="hljs-keyword">void</span>* tmp;<br>    tmp = ar[<span class="hljs-number">0</span>];<br>    ar[<span class="hljs-number">0</span>] = ar[i];<br>    ar[i] = tmp;<br>    <span class="hljs-title function_">heapify</span>(ar, cmp, <span class="hljs-number">0</span>, i);<br>  &#125;<br>&#125;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// 创建一个整数数组  </span><br>  int arr[] = &#123; <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span> &#125;;<br>  int n = <span class="hljs-title function_">sizeof</span>(arr) / <span class="hljs-title function_">sizeof</span>(arr[<span class="hljs-number">0</span>]);<br><br>  <span class="hljs-comment">// 创建一个指向整数的指针数组  </span><br>  <span class="hljs-keyword">void</span>** ptrArray = (<span class="hljs-keyword">void</span>**)<span class="hljs-title function_">malloc</span>(n * <span class="hljs-title function_">sizeof</span>(<span class="hljs-keyword">void</span>*));<br>  <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>    ptrArray[i] = (<span class="hljs-keyword">void</span>*)&amp;arr[i];<br>  &#125;<br><br>  <span class="hljs-comment">// 排序指针数组  </span><br>  <span class="hljs-title function_">sortPointers</span>(ptrArray, n, cmp);<br><br>  <span class="hljs-comment">// 打印排序后的结果  </span><br>  <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Sorted array:\n&quot;</span>);<br>  <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, *(int*)ptrArray[i]);<br>  &#125;<br>  <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br><br>  <span class="hljs-comment">// 释放内存  </span><br>  <span class="hljs-title function_">free</span>(ptrArray);<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>堆排序的核心函数是heapify。在buildHeap中,这个函数将会被调用$(n/2)-1$次,在实际排序中,它也会被调用n-1次,总共调用了$(3<em>n/2)-2$次。如你所见,这是一个递归的操作,在到达堆的底部之前会执行固定数目的计算。因为形状的性质,堆的深度将会是$((3</em>n/2)-2)*(log(n))$,n是堆中元素的数目。性能是O(nlogn)。</p>
+<h1>五、算法优化</h1>
+<p>也有一些非递归的堆排序实现，下表列出了对两种实现执行1000个随机测试的结果，抛弃了最好和最坏的结果，剩余结果如下表：<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C020456aed4e04fb98f51fa07467d01f1.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1>六、引用及参考文献</h1>
+<p>1.《算法设计手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析：你真的理解排序算法吗——选择排序与堆排序（代码详解）</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析：你真的理解排序算法吗——选择排序与堆排序（代码详解）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%A1%B6%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：你真的理解排序算法吗——桶排序（代码详解）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解排序算法吗——桶排序（代码详解）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3)/" title="数据结构与算法分析：你真的理解排序算法吗——计数排序(代码详解)">
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解排序算法吗——计数排序(代码详解)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

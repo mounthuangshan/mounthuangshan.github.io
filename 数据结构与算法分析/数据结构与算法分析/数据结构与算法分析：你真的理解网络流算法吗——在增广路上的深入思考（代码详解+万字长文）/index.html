@@ -1,0 +1,712 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、在增广路上的深入思考 解决最大流问题并不能帮助我们立刻解决本章之前讨论的其他问题。但是，从最大流问题的解决出发，我们去考虑一类相似的问题，这类问题都是在流网络中寻找最大流以及最小化开销。如果我们将网络中的每条边（u,v）赋一个开销d(u,v)表示在此边上运输一个单位的开销，那么目标就是最小化： $∑f(u,v)*d(u,v)$ 现在，在Ford-Fulkerson算法中，我们强调寻找能够增大网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析：你真的理解网络流算法吗——在增广路上的深入思考（代码详解+万字长文）">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9C%A8%E5%A2%9E%E5%B9%BF%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%B7%B1%E5%85%A5%E6%80%9D%E8%80%83%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、在增广路上的深入思考 解决最大流问题并不能帮助我们立刻解决本章之前讨论的其他问题。但是，从最大流问题的解决出发，我们去考虑一类相似的问题，这类问题都是在流网络中寻找最大流以及最小化开销。如果我们将网络中的每条边（u,v）赋一个开销d(u,v)表示在此边上运输一个单位的开销，那么目标就是最小化： $∑f(u,v)*d(u,v)$ 现在，在Ford-Fulkerson算法中，我们强调寻找能够增大网">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9C%A8%E5%A2%9E%E5%B9%BF%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%B7%B1%E5%85%A5%E6%80%9D%E8%80%83%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9C%A8%E5%A2%9E%E5%B9%BF%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%B7%B1%E5%85%A5%E6%80%9D%E8%80%83%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C29e3876252c147809f95c20ac603578c.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9C%A8%E5%A2%9E%E5%B9%BF%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%B7%B1%E5%85%A5%E6%80%9D%E8%80%83%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9C%A8%E5%A2%9E%E5%B9%BF%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%B7%B1%E5%85%A5%E6%80%9D%E8%80%83%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5Ca32cf0ad5b55468b954d18a9c1d7cf18.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.851Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9C%A8%E5%A2%9E%E5%B9%BF%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%B7%B1%E5%85%A5%E6%80%9D%E8%80%83%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9C%A8%E5%A2%9E%E5%B9%BF%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%B7%B1%E5%85%A5%E6%80%9D%E8%80%83%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C29e3876252c147809f95c20ac603578c.png">
+  
+  
+  
+  <title>数据结构与算法分析：你真的理解网络流算法吗——在增广路上的深入思考（代码详解+万字长文） - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析：你真的理解网络流算法吗——在增广路上的深入思考（代码详解+万字长文）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析：你真的理解网络流算法吗——在增广路上的深入思考（代码详解+万字长文）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="一、在增广路上的深入思考">一、在增广路上的深入思考</h2>
+<p>解决最大流问题并不能帮助我们立刻解决本章之前讨论的其他问题。但是，从最大流问题的解决出发，我们去考虑一类相似的问题，这类问题都是在流网络中寻找最大流以及最小化开销。如果我们将网络中的每条边（u,v）赋一个开销d(u,v)表示在此边上运输一个单位的开销，那么目标就是最小化：<br>
+$∑f(u,v)*d(u,v)$<br>
+现在，在Ford-Fulkerson算法中，我们强调寻找能够增大网络中流量的增广路的重要性。如果我们修改搜索方法，寻找最小开销的增广路会发生什么呢？我们已经讨论过一些贪心算法（例如构造最小生成树的Prim算法）就是不断地选择最小开销的方向进行扩展，也许这样的方法能够在这里可行。<br>
+为了寻找最小开销的增广路，我们就不能拘泥于单纯使用广度优先搜索或者是深度优先搜索。正如我们在Prim算法中所看到的那样，我们必须要使用一个优先队列来存储和计算流网络中，每个顶点到源点的距离。我们会计算从源点到每一个顶点运输一个单位的开销，然后我们需要在不断的计算过程中维护一个优先队列。随着搜索的进<br>
+行，优先队列存储着节点的有序集合，这个集合中的元素将会指导着搜索进行的方向。从优先队列中取出到源点距离（这里是开销）最小的顶点u，然后选择一个还未被访问的邻接顶点v，并且满足（a）前向边（u,v）还有多余的容量可供扩展，或者（b）后向边（v,u）的流可以减少，继续进行搜索。如果我们在搜索的过程中遇到了汇点，那么搜索就可以终止，而且成功地找到一条增广路，否则，不存在这样的增广路。下例是ShortestPathArray的C++实现：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;vector&gt;<br>#include &lt;queue&gt;<br>#include &lt;limits&gt;<br>#include &lt;algorithm&gt;<br>#include &lt;iostream&gt;<br><br><span class="hljs-comment">// 搜索方向枚举</span><br>enum <span class="hljs-keyword">class</span> <span class="hljs-title class_">Search</span> &#123;<br>    <span class="hljs-variable constant_">FORWARD</span>,<br>    <span class="hljs-variable constant_">BACKWARD</span><br>&#125;;<br><br><span class="hljs-comment">// 顶点信息结构</span><br>struct <span class="hljs-title class_">VertexInfo</span> &#123;<br>    int predecessor;<br>    <span class="hljs-title class_">Search</span> direction;<br>    <br>    <span class="hljs-title class_">VertexInfo</span>(int pred = -<span class="hljs-number">1</span>, <span class="hljs-title class_">Search</span> dir = <span class="hljs-title class_">Search</span>::<span class="hljs-variable constant_">FORWARD</span>) <br>        : <span class="hljs-title function_">predecessor</span>(pred), <span class="hljs-title function_">direction</span>(<span class="hljs-params">dir</span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-comment">// 边信息结构</span><br>struct <span class="hljs-title class_">EdgeInfo</span> &#123;<br>    int flow;<br>    int capacity;<br>    int cost;<br>    <br>    <span class="hljs-title class_">EdgeInfo</span>(int f = <span class="hljs-number">0</span>, int cap = <span class="hljs-number">0</span>, int c = <span class="hljs-number">0</span>) <br>        : <span class="hljs-title function_">flow</span>(f), <span class="hljs-title function_">capacity</span>(cap), <span class="hljs-title function_">cost</span>(<span class="hljs-params">c</span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-comment">// 二叉堆实现</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">BinaryHeap</span> &#123;<br><span class="hljs-attr">private</span>:<br>    struct <span class="hljs-title class_">HeapNode</span> &#123;<br>        int id;<br>        int key;<br>        int pos;  <span class="hljs-comment">// 在堆中的位置</span><br>        <br>        <span class="hljs-title class_">HeapNode</span>(int i = -<span class="hljs-number">1</span>, int k = <span class="hljs-number">0</span>, int p = -<span class="hljs-number">1</span>) <br>            : <span class="hljs-title function_">id</span>(i), <span class="hljs-title function_">key</span>(k), <span class="hljs-title function_">pos</span>(<span class="hljs-params">p</span>) &#123;&#125;<br>    &#125;;<br>    <br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">HeapNode</span>&gt; nodes;<br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">HeapNode</span>*&gt; heap;<br>    int size;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">siftUp</span>(<span class="hljs-params">int pos</span>) &#123;<br>        <span class="hljs-title class_">HeapNode</span>* node = heap[pos];<br>        <span class="hljs-keyword">while</span> (pos &gt; <span class="hljs-number">0</span>) &#123;<br>            int parent = (pos - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;<br>            <span class="hljs-keyword">if</span> (heap[parent]-&gt;key &lt;= node-&gt;key) <span class="hljs-keyword">break</span>;<br>            <br>            heap[pos] = heap[parent];<br>            heap[pos]-&gt;pos = pos;<br>            pos = parent;<br>        &#125;<br>        heap[pos] = node;<br>        node-&gt;pos = pos;<br>    &#125;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">siftDown</span>(<span class="hljs-params">int pos</span>) &#123;<br>        <span class="hljs-title class_">HeapNode</span>* node = heap[pos];<br>        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>            int smallest = pos;<br>            int left = <span class="hljs-number">2</span> * pos + <span class="hljs-number">1</span>;<br>            int right = <span class="hljs-number">2</span> * pos + <span class="hljs-number">2</span>;<br>            <br>            <span class="hljs-keyword">if</span> (left &lt; size &amp;&amp; heap[left]-&gt;key &lt; heap[smallest]-&gt;key)<br>                smallest = left;<br>            <span class="hljs-keyword">if</span> (right &lt; size &amp;&amp; heap[right]-&gt;key &lt; heap[smallest]-&gt;key)<br>                smallest = right;<br>                <br>            <span class="hljs-keyword">if</span> (smallest == pos) <span class="hljs-keyword">break</span>;<br>            <br>            heap[pos] = heap[smallest];<br>            heap[pos]-&gt;pos = pos;<br>            pos = smallest;<br>        &#125;<br>        heap[pos] = node;<br>        node-&gt;pos = pos;<br>    &#125;<br>    <br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">BinaryHeap</span>(int capacity) &#123;<br>        nodes.<span class="hljs-title function_">resize</span>(capacity);<br>        heap.<span class="hljs-title function_">resize</span>(capacity);<br>        size = <span class="hljs-number">0</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">int id, int key</span>) &#123;<br>        nodes[id] = <span class="hljs-title class_">HeapNode</span>(id, key, size);<br>        heap[size] = &amp;nodes[id];<br>        <span class="hljs-title function_">siftUp</span>(size++);<br>    &#125;<br>    <br>    int <span class="hljs-title function_">smallestID</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">if</span> (size == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>        int id = heap[<span class="hljs-number">0</span>]-&gt;id;<br>        heap[<span class="hljs-number">0</span>] = heap[--size];<br>        <span class="hljs-keyword">if</span> (size &gt; <span class="hljs-number">0</span>) &#123;<br>            heap[<span class="hljs-number">0</span>]-&gt;pos = <span class="hljs-number">0</span>;<br>            <span class="hljs-title function_">siftDown</span>(<span class="hljs-number">0</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> id;<br>    &#125;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">decreaseKey</span>(<span class="hljs-params">int id, int newKey</span>) &#123;<br>        int pos = nodes[id].<span class="hljs-property">pos</span>;<br>        <span class="hljs-keyword">if</span> (pos &gt;= <span class="hljs-number">0</span> &amp;&amp; newKey &lt; nodes[id].<span class="hljs-property">key</span>) &#123;<br>            nodes[id].<span class="hljs-property">key</span> = newKey;<br>            <span class="hljs-title function_">siftUp</span>(pos);<br>        &#125;<br>    &#125;<br>    <br>    bool <span class="hljs-title function_">isEmpty</span>() <span class="hljs-keyword">const</span> &#123;<br>        <span class="hljs-keyword">return</span> size == <span class="hljs-number">0</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MinCostFlow</span> &#123;<br><span class="hljs-attr">private</span>:<br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">EdgeInfo</span>*&gt;&gt; info;  <span class="hljs-comment">// 邻接矩阵</span><br>    <span class="hljs-attr">std</span>::vector&lt;int&gt; dist;  <span class="hljs-comment">// 距离数组</span><br>    int sourceIndex;  <span class="hljs-comment">// 源点</span><br>    int sinkIndex;   <span class="hljs-comment">// 汇点</span><br>    int vertices;    <span class="hljs-comment">// 顶点数</span><br><br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">MinCostFlow</span>(int n, int source, int sink) <br>        : <span class="hljs-title function_">vertices</span>(n), <span class="hljs-title function_">sourceIndex</span>(source), <span class="hljs-title function_">sinkIndex</span>(<span class="hljs-params">sink</span>) &#123;<br>        info.<span class="hljs-title function_">resize</span>(n, <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">EdgeInfo</span>*&gt;(n, nullptr));<br>        dist.<span class="hljs-title function_">resize</span>(n);<br>    &#125;<br>    <br>    bool <span class="hljs-title function_">findAugmentingPath</span>(<span class="hljs-params">std::vector&lt;VertexInfo&gt;&amp; vertices</span>) &#123;<br>        <span class="hljs-comment">// 重置顶点信息</span><br>        <span class="hljs-attr">std</span>::<span class="hljs-title function_">fill</span>(vertices.<span class="hljs-title function_">begin</span>(), vertices.<span class="hljs-title function_">end</span>(), <span class="hljs-title class_">VertexInfo</span>());<br>        <br>        <span class="hljs-comment">// 初始化二叉堆和访问数组</span><br>        <span class="hljs-title class_">BinaryHeap</span> <span class="hljs-title function_">pq</span>(vertices.<span class="hljs-title function_">size</span>());<br>        <span class="hljs-attr">std</span>::vector&lt;bool&gt; <span class="hljs-title function_">inqueue</span>(vertices.<span class="hljs-title function_">size</span>(), <span class="hljs-literal">false</span>);<br>        <br>        <span class="hljs-comment">// 初始化距离数组</span><br>        <span class="hljs-keyword">for</span> (int u = <span class="hljs-number">0</span>; u &lt; vertices.<span class="hljs-title function_">size</span>(); u++) &#123;<br>            <span class="hljs-keyword">if</span> (u == sourceIndex) &#123;<br>                dist[u] = <span class="hljs-number">0</span>;<br>                pq.<span class="hljs-title function_">insert</span>(sourceIndex, <span class="hljs-number">0</span>);<br>                inqueue[u] = <span class="hljs-literal">true</span>;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                dist[u] = <span class="hljs-attr">std</span>::numeric_limits&lt;int&gt;::<span class="hljs-title function_">max</span>();<br>            &#125;<br>        &#125;<br>        <br>        <span class="hljs-keyword">while</span> (!pq.<span class="hljs-title function_">isEmpty</span>()) &#123;<br>            int u = pq.<span class="hljs-title function_">smallestID</span>();<br>            inqueue[u] = <span class="hljs-literal">false</span>;<br>            <br>            <span class="hljs-comment">// 找到汇点，结束搜索</span><br>            <span class="hljs-keyword">if</span> (u == sinkIndex) <span class="hljs-keyword">break</span>;<br>            <br>            <span class="hljs-keyword">for</span> (int v = <span class="hljs-number">0</span>; v &lt; vertices.<span class="hljs-title function_">size</span>(); v++) &#123;<br>                <span class="hljs-keyword">if</span> (v == sourceIndex || v == u) <span class="hljs-keyword">continue</span>;<br>                <br>                <span class="hljs-comment">// 处理前向边</span><br>                <span class="hljs-title class_">EdgeInfo</span>* cei = info[u][v];<br>                <span class="hljs-keyword">if</span> (cei != nullptr &amp;&amp; cei-&gt;flow &lt; cei-&gt;capacity) &#123;<br>                    int newDist = dist[u] + cei-&gt;cost;<br>                    <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> &lt;= newDist &amp;&amp; newDist &lt; dist[v]) &#123;<br>                        vertices[v] = <span class="hljs-title class_">VertexInfo</span>(u, <span class="hljs-title class_">Search</span>::<span class="hljs-variable constant_">FORWARD</span>);<br>                        dist[v] = newDist;<br>                        <span class="hljs-keyword">if</span> (inqueue[v]) &#123;<br>                            pq.<span class="hljs-title function_">decreaseKey</span>(v, newDist);<br>                        &#125; <span class="hljs-keyword">else</span> &#123;<br>                            pq.<span class="hljs-title function_">insert</span>(v, newDist);<br>                            inqueue[v] = <span class="hljs-literal">true</span>;<br>                        &#125;<br>                    &#125;<br>                &#125;<br>                <br>                <span class="hljs-comment">// 处理后向边</span><br>                cei = info[v][u];<br>                <span class="hljs-keyword">if</span> (cei != nullptr &amp;&amp; cei-&gt;flow &gt; <span class="hljs-number">0</span>) &#123;<br>                    int newDist = dist[u] - cei-&gt;cost;<br>                    <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> &lt;= newDist &amp;&amp; newDist &lt; dist[v]) &#123;<br>                        vertices[v] = <span class="hljs-title class_">VertexInfo</span>(u, <span class="hljs-title class_">Search</span>::<span class="hljs-variable constant_">BACKWARD</span>);<br>                        dist[v] = newDist;<br>                        <span class="hljs-keyword">if</span> (inqueue[v]) &#123;<br>                            pq.<span class="hljs-title function_">decreaseKey</span>(v, newDist);<br>                        &#125; <span class="hljs-keyword">else</span> &#123;<br>                            pq.<span class="hljs-title function_">insert</span>(v, newDist);<br>                            inqueue[v] = <span class="hljs-literal">true</span>;<br>                        &#125;<br>                    &#125;<br>                &#125;<br>            &#125;<br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> dist[sinkIndex] != <span class="hljs-attr">std</span>::numeric_limits&lt;int&gt;::<span class="hljs-title function_">max</span>();<br>    &#125;<br>    <br>    <span class="hljs-comment">// 添加边的方法</span><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">addEdge</span>(<span class="hljs-params">int <span class="hljs-keyword">from</span>, int to, int capacity, int cost</span>) &#123;<br>        info[<span class="hljs-keyword">from</span>][to] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">0</span>, capacity, cost);<br>    &#125;<br>&#125;;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 创建一个示例网络</span><br>    int n = <span class="hljs-number">4</span>;  <span class="hljs-comment">// 顶点数</span><br>    int source = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 源点</span><br>    int sink = <span class="hljs-number">3</span>;    <span class="hljs-comment">// 汇点</span><br>    <br>    <span class="hljs-title class_">MinCostFlow</span> <span class="hljs-title function_">network</span>(n, source, sink);<br>    <br>    <span class="hljs-comment">// 添加边 (示例)</span><br>    network.<span class="hljs-title function_">addEdge</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>);  <span class="hljs-comment">// (from, to, capacity, cost)</span><br>    network.<span class="hljs-title function_">addEdge</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>);<br>    network.<span class="hljs-title function_">addEdge</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>);<br>    network.<span class="hljs-title function_">addEdge</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>);<br>    network.<span class="hljs-title function_">addEdge</span>(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>);<br>    <br>    <span class="hljs-comment">// 寻找增广路径</span><br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">VertexInfo</span>&gt; <span class="hljs-title function_">vertices</span>(n);<br>    bool found = network.<span class="hljs-title function_">findAugmentingPath</span>(vertices);<br>    <br>    <span class="hljs-keyword">if</span> (found) &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;找到增广路径！&quot;</span> &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>        <span class="hljs-comment">// 打印路径</span><br>        int current = sink;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;路径：&quot;</span>;<br>        <span class="hljs-keyword">while</span> (current != source) &#123;<br>            <span class="hljs-attr">std</span>::cout &lt;&lt; current &lt;&lt; <span class="hljs-string">&quot; &lt;- &quot;</span>;<br>            current = vertices[current].<span class="hljs-property">predecessor</span>;<br>        &#125;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; source &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;未找到增广路径&quot;</span> &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>使用这样的策略来寻找最小开销的增广路，我们可以解决剩余问题。在图8-7中我们使用一个小例子来比较一个最大流计算和最小开销流计算，从中可以看到这个最小开销搜索策略的高效了。图的底部是每种方法找到的最大流。<br>
+在这个例子中，你是负责两家工厂的船务经理，这两家工厂一家在芝加哥（v1），另一家在华盛顿特区（v2），每家工厂每天能够生产300件工具。你必须保证在休斯敦（v3）和波士顿（v4）的消费者每天能够有300件工具供应。你有一些选择策略，如下图所示。例如，在华盛顿特区和休斯敦之间每天运输280件工具，每件工具花费4美元，但是如果你从华盛顿特区运到波士顿，开销会增至6美元（虽然在这条航路每天可以运送350件工具）。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9C%A8%E5%A2%9E%E5%B9%BF%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%B7%B1%E5%85%A5%E6%80%9D%E8%80%83%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C29e3876252c147809f95c20ac603578c.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+我们不清楚Ford-Fulkerson算法是否可以用来解决这个问题，但是我们能够构造一个图G，有一个源点s0，连接两个工厂顶点（v1和v2）以及有一个新的汇点t5，连接两个消费顶点（v3和v4）。在上图的左边我们使用Edmonds-Karp来证明我们能够满足消费者的所有需求，但是每天的运输费用是3600美元。为了节省空间，源点和汇点都被忽略了。在Ford-Fulkerson的每次迭代中，增广路的影响（当一次迭代更新了边的流，流的值标记为灰色）显而易见。<br>
+我们能够得到最小开销吗？在上图的右边，我们给出了使用ShortestPathArray作为搜索策略的Ford-Fulkerson算法执行过程。我们可以看到第一条增广路的寻找过程是如何利用最低开销的航运率。同样ShortestPathArray使用了开销最高昂的路径，即从芝加哥（v1）到休斯敦（v3）的路，因为没有其他的路可以满足用户的需求，事实上，如果这种情况发生，我们将会看到增广路减少了从华盛顿特区（v2）和到休斯敦（v3）、波士顿（v4）之间的流。</p>
+<h1>二、最小开销流</h1>
+<p>解决最小开销流问题，我们仅仅需要构造一个流网络图，并且保证满足之前讨论过的那些限制条件：容量限制、流量守恒以及反对称。而且还要保证如下两个条件。</p>
+<ul>
+<li>供应满足<br>
+对每个源点$s_i∈S$，所有边$(s_i,v)∈E$的$f(s_i,v)$之和（流出$s_i$的流）减去所有边$(u,s_i)∈E$的$f(u,s_i)$之和（流入$s_i$的流）必须小于等于$sup(s_i)$，也就是说，每个源点供应的商品的上限是$sup(s_i)$。</li>
+<li>需求满足<br>
+对于每个汇点$t_j∈T$，所有边$(u,t_j)∈E$的$f(u,t_j)$之和（流入$t_j$的流）减去所有边$(t_j,v)∈E$的$f(t_j,v)$之和（流出$t_j$的流）必须小于等于$dem(t_j)$。也就是说，每个汇点需要的商品上限是$dem(t_j)$。</li>
+</ul>
+<p>为了简化算法的实现，我们将会限制流网络只有一个源点和一个汇点。通过向现存的多源多汇点的流网络图添加两个新顶点，这种流网络可以轻易得到。首先，添加一个新的顶点（s0）成为流网络的源点，然后对每个源点$s_i∈S$，添加一条容量$c(s_0,s_i)=sup(s_i)$以及开销$d(s_0,s_i)=0$的边$（s_0,s_i）$。然后，添加一个新的顶点$（t_j,t_gt）$成为流网络的汇点，然后对每个源点$t_j∈T$，添加一条容量$c(t_j,t_gt)=dem(t_j)$以及开销$d(t_0,t_j)=0$的边$（t_j,t_gt）$。你可以看到，添加这些顶点和边不会增加原始流网络的开销，但是也不会减少最后计算出的流。<br>
+供应$sup(s_i)$，需求$dem(t_j)$以及容量$c(u,v)$都大于0。每条边的航运开销$d(u,v)$可能大于等于0。计算出结果之后，所有的$f(u,v)$都会大于等于0。<br>
+我们现在准备来解决剩下的流网络问题。对于每个问题，我们都会描述如何归约成最小开销流问题。</p>
+<h1>三、转运问题</h1>
+<p>有m个供应站$s_i$，每个供应站能够生产$sup(s_i)$个单位的商品。有n个需求站$t_j$，每个需求站需要$dem(t_j)$个单位的商品。而且还有w个仓库$w_k$，每个仓库能够接收和转运最大为$max_k$个单位的商品，转运的费用为每个单位$wp_k$。每一个供应站$s_i$到需求站$t_j$的单位开销$d(i,j)$是固定的，从供应站$s_i$运送到仓库$w_k$的开销为每单位$t_s(i,k)$，然后从仓库$w_k$转运到需求站$t_j$的开销为$t_s(k,j)$。我们的目标是决定了从供应站$s_i$到需求站$t_j$的流$f(i,j)$之后，最小化总开销，可以定义为：</p>
+<ul>
+<li>$总开销（TC）=总运输开销（TSC）+总转运开销（TTC）$<br>
+$\begin{aligned}&amp;TSC=\sum_{i}\sum_{j}d(i,j)^{<em>}f(i,j)\&amp;TTC=\sum_{i}\sum_{k}ts(i,k)^{</em>}f(i,k)+\sum_{j}\sum_{k}ts(j,k)^{*}f(j,k)\end{aligned}$</li>
+</ul>
+<p>目标是寻找到所有的f(i,j)≥0，确保TC在满足供应和需求限制之后最小。最后，通过一个仓库的网络流的单位为0，确保没有添加或者损失任何的单位。sup(si)和dem(ti)必须大于0。运输的开销d(i,j)、ts(i,k)和ts(k,j)必须大于等0。</p>
+<p>我们将转运问题转换成最小开销流问题（如下图所示），构造了这样一个图G=(V,E)：</p>
+<ul>
+<li>V共有$n+m+2<em>w+2$个顶点<br>
+每个供应站$s_i$被映射成一个顶点i，每个仓库$w_k$映射成两个顶点，$m+2</em>k-1和m+2<em>k$。每个需求站tj映射成顶点$1+m+2</em>w+j$。然后创建一个新的源点src（标记为0）和新的汇点$t_gt$（标记为$n+m+2*w+1$）。</li>
+<li>E共有$(w+1)<em>(m+n)+m</em>n+w$条边<br>
+在转运问题中构建边的过程可以在代码库中的Transshipment类找到。</li>
+</ul>
+<p>如果对应的最小开销流问题能够得到解，那么转运问题也能够得到解，所有的$f(u,v)＞0$的边$（u,v）∈E$构成了结果集合。这些边的$f(u,v)*d(u,v)$之和是结果集合的总开销。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9C%A8%E5%A2%9E%E5%B9%BF%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%B7%B1%E5%85%A5%E6%80%9D%E8%80%83%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5Ca32cf0ad5b55468b954d18a9c1d7cf18.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1>四、运输问题</h1>
+<p>运输问题比转运问题要简单得多，因为没有中继仓库节点。有m个供应站$s_i$，每个供应站能够生产sup(si)个单位的商品。有n个需求站$t_j$，每个需求站需要$dem(t_j)$个单位的商品。对于连接供应站si到需求站tj的边（u,v）来说，其单位开销d(i,j)是固定的。我们的目标是决定了从供应站$s_i$到需求站$t_j$的流f(i,j)之后，最小化总开销。可以定义为：<br>
+总运输开销$(TSC)=\sum_{\mathrm{i}}\sum_{\mathrm{j}}d(i,j)^{*}f(i,j)$<br>
+解必须满足不大于每个需求站tj的需求和每个供应站si的供应能力。<br>
+将运输问题转换成没有中继仓库节点的转运问题即可解决。</p>
+<h1>五、任务分配问题</h1>
+<p>任务分配问题是转运问题的一个变种，有着更多的限制条件：每个供应节点只能供应一个单位，需求节点也只需要一个单位。<br>
+将任务分配问题转换成转运问题即可解决，只是加上了这样的限制条件：每个供应节点只能供应一个单位，需求节点也只需要一个单位。</p>
+<h1>六、线性编程</h1>
+<p>本专题描述的各种问题都可以用线性编程解决，如果能够在服从各种限制条件的情况下，优化好线性目标函数，那么这种解决方案将会非常高效和实用。<br>
+我们来看看实践中线性编程的表现吧，我们将图8-7的转运问题转换成一系列的线性等式，然后用线性编程来解决。我们使用了一个通用商业数学软件包Maple（<a target="_blank" rel="noopener" href="http://www.maplesoft.com">http://www.maplesoft.com</a>）来执行这些计算。回忆一下，这个目标是在最小化开销的同时最大化网络上的流。我们用变量来表示每条边上的流，变量e13表示f(1,3）。我们需要最小化开销函数，这个函数是在每条边上的运输开销的总和。开销等式的限制条件和之前描述的网络流问题的限制条件一样。</p>
+<ul>
+<li>流量守恒<br>
+从源点发出的流总和必须等于其供应量。汇入到汇点的流的总和必须等于其需求。</li>
+<li>容量限制<br>
+一条边的流f(i,j)必须大于等于0。同样f(i,j)≤c(i,j)。</li>
+</ul>
+<p>Maple计算的结果是{e13=100，e24=100，e23=200，e14=200}，恰好等于之前计算出来的最小总开销（见下例）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title function_">with</span>(simplex);<br><span class="hljs-title class_">Constraints</span> := [<br>    # 每个顶点的单位限制<br>    e13+e14 = <span class="hljs-number">300</span>, # 芝加哥<br>    e23+e24 = <span class="hljs-number">300</span>, # 华盛顿<br>    e13+e23 = <span class="hljs-number">300</span>, # 休斯敦<br>    e14+e24 = <span class="hljs-number">300</span>, # 波士顿<br>    # 每条边上的最大流<br>    <span class="hljs-number">0</span> &lt;= e13, e13 &lt;= <span class="hljs-number">200</span>,<br>    <span class="hljs-number">0</span> &lt;= e14, e14 &lt;= <span class="hljs-number">200</span>,<br>    <span class="hljs-number">0</span> &lt;= e23, e23 &lt;= <span class="hljs-number">280</span>,<br>    <span class="hljs-number">0</span> &lt;= e24, e24 &lt;= <span class="hljs-number">350</span><br>];<br><span class="hljs-title class_">Cost</span> := <span class="hljs-number">7</span>*e13 + <span class="hljs-number">6</span>*e14 + <span class="hljs-number">4</span>*e23 + <span class="hljs-number">6</span>*e24;<br># 调用线性编程求解<br><span class="hljs-title function_">minimize</span>(<span class="hljs-title class_">Cost</span>, <span class="hljs-title class_">Constraints</span>, <span class="hljs-variable constant_">NONNEGATIVE</span>);<br></code></pre></td></tr></table></figure>
+<p>下面是使用GLPK库的C++代码示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;iostream&gt;<br>#include &lt;glpk.<span class="hljs-property">h</span>&gt;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 创建问题对象</span><br>    glp_prob *lp;<br>    lp = <span class="hljs-title function_">glp_create_prob</span>();<br>    <span class="hljs-title function_">glp_set_prob_name</span>(lp, <span class="hljs-string">&quot;simplex&quot;</span>);<br>    <span class="hljs-title function_">glp_set_obj_dir</span>(lp, <span class="hljs-variable constant_">GLP_MIN</span>);  <span class="hljs-comment">// 目标是最小化</span><br><br>    <span class="hljs-comment">// 添加变量</span><br>    <span class="hljs-title function_">glp_add_cols</span>(lp, <span class="hljs-number">4</span>);<br>    <span class="hljs-title function_">glp_set_col_name</span>(lp, <span class="hljs-number">1</span>, <span class="hljs-string">&quot;e13&quot;</span>);<br>    <span class="hljs-title function_">glp_set_col_bnds</span>(lp, <span class="hljs-number">1</span>, <span class="hljs-variable constant_">GLP_DB</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">200.0</span>);  <span class="hljs-comment">// 0 &lt;= e13 &lt;= 200</span><br>    <span class="hljs-title function_">glp_set_obj_coef</span>(lp, <span class="hljs-number">1</span>, <span class="hljs-number">7.0</span>);  <span class="hljs-comment">// 目标函数系数</span><br><br>    <span class="hljs-title function_">glp_set_col_name</span>(lp, <span class="hljs-number">2</span>, <span class="hljs-string">&quot;e14&quot;</span>);<br>    <span class="hljs-title function_">glp_set_col_bnds</span>(lp, <span class="hljs-number">2</span>, <span class="hljs-variable constant_">GLP_DB</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">200.0</span>);  <span class="hljs-comment">// 0 &lt;= e14 &lt;= 200</span><br>    <span class="hljs-title function_">glp_set_obj_coef</span>(lp, <span class="hljs-number">2</span>, <span class="hljs-number">6.0</span>);  <span class="hljs-comment">// 目标函数系数</span><br><br>    <span class="hljs-title function_">glp_set_col_name</span>(lp, <span class="hljs-number">3</span>, <span class="hljs-string">&quot;e23&quot;</span>);<br>    <span class="hljs-title function_">glp_set_col_bnds</span>(lp, <span class="hljs-number">3</span>, <span class="hljs-variable constant_">GLP_DB</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">280.0</span>);  <span class="hljs-comment">// 0 &lt;= e23 &lt;= 280</span><br>    <span class="hljs-title function_">glp_set_obj_coef</span>(lp, <span class="hljs-number">3</span>, <span class="hljs-number">4.0</span>);  <span class="hljs-comment">// 目标函数系数</span><br><br>    <span class="hljs-title function_">glp_set_col_name</span>(lp, <span class="hljs-number">4</span>, <span class="hljs-string">&quot;e24&quot;</span>);<br>    <span class="hljs-title function_">glp_set_col_bnds</span>(lp, <span class="hljs-number">4</span>, <span class="hljs-variable constant_">GLP_DB</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">350.0</span>);  <span class="hljs-comment">// 0 &lt;= e24 &lt;= 350</span><br>    <span class="hljs-title function_">glp_set_obj_coef</span>(lp, <span class="hljs-number">4</span>, <span class="hljs-number">6.0</span>);  <span class="hljs-comment">// 目标函数系数</span><br><br>    <span class="hljs-comment">// 添加约束</span><br>    <span class="hljs-title function_">glp_add_rows</span>(lp, <span class="hljs-number">4</span>);<br><br>    <span class="hljs-comment">// 约束1: e13 + e14 = 300</span><br>    <span class="hljs-title function_">glp_set_row_name</span>(lp, <span class="hljs-number">1</span>, <span class="hljs-string">&quot;Chicago&quot;</span>);<br>    <span class="hljs-title function_">glp_set_row_bnds</span>(lp, <span class="hljs-number">1</span>, <span class="hljs-variable constant_">GLP_FX</span>, <span class="hljs-number">300.0</span>, <span class="hljs-number">300.0</span>);<br><br>    <span class="hljs-comment">// 约束2: e23 + e24 = 300</span><br>    <span class="hljs-title function_">glp_set_row_name</span>(lp, <span class="hljs-number">2</span>, <span class="hljs-string">&quot;Washington&quot;</span>);<br>    <span class="hljs-title function_">glp_set_row_bnds</span>(lp, <span class="hljs-number">2</span>, <span class="hljs-variable constant_">GLP_FX</span>, <span class="hljs-number">300.0</span>, <span class="hljs-number">300.0</span>);<br><br>    <span class="hljs-comment">// 约束3: e13 + e23 = 300</span><br>    <span class="hljs-title function_">glp_set_row_name</span>(lp, <span class="hljs-number">3</span>, <span class="hljs-string">&quot;Houston&quot;</span>);<br>    <span class="hljs-title function_">glp_set_row_bnds</span>(lp, <span class="hljs-number">3</span>, <span class="hljs-variable constant_">GLP_FX</span>, <span class="hljs-number">300.0</span>, <span class="hljs-number">300.0</span>);<br><br>    <span class="hljs-comment">// 约束4: e14 + e24 = 300</span><br>    <span class="hljs-title function_">glp_set_row_name</span>(lp, <span class="hljs-number">4</span>, <span class="hljs-string">&quot;Boston&quot;</span>);<br>    <span class="hljs-title function_">glp_set_row_bnds</span>(lp, <span class="hljs-number">4</span>, <span class="hljs-variable constant_">GLP_FX</span>, <span class="hljs-number">300.0</span>, <span class="hljs-number">300.0</span>);<br><br>    <span class="hljs-comment">// 设置约束矩阵</span><br>    int ia[<span class="hljs-number">1</span>+<span class="hljs-number">1000</span>], ja[<span class="hljs-number">1</span>+<span class="hljs-number">1000</span>];<br>    double ar[<span class="hljs-number">1</span>+<span class="hljs-number">1000</span>];<br>    int idx = <span class="hljs-number">1</span>;<br><br>    <span class="hljs-comment">// 约束1: e13 + e14 = 300</span><br>    ia[idx] = <span class="hljs-number">1</span>, ja[idx] = <span class="hljs-number">1</span>, ar[idx] = <span class="hljs-number">1.0</span>; idx++;  <span class="hljs-comment">// e13</span><br>    ia[idx] = <span class="hljs-number">1</span>, ja[idx] = <span class="hljs-number">2</span>, ar[idx] = <span class="hljs-number">1.0</span>; idx++;  <span class="hljs-comment">// e14</span><br><br>    <span class="hljs-comment">// 约束2: e23 + e24 = 300</span><br>    ia[idx] = <span class="hljs-number">2</span>, ja[idx] = <span class="hljs-number">3</span>, ar[idx] = <span class="hljs-number">1.0</span>; idx++;  <span class="hljs-comment">// e23</span><br>    ia[idx] = <span class="hljs-number">2</span>, ja[idx] = <span class="hljs-number">4</span>, ar[idx] = <span class="hljs-number">1.0</span>; idx++;  <span class="hljs-comment">// e24</span><br><br>    <span class="hljs-comment">// 约束3: e13 + e23 = 300</span><br>    ia[idx] = <span class="hljs-number">3</span>, ja[idx] = <span class="hljs-number">1</span>, ar[idx] = <span class="hljs-number">1.0</span>; idx++;  <span class="hljs-comment">// e13</span><br>    ia[idx] = <span class="hljs-number">3</span>, ja[idx] = <span class="hljs-number">3</span>, ar[idx] = <span class="hljs-number">1.0</span>; idx++;  <span class="hljs-comment">// e23</span><br><br>    <span class="hljs-comment">// 约束4: e14 + e24 = 300</span><br>    ia[idx] = <span class="hljs-number">4</span>, ja[idx] = <span class="hljs-number">2</span>, ar[idx] = <span class="hljs-number">1.0</span>; idx++;  <span class="hljs-comment">// e14</span><br>    ia[idx] = <span class="hljs-number">4</span>, ja[idx] = <span class="hljs-number">4</span>, ar[idx] = <span class="hljs-number">1.0</span>; idx++;  <span class="hljs-comment">// e24</span><br><br>    <span class="hljs-title function_">glp_load_matrix</span>(lp, idx-<span class="hljs-number">1</span>, ia, ja, ar);<br><br>    <span class="hljs-comment">// 求解问题</span><br>    <span class="hljs-title function_">glp_simplex</span>(lp, <span class="hljs-variable constant_">NULL</span>);<br><br>    <span class="hljs-comment">// 输出结果</span><br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;Optimal cost: &quot;</span> &lt;&lt; <span class="hljs-title function_">glp_get_obj_val</span>(lp) &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;e13 = &quot;</span> &lt;&lt; <span class="hljs-title function_">glp_get_col_prim</span>(lp, <span class="hljs-number">1</span>) &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;e14 = &quot;</span> &lt;&lt; <span class="hljs-title function_">glp_get_col_prim</span>(lp, <span class="hljs-number">2</span>) &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;e23 = &quot;</span> &lt;&lt; <span class="hljs-title function_">glp_get_col_prim</span>(lp, <span class="hljs-number">3</span>) &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;e24 = &quot;</span> &lt;&lt; <span class="hljs-title function_">glp_get_col_prim</span>(lp, <span class="hljs-number">4</span>) &lt;&lt; <span class="hljs-attr">std</span>::endl;<br><br>    <span class="hljs-comment">// 释放资源</span><br>    <span class="hljs-title function_">glp_delete_prob</span>(lp);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>七、引用及参考文献</h1>
+<p>1.《算法设计手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析：你真的理解网络流算法吗——在增广路上的深入思考（代码详解+万字长文）</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析：你真的理解网络流算法吗——在增广路上的深入思考（代码详解+万字长文）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：你真的理解查找算法吗——顺序查找（代码详解）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解查找算法吗——顺序查找（代码详解）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)/" title="数据结构与算法分析：你真的理解网络流算法吗——最大流算法(代码详解+万字长文)">
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解网络流算法吗——最大流算法(代码详解+万字长文)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

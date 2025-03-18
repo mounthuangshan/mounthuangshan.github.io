@@ -1,0 +1,692 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="作者在学习计算机组成原理时了解到了一款名为图灵完备的游戏，这是一款学习处理器架构的游戏，在游戏中你需要从门电路开始，最终搭建出属于自己的计算机。由于学习计算机组成原理的最后目的就是想让我们学会如何搭建一个CPU，因此这款游戏可以作为想要构建属于自己的CPU的前置练习，来使我们深入了解计算机组成原理。在网上该游戏的攻略不完整且讲解不全面，官网的教程还都在youtube上，所以作者决定开一个专栏同时加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E6%94%BB%E7%95%A5%EF%BC%9A%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E6%90%AD%E5%BB%BA%EF%BC%88%E9%99%84%E5%B8%A6%E6%B8%B8%E6%88%8F%E5%8E%8B%E7%BC%A9%E5%8C%85%EF%BC%89%20(1)/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="作者在学习计算机组成原理时了解到了一款名为图灵完备的游戏，这是一款学习处理器架构的游戏，在游戏中你需要从门电路开始，最终搭建出属于自己的计算机。由于学习计算机组成原理的最后目的就是想让我们学会如何搭建一个CPU，因此这款游戏可以作为想要构建属于自己的CPU的前置练习，来使我们深入了解计算机组成原理。在网上该游戏的攻略不完整且讲解不全面，官网的教程还都在youtube上，所以作者决定开一个专栏同时加">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.851Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1) - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          75 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>作者在学习计算机组成原理时了解到了一款名为图灵完备的游戏，这是一款学习处理器架构的游戏，在游戏中你需要从门电路开始，最终搭建出属于自己的计算机。由于学习计算机组成原理的最后目的就是想让我们学会如何搭建一个CPU，因此这款游戏可以作为想要构建属于自己的CPU的前置练习，来使我们深入了解计算机组成原理。在网上该游戏的攻略不完整且讲解不全面，官网的教程还都在youtube上，所以作者决定开一个专栏同时加上自身的理解来详细的解释这款游戏的解题思路。专栏共分为八篇文章，这是第一篇文章，解释游戏中的基础逻辑电路搭建。注意，本文假设读者不懂一点电路知识，但需要了解一点点基础的编程知识，一切从零做起。</p>
+<h1>一、前言</h1>
+<p>游戏的背景是你被外星人绑架了，只要你具备造一台电脑的智力水平就可以不被吃掉。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\e74d67d2ee5d4eaf94ca91873e59fe9d.png)<br>
+游戏的开局很简单，只需要把输入与输出相连即可<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\41364ffcfbc741eea434d9ee60331b02.png)</p>
+<h1>二、 与非门</h1>
+<p>在这关我们需要通过改变输入来得到输出，然后将屏幕下方的真值表补充完整，也很简单。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\0b9c6e8ca0404829a959eb198b4c8f4e.png)</p>
+<h1>三、非门</h1>
+<p>通过上一关后，外星人会告诉我们通过与非门就能够搭建出一个完整的计算机。在这关我们需要利用右上角我们已有的与非门根据真值表搭建出非门。对照与非门的真值表，我们可以发现第一列与第四列的输入输出很符合我们的需求，所以直接把输入都接到一个与非门上即可，同样很简单。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\c68ac109d2d647c6806519a24c6eddb7.png)</p>
+<h1>四、与门</h1>
+<p>到这里开始有了一点难度，同样，先观察真值表，与我们现有门的真值表进行比对，我们会发现与门和与非门的真值表有些特殊的关系，没错，它们的真值表是相反的（非门的真值表只有一个输入，暂时不做对比 ），由此我们可以得到一个思路，如何将与非门的真值表做反转处理（即NOT）呢，很简单，直接在与非门后面接上一个非门不就好了，负负得正嘛，与非门串联非门不就把非字消下去了。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\68f901a83e2a49f4aa5cf1d73319a4b5.png)</p>
+<h1>五、或非门</h1>
+<p>这里我们还是先观察真值表，与现有门对比后发现，这或非门的真值表和与门的真值表是对称的关系，由此我们就可以思考，如何在与门的基础上将其真值表反转呢，问题简化一下，发现只需要将第一列与第四列取反即可，因为只有这两列不同。  这时我们想到，在与门中，输入两红输出红（0低电平），输入两绿输出绿（1高电平），如果我们将输入的两红在半路上转换成两绿不就行了，同理把输入的两绿在半路转换成两红。因此只需要在输入分别接上两个非门或者与非门（单输入的情况下与非门等价于非门）即可，我这里选用与非门。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\8daf7b6aa1084dc09b31d389c26452f1.png)</p>
+<h1>七、或门</h1>
+<p>同样先观察真值表，我们发现这个或门的真值表和或非门是相反的关系，和与非门是对称的关系，通过我们上一步总结的经验，相反关系转换只需转换输出，对称关系转换只需转换输入，我们只需要将或非门输出中的非门拆掉即可。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\b97e21927fe34fae99e8035986aeab1b.png)</p>
+<h1>八、高电平</h1>
+<p>通过前面的七关我们发现了一些规律，现在我们将规律总结一下。我们发现，与非门和与门是相反关系，和或门是对称关系；或非门和或门是相反关系，和与门是对称关系；相反关系的转换只需要转换输出；对称关系的转换只需要转换输入。恭喜你，当你得到这四条规律后将它们组合在一起就是著名的德·摩根定律。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\93f1f3096dc04fe9b4f9a857a2917299.png)<br>
+这个词条在通关高电平后才会出现，而你，我的朋友，你提前一步总结出来了，下面就让我们快速通关高电平进入下一关吧。观察真值表发现，这关需要无论输入是什么颜色，最后都要输出绿色，我们可以感觉到，这关有两种种大同小异的解法，一种是在与非门的基础上改进，另一种是在或非门的基础上改进，按照使用最少电路元气件的原则，我们以与非门为例（或非门同理），只要与非门不出现两绿的输入，不就可以一直输出绿了，化简问题，只要与非门的两个输入一直相反，就可以一直输出绿色，因此找到两个相反关系的门不就可以了，显然根据我们刚刚总结的定律，或门和或非门分别连接即可。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\aa7cd242b9334117805502c3ed81d0e2.png)</p>
+<h1>九、第二刻</h1>
+<p>通过上一关我们了解到，原来绿色的叫高电平，那么同理，红色的就是低电平。第二刻这关开始有难度了，我们需要好好理解我们总结的定律才行。通过观察真值表我们发现，这里似乎引入了条件判断，即只有第二个输入为低电平，且第一个输入为高电平时， 才输出绿。既然难度升级了，那么我们的思维也要升级，索性就不通过真值表来看了，直接通过逻辑思维解决。解法如下：如果第二刻输入为低电平，即代表有机会输出为高电平，此时我们就可以去判断第一刻的电平了，否则没有必要去判断第一刻的电平。这里我们引入编程中的true和false的概念，高电平代表true，低电平代表false，将与门作为最终判断的门，只有它的的输入都为true时，输出才会为true。第一刻直接连到与门上即可，因为第一刻输入为true时逻辑上也是true，那第二刻怎么办才能将实际上的false转换为逻辑上的true呢，很简单，通过与非门或者非门即可完成转换。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\52136f1c137445f4aa7d2d8b844fc44a.png)</p>
+<h1>十、异或门</h1>
+<p>上一关我们学会了如何对真值表进行抽象去搭建逻辑电路，抽象的技巧很重要，毕竟计算机就是根据一层一层的抽象搭建起来的。这一关我们来到了异或门 ，游戏开局就告诉了我们，这关有一定难度，不过既然都玩上这个游戏了，说明我们都是喜欢挑战的人类。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\24e099093c5248b2a88c1fd4dc37f097.png)<br>
+还是先观察真值表，我们发现本关是当第一刻与第二刻的输入不同时输出true，否则输出false。根据我们之前的条件判断语句的设计思路，使用与门作为条件判断门，然后开始构思如何才能当两个输入不同时输出true，相同时输出false。根据提示，我们得知可以将一个输出连接到两个输入上，那么这样我们就可以将两个输入关联起来，使得它们的输入都可以影响到对方的输出。我们发现与非门和或门的真值表，当输入不同时都会输出true，而当两个高电平与非门会输出false，或门输出true；两个低电平或门输出true，与非门输出false（德·摩根定律中的对称关系），由此，问题解决，在输入不同时，总有一个门输出为false，输入相同时，总是输出true。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\006d5facdbfb40e38666fb642f305887.png)</p>
+<h1>十一、三路或门</h1>
+<p>上一关其实还有很多种不同的解法，读者可以自行探索，比如如何只用与非门实现异或门（提示，当一个组合门的真值表与现有门的真值表相同时是可以直接用这个真值表代替的，作者称之为化简）。这一关是三路或门，很简单用或门逐级递归即可。（这个递归思想要好好理解）<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\6ef09ecbcfc4449482c76cefe257e378.png)</p>
+<h1>十二、三路与门</h1>
+<p>同上一关解法。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\30b1cbfc12bf4d6a9f86b1b8c6f27d50.png)</p>
+<h1>十三、同或门</h1>
+<p>同或门的真值表与异或门的真值表相反，我们在异或门的最后的判断输出中加上一个非门即可，这里作者用的是异或门的另一种实现方式，感兴趣的读者可以试着看能不能将这个电路化简。<br>
+![在这里插入图片描述](./图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)image\e84e9e2ba05c4938a0b346a1862745e5.png)</p>
+<h1>十四、总结</h1>
+<p>到这，我们的第一部分——基础逻辑电路搭建就完成了，我们获得了所有的基础逻辑电路，靠着这些我们就可以步入下一部分，存储器和算术运算了，下一部分作者打算拆成两部分去分别讲解。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/" class="category-chain-item">计算机系统原理</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)</div>
+      <div>https://mounthuangshan.github.io/计算机系统原理/计算机系统原理/图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/curl%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A%E7%BF%BB%E8%AF%91/" title="curl命令参数解释翻译">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">curl命令参数解释翻译</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6/" title="初探代理软件">
+                        <span class="hidden-mobile">初探代理软件</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

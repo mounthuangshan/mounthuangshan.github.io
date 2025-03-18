@@ -1,0 +1,1354 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、前言 作者的某虚拟专用网络软件只能实现应用层的代理，对于系统级的代理无能为力（比如ping不通），因为没有Tun模式，所以作者想尝试使用具有Tun模式的软件连接到代理服务器从而变相实现Tun模式，但是最后并没有成功实现，曾经实现过，但是现在实现不了（不清楚原因是什么），最多只能实现ping通www.google.com，但是第一个包会丢失，且时灵时不灵，同时curl还是不能直接用，仍然需要指明">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初探代理软件">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、前言 作者的某虚拟专用网络软件只能实现应用层的代理，对于系统级的代理无能为力（比如ping不通），因为没有Tun模式，所以作者想尝试使用具有Tun模式的软件连接到代理服务器从而变相实现Tun模式，但是最后并没有成功实现，曾经实现过，但是现在实现不了（不清楚原因是什么），最多只能实现ping通www.google.com，但是第一个包会丢失，且时灵时不灵，同时curl还是不能直接用，仍然需要指明">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6image%5C1e314a60c7a14e3483076bd85bc44336.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6image%5Cc3f887857b6a4665a1054b64863c9973.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6image%5C91c2dca0343347c4863270bcbc8d2c5b.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6image%5C563e9a889a8a4f8a8096e4af55397504.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.851Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6/%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6image%5C1e314a60c7a14e3483076bd85bc44336.png">
+  
+  
+  
+  <title>初探代理软件 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="初探代理软件"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          89 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">初探代理软件</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、前言</h1>
+<p>作者的某虚拟专用网络软件只能实现应用层的代理，对于系统级的代理无能为力（比如ping不通），因为没有Tun模式，所以作者想尝试使用具有Tun模式的软件连接到代理服务器从而变相实现Tun模式，但是最后并没有成功实现，曾经实现过，但是现在实现不了（不清楚原因是什么），<a target="_blank" rel="noopener" href="http://xn--pingwww-6p3lq99abkg058ay25axezb1h6b.google.com">最多只能实现ping通www.google.com</a>，但是第一个包会丢失，且时灵时不灵，同时curl还是不能直接用，仍然需要指明代理地址才可使用（如curl -x <a target="_blank" rel="noopener" href="http://host">http://host</a>:port address），因此作者推测可能是代理服务器的原因，因为可以连接到代理服务器。虽然没有成功但是好在所有支持socks协议的程序都能使用代理了，并且在探索的过程还是收获了很多经验，因此作者想要记录下来，以备日后查询。<br>
+下面是某虚拟专用网络软件功能实现的文件，可以看出是使用了v2ray，V2Ray 是一个高度灵活和功能丰富的网络代理工具，适用于多种网络环境和需求。它通过支持多协议、多传输方式和高级路由规则，为用户提供了强大的网络代理和隐私保护能力。<br>
+<img src="./%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6image%5C1e314a60c7a14e3483076bd85bc44336.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+V2Ray 的架构由多个模块组成，每个模块负责特定的功能，确保系统的灵活性和可扩展性。</p>
+<ul>
+<li>核心（Core）：负责处理网络流量的转发、加密和解密等基本功能。</li>
+<li>协议支持：V2Ray 支持多种代理协议，如 VMess、VLess、Socks、HTTP、Shadowsocks 等。</li>
+<li>传输层：支持多种传输协议，包括 TCP、mKCP、WebSocket、HTTP/2、QUIC 等，增强传输的稳定性和隐蔽性。</li>
+<li>路由（Routing）：允许用户根据不同的规则将流量导向不同的代理服务器，实现灵活的流量管理。</li>
+<li>插件（Plugin）：通过插件机制，V2Ray 可以扩展更多功能，如动态端口分配、流量伪装等。</li>
+</ul>
+<h2 id="在开始之前需要介绍一下系统代理和-VPN-的区别：">在开始之前需要介绍一下系统代理和 VPN 的区别：</h2>
+<p>系统代理是一种网络配置，允许特定的应用程序通过指定的代理服务器发送和接收网络请求。代理服务器充当客户端和目标服务器之间的中介。当配置了系统代理后，支持代理设置的应用程序（如浏览器）会将其网络请求发送到代理服务器，代理服务器再将请求转发到目标网站或服务，并将响应返回给应用程序。系统代理本身不一定提供加密功能，取决于代理协议（如HTTPS代理可以加密流量，SOCKS5代理通常不加密）。系统代理通常工作在应用层（OSI模型的第七层），即它只代理特定应用程序的网络流量，如Web浏览器、邮件客户端等，并且系统代理仅对支持代理设置的应用程序有效，其他不支持代理的应用程序的流量不会通过代理服务器。系统代理相当于启用了一个 TCP 应用，侦听特定的端口等待应用程序连接使用。应用程序需要通过系统代理访问网络，会首先连接至代理客户端，然后由代理客户端转发网络请求，达到科学上网的目的。<br>
+VPN是一种通过加密隧道将整个设备的网络流量转发到远程服务器的技术，旨在保护数据隐私、绕过地理限制并提高网络安全性。VPN客户端软件在用户设备和VPN服务器之间创建一个加密隧道，所有通过设备的网络流量（包括系统和应用程序级别的流量）都会被加密并转发到VPN服务器，然后再由服务器将流量发送到目标地址。VPN工作在网络层（OSI模型的第三层），即它拦截并转发设备的所有网络流量，无论是应用程序还是系统级别的请求，一旦连接成功，设备上的所有网络流量（包括未配置代理的应用程序）都会通过VPN隧道传输，确保全局保护。VPN使用强大的加密协议（如OpenVPN、IKEv2、WireGuard）对所有传输的数据进行加密，保护数据安全和隐私，即使在公共Wi-Fi网络中，VPN也能防止数据被窃取或篡改。 VPN 则完全工作在 TCP/IP 协议的 IP 层，开启了 VPN 客户端，就相当于给系统添加了全新的网络路由，VPN 接收全部网络数据包，并送至对应的网络地址。虽然都可以科学上网，但实现机理却有着很多区别。<br>
+要理解系统代理和VPN的区别，一个简单的方法是尝试ping外网服务器。由于ping命令使用的是网络层的ICMP报文，它不会经过系统代理。所以，即使代理客户端已设置为系统代理模式，我们仍无法ping通外网服务器。而对于使用VPN的用户来说，他们可以轻松地ping通外网服务器，并且所测时延是真实的。<br>
+但有个疑问：为什么在手机端，开启代理客户端的全局模式后，也能ping通外网服务器呢？这涉及到Tun模式。手机操作系统Android和iOS都支持Tun模式。代理客户端通过这个模式可以接收所有应用的网络请求，从而产生类似VPN的效果。因此，从这个角度看，手机端的系统代理和VPN在实际应用中的区别并不明显。</p>
+<h2 id="Tun模式">Tun模式</h2>
+<p>Tun模式（全称为“TUNnel”模式）是一种网络隧道接口模式，广泛应用于虚拟专用网络（VPN）和其他网络虚拟化技术中。它主要在操作系统的网络层（第三层）工作，通过创建一个虚拟的网络接口，实现数据包的捕获、处理和转发。Tun模式是由操作系统创建一个虚拟的Tun网络接口，所有发送到Tun接口的IP数据包被捕获，并传递给用户空间的应用程序（如VPN客户端），应用程序可以对数据包进行加密、解密、转发等处理，然后通过实际的网络接口发送到目标地址，或接收来自网络的响应数据包并发送回Tun接口。<br>
+许多VPN协议（如OpenVPN）使用Tun模式来创建加密的网络隧道，确保数据在公共网络中的安全传输。通过Tun接口，VPN客户端可以将本地的网络流量通过加密隧道传输到远程服务器；在虚拟化环境中，如虚拟机或容器，Tun模式用于创建独立的网络接口，模拟物理网络设备，实现隔离和管理；开发者和网络管理员可以利用Tun接口捕获、分析和修改网络流量，进行调试和优化。<br>
+这里还要额外的提一下Tap模式，Tap模式是一种网络虚拟接口模式，工作在OSI模型的数据链路层（第二层），处理以太网帧。与Tun模式主要处理IP包不同，Tap模式能够捕获和转发整个以太网帧，适用于需要桥接虚拟网络与物理网络的场景，如虚拟机网络连接。Tap模式常用于虚拟化环境中，通过创建虚拟网卡，使虚拟机能够像物理设备一样参与网络通信。它提供了更深入（delve）的网络控制，允许更灵活的网络配置和管理，因此在复杂网络架构中具有终极（ultimate）的应用价值。Tun模式和Tap模式的最大区别就是Tun模式创建一个虚拟的点对点网络接口，允许操作系统和应用程序通过这个接口发送和接收IP数据包，处理的是IP包，而Tap模式处理的是位于数据链路层（第二层）的以太网帧。</p>
+<h1>二、配置文件解析</h1>
+<p>我们在开头那张图中能看到有三个配置文件，分别是<strong>v2ray-default-config.json</strong>，这是 V2Ray 的默认配置文件，包含了基础且通用的设置，适用于大多数常见的使用场景；<strong>v2ray-no-entertainment.json</strong>，这个配置文件可能是一个精简版的配置，去除了某些“娱乐”相关的功能或优化，具体取决于作者的定义。；<strong>v2ray-pac-config.json</strong>（智能路由配置，适合需要根据访问内容动态选择代理的用户）这个配置文件是为了配合 <strong>PAC（Proxy Auto-Config）</strong> 文件使用，PAC 文件可以根据访问的 URL 自动选择是否通过代理服务器进行连接，下面是每个配置文件的具体内容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//v2ray-default-config.json</span><br>  <span class="hljs-string">&quot;inbounds&quot;</span>: [<br>    &#123;<br>      <span class="hljs-string">&quot;port&quot;</span>: <span class="hljs-number">1080</span>,<br>      <span class="hljs-string">&quot;listen&quot;</span>: <span class="hljs-string">&quot;127.0.0.1&quot;</span>,<br>      <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;socks&quot;</span>,<br>      <span class="hljs-string">&quot;sniffing&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-string">&quot;destOverride&quot;</span>: [<span class="hljs-string">&quot;http&quot;</span>, <span class="hljs-string">&quot;tls&quot;</span>]<br>      &#125;,<br>      <span class="hljs-string">&quot;settings&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;auth&quot;</span>: <span class="hljs-string">&quot;noauth&quot;</span>,<br>        <span class="hljs-string">&quot;udp&quot;</span>: <span class="hljs-literal">false</span><br>      &#125;<br>    &#125;<br>  ],<br>  <span class="hljs-string">&quot;outbounds&quot;</span>: [<br>    &#123;<br>      <span class="hljs-string">&quot;tag&quot;</span>: <span class="hljs-string">&quot;out-t&quot;</span>,<br>      <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;vmess&quot;</span>,<br>      <span class="hljs-string">&quot;settings&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;vnext&quot;</span>: [<br>          &#123;<br>            <span class="hljs-string">&quot;address&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,<br>            <span class="hljs-string">&quot;port&quot;</span>: <span class="hljs-number">443</span>,<br>            <span class="hljs-string">&quot;users&quot;</span>: [<br>              &#123;<br>                <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,<br>                <span class="hljs-string">&quot;alterId&quot;</span>: <span class="hljs-number">0</span><br>              &#125;<br>            ]<br>          &#125;<br>        ]<br>      &#125;,<br>      <span class="hljs-string">&quot;streamSettings&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;network&quot;</span>: <span class="hljs-string">&quot;ws&quot;</span>,<br>        <span class="hljs-string">&quot;security&quot;</span>: <span class="hljs-string">&quot;tls&quot;</span>,<br>        <span class="hljs-string">&quot;wsSettings&quot;</span>: &#123;<br>          <span class="hljs-string">&quot;path&quot;</span>: <span class="hljs-string">&quot;/wes&quot;</span><br>        &#125;<br>      &#125;<br>    &#125;,<br>    &#123;<br>      <span class="hljs-string">&quot;tag&quot;</span>: <span class="hljs-string">&quot;direct&quot;</span>,<br>      <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;freedom&quot;</span>,<br>      <span class="hljs-string">&quot;settings&quot;</span>: &#123;&#125;<br>    &#125;<br>  ],<br>  <span class="hljs-string">&quot;routing&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;rules&quot;</span>: [<br>      &#123;<br>        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;field&quot;</span>,<br>        <span class="hljs-string">&quot;domain&quot;</span>: [ <span class="hljs-string">&quot;desktop2244.tk&quot;</span>, <span class="hljs-string">&quot;desktop223.tk&quot;</span>, <span class="hljs-string">&quot;ghabc.tk&quot;</span> ],<br>        <span class="hljs-string">&quot;outboundTag&quot;</span>: <span class="hljs-string">&quot;direct&quot;</span><br>      &#125;<br>    ]<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//v2ray-no-entertainment.json</span><br>&#123;<br>  <span class="hljs-string">&quot;inbounds&quot;</span>: [<br>    &#123;<br>      <span class="hljs-string">&quot;tag&quot;</span>: <span class="hljs-string">&quot;default&quot;</span>,<br>      <span class="hljs-string">&quot;port&quot;</span>: <span class="hljs-number">1080</span>,<br>      <span class="hljs-string">&quot;listen&quot;</span>: <span class="hljs-string">&quot;127.0.0.1&quot;</span>,<br>      <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;socks&quot;</span>,<br>      <span class="hljs-string">&quot;sniffing&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-string">&quot;destOverride&quot;</span>: [<span class="hljs-string">&quot;http&quot;</span>, <span class="hljs-string">&quot;tls&quot;</span>]<br>      &#125;,<br>      <span class="hljs-string">&quot;settings&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;auth&quot;</span>: <span class="hljs-string">&quot;noauth&quot;</span>,<br>        <span class="hljs-string">&quot;udp&quot;</span>: <span class="hljs-literal">false</span><br>      &#125;<br>    &#125;<br>  ],<br>  <span class="hljs-string">&quot;outbounds&quot;</span>: [<br>    &#123;<br>      <span class="hljs-string">&quot;tag&quot;</span>: <span class="hljs-string">&quot;out-t&quot;</span>,<br>      <span class="hljs-string">&quot;mux&quot;</span>: &#123; <span class="hljs-string">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span> &#125;,<br>      <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;vmess&quot;</span>,<br>      <span class="hljs-string">&quot;settings&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;vnext&quot;</span>: [<br>          &#123;<br>            <span class="hljs-string">&quot;address&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,<br>            <span class="hljs-string">&quot;port&quot;</span>: <span class="hljs-number">443</span>,<br>            <span class="hljs-string">&quot;users&quot;</span>: [<br>              &#123;<br>                <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,<br>                <span class="hljs-string">&quot;alterId&quot;</span>: <span class="hljs-number">0</span><br>              &#125;<br>            ]<br>          &#125;<br>        ]<br>      &#125;,<br>      <span class="hljs-string">&quot;streamSettings&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;network&quot;</span>: <span class="hljs-string">&quot;ws&quot;</span>,<br>        <span class="hljs-string">&quot;security&quot;</span>: <span class="hljs-string">&quot;tls&quot;</span>,<br>        <span class="hljs-string">&quot;wsSettings&quot;</span>: &#123;<br>          <span class="hljs-string">&quot;path&quot;</span>: <span class="hljs-string">&quot;/wes&quot;</span><br>        &#125;<br>      &#125;<br>    &#125;,<br>    &#123;<br>      <span class="hljs-string">&quot;tag&quot;</span>: <span class="hljs-string">&quot;direct&quot;</span>,<br>      <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;freedom&quot;</span>,<br>      <span class="hljs-string">&quot;settings&quot;</span>: &#123;&#125;<br>    &#125;<br>  ],<br>  <span class="hljs-string">&quot;routing&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;rules&quot;</span>: [<br>      &#123;<br>        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;field&quot;</span>,<br>        <span class="hljs-string">&quot;domain&quot;</span>: [<span class="hljs-string">&quot;desktop2244.tk&quot;</span>, <span class="hljs-string">&quot;desktop223.tk&quot;</span>, <span class="hljs-string">&quot;ghabc.tk&quot;</span>],<br>        <span class="hljs-string">&quot;outboundTag&quot;</span>: <span class="hljs-string">&quot;direct&quot;</span><br>      &#125;,<br>      &#123;<br>        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;field&quot;</span>,<br>        <span class="hljs-string">&quot;domain&quot;</span>: [<span class="hljs-string">&quot;geosite:youtube&quot;</span>],<br>        <span class="hljs-string">&quot;outboundTag&quot;</span>: <span class="hljs-string">&quot;direct&quot;</span><br>      &#125;,<br>      &#123;<br>        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;field&quot;</span>,<br>        <span class="hljs-string">&quot;domain&quot;</span>: [<br>          <span class="hljs-string">&quot;domain:ghhub.ga&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:amazon&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:apple&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:aws&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:bbc&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:github&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:gitlab&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:google&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:golang&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:reddit&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:wikimedia&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:twitter&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:category-scholar-!cn&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:category-dev&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:category-cas&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:onedrive&quot;</span>,<br>          <span class="hljs-string">&quot;geosite:z-library&quot;</span><br>        ],<br>        <span class="hljs-string">&quot;outboundTag&quot;</span>: <span class="hljs-string">&quot;out-t&quot;</span><br>      &#125;,<br>      &#123;<br>        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;field&quot;</span>,<br>        <span class="hljs-string">&quot;inboundTag&quot;</span>: [ <span class="hljs-string">&quot;default&quot;</span> ],<br>        <span class="hljs-string">&quot;outboundTag&quot;</span>: <span class="hljs-string">&quot;direct&quot;</span><br>      &#125;<br>    ]<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//v2ray-pac-config.json</span><br>&#123;<br>  <span class="hljs-string">&quot;inbounds&quot;</span>: [<br>    &#123;<br>      <span class="hljs-string">&quot;tag&quot;</span>: <span class="hljs-string">&quot;default&quot;</span>,<br>      <span class="hljs-string">&quot;port&quot;</span>: <span class="hljs-number">1080</span>,<br>      <span class="hljs-string">&quot;listen&quot;</span>: <span class="hljs-string">&quot;127.0.0.1&quot;</span>,<br>      <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;socks&quot;</span>,<br>      <span class="hljs-string">&quot;sniffing&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-string">&quot;destOverride&quot;</span>: [<span class="hljs-string">&quot;http&quot;</span>, <span class="hljs-string">&quot;tls&quot;</span>]<br>      &#125;,<br>      <span class="hljs-string">&quot;settings&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;auth&quot;</span>: <span class="hljs-string">&quot;noauth&quot;</span>,<br>        <span class="hljs-string">&quot;udp&quot;</span>: <span class="hljs-literal">false</span><br>      &#125;<br>    &#125;<br>  ],<br>  <span class="hljs-string">&quot;outbounds&quot;</span>: [<br>    &#123;<br>      <span class="hljs-string">&quot;tag&quot;</span>: <span class="hljs-string">&quot;out-t&quot;</span>,<br>      <span class="hljs-string">&quot;mux&quot;</span>: &#123; <span class="hljs-string">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span> &#125;,<br>      <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;vmess&quot;</span>,<br>      <span class="hljs-string">&quot;settings&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;vnext&quot;</span>: [<br>          &#123;<br>            <span class="hljs-string">&quot;address&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,<br>            <span class="hljs-string">&quot;port&quot;</span>: <span class="hljs-number">443</span>,<br>            <span class="hljs-string">&quot;users&quot;</span>: [<br>              &#123;<br>                <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,<br>                <span class="hljs-string">&quot;alterId&quot;</span>: <span class="hljs-number">0</span><br>              &#125;<br>            ]<br>          &#125;<br>        ]<br>      &#125;,<br>      <span class="hljs-string">&quot;streamSettings&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;network&quot;</span>: <span class="hljs-string">&quot;ws&quot;</span>,<br>        <span class="hljs-string">&quot;security&quot;</span>: <span class="hljs-string">&quot;tls&quot;</span>,<br>        <span class="hljs-string">&quot;wsSettings&quot;</span>: &#123;<br>          <span class="hljs-string">&quot;path&quot;</span>: <span class="hljs-string">&quot;/wes&quot;</span><br>        &#125;<br>      &#125;<br>    &#125;,<br>    &#123;<br>      <span class="hljs-string">&quot;tag&quot;</span>: <span class="hljs-string">&quot;direct&quot;</span>,<br>      <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;freedom&quot;</span>,<br>      <span class="hljs-string">&quot;settings&quot;</span>: &#123;&#125;<br>    &#125;<br>  ],<br>  <span class="hljs-string">&quot;routing&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;rules&quot;</span>: []<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这里我们以第二个配置文件为例分析一下每个配置文件的意思：</p>
+<h2 id="inbounds（入站配置）"><code>inbounds</code>（入站配置）</h2>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-string">&quot;inbounds&quot;</span>: [<br>  &#123;<br>    <span class="hljs-string">&quot;tag&quot;</span>: <span class="hljs-string">&quot;default&quot;</span>,<br>    <span class="hljs-string">&quot;port&quot;</span>: <span class="hljs-number">1080</span>,<br>    <span class="hljs-string">&quot;listen&quot;</span>: <span class="hljs-string">&quot;127.0.0.1&quot;</span>,<br>    <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;socks&quot;</span>,<br>    <span class="hljs-string">&quot;sniffing&quot;</span>: &#123;<br>      <span class="hljs-string">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-string">&quot;destOverride&quot;</span>: [<span class="hljs-string">&quot;http&quot;</span>, <span class="hljs-string">&quot;tls&quot;</span>]<br>    &#125;,<br>    <span class="hljs-string">&quot;settings&quot;</span>: &#123;<br>      <span class="hljs-string">&quot;auth&quot;</span>: <span class="hljs-string">&quot;noauth&quot;</span>,<br>      <span class="hljs-string">&quot;udp&quot;</span>: <span class="hljs-literal">false</span><br>    &#125;<br>  &#125;<br>]<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><strong>tag</strong>: <code>&quot;default&quot;</code></p>
+<ul>
+<li>为该入站配置命名标签，便于在路由规则中引用。</li>
+</ul>
+</li>
+<li>
+<p><strong>port</strong>: <code>1080</code></p>
+<ul>
+<li>V2Ray 监听的本地端口，SOCKS5 的默认端口。</li>
+</ul>
+</li>
+<li>
+<p><strong>listen</strong>: <code>&quot;127.0.0.1&quot;</code></p>
+<ul>
+<li>V2Ray 仅在本地回环地址（localhost）监听，增强安全性。</li>
+</ul>
+</li>
+<li>
+<p><strong>protocol</strong>: <code>&quot;socks&quot;</code></p>
+<ul>
+<li>使用 SOCKS5 协议作为入站协议，常用于代理流量。</li>
+</ul>
+</li>
+<li>
+<p><strong>sniffing</strong>:</p>
+<ul>
+<li><strong>enabled</strong>: <code>true</code>
+<ul>
+<li>启用流量嗅探功能，V2Ray 会尝试识别流量类型，从而选择合适的路由规则。</li>
+</ul>
+</li>
+<li><strong>destOverride</strong>: <code>[&quot;http&quot;, &quot;tls&quot;]</code>
+<ul>
+<li>指定嗅探时覆盖的目标协议，有助于更准确地识别 HTTP 和 TLS 流量。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>settings</strong>:</p>
+<ul>
+<li><strong>auth</strong>: <code>&quot;noauth&quot;</code>
+<ul>
+<li>不需要认证，任何本地应用程序都可以使用该代理。这在本地使用时通常是安全的，但如果需要允许远程访问，建议启用认证。</li>
+</ul>
+</li>
+<li><strong>udp</strong>: <code>false</code>
+<ul>
+<li>禁用 UDP 支持。如果需要处理 UDP 流量（如某些游戏、视频通话等应用），可以将其设置为 <code>true</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="outbounds（出站配置）"><code>outbounds</code>（出站配置）</h2>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-string">&quot;outbounds&quot;</span>: [<br>  &#123;<br>    <span class="hljs-string">&quot;tag&quot;</span>: <span class="hljs-string">&quot;out-t&quot;</span>,<br>    <span class="hljs-string">&quot;mux&quot;</span>: &#123; <span class="hljs-string">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span> &#125;,<br>    <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;vmess&quot;</span>,<br>    <span class="hljs-string">&quot;settings&quot;</span>: &#123;<br>      <span class="hljs-string">&quot;vnext&quot;</span>: [<br>        &#123;<br>          <span class="hljs-string">&quot;address&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,<br>          <span class="hljs-string">&quot;port&quot;</span>: <span class="hljs-number">443</span>,<br>          <span class="hljs-string">&quot;users&quot;</span>: [<br>            &#123;<br>              <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,<br>              <span class="hljs-string">&quot;alterId&quot;</span>: <span class="hljs-number">0</span><br>            &#125;<br>          ]<br>        &#125;<br>      ]<br>    &#125;,<br>    <span class="hljs-string">&quot;streamSettings&quot;</span>: &#123;<br>      <span class="hljs-string">&quot;network&quot;</span>: <span class="hljs-string">&quot;ws&quot;</span>,<br>      <span class="hljs-string">&quot;security&quot;</span>: <span class="hljs-string">&quot;tls&quot;</span>,<br>      <span class="hljs-string">&quot;wsSettings&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;path&quot;</span>: <span class="hljs-string">&quot;/wes&quot;</span><br>      &#125;<br>    &#125;<br>  &#125;,<br>  &#123;<br>    <span class="hljs-string">&quot;tag&quot;</span>: <span class="hljs-string">&quot;direct&quot;</span>,<br>    <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;freedom&quot;</span>,<br>    <span class="hljs-string">&quot;settings&quot;</span>: &#123;&#125;<br>  &#125;<br>]<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><strong>第一个出站（<code>out-t</code>）</strong>：</p>
+<ul>
+<li>
+<p><strong>tag</strong>: <code>&quot;out-t&quot;</code></p>
+<ul>
+<li>为该出站配置命名标签，便于在路由规则中引用。</li>
+</ul>
+</li>
+<li>
+<p><strong>mux</strong>: <code>&#123; &quot;enabled&quot;: true &#125;</code></p>
+<ul>
+<li>启用多路复用（MUX），允许多个逻辑连接复用一个物理连接，减少延迟和资源消耗。</li>
+</ul>
+</li>
+<li>
+<p><strong>protocol</strong>: <code>&quot;vmess&quot;</code></p>
+<ul>
+<li>使用 VMess 协议，这是 V2Ray 的核心协议之一，用于加密和传输数据。</li>
+</ul>
+</li>
+<li>
+<p><strong>settings</strong>:</p>
+<ul>
+<li><strong>vnext</strong>:
+<ul>
+<li><strong>address</strong>: <code>&quot;&quot;</code>
+<ul>
+<li>服务器地址，需填写实际的 V2Ray 服务器域名或 IP。</li>
+</ul>
+</li>
+<li><strong>port</strong>: <code>443</code>
+<ul>
+<li>服务器端口，通常使用 443 以混淆为 HTTPS 流量。</li>
+</ul>
+</li>
+<li><strong>users</strong>:
+<ul>
+<li><strong>id</strong>: <code>&quot;&quot;</code>
+<ul>
+<li>用户的 UUID，需要填写实际的 UUID。</li>
+</ul>
+</li>
+<li><strong>alterId</strong>: <code>0</code>
+<ul>
+<li>替代 ID，建议设置为 <code>0</code> 或根据服务器配置调整（新版 V2Ray 通常不需要 <code>alterId</code>）。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>streamSettings</strong>:</p>
+<ul>
+<li><strong>network</strong>: <code>&quot;ws&quot;</code>
+<ul>
+<li>使用 WebSocket 作为传输协议，适用于绕过一些网络限制。</li>
+</ul>
+</li>
+<li><strong>security</strong>: <code>&quot;tls&quot;</code>
+<ul>
+<li>启用 TLS 加密，确保数据传输的安全性。</li>
+</ul>
+</li>
+<li><strong>wsSettings</strong>:
+<ul>
+<li><strong>path</strong>: <code>&quot;/wes&quot;</code>
+<ul>
+<li>WebSocket 的路径，需要与服务器端配置一致。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>第二个出站（<code>direct</code>）</strong>：</p>
+<ul>
+<li>
+<p><strong>tag</strong>: <code>&quot;direct&quot;</code></p>
+<ul>
+<li>为该出站配置命名标签，通常用于直接连接互联网。</li>
+</ul>
+</li>
+<li>
+<p><strong>protocol</strong>: <code>&quot;freedom&quot;</code></p>
+<ul>
+<li>使用 Freedom 协议，表示直接连接，无需经过代理。</li>
+</ul>
+</li>
+<li>
+<p><strong>settings</strong>: <code>&#123;&#125;</code></p>
+<ul>
+<li>Freedom 协议通常不需要额外设置。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="routing（路由规则）"><code>routing</code>（路由规则）</h2>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-string">&quot;routing&quot;</span>: &#123;<br>  <span class="hljs-string">&quot;rules&quot;</span>: [<br>    &#123;<br>      <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;field&quot;</span>,<br>      <span class="hljs-string">&quot;domain&quot;</span>: [<span class="hljs-string">&quot;desktop2244.tk&quot;</span>, <span class="hljs-string">&quot;desktop223.tk&quot;</span>, <span class="hljs-string">&quot;ghabc.tk&quot;</span>],<br>      <span class="hljs-string">&quot;outboundTag&quot;</span>: <span class="hljs-string">&quot;direct&quot;</span><br>    &#125;,<br>    &#123;<br>      <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;field&quot;</span>,<br>      <span class="hljs-string">&quot;domain&quot;</span>: [<span class="hljs-string">&quot;geosite:youtube&quot;</span>],<br>      <span class="hljs-string">&quot;outboundTag&quot;</span>: <span class="hljs-string">&quot;direct&quot;</span><br>    &#125;,<br>    &#123;<br>      <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;field&quot;</span>,<br>      <span class="hljs-string">&quot;domain&quot;</span>: [<br>        <span class="hljs-string">&quot;domain:ghhub.ga&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:amazon&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:apple&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:aws&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:bbc&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:github&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:gitlab&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:google&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:golang&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:reddit&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:wikimedia&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:twitter&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:category-scholar-!cn&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:category-dev&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:category-cas&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:onedrive&quot;</span>,<br>        <span class="hljs-string">&quot;geosite:z-library&quot;</span><br>      ],<br>      <span class="hljs-string">&quot;outboundTag&quot;</span>: <span class="hljs-string">&quot;out-t&quot;</span><br>    &#125;,<br>    &#123;<br>      <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;field&quot;</span>,<br>      <span class="hljs-string">&quot;inboundTag&quot;</span>: [ <span class="hljs-string">&quot;default&quot;</span> ],<br>      <span class="hljs-string">&quot;outboundTag&quot;</span>: <span class="hljs-string">&quot;direct&quot;</span><br>    &#125;<br>  ]<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><strong>rules</strong>:</p>
+<ul>
+<li>定义了一组路由规则，决定哪些流量通过哪个出站。</li>
+</ul>
+</li>
+<li>
+<p><strong>第一个规则</strong>：</p>
+<ul>
+<li><strong>type</strong>: <code>&quot;field&quot;</code></li>
+<li><strong>domain</strong>: <code>[ &quot;desktop2244.tk&quot;, &quot;desktop223.tk&quot;, &quot;ghabc.tk&quot; ]</code>
+<ul>
+<li>指定匹配的域名列表。</li>
+</ul>
+</li>
+<li><strong>outboundTag</strong>: <code>&quot;direct&quot;</code>
+<ul>
+<li>匹配到上述域名的流量将通过 <code>direct</code> 出站（即直接连接互联网，不经过代理）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>第二个规则</strong>：</p>
+<ul>
+<li><strong>type</strong>: <code>&quot;field&quot;</code></li>
+<li><strong>domain</strong>: <code>[ &quot;geosite:youtube&quot; ]</code>
+<ul>
+<li>使用 <code>geosite</code> 列表中的 <code>youtube</code>，即匹配与 YouTube 相关的所有域名。</li>
+</ul>
+</li>
+<li><strong>outboundTag</strong>: <code>&quot;direct&quot;</code>
+<ul>
+<li>这些流量也将直接连接，不经过代理。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>第三个规则</strong>：</p>
+<ul>
+<li><strong>type</strong>: <code>&quot;field&quot;</code></li>
+<li><strong>domain</strong>: 包含多个 <code>geosite</code> 和特定域名：
+<ul>
+<li><code>&quot;domain:ghhub.ga&quot;</code></li>
+<li><code>&quot;geosite:amazon&quot;</code></li>
+<li><code>&quot;geosite:apple&quot;</code></li>
+<li><code>&quot;geosite:aws&quot;</code></li>
+<li><code>&quot;geosite:bbc&quot;</code></li>
+<li><code>&quot;geosite:github&quot;</code></li>
+<li><code>&quot;geosite:gitlab&quot;</code></li>
+<li><code>&quot;geosite:google&quot;</code></li>
+<li><code>&quot;geosite:golang&quot;</code></li>
+<li><code>&quot;geosite:reddit&quot;</code></li>
+<li><code>&quot;geosite:wikimedia&quot;</code></li>
+<li><code>&quot;geosite:twitter&quot;</code></li>
+<li><code>&quot;geosite:category-scholar-!cn&quot;</code></li>
+<li><code>&quot;geosite:category-dev&quot;</code></li>
+<li><code>&quot;geosite:category-cas&quot;</code></li>
+<li><code>&quot;geosite:onedrive&quot;</code></li>
+<li><code>&quot;geosite:z-library&quot;</code></li>
+</ul>
+</li>
+<li><strong>outboundTag</strong>: <code>&quot;out-t&quot;</code>
+<ul>
+<li>这些流量将通过 <code>out-t</code> 出站（即经过代理服务器）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>第四个规则</strong>：</p>
+<ul>
+<li><strong>type</strong>: <code>&quot;field&quot;</code></li>
+<li><strong>inboundTag</strong>: <code>[ &quot;default&quot; ]</code>
+<ul>
+<li>匹配入站标签为 <code>default</code> 的所有流量。</li>
+</ul>
+</li>
+<li><strong>outboundTag</strong>: <code>&quot;direct&quot;</code>
+<ul>
+<li>将这些流量直接连接，不经过代理。这是一个全局默认规则，用于处理未被前面规则匹配的流量。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>通过对第二个配置文件的解读，我们也能理解第一个配置文件的作用是什么了：<br>
+这段配置的主要作用是：</p>
+<ol>
+<li>
+<p><strong>本地代理服务</strong>：V2Ray 在本地的 1080 端口启动一个 SOCKS5 代理，供本地应用程序使用。</p>
+</li>
+<li>
+<p><strong>代理到远程服务器</strong>：通过 VMess 协议，将大部分流量代理到远程服务器（需填写实际地址和 UUID），使用 WebSocket 和 TLS 增强隐蔽性和安全性。</p>
+</li>
+<li>
+<p><strong>例外规则</strong>：对于访问 <code>desktop2244.tk</code>、<code>desktop223.tk</code> 和 <code>ghabc.tk</code> 这三个域名的流量，直接连接，不经过代理服务器。这通常用于访问本地或信任的网站，以提高访问速度和减少代理负担。</p>
+</li>
+</ol>
+<p>注意第三个配置文件的路由部分为空，这意味着：</p>
+<ul>
+<li>当前 <strong>路由</strong> 部分为空，意味着所有流量将默认通过 <strong>默认出站</strong> 处理。</li>
+<li>根据 <strong>V2Ray</strong> 的默认行为，当没有匹配到任何路由规则时，流量将通过 <strong>第一个出站</strong>（在本例中是 <code>out-t</code>）处理。</li>
+</ul>
+<p>即：</p>
+<ul>
+<li><strong>全部流量经过代理</strong>：由于没有定义任何路由规则，所有通过本地 SOCKS5 代理的流量都会通过 <code>out-t</code>（VMess 代理）转发到远程服务器。</li>
+<li><strong>无法实现流量分流</strong>：无法根据目标域名或 IP 选择性地绕过代理，所有流量都会统一走代理，这可能导致访问本地或信任网站时不必要的延迟或代理负担。</li>
+</ul>
+<p>关于v2ray的配置文件更多的说明可以参考官方文档。</p>
+<h1>三、分析</h1>
+<p><strong>这里我们还需要了解一下代理软件中的入站规则和出站规则，以及windows代理设置中所指定的端口是出站端口还是入站端口。</strong><br>
+入站规则和出站规则是网络防火墙中的两个基本概念，用于控制数据流动的方向和权限。入站规则（Inbound Rules）定义了哪些外部流量可以进入内部网络或设备，通常用于保护系统免受未经授权的访问和攻击。出站规则（Outbound Rules）则控制内部设备向外部网络发送的数据，防止敏感信息泄露或阻止恶意软件与外部服务器通信。我们首先明确客户端指的是你的计算机，服务器指的是你要访问的网站，代理软件也可以说是代理服务器只是帮助你发出请求，然后再将请求返回，你可以把代理服务器理解成你的镜像，然后理解下面的话：代理软件中的入站端口是代理服务器或本地代理软件（如 V2Ray、Shadowsocks 等）监听来自客户端连接的端口，通常这个端口也是代理服务器的入站端口，例如在本地运行 V2Ray 并设置了入站端口为 1080，那么 V2Ray 将监听 localhost:1080 端口，等待来自客户端的连接；而出站端口是代理服务器连接到目标服务器（如互联网网站）的端口，代理服务器通过该端口（模拟你的行为）将客户端的请求转发到目标服务器，并接收响应。<br>
+在 Windows 的代理设置中，我们通常需要填写代理服务器地址（代理服务器的 IP 地址或主机名）以及代理端口（代理服务器监听的端口）。在 Windows 的代理设置中，我们指定的端口主要用于出站流量。这意味着该端口是客户端（我们的 Windows 系统）连接到代理服务器时使用的端口。关键点在于当我们在 Windows 代理设置中指定一个代理服务器地址和端口时，Windows 及其应用程序会将所有符合条件的出站流量发送到该代理服务器的指定端口，如果代理服务器在本地运行（例如，V2Ray 在 localhost:1080 监听），那么在 Windows 代理设置中指定的端口 1080 实际上是代理软件的入站端口，但从 Windows 的角度来看，这是一个出站连接到该端口；如果代理服务器在远程运行，例如位于某个云服务器上，那么指定的端口（如 443）是远程代理服务器的入站端口，而 Windows 系统则通过该端口进行出站连接。<br>
+总结下来就是从客户端视角（Windows）来看指定的端口是代理服务器的入站端口，用于发送windows的出站流量（客户端的出站端口）；从代理服务器视角来看接收来自客户端的流量的端口是入站端口，向外发送流量的端口是出站端口。<br>
+<strong>了解了这些我们还需要了解SOCKS协议是什么：</strong><br>
+SOCKS 是一个中间代理协议，属于应用层的协议，用于在客户端和目标服务器之间转发网络流量。它不关心具体的应用层协议，如 HTTP、FTP 等，只负责转发数据包，主要应用于通过代理服务器转发客户端和服务器之间的网络流量。它能够处理各种类型的流量，包括 TCP 和 UDP，广泛应用于匿名化网络访问、穿越防火墙以及实现安全的网络通信。<br>
+SOCKS协议有4和5两个版本，其中SOCKS4支持 TCP 连接，但不支持认证；SOCKS5在 SOCKS4 的基础上增加了对 UDP、IPv6、认证等的支持，是当前最常用的版本。<br>
+SOCKS 协议的工作流程如下：</p>
+<ul>
+<li>客户端配置——客户端应用程序（如浏览器、下载工具）配置为通过 SOCKS 代理服务器发送请求；</li>
+<li>建立连接——应用程序通过 SOCKS 代理服务器的地址和端口建立连接，SOCKS 代理服务器接收来自客户端的连接请求；</li>
+<li>代理认证（可选）——如果 SOCKS5 代理服务器配置了认证机制，客户端需要提供用户名和密码；</li>
+<li>请求转发——代理服务器接收到客户端的请求后，将其转发到目标服务器；</li>
+<li>传输相应——将目标服务器的响应返回给客户端。</li>
+</ul>
+<p><strong>下面通过一个示例来理解一个HTTPS请求时如何通过SOCKS协议转发的：</strong><br>
+整个过程可以分为以下几个步骤：</p>
+<p><strong>步骤 1：客户端配置 SOCKS 代理</strong></p>
+<ul>
+<li><strong>配置代理设置</strong>：在客户端（如浏览器、应用程序）中配置 SOCKS 代理的地址和端口（通常为 1080）。
+<ul>
+<li><strong>地址</strong>：代理服务器的 IP 地址或主机名（例如 <code>127.0.0.1</code> 本地代理）。</li>
+<li><strong>端口</strong>：代理服务器监听的端口（例如 <code>1080</code>）。</li>
+</ul>
+</li>
+</ul>
+<p><strong>步骤 2：客户端发起 HTTPS 请求</strong></p>
+<ul>
+<li><strong>用户操作</strong>：用户在浏览器中输入一个 HTTPS URL（例如 <code>https://www.example.com</code>）。</li>
+<li><strong>DNS 解析</strong>：浏览器通过 DNS 将域名解析为目标服务器的 IP 地址。</li>
+</ul>
+<p><strong>步骤 3：建立与 SOCKS 代理的连接</strong></p>
+<ul>
+<li><strong>TCP 连接</strong>：客户端（浏览器）与 SOCKS 代理服务器建立一个 TCP 连接，通常通过 SOCKS5 协议在端口 1080 上进行通信。</li>
+</ul>
+<p><strong>步骤 4：SOCKS 协议握手与连接请求</strong></p>
+<ul>
+<li>
+<p><strong>握手阶段（SOCKS5）</strong>：</p>
+<ol>
+<li><strong>客户端发送握手请求</strong>：指定支持的认证方法（如无认证、用户名/密码认证）。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">+----+----------+----------+<br>|VER | NMETHODS | METHODS  |<br>+----+----------+----------+<br>| 5  |    1     |    0     |  (SOCKS5, 1 method, no authentication)<br>+----+----------+----------+<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>代理服务器响应</strong>：选择认证方法。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">+----+--------+<br>|VER | METHOD |<br>+----+--------+<br>| 5  |   0    |  (SOCKS5, no authentication)<br>+----+--------+<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>连接请求</strong>：</p>
+<ol>
+<li>
+<p><strong>客户端发送连接请求</strong>：指定目标服务器的地址和端口（例如 <code>www.example.com:443</code>）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">+----+-----+-------+------+----------+----------+<br>|VER | CMD | RSV   | ATYP | DST.ADDR | DST.PORT |<br>+----+-----+-------+------+----------+----------+<br>| 5  | 1   | 0     | 3    | www.example.com | 443 |<br>+----+-----+-------+------+----------+----------+<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>VER</strong>：协议版本（5）。</li>
+<li><strong>CMD</strong>：命令类型（1 表示 CONNECT）。</li>
+<li><strong>ATYP</strong>：地址类型（3 表示域名）。</li>
+<li><strong>DST.ADDR</strong>：目标地址（域名）。</li>
+<li><strong>DST.PORT</strong>：目标端口（443）。</li>
+</ul>
+</li>
+<li>
+<p><strong>代理服务器响应</strong>：确认连接是否成功。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">+----+-----+-------+------+----------+----------+<br>|VER | REP | RSV   | ATYP | BND.ADDR | BND.PORT |<br>+----+-----+-------+------+----------+----------+<br>| 5  | 0   | 0     | 3    | &lt;server address&gt; | &lt;port&gt; |<br>+----+-----+-------+------+----------+----------+<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>REP</strong>：响应代码（0 表示成功）。</li>
+<li><strong>BND.ADDR</strong> 和 <strong>BND.PORT</strong>：代理服务器为连接分配的地址和端口。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<p><strong>步骤 5：建立加密的 HTTPS 连接</strong></p>
+<ul>
+<li><strong>TLS 握手</strong>：
+<ol>
+<li><strong>客户端发起 TLS 握手</strong>：在 SOCKS 代理与目标服务器之间建立一个加密通道。
+<ul>
+<li>客户端发送 <code>ClientHello</code> 消息，开始 SSL/TLS 握手。</li>
+</ul>
+</li>
+<li><strong>服务器响应</strong>：目标服务器发送 <code>ServerHello</code> 消息，完成握手过程。</li>
+<li><strong>加密通信</strong>：握手完成后，客户端和服务器之间的通信通过加密通道进行，SOCKS 代理仅负责转发加密后的数据。</li>
+</ol>
+</li>
+</ul>
+<p><strong>步骤 6：数据传输</strong></p>
+<ul>
+<li><strong>HTTPS 数据传输</strong>：
+<ul>
+<li>客户端发送加密的 HTTPS 请求数据，通过 SOCKS 代理转发给目标服务器。</li>
+<li>目标服务器处理请求后，将加密的响应数据通过 SOCKS 代理返回给客户端。</li>
+</ul>
+</li>
+</ul>
+<p><strong>详细流程图示</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">客户端（浏览器）<br>     |<br>     | HTTPS 请求<br>     |---------&gt;| SOCKS 代理（1080端口）<br>                 |<br>                 | SOCKS5 握手与连接请求<br>                 |---------&gt;| 目标服务器（443端口）<br>                 |<br>                 |&lt;--------- SOCKS5 响应<br>                 |<br>     |&lt;--------- 加密的 HTTPS 响应<br></code></pre></td></tr></table></figure>
+<p><strong>关键点</strong></p>
+<ol>
+<li>
+<p><strong>代理协议与传输协议的独立性</strong>：</p>
+<ul>
+<li><strong>SOCKS 代理</strong>：与具体的应用层协议（如 HTTPS）无关，可以转发任何类型的流量。</li>
+<li><strong>HTTPS 协议</strong>：独立于 SOCKS，负责数据的加密与传输安全。</li>
+</ul>
+</li>
+<li>
+<p><strong>加密的透明性</strong>：</p>
+<ul>
+<li><strong>加密过程</strong>：TLS 加密在客户端与目标服务器之间进行，SOCKS 代理无法解密这些数据，只负责转发加密后的流量。</li>
+<li><strong>隐私保护</strong>：SOCKS 代理仅看到客户端与代理服务器之间的通信，无法获取具体的 HTTPS 内容。</li>
+</ul>
+</li>
+<li>
+<p><strong>认证与安全性</strong>（以 SOCKS5 为例）：</p>
+<ul>
+<li><strong>认证支持</strong>：SOCKS5 支持多种认证方式，如无认证、用户名/密码认证，增强了代理的安全性。</li>
+<li><strong>传输层安全</strong>：结合 TLS，SOCKS 代理的连接也可以加密，进一步保护数据传输的安全性。</li>
+</ul>
+</li>
+</ol>
+<p><strong>关键步骤包括</strong></p>
+<ol>
+<li><strong>配置客户端</strong>：在 Windows 中配置 SOCKS5 代理，指定代理服务器的地址和端口。</li>
+<li><strong>建立代理连接</strong>：客户端通过 SOCKS5 协议与代理服务器建立连接，并请求代理转发到目标 HTTPS 服务器的 443 端口。</li>
+<li><strong>加密通信</strong>：HTTPS 的 TLS 加密在客户端和目标服务器之间进行，代理服务器仅负责转发加密数据，无法解密内容。</li>
+<li><strong>数据传输</strong>：所有通过 SOCKS5 代理的 HTTPS 请求和响应数据均通过代理服务器中转，提升了隐私性和安全性。</li>
+</ol>
+<p>这里扩展一下DNS请求在本地解析和代理解析的区别，如果 DNS 请求在本地解析，可能会泄露真实 IP 地址，启用通过代理解析 DNS（如在 SOCKS5 配置中选择）可以增强隐私。<br>
+通过对配置文件的分析我们大致就能看出这个代理软件的功能是如何实现的了，大概就是通过监听本地的1080端口，将用户的请求以SOCKS5协议转发出去，由于没有身份认证，所以只要配置正确应该就可以连接到了。然后我们就可以借助v2rayN尝试连接代理服务器了。<br>
+由于这个代理软件会自动配置windows设置中的代理地址和端口，这个代理地址和端口对于我们来说可以视为代理服务器，所以我们可以在v2rayN上配置这个地址和端口为HTTP服务器，然后监听本地的socks协议1080端口，这样做是因为许多应用程序（如一些 torrent 客户端、命令行工具、甚至一些浏览器插件）通常默认支持 SOCKS5 代理，但不支持 HTTP 代理。因此，V2RayN 为了兼容这些应用，提供了 SOCKS5 代理监听端口。这样，用户就可以通过 SOCKS5 代理协议转发流量，而不需要每个应用都特意支持 HTTP 代理。这也是因为SOCKS5 是一种低层次的代理协议，能够转发各种类型的流量，包括 TCP 和 UDP，它通常用于应用程序（如浏览器、下载器等）通过 SOCKS 代理转发网络流量。<br>
+<img src="./%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6image%5Cc3f887857b6a4665a1054b64863c9973.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+<img src="./%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6image%5C91c2dca0343347c4863270bcbc8d2c5b.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+这里需要扩展的是Tun模式设置中的gvisor和system模式，在 Tun 模式下，<code>stack</code> 选项用于选择网络栈的实现方式，目前主要有两种选择：<code>gvisor</code> 和 <code>system</code>。</p>
+<p><strong>1. gvisor</strong></p>
+<p><strong>gvisor</strong> 是由 Google 开发的一个用户空间的轻量级虚拟化网络栈，旨在提供安全、高效的网络处理能力。它通过在用户空间模拟网络栈，减少对操作系统内核的依赖。</p>
+<p><strong>特点及优势：</strong></p>
+<ul>
+<li><strong>独立性强</strong>：由于 gvisor 在用户空间运行，不依赖于操作系统内核的网络栈实现，具有更高的独立性和兼容性。</li>
+<li><strong>安全性高</strong>：gvisor 提供了隔离机制，减少了潜在的安全风险，适合在需要高安全性的环境中使用。</li>
+<li><strong>跨平台性</strong>：理论上，gvisor 可以在多种操作系统上实现一致的网络行为，增强了跨平台的兼容性。</li>
+</ul>
+<p><strong>劣势：</strong></p>
+<ul>
+<li><strong>性能开销</strong>：由于在用户空间模拟网络栈，相比于直接使用系统内核的网络栈，可能会带来一定的性能开销。</li>
+<li><strong>复杂性</strong>：配置和维护 gvisor 可能相对复杂，需要更多的技术知识。</li>
+</ul>
+<p><strong>适用场景：</strong></p>
+<ul>
+<li>需要高安全性和隔离性的环境。</li>
+<li>在特定操作系统或网络配置下，系统内核的网络栈存在兼容性问题。</li>
+<li>需要跨平台一致性网络行为的应用场景。</li>
+</ul>
+<p><strong>2. system</strong></p>
+<p><strong>system</strong> 选项指的是直接使用操作系统内核提供的原生网络栈。这意味着 v2rayN 将依赖于 Windows 操作系统自身的网络处理能力来转发和管理流量。</p>
+<p><strong>特点及优势：</strong></p>
+<ul>
+<li><strong>高性能</strong>：直接使用系统内核的网络栈，减少了用户空间和内核空间之间的切换开销，性能更优。</li>
+<li><strong>简单易用</strong>：配置相对简单，不需要额外的用户空间网络栈组件，适合大多数用户。</li>
+<li><strong>稳定性高</strong>：依赖于操作系统经过长时间优化和测试的网络栈，稳定性和可靠性较高。</li>
+</ul>
+<p><strong>劣势：</strong></p>
+<ul>
+<li><strong>依赖性强</strong>：完全依赖于操作系统的网络栈实现，可能在特定的网络配置或环境下存在兼容性问题。</li>
+<li><strong>安全性较低</strong>：相比于 gvisor，system 选项缺乏额外的用户空间隔离机制，安全性相对较低。</li>
+</ul>
+<p><strong>适用场景：</strong></p>
+<ul>
+<li>大多数常见的使用场景，追求高性能和简单配置的用户。</li>
+<li>系统网络栈足够稳定和兼容，无需额外的安全隔离。</li>
+<li>资源有限，不希望增加额外的开销。</li>
+</ul>
+<p><strong>gvisor 与 system 的对比总结</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>方面</strong></th>
+<th><strong>gvisor</strong></th>
+<th><strong>system</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>性能</strong></td>
+<td>可能略低于 system，因用户空间模拟开销</td>
+<td>更高，直接利用系统内核网络栈</td>
+</tr>
+<tr>
+<td><strong>配置复杂度</strong></td>
+<td>较高，需要额外配置和维护</td>
+<td>较低，依赖系统自带配置</td>
+</tr>
+<tr>
+<td><strong>安全性</strong></td>
+<td>更高，提供用户空间隔离机制</td>
+<td>较低，依赖系统内核的安全性</td>
+</tr>
+<tr>
+<td><strong>兼容性</strong></td>
+<td>更强，独立于操作系统内核</td>
+<td>依赖于操作系统内核的实现，可能存在兼容性问题</td>
+</tr>
+<tr>
+<td><strong>资源消耗</strong></td>
+<td>较高，因用户空间运行和额外的开销</td>
+<td>较低，直接使用系统资源</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>高安全性、跨平台、一致性需求的环境</td>
+<td>常规使用、高性能需求的环境</td>
+</tr>
+</tbody>
+</table>
+<p><img src="./%E5%88%9D%E6%8E%A2%E4%BB%A3%E7%90%86%E8%BD%AF%E4%BB%B6image%5C563e9a889a8a4f8a8096e4af55397504.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+当你选择 system 模式 时，V2Ray 会修改系统的 路由表，并可能会将所有的流量（包括系统和应用程序的流量）都通过代理。这种操作可能对网络连接的管理产生重大影响，比如作者就遇到了自带的edge浏览器被强制退出并且重启不了，目前还没找到解决方案。<br>
+在开始接下来的步骤之前，还需要了解一下在 Windows 系统中配置代理和设置本地 SOCKS 监听端口有什么区别，windows代理设置是系统级别的代理设置，影响所有支持系统代理配置的应用程序。这意味着只要应用程序遵循系统代理设置，其网络请求都会通过配置的代理服务器转发。而本地SOCKS监听端口主要影响通过 SOCKS 代理配置的应用程序。并非所有应用程序默认使用系统代理设置，需要在每个应用程序中单独配置使用本地 SOCKS 代理，或者使用工具（如 Proxifier可以捕获应用流量并设置转发规则）将应用程序的流量转发到本地监听的SOCKS 代理，在通过本地监听的SOCKS代理转发到利用V2Ray建立起来的本地的服务器上（在远程服务器看来这个本地的服务器就是客户端，作用相当于代理软件）。<br>
+windwos代理设置仅限于那些遵循系统代理设置的应用程序。例如，Microsoft Edge、Internet Explorer 和某些版本的 Chrome 浏览器会自动使用系统代理，优点是一次性设置，所有支持系统代理的应用程序都会自动受益，无需逐一配置。而本地SOCKS监听端口需要手动在每个需要使用 SOCKS 代理的应用程序中进行配置，或者使用额外工具来统一管理。<br>
+所以我们还需要使用Proxifier将所有应用程序的流量都捕获并转发到相应的端口上，最后使用ping发现是可以ping通的，但是这个ping通时好时坏，而且第一个包总是丢失的，目前也未能解决，感觉的原因如下：</p>
+<h3 id="1-ARP-缓存解析">1. <strong>ARP 缓存解析</strong></h3>
+<p><strong>解释</strong>：</p>
+<ul>
+<li><strong>ARP（地址解析协议）</strong> 用于将网络层的 IP 地址解析为数据链路层的 MAC 地址。当你第一次向某个 IP 地址发送数据时，系统需要通过 ARP 请求来获取目标设备的 MAC 地址。</li>
+<li>这个过程需要一定的时间。如果第一个 <code>ping</code> 数据包在 ARP 解析完成之前发送，目标设备可能还没有准备好响应，从而导致第一个包丢失。</li>
+</ul>
+<p><strong>解决方法</strong>：</p>
+<ul>
+<li>之后的 <code>ping</code> 请求通常会命中 ARP 缓存，因此不会再出现包丢失的情况。</li>
+</ul>
+<h3 id="2-网络路径初始化">2. <strong>网络路径初始化</strong></h3>
+<p><strong>解释</strong>：</p>
+<ul>
+<li>在发送第一个 <code>ping</code> 请求时，路由器或交换机可能需要初始化某些路径或路由表项。这种初始化可能会导致第一个数据包被延迟或丢弃。</li>
+</ul>
+<p><strong>解决方法</strong>：</p>
+<ul>
+<li>一旦路径初始化完成，后续的数据包可以顺利通过，不再出现丢包现象。</li>
+</ul>
+<h3 id="3-防火墙或安全策略">3. <strong>防火墙或安全策略</strong></h3>
+<p><strong>解释</strong>：</p>
+<ul>
+<li>某些防火墙或安全设备会对新建立的连接进行更严格的检查。第一个 <code>ping</code> 请求可能会被视为可疑流量，从而被暂时丢弃。</li>
+<li>这种策略可以防止某些类型的网络攻击，但有时也会误判正常流量。</li>
+</ul>
+<p><strong>解决方法</strong>：</p>
+<ul>
+<li>检查本地和网络中的防火墙设置，确保 ICMP 请求被允许。</li>
+<li>如果是企业网络，可能需要联系网络管理员进行进一步检查。</li>
+</ul>
+<h3 id="4-NAT-表项建立">4. <strong>NAT 表项建立</strong></h3>
+<p><strong>解释</strong>：</p>
+<ul>
+<li>如果你处于使用 NAT（网络地址转换）的网络环境中，第一次发送数据包时，路由器需要为你的设备创建 NAT 表项。这一过程可能会导致第一个数据包被丢弃或延迟。</li>
+</ul>
+<p><strong>解决方法</strong>：</p>
+<ul>
+<li>一旦 NAT 表项建立，后续的数据包就可以正常通过，不再出现丢包问题。</li>
+</ul>
+<h3 id="5-DNS-缓存解析">5. <strong>DNS 缓存解析</strong></h3>
+<p><strong>解释</strong>：</p>
+<ul>
+<li>虽然 <code>ping</code> 命令在发送 ICMP 请求之前会解析域名，但这通常不会导致第一个数据包丢失。然而，如果 DNS 解析过程存在延迟，可能会间接影响 <code>ping</code> 的结果。</li>
+</ul>
+<p><strong>解决方法</strong>：</p>
+<ul>
+<li>使用 <code>ping</code> 命令时，确保 DNS 解析顺利完成。你可以先手动解析域名以确认 DNS 解析是否正常。</li>
+</ul>
+<h3 id="6-操作系统网络栈初始化">6. <strong>操作系统网络栈初始化</strong></h3>
+<p><strong>解释</strong>：</p>
+<ul>
+<li>某些操作系统在发送第一个网络请求时，可能需要进行网络栈的初始化。这包括建立必要的网络连接和分配资源，可能导致第一个数据包被延迟或丢弃。</li>
+</ul>
+<p><strong>解决方法</strong>：</p>
+<ul>
+<li>通常不需要特别处理，因为操作系统会自动管理网络栈的初始化过程。</li>
+</ul>
+<h3 id="7-路由器或交换机的-ICMP-速率限制">7. <strong>路由器或交换机的 ICMP 速率限制</strong></h3>
+<p><strong>解释</strong>：</p>
+<ul>
+<li>某些网络设备为了防止 ICMP 泛洪攻击，会对 ICMP 请求的速率进行限制。第一个请求可能由于速率限制策略而被暂时丢弃。</li>
+</ul>
+<p><strong>解决方法</strong>：</p>
+<ul>
+<li>检查并调整网络设备的 ICMP 策略，确保不会误判正常的 ICMP 请求。</li>
+</ul>
+<h1>四、总结</h1>
+<p>这种方式其实就是代理链。代理链（Proxy Chain） 是一种网络技术，它指的是通过多个代理服务器串联起来访问互联网或某个目标地址。这种技术可以增加匿名性、隐私保护、绕过地理限制、提高安全性等。代理链的工作方式是通过将请求传递给一系列代理服务器，每个代理只知道它的前一个和下一个代理，而不知道整个请求的来源和目的。这种方式让目标服务器难以追踪到最终用户的真实IP地址。代理链会逐个通过代理节点传递数据，直到到达最终的目标。虽然没能实现Tun模式，但是这种方式在WSL的情况下是可以用的，比如说想要配置WSL使用主机代理，我们就可以在V2rayN中设置允许来自局域网的连接，然后在WSL中就可以配置连接了，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">curl --socks5 <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">1080</span> <span class="hljs-attr">https</span>:<span class="hljs-comment">//example.com</span><br></code></pre></td></tr></table></figure>
+<p>有一个非常有名的代理类型TOR（The Onion Router）就是一个基于代理链的匿名网络，通过多层加密的代理链来隐藏用户的网络活动。<br>
+在 Tun 模式下，系统会设置一条优先级最高的默认路由，这个路由指向 Tun 网络设备的接口 IP 地址。这样设置后，用户空间的应用程序发送的网络数据包就能被顺利接收。比如，当你 ping <a target="_blank" rel="noopener" href="http://www.google.com">www.google.com</a> 时，虚拟网络会先向上层接口发送 DNS 请求，查找 Google 服务器的 IP 地址。找到后，就向这个 IP 地址发送 ICMP 请求，并等待对方的响应。这样，ping 命令的全过程就完成了。<br>
+这里要注意的是，虽然请求是由你的终端程序发出的，但 Tun 设备只是负责转发。因为虚拟网卡其实也是一个软件应用，所以当 Google 的 ICMP 响应被转发回 cmd 终端时，就好像本机直接响应了 cmd 的请求一样。这就是为什么在 Tun 模式下，ping Google 服务器时可能会看到 0 毫秒时延的结果。<br>
+另一方面，你的实际网卡与代理服务器通过 TCP 建立连接（这是代理客户端的工作），并通过这个连接传输加密数据。接收到的数据会通过操作系统内核空间转发给虚拟网卡。通过虚拟网卡、实际网卡以及代理客户端的协同工作，最终实现了类似 VPN 的效果。<br>
+最后我们再扩展一些额外的协议：</p>
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>Trojan</strong></th>
+<th><strong>Shadowsocks</strong></th>
+<th><strong>V2Ray</strong></th>
+<th><strong>Socks5</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>协议类型</strong></td>
+<td>HTTPS-like TLS</td>
+<td>自定义协议，基于Socks5</td>
+<td>多协议（VMess、VLess等）</td>
+<td>基于Socks5</td>
+</tr>
+<tr>
+<td><strong>隐蔽性</strong></td>
+<td>高，伪装为正常HTTPS流量</td>
+<td>中，部分协议特征可被识别</td>
+<td>可高，可根据配置不同协议特征</td>
+<td>低，标准Socks5协议易被识别</td>
+</tr>
+<tr>
+<td><strong>加密</strong></td>
+<td>TLS加密</td>
+<td>可选加密</td>
+<td>多种加密方式</td>
+<td>无内建加密，需要外部加密手段</td>
+</tr>
+<tr>
+<td><strong>性能</strong></td>
+<td>高效，接近HTTPS性能</td>
+<td>高效，轻量级</td>
+<td>高度可配置，性能取决于配置</td>
+<td>高效，轻量级</td>
+</tr>
+<tr>
+<td><strong>易用性</strong></td>
+<td>简单，易于配置和使用</td>
+<td>简单，广泛支持</td>
+<td>灵活但配置复杂</td>
+<td>简单，广泛支持</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>绕过严格网络审查，隐私保护</td>
+<td>绕过网络限制，个人隐私保护</td>
+<td>高级用户，复杂网络需求</td>
+<td>基本代理需求</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>协议/工具</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>主要特点</strong></th>
+<th><strong>适用场景</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VMess</strong></td>
+<td>专有代理协议</td>
+<td>加密通信、多用户支持、多种传输协议</td>
+<td>绕过审查、高安全性</td>
+</tr>
+<tr>
+<td><strong>VLESS</strong></td>
+<td>专有代理协议</td>
+<td>轻量化、增强安全性、高性能</td>
+<td>高性能代理需求、安全环境</td>
+</tr>
+<tr>
+<td><strong>Shadowsocks</strong></td>
+<td>开源代理工具</td>
+<td>加密传输、简单易用、高性能</td>
+<td>个人隐私保护、绕过地理限制</td>
+</tr>
+<tr>
+<td><strong>TUIC</strong></td>
+<td>代理协议/工具</td>
+<td>混合代理模式、高性能、灵活性</td>
+<td>企业级应用、多种流量处理</td>
+</tr>
+<tr>
+<td><strong>WireGuard</strong></td>
+<td>开源 VPN 协议</td>
+<td>简洁、高性能、强安全性</td>
+<td>安全远程访问、企业 VPN</td>
+</tr>
+<tr>
+<td><strong>Hysteria2</strong></td>
+<td>开源代理工具</td>
+<td>基于 QUIC、高抗封锁性、高性能</td>
+<td>严格审查环境、高性能需求</td>
+</tr>
+</tbody>
+</table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>初探代理软件</div>
+      <div>https://mounthuangshan.github.io/计算机网络/计算机网络/初探代理软件/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E6%94%BB%E7%95%A5%EF%BC%9A%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E6%90%AD%E5%BB%BA%EF%BC%88%E9%99%84%E5%B8%A6%E6%B8%B8%E6%88%8F%E5%8E%8B%E7%BC%A9%E5%8C%85%EF%BC%89%20(1)/" title="图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/Debian%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="Debian常用命令">
+                        <span class="hidden-mobile">Debian常用命令</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

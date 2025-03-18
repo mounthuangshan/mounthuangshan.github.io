@@ -1,0 +1,773 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="首先，目标规范部分。好的，Nmap可以接受主机名、IP地址，甚至是整个网络。例如，我可以扫描单个主机如scanme.nmap.org，或者扫描一个范围如microsoft.com&#x2F;24，这可能意味着扫描192.168.0.0&#x2F;24子网中的所有IP。还支持IPv6地址，这真的很酷。  -iL &lt;inputfilename&gt;：这让我可以从文件中输入主机或网络列表。如果我有很多目标，这个功能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nmap命令参数解释翻译">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/nmap%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A%E7%BF%BB%E8%AF%91/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="首先，目标规范部分。好的，Nmap可以接受主机名、IP地址，甚至是整个网络。例如，我可以扫描单个主机如scanme.nmap.org，或者扫描一个范围如microsoft.com&#x2F;24，这可能意味着扫描192.168.0.0&#x2F;24子网中的所有IP。还支持IPv6地址，这真的很酷。  -iL &lt;inputfilename&gt;：这让我可以从文件中输入主机或网络列表。如果我有很多目标，这个功能">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.851Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>nmap命令参数解释翻译 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="nmap命令参数解释翻译"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">nmap命令参数解释翻译</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>首先，<strong>目标规范</strong>部分。好的，Nmap可以接受主机名、IP地址，甚至是整个网络。例如，我可以扫描单个主机如<code>scanme.nmap.org</code>，或者扫描一个范围如<code>microsoft.com/24</code>，这可能意味着扫描192.168.0.0/24子网中的所有IP。还支持IPv6地址，这真的很酷。</p>
+<ul>
+<li><strong><code>-iL &lt;inputfilename&gt;</code></strong>：这让我可以从文件中输入主机或网络列表。如果我有很多目标，这个功能很有用。</li>
+<li><strong><code>-iR &lt;num hosts&gt;</code></strong>：选择随机目标。也许用于测试目的，但我应该小心使用，以避免任何道德黑客问题。</li>
+<li><strong><code>--exclude &lt;host1[,host2][,host3],...&gt;</code></strong>：从扫描中排除特定主机。这有助于避免扫描重要或敏感的系统。</li>
+<li><strong><code>--excludefile &lt;exclude_file&gt;</code></strong>：类似于排除，但从文件中排除。如果我每次都有一份标准的主机排除列表，这个功能很方便。</li>
+</ul>
+<p>接下来是<strong>主机发现</strong>。这部分是关于找出哪些主机正在运行。</p>
+<ul>
+<li><strong><code>-sL</code></strong>：列表扫描。它只是列出目标，而不实际扫描它们。也许对于调试或计划有用。</li>
+<li><strong><code>-sn</code></strong>：Ping扫描。它检查主机是否在线，而不扫描它们的端口。这是查看哪些机器在线的快速方法。</li>
+<li><strong><code>-Pn</code></strong>：将所有主机视为在线。因此，Nmap跳过发现阶段，只假设一切都在运行。如果我知道所有目标都在线，这个功能很好。</li>
+<li><strong><code>-PS/PA/PU/PY[portlist]</code></strong>：这些是使用TCP SYN、ACK、UDP或SCTP数据包到特定端口的不同发现方法。这对于规避防火墙或IDS很有用。</li>
+<li><strong><code>-PE/PP/PM</code></strong>：ICMP回显、时间戳和子网掩码请求发现。这些是基于ICMP的标准发现方法。</li>
+<li><strong><code>-PO[protocol list]</code></strong>：IP协议Ping。它使用指定的IP协议发送ping。</li>
+<li><strong><code>-n/-R</code></strong>：<code>-n</code>禁用DNS解析，可以加快速度。<code>-R</code>强制每次都进行DNS解析，可能会慢一些，但更准确。</li>
+<li><strong><code>--dns-servers &lt;serv1[,serv2],...&gt;</code></strong>：使用特定的DNS服务器，而不是系统的默认服务器。如果默认服务器不可靠或被审查，这个功能很有用。</li>
+<li><strong><code>--system-dns</code></strong>：使用操作系统的DNS解析器。这可能是默认行为。</li>
+<li><strong><code>--traceroute</code></strong>：跟踪数据包到每个主机的路径。有助于了解网络拓扑。</li>
+</ul>
+<p>接下来是<strong>扫描技术</strong>。这是Nmap真正强大的地方。</p>
+<ul>
+<li><strong><code>-sS/sT/sA/sW/sM</code></strong>：不同的TCP扫描方法，如SYN、Connect、ACK、Window和Maimon扫描。每种方法都有其特定的用途，特别是用于规避防火墙或确定端口状态。</li>
+<li><strong><code>-sU</code></strong>：UDP扫描。有助于发现基于UDP的服务。</li>
+<li><strong><code>-sN/sF/sX</code></strong>：TCP Null、FIN和Xmas扫描。这些是更隐蔽的扫描，有时可以避免检测。</li>
+<li><strong><code>--scanflags &lt;flags&gt;</code></strong>：自定义扫描中使用的TCP标志。适用于了解其原理的高级用户。</li>
+<li><strong><code>-sI &lt;zombie host[:probeport]&gt;</code></strong>：空闲扫描。它使用一个僵尸主机来执行扫描，使扫描更加隐蔽。</li>
+<li><strong><code>-sY/sZ</code></strong>：SCTP INIT/COOKIE-ECHO扫描。用于基于SCTP的服务。</li>
+<li><strong><code>-sO</code></strong>：IP协议扫描。它检查目标支持哪些IP协议。</li>
+<li><strong><code>-b &lt;FTP relay host&gt;</code></strong>：FTP反弹扫描。它使用FTP服务器来中继扫描请求，这有助于绕过防火墙。</li>
+</ul>
+<p>现在，<strong>端口规范和扫描顺序</strong>。这是关于选择要扫描的端口及其顺序。</p>
+<ul>
+<li><strong><code>-p &lt;port ranges&gt;</code></strong>：指定要扫描的端口。例如，<code>-p22</code>扫描端口22，<code>-p1-65535</code>扫描所有端口，<code>-p U:53,111,137,T:21-25,80,139,8080,S:9</code>为不同协议指定不同的端口范围。</li>
+<li><strong><code>--exclude-ports &lt;port ranges&gt;</code></strong>：从扫描中排除某些端口。如果有某些端口出于某种原因不想扫描，这个功能很好。</li>
+<li><strong><code>-F</code></strong>：快速模式。它扫描的端口比默认情况少，可能是最常见的前100个端口。</li>
+<li><strong><code>-r</code></strong>：按顺序扫描端口，而不是随机化。随机化可能使扫描更难检测，因此禁用它可能使调试更容易。</li>
+<li><strong><code>--top-ports &lt;number&gt;</code></strong>：扫描最常见的前<code>&lt;number&gt;</code>个端口。有助于专注于可能开放的端口。</li>
+<li><strong><code>--port-ratio &lt;ratio&gt;</code></strong>：扫描比某个比例更常见的端口。例如，在超过50%的主机上开放的端口。</li>
+</ul>
+<p>接下来是<strong>服务/版本检测</strong>。这有助于识别开放端口上运行的内容。</p>
+<ul>
+<li><strong><code>-sV</code></strong>：探测开放端口以确定服务和版本信息。这就像是指纹识别端口背后的软件。</li>
+<li><strong><code>--version-intensity &lt;level&gt;</code></strong>：设置版本检测的强度，从0（轻量）到9（尝试所有探测）。</li>
+<li><strong><code>--version-light</code></strong>：限制为最可能的探测，使其不太准确但更快。</li>
+<li><strong><code>--version-all</code></strong>：尝试每一个探测，虽然彻底但可能需要更长时间。</li>
+<li><strong><code>--version-trace</code></strong>：显示详细的版本扫描活动，有助于调试为什么某个服务没有正确检测到。</li>
+</ul>
+<p>接下来是<strong>脚本扫描</strong>。这涉及针对目标运行NSE（Nmap脚本引擎）脚本。</p>
+<ul>
+<li><strong><code>-sC</code></strong>：相当于<code>--script=default</code>。运行一组通常安全且有用的脚本。</li>
+<li><strong><code>--script=&lt;Lua scripts&gt;</code></strong>：指定要运行的脚本文件、目录或类别的逗号分隔列表。</li>
+<li><strong><code>--script-args=&lt;n1=v1,[n2=v2,...]&gt;</code></strong>：为脚本提供参数，如凭据或其他参数。</li>
+<li><strong><code>--script-args-file=filename</code></strong>：从文件中提供脚本参数，这对于复杂输入很方便。</li>
+<li><strong><code>--script-trace</code></strong>：显示脚本发送和接收的所有数据，有助于理解脚本行为。</li>
+<li><strong><code>--script-updatedb</code></strong>：更新脚本数据库，确保你有最新的脚本。</li>
+<li><strong><code>--script-help=&lt;Lua scripts&gt;</code></strong>：显示关于特定脚本的帮助，这对于学习如何有效使用它们很有帮助。</li>
+</ul>
+<p>然后，<strong>操作系统检测</strong>。这尝试识别目标的操作系统。</p>
+<ul>
+<li><strong><code>-O</code></strong>：启用操作系统检测。它使用数据包头和其他线索来指纹识别操作系统。</li>
+<li><strong><code>--osscan-limit</code></strong>：将操作系统检测限制在有前途的目标上，避免那些已关闭或有防火墙的目标。</li>
+<li><strong><code>--osscan-guess</code></strong>：更积极地猜测操作系统，即使它不确定。</li>
+</ul>
+<p>接下来是<strong>时间和性能</strong>。这些选项影响扫描的速度和效率。</p>
+<ul>
+<li><strong><code>-T&lt;0-5&gt;</code></strong>：设置时间模板。数字越高越快，但可能不太准确或隐蔽。</li>
+<li><strong><code>--min-hostgroup/max-hostgroup &lt;size&gt;</code></strong>：设置并行扫描的主机组大小，影响速度和负载。</li>
+<li><strong><code>--min-parallelism/max-parallelism &lt;numprobes&gt;</code></strong>：控制并行发送的探测数量。</li>
+<li><strong><code>--min-rtt-timeout/max-rtt-timeout/initial-rtt-timeout &lt;time&gt;</code></strong>：设置探测往返时间的超时。</li>
+<li><strong><code>--max-retries &lt;tries&gt;</code></strong>：设置Nmap重试端口扫描探测的最大次数。</li>
+<li><strong><code>--host-timeout &lt;time&gt;</code></strong>：在此时间后放弃目标。</li>
+<li><strong><code>--scan-delay/--max-scan-delay &lt;time&gt;</code></strong>：调整发送探测之间的延迟。</li>
+<li><strong><code>--min-rate &lt;number&gt;</code></strong>：确保Nmap至少以这个速率发送数据包。</li>
+<li><strong><code>--max-rate &lt;number&gt;</code></strong>：确保Nmap发送数据包的速度不超过这个速率。</li>
+</ul>
+<p>现在，<strong>防火墙/IDS规避和欺骗</strong>。这些选项有助于避免被安全系统检测到。</p>
+<ul>
+<li><strong><code>-f</code></strong>：分片数据包，这有助于规避数据包过滤器。</li>
+<li><strong><code>-D &lt;decoy1,decoy2[,ME],...&gt;</code></strong>：使用诱饵主机隐藏扫描来源。</li>
+<li><strong><code>-S &lt;IP_Address&gt;</code></strong>：伪造源地址，使扫描看起来像是来自另一个主机。</li>
+<li><strong><code>-e &lt;iface&gt;</code></strong>：使用特定接口，如果你有多个网络接口，这个功能很有用。</li>
+<li><strong><code>-g/--source-port &lt;portnum&gt;</code></strong>：使用特定源端口。</li>
+<li><strong><code>--proxies &lt;url1,[url2],...&gt;</code></strong>：通过HTTP或SOCKS4代理中继连接，有助于通过防火墙进行扫描。</li>
+<li><strong><code>--data &lt;hex string&gt;</code></strong>：在发送的数据包中追加自定义负载，可能用于利用漏洞或测试特定响应。</li>
+<li><strong><code>--data-string &lt;string&gt;</code></strong>：在发送的数据包中追加自定义ASCII字符串。</li>
+<li><strong><code>--data-length &lt;num&gt;</code></strong>：追加一定长度的随机数据字符串。</li>
+<li><strong><code>--ip-options &lt;options&gt;</code></strong>：发送带有特定IP选项的数据包，如记录路由或时间戳。</li>
+<li><strong><code>--ttl &lt;val&gt;</code></strong>：设置数据包的生存时间。</li>
+<li><strong><code>--spoof-mac &lt;mac address/prefix/vendor name&gt;</code></strong>：伪造MAC地址，有助于网络访问控制。</li>
+<li><strong><code>--badsum</code></strong>：发送带有虚假校验和的数据包，这可能有助于规避某些IDS签名。</li>
+</ul>
+<p>最后，<strong>输出</strong>选项控制结果的保存或显示方式。</p>
+<ul>
+<li><strong><code>-oN/-oX/-oS/-oG &lt;file&gt;</code></strong>：以不同格式输出：普通、XML、s|&lt;rIpt kIddi3和可grep格式。</li>
+<li><strong><code>-oA &lt;basename&gt;</code></strong>：一次性以所有三种主要格式输出。</li>
+<li><strong><code>-v</code></strong>：增加详细程度，显示更多详细信息。</li>
+<li><strong><code>-d</code></strong>：增加调试级别，有助于排除Nmap本身的故障。</li>
+<li><strong><code>--reason</code></strong>：显示端口处于特定状态的原因，如确定它的那个数据包。</li>
+<li><strong><code>--open</code></strong>：只显示开放（或可能开放）的端口，过滤掉关闭的端口。</li>
+<li><strong><code>--packet-trace</code></strong>：显示发送和接收的所有数据包，这是非常详细的，有助于理解交互。</li>
+<li><strong><code>--iflist</code></strong>：打印主机接口和路由，有助于网络调试。</li>
+<li><strong><code>--append-output</code></strong>：追加到指定的输出文件，而不是覆盖它们。</li>
+<li><strong><code>--resume &lt;filename&gt;</code></strong>：恢复中止的扫描，从中断的地方继续。</li>
+<li><strong><code>--noninteractive</code></strong>：禁用交互式键盘输入，适用于脚本化扫描。</li>
+<li><strong><code>--stylesheet &lt;path/URL&gt;</code></strong>：使用特定的XSL样式表将XML输出转换为HTML。</li>
+<li><strong><code>--webxml</code></strong>：引用Nmap.Org样式表，以获得更便携的XML输出。</li>
+<li><strong><code>--no-stylesheet</code></strong>：防止将任何XSL样式表与XML输出关联。</li>
+</ul>
+<p>然后是一些杂项选项：</p>
+<ul>
+<li><strong><code>-6</code></strong>：启用IPv6扫描，这对于现代网络至关重要。</li>
+<li><strong><code>-A</code></strong>：一次性启用操作系统检测、版本检测、脚本扫描和traceroute，使其成为一次全面的扫描。</li>
+<li><strong><code>--datadir &lt;dirname&gt;</code></strong>：指定Nmap数据文件的位置，如果你有非标准安装，这个功能很有用。</li>
+<li><strong><code>--send-eth/--send-ip</code></strong>：选择使用原始以太网帧或IP数据包发送。</li>
+<li><strong><code>--privileged</code></strong>：假设用户拥有完全权限，这对于某些扫描技术可能是必要的。</li>
+<li><strong><code>--unprivileged</code></strong>：假设用户缺乏原始套接字权限，相应地调整扫描方法。</li>
+<li><strong><code>-V</code></strong>：打印Nmap的版本号，有助于确保你使用的是最新版本。</li>
+<li><strong><code>-h</code></strong>：打印帮助摘要页面，这正是我们目前正在看的。</li>
+</ul>
+<p>给出的示例也很有帮助：</p>
+<ol>
+<li><strong><code>nmap -v -A scanme.nmap.org</code></strong>：对scanme.nmap.org进行详细扫描，包括操作系统检测、版本检测、脚本和traceroute。</li>
+<li><strong><code>nmap -v -sn 192.168.0.0/16 10.0.0.0/8</code></strong>：对192.168.0.0/16和10.0.0.0/8网络进行详细Ping扫描。</li>
+<li><strong><code>nmap -v -iR 10000 -Pn -p 80</code></strong>：对10,000个随机主机进行详细扫描，将所有主机视为在线，仅扫描端口80。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>nmap命令参数解释翻译</div>
+      <div>https://mounthuangshan.github.io/计算机网络/计算机网络/nmap命令参数解释翻译/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9AMySQL_MariaDB%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B8%AE%E5%8A%A9%E8%A7%A3%E9%87%8A/" title="数据库：MySQL_MariaDB命令行帮助解释">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据库：MySQL_MariaDB命令行帮助解释</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B8%A4%E4%B8%AA%E5%85%B3%E4%BA%8ETCP_IP%E7%9A%84%E9%97%AE%E9%A2%98/" title="两个关于TCP_IP的问题">
+                        <span class="hidden-mobile">两个关于TCP_IP的问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

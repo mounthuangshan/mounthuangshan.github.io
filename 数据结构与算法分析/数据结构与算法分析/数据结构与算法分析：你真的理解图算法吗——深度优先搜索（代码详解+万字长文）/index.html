@@ -1,0 +1,802 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、前言 图是计算机科学中用来表示复杂结构信息的一种基本结构。本章我们会讨论一些通用的围表示法,以及一些频繁使用的图算法。本质上来说,一个图包含一个元素集合(也就是顶点),以及元素两两之间的关系(也就是边),由于应用范围所限,本章我们仅仅讨论简单图,简单围并不会如(a)那样有一个顶点的一条边是自己指向自己,以及不会如(b)那样一对顶点之间存在多条边。 一个图G&#x3D;(V.E)由一个顶点集V以及一个边集">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析：你真的理解图算法吗——深度优先搜索（代码详解+万字长文）">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、前言 图是计算机科学中用来表示复杂结构信息的一种基本结构。本章我们会讨论一些通用的围表示法,以及一些频繁使用的图算法。本质上来说,一个图包含一个元素集合(也就是顶点),以及元素两两之间的关系(也就是边),由于应用范围所限,本章我们仅仅讨论简单图,简单围并不会如(a)那样有一个顶点的一条边是自己指向自己,以及不会如(b)那样一对顶点之间存在多条边。 一个图G&#x3D;(V.E)由一个顶点集V以及一个边集">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C03c80093ee754323a6ea2dbbb68959e4.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C3af4cb6bbaef44d48d5e9a7eb7745d8a.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C39c187a1d97945ff8fed81174ea31f2c.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C58d822af3b3e42d0aa6c132d87652300.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5Cbb25a47c2f184f62bec912ad2fe9bac9.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C217796c1bb6943da9be20189beffc291.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C8f812630018845d0a329cc9fab2fcd78.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5Cc6317e21dcc3498e99e1fc77bcbfa50a.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C6dcb6cbe3bb4495baa70e1f5adc009bb.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.850Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C03c80093ee754323a6ea2dbbb68959e4.png">
+  
+  
+  
+  <title>数据结构与算法分析：你真的理解图算法吗——深度优先搜索（代码详解+万字长文） - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析：你真的理解图算法吗——深度优先搜索（代码详解+万字长文）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          60 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析：你真的理解图算法吗——深度优先搜索（代码详解+万字长文）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、前言</h1>
+<p>图是计算机科学中用来表示复杂结构信息的一种基本结构。本章我们会讨论一些通用的围表示法,以及一些频繁使用的图算法。本质上来说,一个图包含一个元素集合(也就是顶点),以及元素两两之间的关系(也就是边),由于应用范围所限,本章我们仅仅讨论简单图,简单围并不会如(a)那样有一个顶点的一条边是自己指向自己,以及不会如(b)那样一对顶点之间存在多条边。<br>
+一个图G=(V.E)由一个顶点集V以及一个边集E组成,算法中通常会出现如下几种图:<br>
+<strong>无向图</strong><br>
+顶点(u,v)之间的关系模型不需要考虑关系的方向如何。在处理对称信息时,这种图非常有用。例如,汽车可以在A镇和B镇之间的路上双向行驶。<br>
+<strong>有向图</strong><br>
+顶点(u,v)之间的关系和顶点(vu)之间的关系不同,后者或许不存在。例如,一个提供驾驶信息的程序必须存储单线道路的信息,以避免给出错误的方向。<br>
+<strong>有权图</strong><br>
+顶点(u,v)之间的关系是有权重的,可以是数值的也可以是非数值的。例如,在A镇和B镇之间的道路有公里数,当然也包含了等袋时间这个信息。<br>
+<strong>超图</strong><br>
+在顶点(w,v)之间可能存在多种关系,本章我们将讨论限定在简单图上。<br>
+如果图中任意两点之间都存在一条边,那么这个围是连通图。一个有向有权图的定义为:一个非空顶点集合($V_n$…$V_{n-1}$）一个有向的边集合,每对顶点之间只有一条边,以及每条边上都有一个正权值。在很多应用中,这个权值被认为是距离或者开销。对某些应用来说,我们希望能够放宽权值必须为正的限制(例如,负值可以反映利润情<br>
+况),但是我们必须高度关注这样做的后果。考虑下图的有向有权图,它由6个顶点4条边组成。存储这个图有两个标准的数据结构:它们都显式地存储了权值,隐式表示了边的方向。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C03c80093ee754323a6ea2dbbb68959e4.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+一种数据结构叫邻接表,如下图所示：<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C3af4cb6bbaef44d48d5e9a7eb7745d8a.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+下图则是表明了如何用一个内阶的邻接知阵来存健有向有权图,每个维度可以被索引。条目A[i][j]存储的是从$V_{i}$到$V_{j}$的边的权值,当A[i][j]=0时,顶点,和頂点v,之间不存在边。使用邻接知阵表示法,在加一条边只要要常数时间。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C39c187a1d97945ff8fed81174ea31f2c.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+我们他可以使用邻接表和邻接矩阵来存储无向图。看看下图6-5的无向图,我们使用&lt;$v_{0},$$v_{1},$……$v_{k-1}$&gt;来描述一条有k个顶点的路,这条路遍历了k&lt;1条边,一个有向图的路径是由同一方向的边组成。在下图中,路径&lt;$v_{0},$$v_{1},$$v_{3},$$v_{4},$&gt;是有效的。环是一个多次包含了同一个顶点的路径。一个环通常用其最小形式表示,在下图中,在路径&lt;$v_{0},$$v_{1},$$v_{3},$$v_{4},$$v_{2},$$v_{1},$$v_{3},$$v_{4},$$v_{2},$&gt;中存在一个环,这个环可以用$v_{1},$$v_{3},$$v_{4},$$v_{2},$$v_{1}$来表示。注意上上上个图的有向有权图权图,存在一个环&lt;$v_{3},$$v_{3},$$v_{3},$&gt;.<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C58d822af3b3e42d0aa6c132d87652300.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+<strong>存储问题</strong><br>
+当使用部接表来存储无向图时,同一条边(w,v)在邻接表中出现了两次,一次是在的邻接节点健表,一次是在v的邻接节点键表。因此,相比同样数目的顶点和边的有向图,无向图在邻接表中存储所需要的存储空间是前者的两倍,当使用邻核知阵来存储无向图时,你必须保证条目A[AU)=AU114,不需要任何的额外存储空间。<br>
+当使用二维矩阵来表示元素集合中内个元素的潜在关系时,需要注意一些事项。首先,矩阵需要$n^2$个元素的存储空间，即使有时候元素之间的关系集合非常小。在这些情况下,也就是所谓的稀疏围,由于计算机内存的限制,不可能存储超过数千个顶点的图。例如,Java虚拟机使用默认值256MB,创建一个二维的int[4096][4096]矩阵就已经超出可用内存。即使程序员能够在一台有着更多内存的计算机上执行程序,事实上创建的矩阵规模存在一个固定的上界,另外,在大规模矩阵中存储稀疏键图,遍历矩阵来寻找边的操作的开销会很大，并且这种存储方法也限制了更多的改进。第二,当顶点之间有多种关系时,不适合使用矩阵,为了能够在矩阵中存储这种关系,矩阵中每一个元素将会当作一个表。<br>
+每一种邻接表示法都存储了相同的信息,假设,你写了一个程序,需要计算出世界上任意两个城市之间的最便宜的航班。每条边的权重和两个城市之间最便宜直航的价格有关(假设载线不会中转),根据2005年国际机场协会(ACI)发布的一份接告,世界上有总共1659个机场,这样也就需要一个有2752281个条目的二维矩阵。那么就有一个问题:“多少条目是有值的”,它的答案率决于直航航线的数目,ACI的接告也显示,2005年有71600000次  “航空括动”,  简单地说每天有大概196164次航班。即使所有的航班都是在两个不同机场之间的直航(虽然直航的数目要比这个小很多),这个矩阵也有93%是空值  ——一个非常好的稀疏矩阵的例子!当使用一个邻接表表示无向图时,我们可以使用一些方法来减少需要的存储空间,假设一个顶点的部接顶点为:2.8.1.5.3.10.11和4,首先,这些部接顶点会以升序来存储,这样做能修快速地定位是否存在一条边(w.y),在这种结构下,虽然有8个邻接顶点，但是确定是否边（u，6）是否存在只需要6次比较。当然，添加一条边就不再是常数时间，这里我们需要权衡一下利弊。其次，为了能够更加高效的检查是否边（u，v）存在，邻接表可以存储邻接顶点的范围，例子中的邻接表中八个顶点可以减少到三个；1-5、8、10-11。这种方法也能够减少是否存在一条边的计算次数，不过这会降低添加或者删除边的效率。<br>
+<strong>图分析</strong><br>
+当使用本章的算法时,决定使用邻接表还是邻接矩阵的最重要因素是围是否为稀疏图。算法的性能是和围的顶点教IVIRRERRERR相关书一样,我们简化了性能的公式,无论在最好、最坏还是平均情况下,我们都使用V,E的大0记法来表示性能。<br>
+O(V)表示需要和图中的顶点数成直接比例的计算步数,但是图中边的密度他必须考虑,在稀疏图中,O(E)近似等于O(V),然而在稠密图中,它近似等于O($V^2$)。<br>
+我们将会看到,根据图的结构,一些算法会有两个变种,并且这两个变种的性能不尽相同,一个变种也许执行时间为O((V+E)<em>logV）,而另外一个是O($V^2+E$)。哪个更加高效呢?下表告诉我们这个答案取决于图G是稀疏图还是橋稠密图。对于稀疏图来说，$\mathrm{O}((V{+}E)^{</em>}\mathrm{log}V)$虽然更加高效一点，而对于稠密图,$O(V^2+E)$就更加快速了,标记为“均衡图”的条目，这种图的期望性能在稀疏图和稠密图上都是相同的，为$O(V^2)$,在这些图上，边的数目大致等于$O（V^2/log V）$。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5Cbb25a47c2f184f62bec912ad2fe9bac9.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+<strong>问题</strong><br>
+使用图结构可以解决很多问题。本章我们只是讨论其中一些,不过你仍然有机会寻找到一些我们没有讨论的问题,然后去研究,给定一个用边来定义的图,很多问题会和图中两顶点之间的最短路径相关，路的长度就是路上边的长度之和。在“单源最短路径”这个问题上,给定一个顶点,我们需要计算出到图中其他所有顶点的最短路径。在“对顶点间最短路径”问题中,我们需要计算图中所有的顶点对(w.v)之间的最短路径。有些问题则是在更加深人地使用了图的结构,我们可以从一个图中构造出一个最小生成树(MST)。最小生成树是一个无向有权图,是原图边的一个子集,但是,原图的顶点仍然是连通的,而边的权值总和最小,在“最小生成树算法”一节,我们将会描述如何高效地解决这个问题。<br>
+我们首先从如何探索图开始讨论。两个最常使用的搜索方法是深度优先搜索(DFS)和广度优先搜索(BFS)。</p>
+<h1>二、算法描述</h1>
+<p>考虑下图左边的迷宫，在经过一尝试后，一个孩子能够快速地找到从起点s到终点t的路，但是计算机解决这个问题看起来就比较复杂，一种方法是假设离目标并不太远，然后做尽可能多的深度移动，也就是说，只要可以，随机选择一个方向，然后向这个方向前进，标记一下起点，如果你走上一条死路，或者不能在不重新访问顶点的情况下做任何深度移动，那么就会遇到另一条未访问的分支上，并且向这个方向前进。下图右边的数字表示的是一个解的分支点。事实上，在这个解中，我们访问了迷中的所有点。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C217796c1bb6943da9be20189beffc291.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+我们能够用一个包含了点和边的图来表示上图的迷宫。一个顶点表示迷宫中的每一个分支点（在上图的右边用数字标记） ，当然也包括“末路点”。如果迷宫中在两个顶点之间存在一条有向路，并且在这个方向上没有其他的选择，那么我们就说存在一条边。从上图得到的迷宫的无向图表示如下图所示，每一个顶点都有一个唯一标识符。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C8f812630018845d0a329cc9fab2fcd78.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+为了解决这个问题，我们需要知道在图 G=（V，E）的顶点s到顶点r是否存在一条路。本例中，所有的边都是无向的，但是即使在迷宫上加一些限制条件，我们也能够非常容易地将其看成有向图。下图的详解包括了用伪代码描述的深度优先搜索。深度优先搜索的核心是递归的 dfs_visit（u）操作，这个操作访问之前没有访问过的顶点u。并且这个操作通过对顶点染色记录下了搜索进程。顶点可能会染成如下三种颜色；<br>
+<strong>白色</strong><br>
+顶点还未访问。<br>
+<strong>灰色</strong><br>
+顶点已经被访向过了，但是其可能还有没有被访问过的顶点。<br>
+<strong>黑色</strong><br>
+顶点以及其所有的邻接顶点都已经被访向过了。<br>
+首先，所有的顶点初始为白色，然后深度优先搜索在源顶点 s 上调用 dfs_visit，在对 u 所有的未访向邻接顶点（它们为白色）递归调用 dfs_visit 之前，dfs_visit（u）将 u 染成灰色。一旦这些递归调用完成，那么我们将 u 染成黑色，然后函数返回。当递归函数 dfs_visit 返回，深度优先搜索开始回溯，直到回溯到一个有邻接顶点未被访问过的顶点（事实上，回溯到标记为灰色的顶点）。<br>
+对有向和无向图来说，深度优先搜索从 s 开始，访问了图中所有 s 可达的顶点。如果 G 中仍然有未访问，但是从s不可达的顶点存在，深度优先搜索将会随机从其中选择一个作为源点，然后重复操作。这个过程将会一直重复，直到 G 中所有的顶点都被访问。<br>
+在这个执行过程中，深度优先搜索遍历图中的边，计算和复杂的图结构有关的信息。深度优先搜索维护一个计数器，在一个顶点第一次被访问（标记为灰色）和完成在这个顶点上的深度优先搜索（标记为黑色）时，这个计数器增加计数。对于每个顶点，深度优先搜索记录如下信息。<br>
+pred[v]<br>
+前驱顶点，用来恢复从源点 s 到顶点 v 的路。<br>
+discovered[v]<br>
+其值为当深度优先搜索第一次访向 v 时，计数器增加后的值，简写为 d[v]。<br>
+finished[v]<br>
+其值为完成在这个顶点 v 上的深度优先搜索，计数器增加后的值，简写为 f[v]。<br>
+顶点访问的顺序将会改变计数器的值。所以需要注意邻接节点的顺序。对很多构建在深度优先搜索上的算法，深度优先搜索计算出来的信息都是非常有用的，包括拓扑排序，寻找强连通部，寻找网络中潜在的弱点。让我们来看看上图，假设顶点的邻接顶点是升序排列。那么计算出来的信息如下图所示。当计数器为 18，顶点 8 正在被访问时，让我们看看图中顶点的颜色。图中有些部分（例如标记为黑色的点）已经被完全搜索井且不会被重复访问。我们需要注意白色顶点的 d 都将大于 18（因为它们现在还没有被访间），以及黑色顶点的f都小于等于 18，因为它们已经被完全搜索过，灰色顶点的 d 小于等于 18，f 大于 18，因为它们现在正处于某条递归访问的路上。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5Cc6317e21dcc3498e99e1fc77bcbfa50a.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+深度优先搜索没有对图的一个整体认识，所以它是盲目地搜索顶点&lt;5，6，7，8&gt;，即使是南辕北辙。一旦深度优先搜索结束，pred[]的值能够用来生成一条从任意顶点到源点 s 的路。当然，这条路也许不会是最短路径，例如&lt;s，1，3，4，5，9，&gt;，但是最短的路径是&lt;s， 6， 5，9， &gt; （这里的最短路径指的是s到r经过的点的个数最少） 。<br>
+深度优先搜索计算三个数组。d[v]表示的是 v 第一次被访问时，计数器的值。pred[v]是深度优先搜索时，顶点 v 的先驱顶点。[fv]则是当 v 被完全访问过之后，计数器的值，即 dfs_visit（v）之后计数器的值。如果原图是不连通的，那么根据 pred[]的值实际上可以得到一个由深度优先树组成的深度优先森林。对于森林中的树来说，它们根节点的 pred[r]的值都为-1。此算法对于有向图和无向图同样适用。<br>
+深度优先搜索（DFS）的基本过程：</p>
+<h3 id="深度优先搜索（DFS）">深度优先搜索（DFS）</h3>
+<h4 id="算法步骤：">算法步骤：</h4>
+<ol>
+<li>
+<p><strong>初始化</strong>：</p>
+<ul>
+<li>创建一个栈（可以使用递归实现）来存储待访问的节点。</li>
+<li>创建一个布尔数组 <code>visited</code>，用于标记每个节点是否已访问。</li>
+</ul>
+</li>
+<li>
+<p><strong>遍历</strong>：</p>
+<ul>
+<li>从起始节点开始，将其推入栈并标记为已访问。</li>
+<li>当栈不为空时，执行以下操作：
+<ul>
+<li>从栈中弹出一个节点 <code>u</code>。</li>
+<li>访问节点 <code>u</code>，进行必要的处理（如打印或存储）。</li>
+<li>遍历 <code>u</code> 的所有邻接节点 <code>v</code>：
+<ul>
+<li>如果节点 <code>v</code> 未被访问，则将其推入栈并标记为已访问。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h1>三、复杂度分析</h1>
+<p><img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C6dcb6cbe3bb4495baa70e1f5adc009bb.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>深度优先搜索只需要在遍历图时存储每个顶点的频色（白、灰或者黑）。因此深度优先搜索在逾历围时，只需要很小的存储开销。深度优先搜索能够在数组中存储其遍历图时的信息。事实上，深度优先搜索对图的唯一要求是能够遍历给定顶点的所有邻接顶点，于是这样，我们能够在复杂的数据结构上方便地进行深度优先搜索。因为 df_visit 函数将原图看做一个只读结构。但是，深度优先搜索仅仅依靠当前的信息，是一种盲目的搜索，它并没有一个明智的计划来快速达到目标顶点 t。<br>
+图中的每一个顶点都会调用递归的dfs_visit函数一次。dfs_search中的循环不会执行超过n次。在dfs_visit函数中,每一个邻接顶点都要被检查,对于有向围来说,每一条边都只会遍历一次,然而在无向图中,它们会被遍历一次然后会被检查一次,在任何情况下,性能开销都是O(V+E)。</p>
+<h1>四、适用情况</h1>
+<p>以下是一些常见的适用场景：<br>
+<strong>图的遍历：</strong><br>
+DFS 可以用于遍历图中的所有节点，适合于寻找所有连通分量。<br>
+<strong>路径查找：</strong><br>
+在寻找从一个节点到另一个节点的路径时，DFS 可以有效地探索所有可能的路径，特别是在解决迷宫问题时。<br>
+<strong>拓扑排序：</strong><br>
+在有向无环图（DAG）中，DFS 可以用于拓扑排序，帮助确定任务的优先级或依赖关系。<br>
+<strong>解决约束满足问题：</strong><br>
+如数独、八皇后问题等，DFS 可以通过递归尝试所有可能的放置方式，寻找有效解。<br>
+<strong>生成组合和排列：</strong><br>
+在生成集合的所有组合或排列时，DFS 是一个有效的选择。<br>
+<strong>强连通分量：</strong><br>
+在有向图中，DFS 可以用于查找强连通分量，通过 Tarjan 或 Kosaraju 算法实现。<br>
+<strong>解决游戏问题：</strong><br>
+在一些回合制游戏中（如棋类游戏），DFS 可以用于评估所有可能的游戏状态，帮助选择最佳策略。<br>
+<strong>图的颜色问题：</strong><br>
+在一些图的颜色问题中，DFS 可以用于验证图是否可着色或寻找可行的着色方案。<br>
+<strong>寻找特定节点：</strong><br>
+当需要寻找特定特征的节点时，DFS 可以在较深的层次上更早找到目标。<br>
+<strong>注意事项：</strong><br>
+空间复杂度：DFS 在深度较大的图中可能会导致栈溢出，因此在处理非常深的树或图时，要考虑使用迭代的方式或增加栈的大小。<br>
+性能：在某些情况下（如图较大且稀疏时），DFS 可能不是最优选择，这时广度优先搜索（BFS）或其他算法可能更合适。</p>
+<h1>五、算法实现</h1>
+<p>下面是深度优先搜索的C++实现：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;iostream&gt;<br>#include &lt;vector&gt;<br>#include &lt;list&gt;<br><br><span class="hljs-keyword">using</span> namespace std;<br><br><span class="hljs-comment">// 定义边的类型枚举</span><br>enum edgeType &#123; <span class="hljs-title class_">Tree</span>, <span class="hljs-title class_">Backward</span>, <span class="hljs-title class_">Forward</span>, <span class="hljs-title class_">Cross</span> &#125;;<br><br><span class="hljs-comment">// 定义顶点颜色枚举</span><br>enum <span class="hljs-keyword">class</span> <span class="hljs-title class_">vertexColor</span> &#123; white, gray, black &#125;;<br><br><span class="hljs-comment">// 定义边标签结构</span><br>struct <span class="hljs-title class_">EdgeLabel</span> &#123;<br>    int u, v;<br>    edgeType type;<br>    <span class="hljs-title class_">EdgeLabel</span>(int _u, int _v, edgeType _type) : <span class="hljs-title function_">u</span>(_u), <span class="hljs-title function_">v</span>(_v), <span class="hljs-title function_">type</span>(<span class="hljs-params">_type</span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-comment">// 定义图的类型（使用邻接表表示）</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Graph</span> &#123;<br><span class="hljs-attr">public</span>:<br>    vector&lt;vector&lt;int&gt;&gt; adj;<br>    <span class="hljs-title class_">Graph</span>(int n) : <span class="hljs-title function_">adj</span>(<span class="hljs-params">n</span>) &#123;&#125;<br><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">addEdge</span>(<span class="hljs-params">int u, int v</span>) &#123;<br>        adj[u].<span class="hljs-title function_">push_back</span>(v);<br>    &#125;<br><br>    <span class="hljs-keyword">const</span> vector&lt;int&gt;&amp; operator[](int u) <span class="hljs-keyword">const</span> &#123;<br>        <span class="hljs-keyword">return</span> adj[u];<br>    &#125;<br><br>    auto <span class="hljs-title function_">begin</span>(int u) <span class="hljs-keyword">const</span> &#123;<br>        <span class="hljs-keyword">return</span> adj[u].<span class="hljs-title function_">begin</span>();<br>    &#125;<br><br>    auto <span class="hljs-title function_">end</span>(int u) <span class="hljs-keyword">const</span> &#123;<br>        <span class="hljs-keyword">return</span> adj[u].<span class="hljs-title function_">end</span>();<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs_visit</span>(<span class="hljs-title class_">Graph</span> <span class="hljs-keyword">const</span>&amp; graph, int u, vector&lt;int&gt;&amp; d, vector&lt;int&gt;&amp; f, vector&lt;int&gt;&amp; pred, vector&lt;vertexColor&gt;&amp; color, int&amp; ctr, list&lt;<span class="hljs-title class_">EdgeLabel</span>&gt;&amp; labels);<br><br><span class="hljs-comment">// 访问顶点 u 并更新信息</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs_visit</span>(<span class="hljs-params">Graph <span class="hljs-keyword">const</span>&amp; graph, int u, vector&lt;int&gt;&amp; d, vector&lt;int&gt;&amp; f, vector&lt;int&gt;&amp; pred, vector&lt;vertexColor&gt;&amp; color, int&amp; ctr, list&lt;EdgeLabel&gt;&amp; labels</span>)<br>&#123;<br>    color[u] = <span class="hljs-attr">vertexColor</span>::gray; <span class="hljs-comment">// 将顶点 u 标记为灰色（正在访问）</span><br>    d[u] = ++ctr; <span class="hljs-comment">// 记录发现时间</span><br><br>    <span class="hljs-keyword">for</span> (int v : graph[u]) &#123;<br>        <span class="hljs-keyword">if</span> (color[v] == <span class="hljs-attr">vertexColor</span>::white) &#123; <span class="hljs-comment">// 如果顶点 v 仍然是白色（未访问）</span><br>            pred[v] = u; <span class="hljs-comment">// 更新前驱</span><br>            <span class="hljs-title function_">dfs_visit</span>(graph, v, d, f, pred, color, ctr, labels); <span class="hljs-comment">// 递归访问 v</span><br>        &#125;<br>    &#125;<br><br>    color[u] = <span class="hljs-attr">vertexColor</span>::black; <span class="hljs-comment">// 将顶点 u 标记为黑色（完成访问）</span><br>    f[u] = ++ctr; <span class="hljs-comment">// 记录完成时间</span><br><br>    <span class="hljs-comment">// 处理所有邻接顶点</span><br>    <span class="hljs-keyword">for</span> (auto ci = graph.<span class="hljs-title function_">begin</span>(u); ci != graph.<span class="hljs-title function_">end</span>(u); ++ci) &#123;<br>        int v = *ci;<br>        edgeType type = <span class="hljs-title class_">Cross</span>; <span class="hljs-comment">// 初始化边的类型为交叉边</span><br>        <span class="hljs-keyword">if</span> (color[v] == <span class="hljs-attr">vertexColor</span>::white) &#123;<br>            type = <span class="hljs-title class_">Tree</span>; <span class="hljs-comment">// 如果 v 是白色，则为树边</span><br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (color[v] == <span class="hljs-attr">vertexColor</span>::gray) &#123;<br>            type = <span class="hljs-title class_">Backward</span>; <span class="hljs-comment">// 如果 v 是灰色，则为回边</span><br>        &#125;<br>        <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">if</span> (d[u] &lt; d[v]) &#123;<br>                type = <span class="hljs-title class_">Forward</span>; <span class="hljs-comment">// 如果 d[u] &lt; d[v]，则为前向边</span><br>            &#125;<br>        &#125;<br>        labels.<span class="hljs-title function_">push_back</span>(<span class="hljs-title class_">EdgeLabel</span>(u, v, type)); <span class="hljs-comment">// 添加边标签</span><br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 从顶点 s 开始执行深度优先搜索</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs_search</span>(<span class="hljs-params">Graph <span class="hljs-keyword">const</span>&amp; graph, int n, vector&lt;int&gt;&amp; d, vector&lt;int&gt;&amp; f, vector&lt;int&gt;&amp; pred, vector&lt;vertexColor&gt;&amp; color, list&lt;EdgeLabel&gt;&amp; labels</span>) &#123;<br>    int ctr = <span class="hljs-number">0</span>; <span class="hljs-comment">// 发现和完成时间的计数器</span><br>    <span class="hljs-keyword">for</span> (int u = <span class="hljs-number">0</span>; u &lt; n; u++) &#123;<br>        <span class="hljs-keyword">if</span> (color[u] == <span class="hljs-attr">vertexColor</span>::white) &#123; <span class="hljs-comment">// 如果顶点 u 是白色</span><br>            <span class="hljs-title function_">dfs_visit</span>(graph, u, d, f, pred, color, ctr, labels); <span class="hljs-comment">// 开始访问</span><br>        &#125;<br>    &#125;<br>&#125;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 创建一个包含 5 个顶点的图</span><br>    <span class="hljs-title class_">Graph</span> <span class="hljs-title function_">graph</span>(<span class="hljs-number">5</span>);<br>    graph.<span class="hljs-title function_">addEdge</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);<br>    graph.<span class="hljs-title function_">addEdge</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>);<br>    graph.<span class="hljs-title function_">addEdge</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>);<br>    graph.<span class="hljs-title function_">addEdge</span>(<span class="hljs-number">1</span>, <span class="hljs-number">4</span>);<br>    graph.<span class="hljs-title function_">addEdge</span>(<span class="hljs-number">2</span>, <span class="hljs-number">4</span>);<br><br>    int n = <span class="hljs-number">5</span>; <span class="hljs-comment">// 顶点数量</span><br>    vector&lt;int&gt; <span class="hljs-title function_">d</span>(n, <span class="hljs-number">0</span>); <span class="hljs-comment">// 发现时间</span><br>    vector&lt;int&gt; <span class="hljs-title function_">f</span>(n, <span class="hljs-number">0</span>); <span class="hljs-comment">// 完成时间</span><br>    vector&lt;int&gt; <span class="hljs-title function_">pred</span>(n, -<span class="hljs-number">1</span>); <span class="hljs-comment">// 前驱</span><br>    vector&lt;vertexColor&gt; <span class="hljs-title function_">color</span>(n, <span class="hljs-attr">vertexColor</span>::white); <span class="hljs-comment">// 顶点颜色</span><br>    list&lt;<span class="hljs-title class_">EdgeLabel</span>&gt; labels; <span class="hljs-comment">// 边标签</span><br><br>    <span class="hljs-comment">// 从顶点 0 开始深度优先搜索</span><br>    <span class="hljs-title function_">dfs_search</span>(graph, n, d, f, pred, color, labels);<br><br>    <span class="hljs-comment">// 输出发现和完成时间</span><br>    cout &lt;&lt; <span class="hljs-string">&quot;顶点\t发现时间\t完成时间\n&quot;</span>;<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>        cout &lt;&lt; i &lt;&lt; <span class="hljs-string">&quot;\t&quot;</span> &lt;&lt; d[i] &lt;&lt; <span class="hljs-string">&quot;\t\t&quot;</span> &lt;&lt; f[i] &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// 输出边标签</span><br>    cout &lt;&lt; <span class="hljs-string">&quot;\n边标签:\n&quot;</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> auto&amp; label : labels) &#123;<br>        cout &lt;&lt; <span class="hljs-string">&quot;(&quot;</span> &lt;&lt; label.<span class="hljs-property">u</span> &lt;&lt; <span class="hljs-string">&quot;, &quot;</span> &lt;&lt; label.<span class="hljs-property">v</span> &lt;&lt; <span class="hljs-string">&quot;) : &quot;</span> &lt;&lt; static_cast&lt;int&gt;(label.<span class="hljs-property">type</span>) &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>下面是两个不同写法的dfs_visit函数的对比：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs_visit</span>(<span class="hljs-params">int u, int&amp; time, vector&lt;int&gt;&amp; d, vector&lt;int&gt;&amp; f, vector&lt;int&gt;&amp; color, vector&lt;vector&lt;int&gt;&gt;&amp; G</span>) &#123;<br>    color[u] = <span class="hljs-number">1</span>;<br>    d[u] = ++time;<br>    <span class="hljs-keyword">for</span> (int v : G[u]) &#123;<br>        <span class="hljs-keyword">if</span> (color[v] == <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-title function_">dfs_visit</span>(v, time, d, f, color, G);<br>        &#125;<br>    &#125;<br>    color[u] = <span class="hljs-number">2</span>;<br>    f[u] = ++time;<br>&#125;<br><span class="hljs-comment">/*</span><br><span class="hljs-comment">这两个 dfs_visit 函数在功能上都是执行深度优先搜索（DFS），但实现上有一些明显的差异。以下是对比和说明：</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">1. 参数类型和数量</span><br><span class="hljs-comment">上段代码中的 dfs_visit:</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">接受的参数有多个，包括图的结构、前驱节点数组、颜色数组、时间计数器、边标签列表等。</span><br><span class="hljs-comment">使用的颜色类型是枚举 vertexColor，用来表示未访问、正在访问和已完成。</span><br><span class="hljs-comment">新代码中的 dfs_visit:</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">参数较少，主要是顶点 u、时间 time、发现时间数组 d、完成时间数组 f、颜色数组 color 和图 G。</span><br><span class="hljs-comment">颜色使用整数（0, 1, 2）来表示状态，分别对应未访问、正在访问和已完成。</span><br><span class="hljs-comment">2. 颜色管理</span><br><span class="hljs-comment">上段代码:</span><br><span class="hljs-comment">使用 vertexColor 枚举来表示顶点的状态，赋值 gray 表示正在访问，赋值 black 表示已完成。</span><br><span class="hljs-comment">新代码:</span><br><span class="hljs-comment">使用简单的整数来表示状态，color[u] = 1 代表正在访问，color[u] = 2 代表已完成。</span><br><span class="hljs-comment">3. 边标签处理</span><br><span class="hljs-comment">上段代码:</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">在遍历邻接点时，记录边的类型（树边、回边、前向边、交叉边），并将这些信息存储在边标签列表中。</span><br><span class="hljs-comment">新代码:</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">没有处理边标签，专注于顶点的发现和完成时间。</span><br><span class="hljs-comment">4. 递归调用</span><br><span class="hljs-comment">上段代码:</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">在递归调用 dfs_visit 之前更新前驱节点数组 pred。</span><br><span class="hljs-comment">新代码:</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">没有更新前驱节点的信息，这可能影响对DFS树的重建或后续操作。</span><br><span class="hljs-comment">5. 代码风格</span><br><span class="hljs-comment">上段代码:</span><br><span class="hljs-comment">使用更丰富的结构体和类型定义，增加了代码的可读性和维护性。</span><br><span class="hljs-comment">新代码:</span><br><span class="hljs-comment">相对简单直接，适合快速实现DFS，但可能在后续分析中缺少某些信息。</span><br><span class="hljs-comment">总结</span><br><span class="hljs-comment">这两个函数的主要目的是相同的，都是实现深度优先搜索。上段代码提供了更多的功能和信息处理（如前驱记录和边标签），而新代码则相对简单，适用于基本的DFS实现。如果你的目标是构建DFS树或分析图的结构，上段代码可能更适合；如果只需要基本的DFS遍历，新代码足够用。</span><br><span class="hljs-comment">*/</span><br></code></pre></td></tr></table></figure>
+<p>如果d[]和f[]不需要,那么这些值的计算过程(以及将其作为函数参数)可以从上例中的代码删除掉。深度优先搜索可以得到关于图中边的额外信息。尤其在深度优先森林中,有四种边。<br>
+<strong>树边</strong><br>
+对于所有pred[v]-u的顶点v,dfs_visit(u)坊问边(w.v)来遍历图。这些边记录了深度优先搜索的进程。上图中的边(s,1)就是一个很好的例子。<br>
+<strong>后边</strong><br>
+当dfs_visit(u)处理到顶点时,如果v是的邻接顶点并且是灰色,那么深度优先搜索就会知道它已经访问过这个顶点。图6-10中的边(8.3)就是一个很好的例子。<br>
+<strong>前边</strong><br>
+当dfs_visit(u)处理到顶点的,如果v是的部接顶点,v的颜色是黑色,而且&amp;在v之前被访问,那么边(w,v)是一个前边。那么深度优先搜索就会知道它已经访问过这个顶点了。图6-10中的边(5,9)就是一个很好的例子。<br>
+<strong>交叉边</strong><br>
+当dfs_visit(u)处理到顶点时,如果的邻接顶色是黑色,而且色是黑色,而且在v之后被访问,那么边(u,v)是一个交叉边。交叉边只是在有向图中存在。标记这些边的代码在上例中。对于无向图,边(w.v)可能会被标记很多次,但是一般来说,只有在这条边第一次被标记时其标记有效。</p>
+<h1>六、算法优化</h1>
+<p>以下是一些常见的优化策略：<br>
+<strong>剪枝：</strong><br>
+在搜索过程中，如果发现某个路径不可能满足目标条件，可以提前结束该路径的搜索，从而减少不必要的计算。<br>
+<strong>使用迭代加深：</strong><br>
+结合深度优先搜索和广度优先搜索的优点，通过在一定深度限制内进行多次深度优先搜索，可以在不消耗太多内存的情况下找到最优解。<br>
+<strong>路径存储：</strong><br>
+对已访问的节点进行标记，避免重复访问，从而减少时间复杂度。使用集合或哈希表来存储已访问节点，可以快速检查节点是否已经被访问。<br>
+<strong>深度限制：</strong><br>
+对于某些问题，可以设置最大深度限制，防止在深度过大的情况下出现栈溢出，尤其是在递归实现中。<br>
+<strong>调整搜索顺序：</strong><br>
+根据启发式信息调整子节点的访问顺序，可以更快地找到目标节点。例如，优先搜索可能更有希望的路径。<br>
+<strong>记忆化搜索：</strong><br>
+将中间结果缓存起来，避免重复计算同样的子问题，提高效率。<br>
+<strong>图的表示：</strong><br>
+选择合适的数据结构表示图（如邻接表或邻接矩阵）可以提高DFS的性能，尤其是在稀疏或密集图中。</p>
+<h1>七、引用及参考文献</h1>
+<p>1.《算法设计手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析：你真的理解图算法吗——深度优先搜索（代码详解+万字长文）</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析：你真的理解图算法吗——深度优先搜索（代码详解+万字长文）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%922%E4%B9%8B%E4%BE%8B%E9%A2%98%E8%AE%B2%E8%A7%A3%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87+%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA+%E5%8A%9B%E6%89%A3%E9%A2%98%EF%BC%89/" title="数据结构与算法分析：专题内容——动态规划2之例题讲解（代码详解+万字长文+算法导论+力扣题）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析：专题内容——动态规划2之例题讲解（代码详解+万字长文+算法导论+力扣题）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：你真的理解排序算法吗——快速排序（代码详解）">
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解排序算法吗——快速排序（代码详解）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

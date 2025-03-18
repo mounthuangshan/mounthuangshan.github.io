@@ -1,0 +1,728 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、前言 有很多问题可以抽象成顶点和有容量限制的边的网络。下面是一些问题：  任务匹配： 现在雇员们要完成一些任务，由于不同雇员在相同个任务上的花费不同，所以我们需要找到一种分配方式，使得总花费最小。 二部图匹配 有一些求职者需要面试一些工作，寻找到一个合理的分配方式，使得尽可能多的人能够找到能够胜任的工作。 运输问题 找到从工厂运输商品到零售商店性价比最高的方法。 转运问题 找到从工厂运输商品到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析：你真的理解网络流算法吗——最大流算法(代码详解+万字长文)">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、前言 有很多问题可以抽象成顶点和有容量限制的边的网络。下面是一些问题：  任务匹配： 现在雇员们要完成一些任务，由于不同雇员在相同个任务上的花费不同，所以我们需要找到一种分配方式，使得总花费最小。 二部图匹配 有一些求职者需要面试一些工作，寻找到一个合理的分配方式，使得尽可能多的人能够找到能够胜任的工作。 运输问题 找到从工厂运输商品到零售商店性价比最高的方法。 转运问题 找到从工厂运输商品到">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)image%5Cca16af6b39ed4961a7c7839079538942.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)image%5Cf1be3ae105a549ada7b57e6a71397edb.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)image%5C8b941fa471554331be51562edf460262.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)image%5C5b1fd7f6e146438481ffc437981d8df3.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)image%5C60c3542490304bfb8de4b2d26238dd7c.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.851Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)image%5Cca16af6b39ed4961a7c7839079538942.png">
+  
+  
+  
+  <title>数据结构与算法分析：你真的理解网络流算法吗——最大流算法(代码详解+万字长文) - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析：你真的理解网络流算法吗——最大流算法(代码详解+万字长文)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          50 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析：你真的理解网络流算法吗——最大流算法(代码详解+万字长文)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、前言</h1>
+<p>有很多问题可以抽象成顶点和有容量限制的边的网络。下面是一些问题：</p>
+<ul>
+<li>任务匹配：<br>
+现在雇员们要完成一些任务，由于不同雇员在相同个任务上的花费不同，所以我们需要找到一种分配方式，使得总花费最小。</li>
+<li>二部图匹配<br>
+有一些求职者需要面试一些工作，寻找到一个合理的分配方式，使得尽可能多的人能够找到能够胜任的工作。</li>
+<li>运输问题<br>
+找到从工厂运输商品到零售商店性价比最高的方法。</li>
+<li>转运问题<br>
+找到从工厂运输商品到零售商店性价比最高的方法，但是这类问题中，我们可以使用一些中转站作为临时仓库。</li>
+<li>最大流<br>
+给定一个网络，网络中的每条边都有一个最大容量，计算出这个网络能够支持的最大流</li>
+</ul>
+<p>首先我们会阐述网络流问题之间的关系，这样能够帮助我们理解这些问题是如何解决的。下图描绘的是这些问题的关系。一条有向边将问题的一般化实例和问题的特例联系起来。例如运输问题就是转运问题的一个特例，因为运输图并不包含任何的中转节点。因此一个能够解决转运问题的程序肯定能够用于解决运输问题。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)image%5Cca16af6b39ed4961a7c7839079538942.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+在专题中，我们将阐述Ford-Fulkerson算法。此算法用来解最大流问题。Ford-Fulkerson算法也可以直接用于二部图匹配问题，它们之间的关系如上图所示。而且，一旦理解了Ford-Fulkerson算法的基本原理，我们不难发现，Ford-Fulkerson算法的框架可以用来解决最小耗费流问题，例如转运问题、运输问题以及任务分配问题。<br>
+从理论上来说，你可以利用线性编程（LP）来解决上图的所有问题，但是你必须得先将这些问题转换成正确的线性表示形式，而且得到的解能够转换成原有的形式。在本章末尾，我们将会举例使用线性编程来解网络流问题。实际上，本专题描述的特定算法解决上图的问题效率要比LP高数个数量级。<br>
+如图下所示，通常我们抽象出来的网络流模型是一个有向图G= (V,E)，V是顶点集，E是边集。图是连通的（虽然并不是每条边都需要展示出来）。有一个源点s∈V，s生产商品，然后通过图的边运输到汇点t∈V消费（也称为终点或者目标点）。网络流假设能够生产无限多的商品，并且汇点能够消费完所有接收到的商品。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)image%5Cf1be3ae105a549ada7b57e6a71397edb.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+每条边（u,v）都有一个流f(u,v)，表示从u运输到v的商品单位数目。同样每条边有一个容量c(u,v)，表示从u运输到v的最大商品单位数。在上图中，每个顶点和每条边都做了标记，我们用数字标记顶点（源点和汇点用s和t标记），用f/c标记边，f/c表示一条边上的流容量以及最大的流容量。例如边（s,v1）标记为5/10，表示这条边上有5个单位的商品在通过这条边，这条边能够承受的最大容量为10个单位。当没有单位通过边（例如v5和v2的边），那么只会在一个灰色方格中标示容量。<br>
+在一个流通过网络时，必须满足如下的限制条件：</p>
+<ul>
+<li>容量限制<br>
+通过一条边的流f(u,v)不能为负，而且不能超过边的容量c(u,v)，即0≤f(u,v)≤c(u,v)。如果在网络中不存在边（u,v），那<br>
+么c(u,v)=0。</li>
+<li>流守恒<br>
+除开源点s和汇点t，每个顶点u∈V必须满足所有的入流等于所有的出流。这个性质确保了在网络中，除了源点和汇点，不会产生和消耗流。</li>
+<li>反对称<br>
+从一致性角度来看，f(v,u)表示的是从顶点u到v的网络流。f(u,v)=-f(v,u) ， 即使在一个有向图中存在两条边（u,v）和（v,u），这个性质也同样成立。</li>
+</ul>
+<p>在接下来的算法中，我们使用一条网络路径$＜v_1,v_2,……,v_n＞$，表示n-1条连续的边$（v_i,v_j）$，这条网络路径中不存在环。在上图的有向图中，一条可能的网络路径是$＜v_3,v_5,v_2,v_4＞$。在一条网络路径中，我们忽略边的方向。下图的一条可能的网络路径是$＜s,v_1,v_4,v_2,v_3,t＞$。</p>
+<h1>二、算法描述</h1>
+<p>在一个流网络中，如果给定了所有边的容量，那么我们可以计算出这个流网络的最大流。也就是说，在每条边都有其容量限制的情况下，从源点s输出，通过这个网络达到汇点的最大流量是可以计算出来的。从一个可行的流（例如每条边的流量为0的流）开始，FordFulkerson持续寻找到一条增广路，这条增广路通过一个s到t的网络，并且这条增广路上可以增加更多的流。如果不能再找到一条增广路，那么算法终止。最大流最小割理论（Ford-Fulkerson，1962）保证没有负流和负容量限制，Ford-Fulkerson肯定能够终止并且能够找出网络中的最大流。</p>
+<h1>三、复杂度分析</h1>
+<p><img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)image%5C8b941fa471554331be51562edf460262.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1>四、适用情况</h1>
+<p>当Ford-Fulkerson算法终止时，顶点集V被分成了两个不相交的子集，S和T（T=V-S）。注意s∈S，t∈T。S是V中不能组成增广路径的顶点集合。我们得到的这两个集合是非常重要的，因为在S和T之间的前向边组成了流网络的“最小割”。也就是说，这些边成了这个流网络的“瓶颈”，因为（a）流网络被分成了两个顶点集合，S和T，这两个顶点集合的流是最小的；（b）在S和T之间的流已经达到容量限制了。<br>
+Ford-Fulkerson肯定能够终止，因为流的单位为整数（FordFulkerson，1962）。使用深度优先搜索的Ford-Fulkerson性能为O(E<em>mf)，取决于得到的最大流的值mf。简单地说，我们可以在每次迭代时向增广路中加入一个单位的流，但是容量巨大的网络可能会需要大量的迭代。在这种情况下，我们会非常惊讶地看到运行时间与问题的规模无关（例如顶点数或者边数），而是和边的容量相关。当使用广度优先搜索时（又名Edmonds-Karp算法），性能为$O(V</em>E^2)$。广度优先搜索能够在O(V+E)的时间内找到最短的增广路，如果顶点比边数少很多，那么实际性能是O(E)。Cormen等（2001）曾证明基于广度优先搜索的Ford-Fulkerson算法是按照长度来依次求出增广路的，而不是像深度优先搜索那样花费大量的时间，尝试尽可能接近汇点。<br>
+最大流算法（Maximum Flow Algorithm）是图论中的经典算法，用于求解网络中从源点到汇点的最大流量。它在许多实际问题中都有广泛的应用，尤其是在需要优化资源分配或路径选择的场景中。<br>
+最大流算法的核心思想是通过优化流量分配来解决实际问题。</p>
+<h1>五、算法实现</h1>
+<p>Ford-Fulkerson基于如下结构：</p>
+<ul>
+<li>FlowNetwork<br>
+表示这个网络流问题。这个抽象类可以有两种实现，一种基于邻接表，另外一种使用数组。getEdgeStructure()方法返回的是存储边集的结构。</li>
+<li>VertexStructure<br>
+为顶点维护两个链表，分别存储的是前向边和后向边。</li>
+<li>EdgeInfo<br>
+在网络流中记录边的信息。</li>
+<li>VertexInfo<br>
+在数组中记录搜索到的增广路，增广路的前部节点和这个节点是否有一个前向边或者后向边。</li>
+</ul>
+<p>下面是Ford-Fulkerson的一个实现，其流程如下图所示。一个可配置的Search对象能够计算出网络中的增广路，在容量限制内向网络中加入更多的流。如果在之前迭代的过程中做出的是次优决定，那么Ford-Fulkerson的搜索将会继续，但是不需要撤销之前的工作。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)image%5C5b1fd7f6e146438481ffc437981d8df3.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;vector&gt;<br>#include &lt;climits&gt;<br>#include &lt;algorithm&gt;<br>#include &lt;iostream&gt;<br><br><span class="hljs-comment">// 前向声明</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FlowNetwork</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Search</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">VertexInfo</span>;<br><br><span class="hljs-comment">// 表示流网络边的结构体</span><br>struct <span class="hljs-title class_">Edge</span> &#123;<br>    int capacity;  <span class="hljs-comment">// 容量</span><br>    int flow;      <span class="hljs-comment">// 流量</span><br>    <span class="hljs-title class_">Edge</span>(int cap = <span class="hljs-number">0</span>) : <span class="hljs-title function_">capacity</span>(cap), <span class="hljs-title function_">flow</span>(<span class="hljs-params"><span class="hljs-number">0</span></span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">VertexInfo</span> &#123;<br><span class="hljs-attr">public</span>:<br>    int previous;  <span class="hljs-comment">// 前驱节点</span><br>    bool forward;  <span class="hljs-comment">// 是否为正向边</span><br>    <span class="hljs-title class_">VertexInfo</span>() : <span class="hljs-title function_">previous</span>(-<span class="hljs-number">1</span>), <span class="hljs-title function_">forward</span>(<span class="hljs-params"><span class="hljs-literal">true</span></span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FlowNetwork</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">Edge</span>&gt;&gt; edges;  <span class="hljs-comment">// 边的矩阵</span><br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">VertexInfo</span>&gt; vertices;      <span class="hljs-comment">// 顶点信息</span><br>    int sourceIndex;                       <span class="hljs-comment">// 源点索引</span><br>    int sinkIndex;                         <span class="hljs-comment">// 汇点索引</span><br>    <br>    <span class="hljs-title class_">FlowNetwork</span>(int n, int source, int sink) <br>        : <span class="hljs-title function_">edges</span>(n, <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">Edge</span>&gt;(n)), <br>          <span class="hljs-title function_">vertices</span>(n),<br>          <span class="hljs-title function_">sourceIndex</span>(source),<br>          <span class="hljs-title function_">sinkIndex</span>(<span class="hljs-params">sink</span>) &#123;&#125;<br>    <br>    <span class="hljs-title class_">Edge</span>&amp; <span class="hljs-title function_">edge</span>(<span class="hljs-params">int u, int v</span>) &#123;<br>        <span class="hljs-keyword">return</span> edges[u][v];<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Search</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual bool <span class="hljs-title function_">findAugmentingPath</span>(<span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">VertexInfo</span>&gt;&amp; vertices) = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 寻找增广路径</span><br>    virtual ~<span class="hljs-title class_">Search</span>() &#123;&#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FordFulkerson</span> &#123;<br><span class="hljs-attr">private</span>:<br>    <span class="hljs-title class_">FlowNetwork</span>&amp; network;  <span class="hljs-comment">// 流网络</span><br>    <span class="hljs-title class_">Search</span>&amp; searchMethod;  <span class="hljs-comment">// 搜索方法</span><br><br><span class="hljs-attr">protected</span>:<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">processPath</span>(<span class="hljs-params">std::vector&lt;VertexInfo&gt;&amp; vertices</span>) &#123;<br>        int v = network.<span class="hljs-property">sinkIndex</span>;<br>        int delta = <span class="hljs-variable constant_">INT_MAX</span>;  <span class="hljs-comment">// 寻找最小流量</span><br>        <br>        <span class="hljs-comment">// 第一遍：找到最小的剩余容量</span><br>        <span class="hljs-keyword">while</span> (v != network.<span class="hljs-property">sourceIndex</span>) &#123;<br>            int u = vertices[v].<span class="hljs-property">previous</span>;<br>            int flow;<br>            <br>            <span class="hljs-keyword">if</span> (vertices[v].<span class="hljs-property">forward</span>) &#123;<br>                <span class="hljs-comment">// 使用剩余容量调整正向边</span><br>                flow = network.<span class="hljs-title function_">edge</span>(u, v).<span class="hljs-property">capacity</span> - network.<span class="hljs-title function_">edge</span>(u, v).<span class="hljs-property">flow</span>;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-comment">// 减少反向边的流量</span><br>                flow = network.<span class="hljs-title function_">edge</span>(v, u).<span class="hljs-property">flow</span>;<br>            &#125;<br>            <br>            <span class="hljs-keyword">if</span> (flow &lt; delta) &#123;<br>                delta = flow;<br>            &#125;<br>            v = u;  <span class="hljs-comment">// 回溯路径</span><br>        &#125;<br>        <br>        <span class="hljs-comment">// 第二遍：更新流量值</span><br>        v = network.<span class="hljs-property">sinkIndex</span>;<br>        <span class="hljs-keyword">while</span> (v != network.<span class="hljs-property">sourceIndex</span>) &#123;<br>            int u = vertices[v].<span class="hljs-property">previous</span>;<br>            <span class="hljs-keyword">if</span> (vertices[v].<span class="hljs-property">forward</span>) &#123;<br>                network.<span class="hljs-title function_">edge</span>(u, v).<span class="hljs-property">flow</span> += delta;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                network.<span class="hljs-title function_">edge</span>(v, u).<span class="hljs-property">flow</span> -= delta;<br>            &#125;<br>            v = u;  <span class="hljs-comment">// 回溯路径</span><br>        &#125;<br>        <br>        <span class="hljs-comment">// 清除中间结果，为下一次迭代做准备</span><br>        <span class="hljs-attr">std</span>::<span class="hljs-title function_">fill</span>(vertices.<span class="hljs-title function_">begin</span>(), vertices.<span class="hljs-title function_">end</span>(), <span class="hljs-title class_">VertexInfo</span>());<br>    &#125;<br><br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">FordFulkerson</span>(<span class="hljs-title class_">FlowNetwork</span>&amp; network, <span class="hljs-title class_">Search</span>&amp; method)<br>        : <span class="hljs-title function_">network</span>(network), <span class="hljs-title function_">searchMethod</span>(<span class="hljs-params">method</span>) &#123;&#125;<br>    <br>    bool <span class="hljs-title function_">compute</span>(<span class="hljs-params"></span>) &#123;<br>        bool augmented = <span class="hljs-literal">false</span>;<br>        <span class="hljs-keyword">while</span> (searchMethod.<span class="hljs-title function_">findAugmentingPath</span>(network.<span class="hljs-property">vertices</span>)) &#123;<br>            <span class="hljs-title function_">processPath</span>(network.<span class="hljs-property">vertices</span>);<br>            augmented = <span class="hljs-literal">true</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> augmented;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 用于测试的 Search 实现示例</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SimpleSearch</span> : public <span class="hljs-title class_">Search</span> &#123;<br><span class="hljs-attr">public</span>:<br>    bool <span class="hljs-title function_">findAugmentingPath</span>(<span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">VertexInfo</span>&gt;&amp; vertices) override &#123;<br>        <span class="hljs-comment">// 简化的实现，仅用于演示</span><br>        <span class="hljs-comment">// 实际使用时，应在此处实现 BFS 或 DFS</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>&#125;;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 创建一个包含 4 个顶点的流网络</span><br>    <span class="hljs-comment">// 源点: 0, 汇点: 3</span><br>    <span class="hljs-title class_">FlowNetwork</span> <span class="hljs-title function_">network</span>(<span class="hljs-number">4</span>, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>);<br>    <br>    <span class="hljs-comment">// 设置一些边的容量</span><br>    network.<span class="hljs-title function_">edge</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>).<span class="hljs-property">capacity</span> = <span class="hljs-number">10</span>;<br>    network.<span class="hljs-title function_">edge</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>).<span class="hljs-property">capacity</span> = <span class="hljs-number">5</span>;<br>    network.<span class="hljs-title function_">edge</span>(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>).<span class="hljs-property">capacity</span> = <span class="hljs-number">8</span>;<br>    <br>    <span class="hljs-comment">// 创建搜索方法</span><br>    <span class="hljs-title class_">SimpleSearch</span> search;<br>    <br>    <span class="hljs-comment">// 创建 Ford-Fulkerson 实例</span><br>    <span class="hljs-title class_">FordFulkerson</span> <span class="hljs-title function_">ff</span>(network, search);<br>    <br>    <span class="hljs-comment">// 计算最大流</span><br>    bool success = ff.<span class="hljs-title function_">compute</span>();<br>    <br>    <span class="hljs-keyword">if</span> (success) &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;成功计算最大流\n&quot;</span>;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;未找到增广路径\n&quot;</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>任何自下图的抽象Search类扩展出的搜索方法都能够用来寻找一条增广路。Ford-Fulkerson的原始版本是使用深度优先搜索，不过Edmonds-Karp使用的是广度优先搜索。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%9C%80%E5%A4%A7%E6%B5%81%E7%AE%97%E6%B3%95(%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87)image%5C60c3542490304bfb8de4b2d26238dd7c.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+下例的流网络是使用深度优先搜索寻找增广路得到的结果，下面是其实现。路径使用栈来存储顶点。我们从栈中弹出一个顶点u，然后找到u的一个未访问顶点v，且满足这样两个条件：（i）边（u,v）是一条前向边并且还有多余的容量；（ii）边（v,u）是一条前向边，并且通过这条边的流可以减少。那么我们就能够找到一条潜在的增广路。最后，我们达到了汇点t，这样就找到了一条增广路径，或者路径为空，表示没有增广路。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;vector&gt;<br>#include &lt;stack&gt;<br>#include &lt;memory&gt;<br>#include &lt;iostream&gt;<br><br><span class="hljs-comment">// 边信息结构体</span><br>struct <span class="hljs-title class_">EdgeInfo</span> &#123;<br>    int start;    <span class="hljs-comment">// 起点</span><br>    int end;      <span class="hljs-comment">// 终点</span><br>    int capacity; <span class="hljs-comment">// 容量</span><br>    int flow;     <span class="hljs-comment">// 当前流量</span><br>    <br>    <span class="hljs-title class_">EdgeInfo</span>(int s, int e, int c, int f = <span class="hljs-number">0</span>) <br>        : <span class="hljs-title function_">start</span>(s), <span class="hljs-title function_">end</span>(e), <span class="hljs-title function_">capacity</span>(c), <span class="hljs-title function_">flow</span>(<span class="hljs-params">f</span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-comment">// 顶点信息结构体</span><br>struct <span class="hljs-title class_">VertexInfo</span> &#123;<br>    int previous;  <span class="hljs-comment">// 前驱节点</span><br>    bool forward;  <span class="hljs-comment">// 是否为前向边</span><br>    <br>    <span class="hljs-title class_">VertexInfo</span>(int prev = -<span class="hljs-number">1</span>, bool fwd = <span class="hljs-literal">true</span>) <br>        : <span class="hljs-title function_">previous</span>(prev), <span class="hljs-title function_">forward</span>(<span class="hljs-params">fwd</span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-comment">// 顶点边结构类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">VertexStructure</span> &#123;<br><span class="hljs-attr">private</span>:<br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">EdgeInfo</span>&gt; forwardEdges;   <span class="hljs-comment">// 前向边列表</span><br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">EdgeInfo</span>&gt; backwardEdges;  <span class="hljs-comment">// 后向边列表</span><br>    <br><span class="hljs-attr">public</span>:<br>    <span class="hljs-comment">// 获取前向边迭代器</span><br>    auto <span class="hljs-title function_">forward</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-keyword">return</span> forwardEdges.<span class="hljs-title function_">begin</span>(); &#125;<br>    auto <span class="hljs-title function_">forward_end</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-keyword">return</span> forwardEdges.<span class="hljs-title function_">end</span>(); &#125;<br>    <br>    <span class="hljs-comment">// 获取后向边迭代器</span><br>    auto <span class="hljs-title function_">backward</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-keyword">return</span> backwardEdges.<span class="hljs-title function_">begin</span>(); &#125;<br>    auto <span class="hljs-title function_">backward_end</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-keyword">return</span> backwardEdges.<span class="hljs-title function_">end</span>(); &#125;<br>    <br>    <span class="hljs-comment">// 添加边</span><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-params"><span class="hljs-keyword">const</span> EdgeInfo&amp; edge</span>) &#123;<br>        forwardEdges.<span class="hljs-title function_">push_back</span>(edge);<br>    &#125;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">addBackwardEdge</span>(<span class="hljs-params"><span class="hljs-keyword">const</span> EdgeInfo&amp; edge</span>) &#123;<br>        backwardEdges.<span class="hljs-title function_">push_back</span>(edge);<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PathFinder</span> &#123;<br><span class="hljs-attr">private</span>:<br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">VertexStructure</span>&gt;&amp; network;  <span class="hljs-comment">// 网络结构</span><br>    int sourceIndex;  <span class="hljs-comment">// 源点索引</span><br>    int sinkIndex;   <span class="hljs-comment">// 汇点索引</span><br>    <span class="hljs-keyword">const</span> bool <span class="hljs-variable constant_">FORWARD</span> = <span class="hljs-literal">true</span>;    <span class="hljs-comment">// 前向边标志</span><br>    <span class="hljs-keyword">const</span> bool <span class="hljs-variable constant_">BACKWARD</span> = <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 后向边标志</span><br><br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">PathFinder</span>(<span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">VertexStructure</span>&gt;&amp; net, int source, int sink)<br>        : <span class="hljs-title function_">network</span>(net), <span class="hljs-title function_">sourceIndex</span>(source), <span class="hljs-title function_">sinkIndex</span>(<span class="hljs-params">sink</span>) &#123;&#125;<br>    <br>    bool <span class="hljs-title function_">findAugmentingPath</span>(<span class="hljs-params">std::vector&lt;std::unique_ptr&lt;VertexInfo&gt;&gt;&amp; vertices</span>) &#123;<br>        <span class="hljs-comment">// 初始化源点信息</span><br>        vertices[sourceIndex] = <span class="hljs-attr">std</span>::make_unique&lt;<span class="hljs-title class_">VertexInfo</span>&gt;(-<span class="hljs-number">1</span>);<br>        <br>        <span class="hljs-comment">// 使用栈存储路径</span><br>        <span class="hljs-attr">std</span>::stack&lt;int&gt; path;<br>        path.<span class="hljs-title function_">push</span>(sourceIndex);<br>        <br>        <span class="hljs-comment">// 当栈不为空时继续搜索</span><br>        <span class="hljs-keyword">while</span> (!path.<span class="hljs-title function_">empty</span>()) &#123;<br>            int u = path.<span class="hljs-title function_">top</span>();<br>            path.<span class="hljs-title function_">pop</span>();<br>            <br>            <span class="hljs-comment">// 处理前向边</span><br>            <span class="hljs-keyword">for</span> (auto it = network[u].<span class="hljs-title function_">forward</span>(); it != network[u].<span class="hljs-title function_">forward_end</span>(); ++it) &#123;<br>                int v = it-&gt;end;<br>                <br>                <span class="hljs-comment">// 如果顶点未访问且有剩余容量，准备增加流</span><br>                <span class="hljs-keyword">if</span> (!vertices[v] &amp;&amp; it-&gt;capacity &gt; it-&gt;flow) &#123;<br>                    vertices[v] = <span class="hljs-attr">std</span>::make_unique&lt;<span class="hljs-title class_">VertexInfo</span>&gt;(u, <span class="hljs-variable constant_">FORWARD</span>);<br>                    <span class="hljs-keyword">if</span> (v == sinkIndex) &#123;<br>                        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;  <span class="hljs-comment">// 找到增广路</span><br>                    &#125;<br>                    path.<span class="hljs-title function_">push</span>(v);<br>                &#125;<br>            &#125;<br>            <br>            <span class="hljs-comment">// 处理后向边</span><br>            <span class="hljs-keyword">for</span> (auto it = network[u].<span class="hljs-title function_">backward</span>(); it != network[u].<span class="hljs-title function_">backward_end</span>(); ++it) &#123;<br>                int v = it-&gt;start;<br>                <br>                <span class="hljs-comment">// 如果顶点未访问且可以减少流</span><br>                <span class="hljs-keyword">if</span> (!vertices[v] &amp;&amp; it-&gt;flow &gt; <span class="hljs-number">0</span>) &#123;<br>                    vertices[v] = <span class="hljs-attr">std</span>::make_unique&lt;<span class="hljs-title class_">VertexInfo</span>&gt;(u, <span class="hljs-variable constant_">BACKWARD</span>);<br>                    path.<span class="hljs-title function_">push</span>(v);<br>                &#125;<br>            &#125;<br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 未找到增广路</span><br>    &#125;<br>&#125;;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 创建示例网络</span><br>    <span class="hljs-keyword">const</span> int n = <span class="hljs-number">6</span>;  <span class="hljs-comment">// 顶点数量</span><br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">VertexStructure</span>&gt; <span class="hljs-title function_">network</span>(n);<br>    <br>    <span class="hljs-comment">// 添加示例边</span><br>    <span class="hljs-comment">// 向前向边列表添加边</span><br>    network[<span class="hljs-number">0</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">10</span>));<br>    network[<span class="hljs-number">0</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>));<br>    network[<span class="hljs-number">1</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>));<br>    network[<span class="hljs-number">1</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>));<br>    network[<span class="hljs-number">2</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">10</span>));<br>    network[<span class="hljs-number">3</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>));<br>    network[<span class="hljs-number">3</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>));<br>    network[<span class="hljs-number">4</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>));<br>    <br>    <span class="hljs-comment">// 向后向边列表添加对应的反向边</span><br>    network[<span class="hljs-number">1</span>].<span class="hljs-title function_">addBackwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>));<br>    network[<span class="hljs-number">2</span>].<span class="hljs-title function_">addBackwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>));<br>    network[<span class="hljs-number">2</span>].<span class="hljs-title function_">addBackwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>));<br>    network[<span class="hljs-number">3</span>].<span class="hljs-title function_">addBackwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>));<br>    network[<span class="hljs-number">4</span>].<span class="hljs-title function_">addBackwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">10</span>));<br>    network[<span class="hljs-number">4</span>].<span class="hljs-title function_">addBackwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>));<br>    network[<span class="hljs-number">5</span>].<span class="hljs-title function_">addBackwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">5</span>, <span class="hljs-number">3</span>, <span class="hljs-number">8</span>));<br>    network[<span class="hljs-number">5</span>].<span class="hljs-title function_">addBackwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">10</span>));<br>    <br>    <span class="hljs-comment">// 创建顶点信息数组</span><br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::unique_ptr&lt;<span class="hljs-title class_">VertexInfo</span>&gt;&gt; <span class="hljs-title function_">vertices</span>(n);<br>    <br>    <span class="hljs-comment">// 创建路径查找器（源点为0，汇点为5）</span><br>    <span class="hljs-title class_">PathFinder</span> <span class="hljs-title function_">pathFinder</span>(network, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);<br>    <br>    <span class="hljs-comment">// 查找增广路并输出结果</span><br>    <span class="hljs-keyword">if</span> (pathFinder.<span class="hljs-title function_">findAugmentingPath</span>(vertices)) &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;找到增广路！&quot;</span> &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>        <br>        <span class="hljs-comment">// 打印增广路径</span><br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;增广路径: &quot;</span>;<br>        int v = <span class="hljs-number">5</span>;  <span class="hljs-comment">// 从汇点开始</span><br>        <span class="hljs-keyword">while</span> (v != -<span class="hljs-number">1</span>) &#123;<br>            <span class="hljs-attr">std</span>::cout &lt;&lt; v;<br>            <span class="hljs-keyword">if</span> (vertices[v] &amp;&amp; vertices[v]-&gt;previous != -<span class="hljs-number">1</span>) &#123;<br>                <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot; &lt;- &quot;</span>;<br>            &#125;<br>            v = vertices[v] ? vertices[v]-&gt;previous : -<span class="hljs-number">1</span>;<br>        &#125;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;未找到增广路。&quot;</span> &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>下例的流网络是使用深度优先搜索寻找增广路得到的结果，顶点之间的后向指针由VertexInfo[]结构来维护，这样<br>
+FordFulkerson.processPath方法能够遍历这条增广路。广度优先搜索的实现，又名Edmonds-Karp算法，其实现见下例。在搜索过程中，路径的结构是顶点组成的队列。我们从队列头移除顶点u，然后将可能组成增广路径的邻接顶点加入到队列尾部，这就是我们扩展潜在增广路径的方式。同样，我们达到了汇点t，这样就找到了一条增广路径，或者路径为空，表示没有增广路，此时算法结束。我们使用前面的流网络，使用广度优先搜索能够找到4条增广路，分别是＜s,1,3,t＞，＜s,1,4,t＞，＜s,2,3,t＞和＜s,2,4,t＞。也得到了相同的最大流。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;vector&gt;<br>#include &lt;list&gt;<br>#include &lt;memory&gt;<br>#include &lt;iostream&gt;<br><br><span class="hljs-comment">// 边的信息结构体</span><br>struct <span class="hljs-title class_">EdgeInfo</span> &#123;<br>    int start;  <span class="hljs-comment">// 起点</span><br>    int end;    <span class="hljs-comment">// 终点</span><br>    int capacity; <span class="hljs-comment">// 容量</span><br>    int flow;    <span class="hljs-comment">// 当前流量</span><br>    <br>    <span class="hljs-title class_">EdgeInfo</span>(int s, int e, int c, int f = <span class="hljs-number">0</span>)<br>        : <span class="hljs-title function_">start</span>(s), <span class="hljs-title function_">end</span>(e), <span class="hljs-title function_">capacity</span>(c), <span class="hljs-title function_">flow</span>(<span class="hljs-params">f</span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-comment">// 顶点信息结构体</span><br>struct <span class="hljs-title class_">VertexInfo</span> &#123;<br>    int previous;  <span class="hljs-comment">// 前驱节点</span><br>    bool forward;  <span class="hljs-comment">// 是否是前向边</span><br>    <br>    <span class="hljs-title class_">VertexInfo</span>(int prev = -<span class="hljs-number">1</span>, bool fwd = <span class="hljs-literal">true</span>) <br>        : <span class="hljs-title function_">previous</span>(prev), <span class="hljs-title function_">forward</span>(<span class="hljs-params">fwd</span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-comment">// 顶点的边结构类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">VertexStructure</span> &#123;<br><span class="hljs-attr">private</span>:<br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">EdgeInfo</span>&gt; forwardEdges;   <span class="hljs-comment">// 前向边列表</span><br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">EdgeInfo</span>&gt; backwardEdges;  <span class="hljs-comment">// 后向边列表</span><br>    <br><span class="hljs-attr">public</span>:<br>    <span class="hljs-comment">// 获取前向边迭代器</span><br>    auto <span class="hljs-title function_">forward</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-keyword">return</span> forwardEdges.<span class="hljs-title function_">begin</span>(); &#125;<br>    auto <span class="hljs-title function_">forward_end</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-keyword">return</span> forwardEdges.<span class="hljs-title function_">end</span>(); &#125;<br>    <br>    <span class="hljs-comment">// 获取后向边迭代器</span><br>    auto <span class="hljs-title function_">backward</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-keyword">return</span> backwardEdges.<span class="hljs-title function_">begin</span>(); &#125;<br>    auto <span class="hljs-title function_">backward_end</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-keyword">return</span> backwardEdges.<span class="hljs-title function_">end</span>(); &#125;<br>    <br>    <span class="hljs-comment">// 添加边</span><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-params"><span class="hljs-keyword">const</span> EdgeInfo&amp; edge</span>) &#123;<br>        forwardEdges.<span class="hljs-title function_">push_back</span>(edge);<br>    &#125;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">addBackwardEdge</span>(<span class="hljs-params"><span class="hljs-keyword">const</span> EdgeInfo&amp; edge</span>) &#123;<br>        backwardEdges.<span class="hljs-title function_">push_back</span>(edge);<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PathFinder</span> &#123;<br><span class="hljs-attr">private</span>:<br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">VertexStructure</span>&gt;&amp; network;  <span class="hljs-comment">// 网络结构</span><br>    int sourceIndex;  <span class="hljs-comment">// 源点索引</span><br>    int sinkIndex;   <span class="hljs-comment">// 汇点索引</span><br>    <span class="hljs-keyword">const</span> bool <span class="hljs-variable constant_">FORWARD</span> = <span class="hljs-literal">true</span>;    <span class="hljs-comment">// 前向边标志</span><br>    <span class="hljs-keyword">const</span> bool <span class="hljs-variable constant_">BACKWARD</span> = <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 后向边标志</span><br><br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">PathFinder</span>(<span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">VertexStructure</span>&gt;&amp; net, int source, int sink)<br>        : <span class="hljs-title function_">network</span>(net), <span class="hljs-title function_">sourceIndex</span>(source), <span class="hljs-title function_">sinkIndex</span>(<span class="hljs-params">sink</span>) &#123;&#125;<br>    <br>    bool <span class="hljs-title function_">findAugmentingPath</span>(<span class="hljs-params">std::vector&lt;std::unique_ptr&lt;VertexInfo&gt;&gt;&amp; vertices</span>) &#123;<br>        <span class="hljs-comment">// 初始化源点信息</span><br>        vertices[sourceIndex] = <span class="hljs-attr">std</span>::make_unique&lt;<span class="hljs-title class_">VertexInfo</span>&gt;(-<span class="hljs-number">1</span>);<br>        <br>        <span class="hljs-comment">// 使用双向链表存储路径</span><br>        <span class="hljs-attr">std</span>::list&lt;int&gt; path;<br>        path.<span class="hljs-title function_">push_back</span>(sourceIndex);<br>        <br>        <span class="hljs-comment">// 当路径不为空时继续搜索</span><br>        <span class="hljs-keyword">while</span> (!path.<span class="hljs-title function_">empty</span>()) &#123;<br>            int u = path.<span class="hljs-title function_">front</span>();<br>            path.<span class="hljs-title function_">pop_front</span>();<br>            <br>            <span class="hljs-comment">// 处理前向边</span><br>            <span class="hljs-keyword">for</span> (auto it = network[u].<span class="hljs-title function_">forward</span>(); it != network[u].<span class="hljs-title function_">forward_end</span>(); ++it) &#123;<br>                int v = it-&gt;end;<br>                <br>                <span class="hljs-comment">// 如果顶点未访问且有剩余容量，准备增加流</span><br>                <span class="hljs-keyword">if</span> (!vertices[v] &amp;&amp; it-&gt;capacity &gt; it-&gt;flow) &#123;<br>                    vertices[v] = <span class="hljs-attr">std</span>::make_unique&lt;<span class="hljs-title class_">VertexInfo</span>&gt;(u, <span class="hljs-variable constant_">FORWARD</span>);<br>                    <span class="hljs-keyword">if</span> (v == sinkIndex) &#123;<br>                        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;  <span class="hljs-comment">// 找到增广路</span><br>                    &#125;<br>                    path.<span class="hljs-title function_">push_back</span>(v);  <span class="hljs-comment">// 加入路径尾部</span><br>                &#125;<br>            &#125;<br>            <br>            <span class="hljs-comment">// 处理后向边</span><br>            <span class="hljs-keyword">for</span> (auto it = network[u].<span class="hljs-title function_">backward</span>(); it != network[u].<span class="hljs-title function_">backward_end</span>(); ++it) &#123;<br>                int v = it-&gt;start;<br>                <br>                <span class="hljs-comment">// 如果顶点未访问且可以减少流</span><br>                <span class="hljs-keyword">if</span> (!vertices[v] &amp;&amp; it-&gt;flow &gt; <span class="hljs-number">0</span>) &#123;<br>                    vertices[v] = <span class="hljs-attr">std</span>::make_unique&lt;<span class="hljs-title class_">VertexInfo</span>&gt;(u, <span class="hljs-variable constant_">BACKWARD</span>);<br>                    path.<span class="hljs-title function_">push_back</span>(v);  <span class="hljs-comment">// 加入路径尾部</span><br>                &#125;<br>            &#125;<br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 未找到增广路</span><br>    &#125;<br>&#125;;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 创建示例网络</span><br>    <span class="hljs-keyword">const</span> int n = <span class="hljs-number">4</span>;  <span class="hljs-comment">// 顶点数量</span><br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">VertexStructure</span>&gt; <span class="hljs-title function_">network</span>(n);<br>    <br>    <span class="hljs-comment">// 添加边</span><br>    <span class="hljs-comment">// 示例：添加一些边到网络中</span><br>    network[<span class="hljs-number">0</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">10</span>));<br>    network[<span class="hljs-number">0</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>));<br>    network[<span class="hljs-number">1</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>));<br>    network[<span class="hljs-number">1</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>));<br>    network[<span class="hljs-number">2</span>].<span class="hljs-title function_">addForwardEdge</span>(<span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">10</span>));<br>    <br>    <span class="hljs-comment">// 创建顶点信息数组</span><br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::unique_ptr&lt;<span class="hljs-title class_">VertexInfo</span>&gt;&gt; <span class="hljs-title function_">vertices</span>(n);<br>    <br>    <span class="hljs-comment">// 创建路径查找器</span><br>    <span class="hljs-title class_">PathFinder</span> <span class="hljs-title function_">pathFinder</span>(network, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>);  <span class="hljs-comment">// 源点为0，汇点为3</span><br>    <br>    <span class="hljs-comment">// 查找增广路</span><br>    bool found = pathFinder.<span class="hljs-title function_">findAugmentingPath</span>(vertices);<br>    <br>    <span class="hljs-comment">// 输出结果</span><br>    <span class="hljs-keyword">if</span> (found) &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;找到增广路！&quot;</span> &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>        <br>        <span class="hljs-comment">// 打印路径</span><br>        int v = <span class="hljs-number">3</span>;  <span class="hljs-comment">// 从汇点开始</span><br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;路径: &quot;</span>;<br>        <span class="hljs-keyword">while</span> (v != -<span class="hljs-number">1</span>) &#123;<br>            <span class="hljs-attr">std</span>::cout &lt;&lt; v;<br>            <span class="hljs-keyword">if</span> (vertices[v] &amp;&amp; vertices[v]-&gt;previous != -<span class="hljs-number">1</span>) &#123;<br>                <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot; &lt;- &quot;</span>;<br>            &#125;<br>            v = vertices[v] ? vertices[v]-&gt;previous : -<span class="hljs-number">1</span>;<br>        &#125;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;未找到增广路。&quot;</span> &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>六、算法优化</h1>
+<p>流网络的典型实现方式是使用数组存储信息。我们在这里使用的是可读性比较高的代码来解释算法，能够使读者理解算法是如何工作的。但是我们很有必要考虑一下，在代码上做优化能够获得多大的性能提升。在前面的专题中，我们在n位数乘法中获得了40%的性能提升。很明显，我们可以编写出更快的代码，但是代码可能可读性较差，而且不易维护。下例是Ford-Fulkerson算法C++实现的优化版本。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;vector&gt;<br>#include &lt;climits&gt;<br>#include &lt;queue&gt;<br>#include &lt;iostream&gt;<br><br><span class="hljs-comment">// 基类的前向声明</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FlowNetwork</span> &#123;<br><span class="hljs-attr">protected</span>:<br>    int numVertices;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">FlowNetwork</span>(int n, int s, int t) : <span class="hljs-title function_">numVertices</span>(<span class="hljs-params">n</span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-comment">// 边的信息结构体</span><br>struct <span class="hljs-title class_">EdgeInfo</span> &#123;<br>    int start;<br>    int end;<br>    int capacity;<br>    <span class="hljs-title class_">EdgeInfo</span>(int s, int e, int c) : <span class="hljs-title function_">start</span>(s), <span class="hljs-title function_">end</span>(e), <span class="hljs-title function_">capacity</span>(<span class="hljs-params">c</span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Optimized</span> : public <span class="hljs-title class_">FlowNetwork</span> &#123;<br><span class="hljs-attr">private</span>:<br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::vector&lt;int&gt;&gt; capacity;  <span class="hljs-comment">// 容量矩阵</span><br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::vector&lt;int&gt;&gt; flow;      <span class="hljs-comment">// 流量矩阵</span><br>    <span class="hljs-attr">std</span>::vector&lt;int&gt; previous;               <span class="hljs-comment">// 前驱节点信息</span><br>    <span class="hljs-attr">std</span>::vector&lt;int&gt; visited;                <span class="hljs-comment">// 访问状态</span><br>    <span class="hljs-keyword">const</span> int <span class="hljs-variable constant_">QUEUE_SIZE</span>;                    <span class="hljs-comment">// 队列的最大大小</span><br>    <span class="hljs-attr">std</span>::vector&lt;int&gt; queue;                  <span class="hljs-comment">// 循环队列</span><br><br><span class="hljs-attr">protected</span>:<br>    int <span class="hljs-title function_">processPath</span>(<span class="hljs-params">int source, int sink</span>) &#123;<br>        <span class="hljs-comment">// 计算可以增加的流量</span><br>        int increment = <span class="hljs-variable constant_">INT_MAX</span>;<br>        int v = sink;<br>        <br>        <span class="hljs-keyword">while</span> (previous[v] != -<span class="hljs-number">1</span>) &#123;<br>            int unit = capacity[previous[v]][v] - flow[previous[v]][v];<br>            <span class="hljs-keyword">if</span> (unit &lt; increment) &#123;<br>                increment = unit;<br>            &#125;<br>            v = previous[v];<br>        &#125;<br>        <br>        <span class="hljs-comment">// 增加流量</span><br>        v = sink;<br>        <span class="hljs-keyword">while</span> (previous[v] != -<span class="hljs-number">1</span>) &#123;<br>            flow[previous[v]][v] += increment;    <span class="hljs-comment">// 正向边</span><br>            flow[v][previous[v]] -= increment;    <span class="hljs-comment">// 反向边</span><br>            v = previous[v];<br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> increment;<br>    &#125;<br><br><span class="hljs-attr">public</span>:<br>    <span class="hljs-comment">// 构造函数</span><br>    <span class="hljs-title class_">Optimized</span>(int n, int s, int t, <span class="hljs-keyword">const</span> <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">EdgeInfo</span>&gt;&amp; edges) <br>        : <span class="hljs-title class_">FlowNetwork</span>(n, s, t), <br>          <span class="hljs-title function_">QUEUE_SIZE</span>(n),<br>          <span class="hljs-title function_">capacity</span>(n, <span class="hljs-attr">std</span>::vector&lt;int&gt;(n, <span class="hljs-number">0</span>)),<br>          <span class="hljs-title function_">flow</span>(n, <span class="hljs-attr">std</span>::vector&lt;int&gt;(n, <span class="hljs-number">0</span>)),<br>          <span class="hljs-title function_">previous</span>(n, -<span class="hljs-number">1</span>),<br>          <span class="hljs-title function_">visited</span>(n, <span class="hljs-number">0</span>),<br>          <span class="hljs-title function_">queue</span>(<span class="hljs-params">n, <span class="hljs-number">0</span></span>) &#123;<br>        <br>        <span class="hljs-comment">// 初始化流量为0并设置容量</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> auto&amp; ei : edges) &#123;<br>            capacity[ei.<span class="hljs-property">start</span>][ei.<span class="hljs-property">end</span>] = ei.<span class="hljs-property">capacity</span>;<br>        &#125;<br>    &#125;<br><br>    int <span class="hljs-title function_">compute</span>(<span class="hljs-params">int source, int sink</span>) &#123;<br>        int maxFlow = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-title function_">search</span>(source, sink)) &#123;<br>            maxFlow += <span class="hljs-title function_">processPath</span>(source, sink);<br>        &#125;<br>        <span class="hljs-keyword">return</span> maxFlow;<br>    &#125;<br><br>    bool <span class="hljs-title function_">search</span>(<span class="hljs-params">int source, int sink</span>) &#123;<br>        <span class="hljs-comment">// 清除访问状态：0-未访问，1-在队列中，2-已访问</span><br>        <span class="hljs-attr">std</span>::<span class="hljs-title function_">fill</span>(visited.<span class="hljs-title function_">begin</span>(), visited.<span class="hljs-title function_">end</span>(), <span class="hljs-number">0</span>);<br>        <br>        <span class="hljs-comment">// 创建循环队列</span><br>        queue[<span class="hljs-number">0</span>] = source;<br>        int head = <span class="hljs-number">0</span>, tail = <span class="hljs-number">1</span>;<br>        previous[source] = -<span class="hljs-number">1</span>;<br>        visited[source] = <span class="hljs-number">1</span>;<br>        <br>        <span class="hljs-keyword">while</span> (head != tail) &#123;<br>            int u = queue[head];<br>            head = (head + <span class="hljs-number">1</span>) % <span class="hljs-variable constant_">QUEUE_SIZE</span>;<br>            visited[u] = <span class="hljs-number">2</span>;<br>            <br>            <span class="hljs-comment">// 将具有剩余容量的相邻节点加入队列</span><br>            <span class="hljs-keyword">for</span> (int v = <span class="hljs-number">0</span>; v &lt; numVertices; v++) &#123;<br>                <span class="hljs-keyword">if</span> (visited[v] == <span class="hljs-number">0</span> &amp;&amp; capacity[u][v] &gt; flow[u][v]) &#123;<br>                    queue[tail] = v;<br>                    tail = (tail + <span class="hljs-number">1</span>) % <span class="hljs-variable constant_">QUEUE_SIZE</span>;<br>                    visited[v] = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 标记为在队列中</span><br>                    previous[v] = u;<br>                &#125;<br>            &#125;<br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> visited[sink] != <span class="hljs-number">0</span>;  <span class="hljs-comment">// 是否访问了汇点？</span><br>    &#125;<br>&#125;;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 示例用法</span><br>    <span class="hljs-keyword">const</span> int n = <span class="hljs-number">6</span>;  <span class="hljs-comment">// 顶点数量</span><br>    <span class="hljs-keyword">const</span> int source = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">const</span> int sink = <span class="hljs-number">5</span>;<br>    <br>    <span class="hljs-comment">// 创建示例边及其容量</span><br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">EdgeInfo</span>&gt; edges = &#123;<br>        <span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">10</span>),<br>        <span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>),<br>        <span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>),<br>        <span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>),<br>        <span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">10</span>),<br>        <span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>),<br>        <span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>),<br>        <span class="hljs-title class_">EdgeInfo</span>(<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>)<br>    &#125;;<br>    <br>    <span class="hljs-comment">// 创建优化的流网络</span><br>    <span class="hljs-title class_">Optimized</span> <span class="hljs-title function_">network</span>(n, source, sink, edges);<br>    <br>    <span class="hljs-comment">// 计算最大流</span><br>    int maxFlow = network.<span class="hljs-title function_">compute</span>(source, sink);<br>    <br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;从源点 &quot;</span> &lt;&lt; source <br>              &lt;&lt; <span class="hljs-string">&quot; 到汇点 &quot;</span> &lt;&lt; sink &lt;&lt; <span class="hljs-string">&quot; 的最大流: &quot;</span> <br>              &lt;&lt; maxFlow &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>Goldberg和Tarjan（1986）提出的压入与重标记算法将性能提升到O(V<em>E</em>log(V2/E))，并且能够并行化获得更大的性能提升。最大流问题的一个变种，又名多重物资流问题，泛化之后就是最大流问题。简单地说，这种问题就是一个有着多重源点和汇点的网络，并且在不同源点和汇点之间运输不同的物资，而不是像最大流问题中，仅仅只有一个源点和一个汇点。尽管边的容量是固定的，但是每对汇点和源点的使用需求并不一样。现实中，这种算法的应用于无线网中的路由问题（Fragouli和Tabet，2006）。Leighton和Rao撰写过一篇文章（1999），这篇文章被大量的多重物资流问题所引用。最大流的一些简单变种如下：</p>
+<ul>
+<li>顶点容量<br>
+如果流网络中的每个顶点v都有一个最大容量k(v)将会怎么样呢？构建一个修改过的图G’。对于网络中的每个顶点v，构建两个顶点v’和v&quot;。并且创建一条边(v&quot;,v’)，这条边的容量是k(v)。在图G中创建一条容量为c(x,v)的边（x,v），对应原始图G中的容量为c(x,v)的每条边（x,v&quot;）。对应着原始图G中的每条边（v,w），在G’中创建一条新边（v’,w），其容量为k(v)。解出G’也就得到了G的解。</li>
+<li>无向边<br>
+如果流网络G是无向边，那么会怎么样呢？构建一个流网络G’。在新图中，所有的顶点都一样，对应着原始图中容量为c(u,v)的边（u,v），在G’中构建一对新边（u,v）和（v,u），每条边的容量都为c(u,v)。G’的解也就是G的解。</li>
+</ul>
+<h1>七、引用及参考文献</h1>
+<p>1.《算法设计手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析：你真的理解网络流算法吗——最大流算法(代码详解+万字长文)</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析：你真的理解网络流算法吗——最大流算法(代码详解+万字长文)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9C%A8%E5%A2%9E%E5%B9%BF%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%B7%B1%E5%85%A5%E6%80%9D%E8%80%83%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/" title="数据结构与算法分析：你真的理解网络流算法吗——在增广路上的深入思考（代码详解+万字长文）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解网络流算法吗——在增广路上的深入思考（代码详解+万字长文）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9ARedis%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B8%AE%E5%8A%A9%E8%A7%A3%E9%87%8A/" title="数据库：Redis命令行帮助解释">
+                        <span class="hidden-mobile">数据库：Redis命令行帮助解释</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

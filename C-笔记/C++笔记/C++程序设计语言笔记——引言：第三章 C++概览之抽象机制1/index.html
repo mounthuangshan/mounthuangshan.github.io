@@ -1,0 +1,913 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="C++概览：抽象机制 0 类 C++最核心的语言特性就是类。类是一种用户自定义的数据类型，用于在程序代码中表示某种概念。无论何时，只要我们想为程序设计一个有用的概念、想法或实体，都应该设法把它表示为程序中的一个类，这样我们的想法就能表达成代码，而不是仅存在于我们的头脑中、设计文档里或者注释里。对于一个程序来说，不论是用易读性还是正确性来衡量，使用一组精挑细选的类都要比直接用内置类型完成所有任务更好">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++程序设计语言笔记——引言：第三章 C++概览之抽象机制1">
+<meta property="og:url" content="https://mounthuangshan.github.io/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%BC%95%E8%A8%80%EF%BC%9A%E7%AC%AC%E4%B8%89%E7%AB%A0%20C++%E6%A6%82%E8%A7%88%E4%B9%8B%E6%8A%BD%E8%B1%A1%E6%9C%BA%E5%88%B61/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="C++概览：抽象机制 0 类 C++最核心的语言特性就是类。类是一种用户自定义的数据类型，用于在程序代码中表示某种概念。无论何时，只要我们想为程序设计一个有用的概念、想法或实体，都应该设法把它表示为程序中的一个类，这样我们的想法就能表达成代码，而不是仅存在于我们的头脑中、设计文档里或者注释里。对于一个程序来说，不论是用易读性还是正确性来衡量，使用一组精挑细选的类都要比直接用内置类型完成所有任务更好">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.849Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>C++程序设计语言笔记——引言：第三章 C++概览之抽象机制1 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C++程序设计语言笔记——引言：第三章 C++概览之抽象机制1"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          83 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C++程序设计语言笔记——引言：第三章 C++概览之抽象机制1</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>C++概览：抽象机制</h1>
+<h2 id="0-类">0 类</h2>
+<p>C++最核心的语言特性就是类。类是一种用户自定义的数据类型，用于在程序代码中表示某种概念。无论何时，只要我们想为程序设计一个有用的概念、想法或实体，都应该设法把它表示为程序中的一个类，这样我们的想法就能表达成代码，而不是仅存在于我们的头脑中、设计文档里或者注释里。对于一个程序来说，不论是用易读性还是正确性来衡量，使用一组精挑细选的类都要比直接用内置类型完成所有任务更好，尤其是当选用由库提供的类时更是如此。<br>
+从本质上来说，基础类型、运算符和语句之外的所有语言特性存在的目的就是帮助我们定义更好的类以及更方便地使用它们。在这里，“更好”的意思包括更加正确、更容易实现、更有效率、更优雅、更易用以及更易推断。大多数编程技术依赖于某些特定类的设计与实现。程序员要完成的任务千差万别，因此对类的支持也应该是宽泛和丰富的。接下来，我们只考虑对三种重要的类的基本支持：<br>
+● 具体类；<br>
+● 抽象类；<br>
+● 类层次中的类。<br>
+很多有用的类都可以归为这三个类别，其他类也可以看成是这些类别的简单变形或组合。<br>
+<strong>具体类</strong><br>
+具体类的基本思想是它们的行为“就像内置类型一样”。例如，一个复数类型和一个无穷精度整数与内置的 int 非常相像，当然它们有自己的语义和操作集合。同样，vector 和 string 也很像内置的数组，只不过在可操作性上更胜一筹。<br>
+具体类型的典型特征是，它的表现形式是其定义的一部分。在很多重要例子（如 vector）中，表现形式只不过是一个或几个指向保存在别处的数据的指针，但这种表现形式出现在具体类的每一个对象中。这使得实现可以在时空上达到最优，尤其是它允许我们：</p>
+<ul>
+<li>把具体类型的对象置于栈、静态分配的内存或者其他对象中；</li>
+<li>直接引用对象（而非仅仅通过指针或引用）；</li>
+<li>创建对象后立即进行完整的初始化（比如使用构造函数）；</li>
+<li>拷贝对象。</li>
+</ul>
+<p>类的表现形式可以被限定为私有的（就像 Vector 一样），只能通过成员函数访问，但它确实存在。因此，一旦表现形式发生了任何明显的改动，使用者就必须重新编译。这也是我们试图使具体类型尽可能接近内置类型而必须付出的代价。对于那些不常改动的类型和那些局部变量提供了迫切需要的清晰性和效率的类型来说，这种特性是可以接受的，而且通常会很理想。如果想提高灵活性，具体类型可以将其表现形式的主要部分放置在自由存储（动态内存、堆）中，然后通过存储在类对象内部的另一部分访问它们。vector 和 string 的实现机理正是如此，我们可以把它们看做是带有精致接口的资源管理器。<br>
+一种“经典的用户自定义算术类型”是 complex：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">complex</span><br>&#123;<br>  <span class="hljs-comment">//这两行定义了 complex 类的两个私有成员变量 re 和 im，分别用于存储复数的实部和虚部。</span><br>  <span class="hljs-comment">// 这两个变量都是 double 类型的，意味着它们可以存储双精度浮点数。</span><br>  double re,im;<br><span class="hljs-attr">public</span>:<br>  <span class="hljs-comment">//这里定义了三个构造函数，用于创建 complex 类的实例：</span><br>    <span class="hljs-comment">//第一个构造函数接受两个 double 类型的参数 r 和 i，分别初始化复数的实部和虚部。</span><br>  <span class="hljs-comment">//第二个构造函数接受一个 double 类型的参数 r，将复数的实部初始化为 r，虚部初始化为 0。这表示创建了一个实数（虚部为0的复数）。</span><br>  <span class="hljs-comment">//第三个构造函数是默认构造函数，不接受任何参数，将复数的实部和虚部都初始化为 0。</span><br>  <span class="hljs-title function_">complex</span>(double r, double i) :re&#123; r &#125;, im&#123; i &#125; &#123;&#125;<span class="hljs-comment">//用两个标量构建该复数,</span><br>  <span class="hljs-title function_">complex</span>(double r) :re&#123;r&#125;, im&#123; <span class="hljs-number">0</span> &#125; &#123;&#125;<span class="hljs-comment">//用一个标量构建该复数 </span><br>  <span class="hljs-title function_">complex</span>() :re&#123; <span class="hljs-number">0</span> &#125;, im&#123; <span class="hljs-number">0</span> &#125; &#123;&#125;<span class="hljs-comment">//默认的复数是&#123;0，0&#125;</span><br><br>  <span class="hljs-comment">//这里定义了两对成员函数，用于获取和设置复数的实部和虚部：</span><br>    <span class="hljs-comment">//real() 和 imag() 函数分别返回复数的实部和虚部。</span><br>  <span class="hljs-comment">//real(double d) 和 imag(double d) 函数分别设置复数的实部和虚部为 d。</span><br>  double <span class="hljs-title function_">real</span>() <span class="hljs-keyword">const</span> &#123; <span class="hljs-keyword">return</span> re; &#125;<br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">real</span>(<span class="hljs-params">double d</span>) &#123; re = d; &#125;<br>  double <span class="hljs-title function_">imag</span>() <span class="hljs-keyword">const</span> &#123; <span class="hljs-keyword">return</span> im; &#125;<br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">imag</span>(<span class="hljs-params">double d</span>)&#123; im = d; &#125;<br><br>  <span class="hljs-comment">//这部分代码重载了 += 和 -= 运算符，使得可以直接对两个 complex 对象进行加减操作，并修改调用对象（即左操作数）的值。</span><br>  <span class="hljs-comment">// 例如，c1 += c2; 会将 c2 的实部和虚部分别加到 c1 的实部和虚部上。</span><br>    <span class="hljs-comment">//*= 和 /= 运算符重载的声明在这里给出，但它们的定义被放在了类的外部。</span><br>  <span class="hljs-comment">// 这意味着你需要在这个类的定义之外，提供这两个运算符重载的具体实现，用于复数的乘法和除法操作。</span><br>  complex&amp; operator+=(complex z) &#123; re += z.<span class="hljs-property">re</span>, im += z.<span class="hljs-property">im</span>;<span class="hljs-keyword">return</span> *<span class="hljs-variable language_">this</span>; &#125; <span class="hljs-comment">//加到re和im上然后返回</span><br>  complex&amp; operator-=(complex z) &#123; re -= z.<span class="hljs-property">re</span>, im -= z.<span class="hljs-property">im</span>;<span class="hljs-keyword">return</span> *<span class="hljs-variable language_">this</span>; &#125;<br>  complex&amp; operator*=(complex);<span class="hljs-comment">//在类外的某处进行定义 </span><br>  complex&amp; operator/=(complex);<span class="hljs-comment">//在类外的某处进行定义</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>这是对标准库 complex略作简化后的版本，类定义本身仅包含需要访问其表现形式的操作。它的表现形式非常简单，也是大家约定俗成的。出于编程实践的要求，它必须兼容 50 年前 Fortran 语言提供的版本，还需要一些常规的运算符。除了满足逻辑上的要求外，complex 还必须足够高效，否则依然没有实用价值。这意味着我们应该将简单的操作设置成内联的。也就是说，在最终生成的机器代码中，一些简单的操作（如构造函数、+=和 imag（）等）不能以函数调用的方式实现。定义在类内部的函数默认是内联的。一个工业级的 complex（就像标准库中的那个一样）必须精心实现，并且恰当地使用内联。<br>
+无须实参就可以调用的构造函数称为默认构造函数，complex（）是 complex 的默认构造函数。通过定义默认构造函数，可以有效防止该类型的对象未初始化。<br>
+在负责返回复数实部和虚部的函数中，cost 说明符表示这两个函数不会修改所调用的对象。<br>
+很多有用的操作并不需要直接访问 complex 的表现形式，因此它们的定义可以与类的定义分离开来：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript">complex operator+(complex a, complex b) &#123; <span class="hljs-keyword">return</span> a += b; &#125;<br>complex operator-(complex a, complex b) &#123; <span class="hljs-keyword">return</span> a -= b; &#125;<br>complex operator-(complex a) &#123; <span class="hljs-keyword">return</span>&#123; -a.<span class="hljs-title function_">real</span>(),-a.<span class="hljs-title function_">imag</span>() &#125;; &#125;<span class="hljs-comment">//一元负号</span><br>complex operator*(complex a, complex b) &#123; <span class="hljs-keyword">return</span> a*b; &#125;<br>complex operator/(complex a, complex b) &#123; <span class="hljs-keyword">return</span> a/b; &#125;<br></code></pre></td></tr></table></figure>
+<p>此处我们利用了C++的一个特性，即，以传值方式传递实参实际上是把一份副本传递给函数，因此我们修改形参（副本）不会影响主调函数的实参，并可以将结果作为返回值。<br>
+这里需要引入构造函数的概念：<br>
+在C++中，构造函数是一个特殊的成员函数，其主要负责在创建类的新对象时初始化该对象的成员变量。构造函数与类同名，且没有返回类型（连void都没有）。当使用类的构造函数创建对象时，会自动调用相应的构造函数来完成初始化工作。<br>
+以下是关于C++中构造函数的详细解释：</p>
+<ul>
+<li>1.构造函数的定义<br>
+构造函数在类内部声明，并在类外部（通常）进行定义。其特殊之处在于与类名完全相同，并且不接受任何返回类型。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br><span class="hljs-attr">public</span>:<br>    int value;<br>    <br>    <span class="hljs-comment">// 构造函数的声明</span><br>    <span class="hljs-title class_">MyClass</span>(int v);<br>&#125;;<br><br><span class="hljs-comment">// 构造函数的定义</span><br><span class="hljs-title class_">MyClass</span>::<span class="hljs-title class_">MyClass</span>(int v) : <span class="hljs-title function_">value</span>(<span class="hljs-params">v</span>) &#123;<br>    <span class="hljs-comment">// 构造函数体，此处可进行更多初始化操作</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在上述例子中，MyClass类的构造函数接受一个整型参数v，并将其赋值给成员变量value。</p>
+<ul>
+<li>2.构造函数的调用<br>
+当创建类的对象时，会自动调用对应的构造函数。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">MyClass</span> <span class="hljs-title function_">obj</span>(<span class="hljs-number">10</span>);  <span class="hljs-comment">// 调用MyClass的构造函数，并传入参数10</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>3 默认构造函数<br>
+若类中未显式定义任何构造函数，编译器会自动生成一个默认的无参构造函数。此构造函数不执行任何操作，仅是一个空函数体。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br><span class="hljs-attr">public</span>:<br>    int value;<br>    <span class="hljs-comment">// 未定义构造函数，编译器将生成默认的无参构造函数</span><br>&#125;;<br><br><span class="hljs-title class_">MyClass</span> obj;  <span class="hljs-comment">// 调用默认构造函数</span><br></code></pre></td></tr></table></figure>
+<p>在上述例子中，由于MyClass中未定义构造函数，编译器会自动生成一个默认的无参构造函数，并在创建obj对象时调用。</p>
+<ul>
+<li>4.构造函数的重载<br>
+C++支持构造函数的重载，即同一类中可以有多个构造函数，只要它们的参数列表不同即可。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br><span class="hljs-attr">public</span>:<br>    int value;<br>    <br>    <span class="hljs-comment">// 无参构造函数</span><br>    <span class="hljs-title class_">MyClass</span>() : <span class="hljs-title function_">value</span>(<span class="hljs-params"><span class="hljs-number">0</span></span>) &#123;&#125;<br>    <br>    <span class="hljs-comment">// 带一个参数的构造函数</span><br>    <span class="hljs-title class_">MyClass</span>(int v) : <span class="hljs-title function_">value</span>(<span class="hljs-params">v</span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-title class_">MyClass</span> obj1;       <span class="hljs-comment">// 调用无参构造函数</span><br><span class="hljs-title class_">MyClass</span> <span class="hljs-title function_">obj2</span>(<span class="hljs-number">10</span>);   <span class="hljs-comment">// 调用带一个参数的构造函数</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>5.初始化列表（<strong>本例中使用</strong>）<br>
+在构造函数中，可以使用初始化列表来更高效地初始化成员变量。初始化列表位于构造函数的参数列表之后，并由冒号:开始，后跟成员变量的初始化。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br><span class="hljs-attr">public</span>:<br>    int value;<br>    <br>    <span class="hljs-title class_">MyClass</span>(int v) : <span class="hljs-title function_">value</span>(<span class="hljs-params">v</span>) &#123;<br>        <span class="hljs-comment">// 构造函数体，此时value已被初始化为v</span><br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>使用初始化列表通常比在构造函数体内赋值更高效，特别是对于需要通过构造函数初始化的复杂类型（如对象成员、引用等）。</p>
+<ul>
+<li>6.拷贝构造函数<br>
+拷贝构造函数是一种特殊的构造函数，用于通过另一个同类型的对象来初始化新对象。若未显式定义，编译器会自动生成默认的拷贝构造函数。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br><span class="hljs-attr">public</span>:<br>    int value;<br>    <br>    <span class="hljs-comment">// 拷贝构造函数的声明与定义</span><br>    <span class="hljs-title class_">MyClass</span>(<span class="hljs-keyword">const</span> <span class="hljs-title class_">MyClass</span>&amp; other) : <span class="hljs-title function_">value</span>(<span class="hljs-params">other.value</span>) &#123;&#125;<br>&#125;;<br><br><span class="hljs-title class_">MyClass</span> <span class="hljs-title function_">obj1</span>(<span class="hljs-number">10</span>);       <span class="hljs-comment">// 调用带一个参数的构造函数</span><br><span class="hljs-title class_">MyClass</span> obj2 = obj1;    <span class="hljs-comment">// 调用拷贝构造函数</span><br></code></pre></td></tr></table></figure>
+<p>在上述例子中，obj2是通过obj1使用拷贝构造函数创建的。</p>
+<p>==和!=的定义非常直观且易于理解：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//这个函数重载了 == 操作符，用于比较两个 complex 类型的对象是否相等。</span><br><span class="hljs-comment">//它比较了两个复数的实部（real() 方法返回的值）和虚部（imag() 方法返回的值）。</span><br><span class="hljs-comment">//只有当两个复数的实部和虚部分别相等时，这个函数才返回 true，表示这两个复数相等；否则返回 false。</span><br>bool operator== (complex a, complex b)<span class="hljs-comment">//相等</span><br>&#123;<br>  <span class="hljs-keyword">return</span> a.<span class="hljs-title function_">real</span>() == b.<span class="hljs-title function_">real</span>() &amp;&amp; a.<span class="hljs-title function_">imag</span>() == b.<span class="hljs-title function_">imag</span>();<br>&#125;<br><br><span class="hljs-comment">//这个函数重载了 != 操作符，用于判断两个 complex 类型的对象是否不相等。</span><br><span class="hljs-comment">// 它通过调用之前定义的 == 操作符，并对其结果取反来实现。</span><br><span class="hljs-comment">// 如果两个复数不相等（即 a == b 为 false），则 !(a == b) 为 true，表示这两个复数不相等；反之亦然。</span><br>bool operator!=(complex a, complex b)<span class="hljs-comment">//不等</span><br>&#123;<br>  <span class="hljs-keyword">return</span> !(a == b);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>我们可以像下面这样使用complex：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">complex z</span>)<br>&#123;<br>  complex a&#123; <span class="hljs-number">2.3</span> &#125;;<br>  complex b&#123; <span class="hljs-number">1</span> / a &#125;;<br>  complex c&#123; a + z * complex&#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>&#125; &#125;;<br>  <span class="hljs-comment">//...</span><br>  <span class="hljs-keyword">if</span> (c != b)<br>  &#123;<br>    c = -(b / a) + <span class="hljs-number">2</span> * b;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>编译器自动地把计算 complex 值的运算符转换成对应的函数调用，例如 cl=b 意味着 operator！=（c，b），而 1/a 意味着 operator/（complex{1}，a）。<br>
+在使用用户自定义的运算符（“重载运算符”）时，我们应该尽量小心谨慎，并且尊重其常规的使用习惯。你不能定义一元运算符 1，因为其语法在语言中已被固定。同样，你不可能改变一个运算符操作内置类型时的含义，因此不能重新定义运算符+令其执行 int 的减法。<br>
+这里需要引入重载的概念：<br>
+在编程中，重载（Overloading） 是一种多态性特性，它允许在同一作用域内，为函数或操作符创建多个同名但参数列表（包括参数的数量、类型和顺序）不同的版本。这种特性使得函数或操作符能够以多种方式被调用，根据提供的参数来决定具体使用哪一个版本。</p>
+<ul>
+<li>函数重载<br>
+函数重载是最常见的重载形式。它允许在同一个作用域内定义多个同名函数，但这些函数的参数列表必须不同。编译器在编译时根据函数调用时提供的参数来决定使用哪个版本的函数。<br>
+例如：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript">int <span class="hljs-title function_">add</span>(int a, int b);<br>double <span class="hljs-title function_">add</span>(double a, double b);<br>complex <span class="hljs-title function_">add</span>(complex a, complex b);<br></code></pre></td></tr></table></figure>
+<p>这里定义了三个名为 add 的函数，但它们的参数类型不同，因此它们可以被重载。</p>
+<ul>
+<li>操作符重载（<strong>本例中使用</strong>）<br>
+操作符重载允许程序员为用户定义的类型（如类或结构体）指定如何使用标准的操作符（如 +, -, *, /, ==, != 等）。通过重载操作符，可以使自定义类型像内置类型一样使用这些操作符。<br>
+例如，对于自定义的 complex 类型，可以重载 + 操作符来允许两个复数相加：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">complex operator+(<span class="hljs-keyword">const</span> complex&amp; a, <span class="hljs-keyword">const</span> complex&amp; b);<br></code></pre></td></tr></table></figure>
+<ul>
+<li>注意事项<br>
+重载的函数或操作符必须在参数列表上有所区别，否则会导致编译错误。<br>
+重载不能改变操作符的优先级、结合性或操作数的数量（对于操作符重载而言）。<br>
+函数重载是通过函数名和参数列表的组合来区分的，而操作符重载是通过操作符和参数列表（通常是操作数的类型）来区分的。</li>
+</ul>
+<p>在 C++ 中，函数重载和操作符重载都是广泛使用的特性，它们提高了代码的灵活性和可读性。<br>
+重载是面向对象编程（OOP）中的一个重要概念，它使得代码更加灵活和易于维护，同时也提高了代码的可重用性。</p>
+<h2 id="1-容器">1 容器</h2>
+<p>容器（container）是指一个包含若干元素的对象，因为 Vector 的对象都是容器，所以我们称 Vector 是一种容器类型。Vector 作为 double 的容器具有许多优点：它易于理解，建立有用的不变式，提供了包含边界检查的访问功能，并且提供了 size（）以允许我们遍历其元素。<br>
+然而，它还是存在一个致命的缺陷：它使用 new 分配了元素但是从来没有释放这些元素。这显然是个糟糕的设计，因为尽管 C++定义了一个垃圾回收的接口，可将未使用用的内存提供给新对象，但 C++并不保证垃圾收集器总是可用的。在某些情况下你不能使用回收功能，而且有的时候出于逻辑或性能的考虑你宁愿使用更精确的资源释放控制。因此，我们迫切需要一种机制以确保构造函数分配的内存一定会被销毁，这种机制就叫做析构函数（destructor）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Vector</span><br>&#123;<br><span class="hljs-attr">private</span>:<br>  double* elem;<span class="hljs-comment">//elem指向一个包含sz个double的数组</span><br>  int sz;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-comment">//这是 Vector 类的构造函数，它接受一个整数 s 作为参数，表示要创建的 Vector 的大小。</span><br>    <span class="hljs-comment">//构造函数使用成员初始化列表来初始化 elem 和 sz。</span><br>    <span class="hljs-comment">//elem 被初始化为指向一个包含 s 个 double 类型元素的新分配数组的指针，</span><br>    <span class="hljs-comment">//sz 被初始化为 s。在构造函数体内，有一个循环，用于将新分配数组的所有元素初始化为 0。</span><br>  <span class="hljs-title class_">Vector</span>(int s) :elem&#123; <span class="hljs-keyword">new</span> double[s] &#125;, sz&#123; s &#125;<span class="hljs-comment">//构造函数：请求资源</span><br>  &#123;<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i != s; ++i)<span class="hljs-comment">//初始化元素</span><br>    &#123;<br>      elem[i]= <span class="hljs-number">0</span>;<br>    &#125;<br>  &#125;<br>  ~<span class="hljs-title class_">Vector</span>()<span class="hljs-comment">//析构函数：释放资源</span><br>  &#123;<br>    <span class="hljs-keyword">delete</span>[]elem;<br>  &#125;<br>  <span class="hljs-comment">//这是一个成员函数声明，表示重载了[] 运算符。</span><br>  <span class="hljs-comment">// 这个运算符重载允许通过索引访问 Vector 中的元素，</span><br>  <span class="hljs-comment">// 并返回一个对相应元素的引用，从而允许对元素进行读写操作。</span><br>  double&amp; operator[](int i);<br>  <span class="hljs-comment">//这是一个成员函数声明，用于返回 Vector 的大小（即 sz 的值）。</span><br>  <span class="hljs-comment">//const 关键字表示这个函数不会修改对象的任何成员变量。</span><br>  int <span class="hljs-title function_">size</span>() <span class="hljs-keyword">const</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>对于上面的代码你可能会有些困惑，这里做一些扩展来帮助你理解上面的代码：<br>
+在C++中，成员函数声明后面可能会跟随一些特定的关键字，这些关键字提供了关于成员函数行为的额外信息。以下是一些常见的关键字及其用途：</p>
+<ul>
+<li>const：<br>
+1.当const关键字用于成员函数声明之后（但在参数列表之前），它表示该成员函数不会修改任何类的成员变量（即它不会改变对象的状态）。这样的成员函数被称为常量成员函数。<br>
+2.常量成员函数可以访问类的常量成员（即那些也被声明为const的成员变量）。<br>
+3.示例：int getX() const; 表示getX函数不会修改对象的状态。</li>
+<li>virtual：<br>
+1.virtual关键字用于在基类中声明虚函数，使得派生类可以重写（覆盖）这些函数。虚函数允许程序在运行时根据对象的实际类型来调用正确的函数版本（多态性）。<br>
+2.示例：virtual void draw() const; 表示draw是一个虚函数。</li>
+<li>override（C++11及更高版本）：<br>
+1.override关键字用于派生类中，明确指示某个成员函数是重写基类中的虚函数。这有助于编译器检查函数签名的匹配性，防止因签名不匹配而导致的潜在错误。<br>
+2.示例：void draw() const override; 表示draw函数重写了基类中的虚函数。</li>
+<li>final（C++11及更高版本）：<br>
+1.当final关键字用于类声明之后，它表示该类不能被继承。<br>
+2.当final关键字用于虚函数声明之后，它表示该函数在派生类中不能被重写。<br>
+3.示例：virtual void show() const final; 表示show函数是最终的，不能在派生类中被重写。</li>
+<li>noexcept（C++11及更高版本）：<br>
+1.noexcept关键字用于指示函数不会抛出异常。这有助于编译器进行更高效的异常处理，并允许某些标准库函数在知道函数不会抛出异常的情况下进行更安全的操作。<br>
+2.示例：void doSomething() noexcept; 表示doSomething函数不会抛出异常。</li>
+<li>&amp; 和 &amp;&amp;（C++11的右值引用）：<br>
+1.当成员函数接受右值引用参数时（使用&amp;&amp;），它表示该函数可以接受临时对象或即将被销毁的对象作为参数。这通常用于实现移动语义，以提高资源管理的效率。<br>
+2.示例：void setData(std::string&amp;&amp; newData); 表示setData函数可以接受一个右值引用的std::string对象。</li>
+<li>= default 和 = delete（C++11及更高版本）：<br>
+1.= default用于显式地指示编译器使用默认的构造函数、析构函数、拷贝构造函数、拷贝赋值运算符、移动构造函数或移动赋值运算符实现。<br>
+2.= delete用于显式地禁止某些特殊成员函数的生成，使它们不可调用。<br>
+3.示例：Point(Point&amp;&amp;) = default; 表示使用默认的移动构造函数。Point(const Point&amp;) = delete; 表示禁止拷贝构造函数。</li>
+</ul>
+<p>这些关键字在成员函数声明中的使用提供了关于函数行为、异常安全性、可继承性和可重写性的重要信息，有助于编写更健壮、更清晰和更易于维护的代码。</p>
+<blockquote>
+<p>array new一定要搭配array delete：<br>
+关于动态申请的内存，分两种情况：基本数据类型的分配和自定义数据类型的分配。两者不同。<br>
+1、基本数据类型<br>
+对于基本数据类型，假如有如下代码<br>
+int *a = new int[10];<br>
+delete a;    // 方式1<br>
+delete [ ] a;    //方式2<br>
+肯定会不少人认为方式1存在内存泄露，然而事实上是不会！针对简单的基本数据类型，方式1和方式2均可正常工作，因为：基本的数据类型对象没有析构函数，并且new 在分配内存时会记录分配的空间大小，则delete时能正确释放内存，无需调用析构函数释放其余指针。因此两种方式均可。<br>
+2、自定义数据类型<br>
+这里一般指类，假设通过new申请了一个对象数组，注意是对象数组，返回一个指针，对于此对象数组的内存释放，需要做两件事情：一是释放最初申请的那部分空间，二是调用析构函数完成清理工作。对于内存空间的清理，由于申请时记录了其大小，因此无论使用delete还是delete[ ]都能将这片空间完整释放，而问题就出在析构函数的调用上，当使用delete时，仅仅调用了对象数组中第一个对象的析构函数，而使用delete [ ]的话，将会逐个调用析构函数：<br>
+new double[s]；<br>
+delete[]elem;</p>
+</blockquote>
+<p>析构函数的命名规则是一个求补运算符~后接类的名字，从含义上来说它是构造函数的补充。Vector 的构造函数使用 new 运算符从自由存储（也称为堆或动态存储）分配一些内存空间，析构函数则使用 delete 运算符释放该空间以达到清理资源的目的。这一切都无须 Vector 的使用者干预，他们只需要像使用普通的内置类型变量那样使用 Vector 对象就可以了。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">fct</span>(<span class="hljs-params">int n</span>)<br>&#123;<br>  <span class="hljs-title class_">Vector</span> <span class="hljs-title function_">v</span>(n);<span class="hljs-comment">//在此使用v</span><br><br>  &#123;<br>    <span class="hljs-title class_">Vector</span> <span class="hljs-title function_">v2</span>(<span class="hljs-number">2</span> * n);<span class="hljs-comment">//在此使用v2</span><br>  &#125;<span class="hljs-comment">//v2在此处被销毁</span><br><br>&#125;<span class="hljs-comment">//v1在此处被销毁</span><br></code></pre></td></tr></table></figure>
+<p>Vector 与 int 和 char 等内置类型遵循同样的命名、作用域、分配空间、生命周期等规则。另外出于简化的考虑，Vector 没有涉及错误处理。<br>
+构造函数/析构函数的机制是很多优雅技术的基础，尤其是大多数 C++通用资源管理技术的基础。以下是一个 Vector 的图示：<br>
+![在这里插入图片描述](./C++程序设计语言笔记——引言：第三章 C++概览之抽象机制1image\9b973b48ee7c44189c0edd3667119838.png)<br>
+构造函数负责分配元素空间并正确地初始化 Vector 成员，析构函数则负责释放空间。这就是所谓的数据句柄模型（handle-to-data model），常用来管理在对象生命周期中大小会发生变化的数据。在构造函数中请求资源，然后在析构函数中释放它们的技术称为资源获取即初始化（Resource Acquisition Is Initialization），简称 RAⅡ，它使得我们得以规避“裸 new 操作’”<br>
+的风险；换句话说，该技术可以避免在普通代码中分配内存，而是把分配操作隐藏在行为良好的抽象的实现内部。同样，也应该避免“裸 delete 操作”。避免裸 new 和裸 delete 可以使我们的代码远离各种潜在风险，避免资源泄漏。</p>
+<h2 id="2-初始化容器">2 初始化容器</h2>
+<p>容器的作用是保存元素,因此我们需要找到一种便利的方式将元素存入容器中。为了做到这一点,一种可能的方式是先用若干元素创建一个Vector,然后再依次为这些元素赋值。显然这不是最好的办法,下面列举两种更简洁的途径。<br>
+●初始化器列表构造函数(Initializer-list  constructor):使用元素的列表进行初始化;<br>
+●  push_back():在序列的末尾添加一个新元素。<br>
+它们的<strong>声明形式</strong>如下所示:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Vector</span><br>&#123;<br><span class="hljs-attr">public</span>:<br>  <span class="hljs-title class_">Vector</span>(<span class="hljs-attr">std</span>::initializer_list&lt;double&gt;);<span class="hljs-comment">//使用一个列表进行初始化</span><br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">push_back</span>(double);<span class="hljs-comment">//在末尾添加一个元素，容器的长度加1</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>其中，push_back()可用于添加任意数量的元素。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">Vector</span> <span class="hljs-title function_">read</span>(<span class="hljs-params">istream&amp; is</span>)<br>&#123;<br>  <span class="hljs-title class_">Vector</span> v;<br>  <span class="hljs-keyword">for</span> (double d; is &gt;&gt; d;)<span class="hljs-comment">//将浮点值读入d</span><br>  &#123;<br>    v.<span class="hljs-title function_">push_back</span>(d);<span class="hljs-comment">//把d加到v当中</span><br>  &#125;<br>  <span class="hljs-keyword">return</span> v;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上面的循环负责执行输入操作，它的终止条件是遇到文件末尾或者格式错误。在此之前，每个读入的数依次添加到Vector的尾部,最后v的大小就是读取的元素数量。我们使用了一个for语句而不是while语句以便将d的作用域限制在循环内部。<br>
+用于定义初始化器列表构造函数的std:initializer_list是一种标准库类型，编译器可以辨识它：当我们使用&amp;列表时,如(1,2,3,4),编译器会创建一个initializer_list类型的对象并将其提供给程序。因此,我们可以书写:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">Vector</span> v1 = &#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>&#125;;<span class="hljs-comment">//v1包含5个元素</span><br><span class="hljs-title class_">Vector</span> v2 = &#123;<span class="hljs-number">1.23</span>,<span class="hljs-number">3.45</span>,<span class="hljs-number">6.7</span>,<span class="hljs-number">8</span>&#125;;<span class="hljs-comment">//v2包含4个元素</span><br></code></pre></td></tr></table></figure>
+<p>Vector的初始化器列表构造函数可以定义成如下的形式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//用一个列表初始化</span><br><span class="hljs-title class_">Vector</span>::<span class="hljs-title class_">Vector</span>(<span class="hljs-attr">std</span>::initializer_list&lt;double&gt; lst)：elem&#123;<span class="hljs-keyword">new</span> double[lst.<span class="hljs-title function_">size</span>()]&#125;,sz&#123;lst.<span class="hljs-title function_">size</span>()&#125;<br>&#123;<br>      <span class="hljs-title function_">copy</span>(lst.<span class="hljs-title function_">begin</span>(),lst.<span class="hljs-title function_">end</span>(),elem);<span class="hljs-comment">//从lst复制内容到elem中</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这里我们需要更细致的解释以下列表初始化这个概念，列表初始化是C++11引入的新特性（在C++之前是没有这个概念的），以前初始化一个vector需要这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">std</span>::vector v;<br>v.<span class="hljs-title function_">push_back</span>(<span class="hljs-number">1</span>);<br>v.<span class="hljs-title function_">push_back</span>(<span class="hljs-number">2</span>);<br>v.<span class="hljs-title function_">push_back</span>(<span class="hljs-number">3</span>);<br>v.<span class="hljs-title function_">push_back</span>(<span class="hljs-number">4</span>);<br></code></pre></td></tr></table></figure>
+<p>而现在c++11添加了initializer_list后，我们可以这样初始化:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">std</span>::vector v = &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span> &#125;;<br></code></pre></td></tr></table></figure>
+<p>并且，C++11允许构造函数和其他函数把初始化列表当做参数:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;iostream&gt;<br>#include &lt;vector&gt;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyNumber</span><br>&#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">MyNumber</span>(<span class="hljs-keyword">const</span> <span class="hljs-attr">std</span>::initializer_list&lt;int&gt; &amp;v) <br>    &#123;<br>        <span class="hljs-keyword">for</span> (auto itm : v) <br>        &#123;<br>            mVec.<span class="hljs-title function_">push_back</span>(itm);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">print</span>(<span class="hljs-params"></span>)<br>     &#123;<br>    <span class="hljs-keyword">for</span> (auto itm : mVec)<br>     &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; itm &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br>    &#125;<br>  &#125;<br><span class="hljs-attr">private</span>:<br>    <span class="hljs-attr">std</span>::vector&lt;int&gt; mVec;<br>&#125;;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>)<br>&#123;<br>    <span class="hljs-title class_">MyNumber</span> m = &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span> &#125;;<br>    m.<span class="hljs-title function_">print</span>();  <span class="hljs-comment">// 1 2 3 4</span><br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这里需要更细致的解释 initializer_list这个模板，与 vector 相比，initializer_list 的最大优势在于，它允许您就地指定特定的元素序列，而无需专门处理来创建该列表。我们就不用多次调用 push_back（或 for 循环）来初始化vector实际上，vector 本身有一个构造函数，它接受一个 initializer_list 以便更方便地初始化。 下面显示的就是使用initializer_list进行初始化// v 是通过在输入中传递一个 initializer_list 来构造的;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::string&gt; v = &#123;<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;cruel&quot;</span>, <span class="hljs-string">&quot;world&quot;</span>&#125;;<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>An object of type is a lightweight proxy object that provides access to an array of objects of type const T (that may be allocated in read-only memory). std::initializer_list<T><br>
+A object is automatically constructed when: std::initializer_list<br>
+a brace-enclosed initializer list is used to list-initialize an object, where the corresponding constructor accepts an parameter, std::initializer_list<br>
+a brace-enclosed initializer list is used as the right operand of assignment or as a function call argument, and the corresponding assignment operator/function accepts an parameter, std::initializer_list<br>
+a brace-enclosed initializer list is bound to auto, including in a ranged for loop.<br>
+std::initializer_list may be implemented as a pair of pointers or pointer and length. Copying a does not copy the backing array of the corresponding initializer list. std::initializer_list<br>
+The program is ill-formed if an explicit or partial specialization of is declared. std::initializer_list<br>
+<a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/utility/initializer_list">https://en.cppreference.com/w/cpp/utility/initializer_list</a></p>
+</blockquote>
+<p>通过上面引用的文档可以理解，在以下情况下，将自动构造对象：std::initializer_list：</p>
+<ul>
+<li>列表初始化：当使用大括号 {} 括起来的初始化器列表来初始化一个对象时，如果这个对象有一个接受<br>
+std::initializer_list 作为参数的构造函数，那么这个构造函数会被调用。</li>
+<li>赋值操作：当使用大括号 {} 括起来的初始化器列表作为赋值操作的右操作数，或者作为函数调用的参数时，如果这个赋值运算符或函数接受一个 std::initializer_list 作为参数，那么这个运算符或函数会被调用。</li>
+<li>类型推导：当使用 auto 关键字进行类型推导，并且初始化器是一个用大括号 {} 括起来的列表时，这个列表会被视为 std::initializer_list 类型。这在范围 for 循环中也是适用的。<br>
+下面是一个代码示例，展示了上述三种情况：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;iostream&gt;<br>#include &lt;vector&gt;<br>#include &lt;initializer_list&gt;<br> <br><span class="hljs-comment">// 1. 列表初始化</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">MyClass</span>(<span class="hljs-attr">std</span>::initializer_list&lt;int&gt; list) &#123;<br>        <span class="hljs-keyword">for</span> (int value : list) &#123;<br>            <span class="hljs-attr">std</span>::cout &lt;&lt; value &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br>        &#125;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    &#125;<br>&#125;;<br> <br><span class="hljs-comment">// 2. 赋值操作</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyContainer</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">assign</span>(<span class="hljs-params">std::initializer_list&lt;int&gt; list</span>) &#123;<br>        <span class="hljs-keyword">for</span> (int value : list) &#123;<br>            data.<span class="hljs-title function_">push_back</span>(value);<br>        &#125;<br>    &#125;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">print</span>() <span class="hljs-keyword">const</span> &#123;<br>        <span class="hljs-keyword">for</span> (int value : data) &#123;<br>            <span class="hljs-attr">std</span>::cout &lt;&lt; value &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br>        &#125;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    &#125;<br>    <br><span class="hljs-attr">private</span>:<br>    <span class="hljs-attr">std</span>::vector&lt;int&gt; data;<br>&#125;;<br> <br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 列表初始化</span><br>    <span class="hljs-title class_">MyClass</span> obj1 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>&#125;;  <span class="hljs-comment">// 调用 MyClass(std::initializer_list&lt;int&gt;)</span><br> <br>    <span class="hljs-comment">// 赋值操作</span><br>    <span class="hljs-title class_">MyContainer</span> container;<br>    container.<span class="hljs-title function_">assign</span>(&#123;<span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>&#125;);  <span class="hljs-comment">// 调用 assign(std::initializer_list&lt;int&gt;)</span><br>    container.<span class="hljs-title function_">print</span>();<br> <br>    <span class="hljs-comment">// 类型推导</span><br>    auto obj2 = &#123;<span class="hljs-number">11</span>, <span class="hljs-number">12</span>, <span class="hljs-number">13</span>&#125;;  <span class="hljs-comment">// obj2 的类型是 std::initializer_list&lt;int&gt;</span><br>    <span class="hljs-comment">// 注意：直接打印 obj2 不会如预期输出列表内容，因为 std::initializer_list 不直接支持迭代输出</span><br>    <span class="hljs-comment">// 下面的代码仅为了展示类型推导，实际上输出可能不是直观的数字列表</span><br>    <span class="hljs-keyword">for</span> (auto elem : obj2) &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; elem &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br>    &#125;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-attr">std</span>::endl;<br> <br>    <span class="hljs-comment">// 范围 for 循环中的类型推导</span><br>    <span class="hljs-attr">std</span>::initializer_list&lt;int&gt; list = &#123;<span class="hljs-number">14</span>, <span class="hljs-number">15</span>, <span class="hljs-number">16</span>&#125;;<br>    <span class="hljs-keyword">for</span> (auto elem : list) &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; elem &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br>    &#125;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-attr">std</span>::endl;<br> <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在这个示例中：</p>
+<ul>
+<li>MyClass 的构造函数接受一个 std::initializer_list<int>，用于展示列表初始化。</li>
+<li>MyContainer 的 assign 方法接受一个 std::initializer_list<int>，用于展示赋值操作。</li>
+<li>auto obj2 = {11, 12, 13}; 展示了类型推导，其中 obj2 的类型是 std::initializer_list<int>。</li>
+<li>最后一部分展示了在范围 for 循环中使用 std::initializer_list 的类型推导。</li>
+</ul>
+<p>请注意，直接打印 std::initializer_list 对象（如 obj2）并不会输出其内容，因为 std::initializer_list 不直接支持迭代输出。这里只是为了展示类型推导。<br>
+C++11扩大了初始化列表的适用范围，使其可用于所有内置类型和用户定义的类型。无论是初始化对象还是某些时候为对象赋新值，都可以使用这样一组由花括号括起来的初始值了。使用初始化列表时，可添加=，也可不添加。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//定义一个变量并初始化</span><br>int units_sold=<span class="hljs-number">0</span>;<br>int <span class="hljs-title function_">units_sold</span>(<span class="hljs-number">0</span>);<br>int units_sold=&#123;<span class="hljs-number">0</span>&#125;;  <span class="hljs-comment">//列表初始化</span><br>int units_sold&#123;<span class="hljs-number">0</span>&#125;;    <span class="hljs-comment">//列表初始化</span><br></code></pre></td></tr></table></figure>
+<p>当初始化列表用于内置类型的变量时，这种初始化形式有一个重要特点：如果我们使用列表初始化值存在丢失信息的风险，则编译器将报错：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript">long double ld=<span class="hljs-number">3.1415926536</span>;<br>int a=&#123;ld&#125;,b=&#123;ld&#125;; <span class="hljs-comment">//错误:转换未执行，因为存在丢失信息的风险</span><br>int <span class="hljs-title function_">c</span>(ld),d=ld;   <span class="hljs-comment">//正确:转换执行，且确实丢失了部分值</span><br></code></pre></td></tr></table></figure>
+<p>聚合类型可以进行直接列表初始化，聚合类型需要满足下列条件：</p>
+<ul>
+<li>类型是一个普通数组，如int[5]，char[]，double[]等</li>
+<li>类型是一个类，且满足以下条件：</li>
+<li>没有用户声明的构造函数</li>
+<li>没有用户提供的构造函数(允许显示预置或弃置的构造函数)</li>
+<li>没有私有或保护的非静态数据成员</li>
+<li>没有基类</li>
+<li>没有虚函数</li>
+<li>没有{}和=直接初始化的非静态数据成员</li>
+<li>没有默认成员初始化器</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript">struct A &#123;<br>    int a;<br>    int b;<br>    int c;<br>    <span class="hljs-title function_">A</span>(<span class="hljs-params">int, int</span>)&#123;&#125;<br>&#125;;<br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    A a&#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;;<span class="hljs-comment">// error，A有自定义的构造函数，不能列表初始化</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码类A不是聚合类型，无法进行列表初始化，必须以自定义的构造函数来构造对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs javascript">struct A &#123;<br>    int a;<br>    int b;<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">func</span>(<span class="hljs-params"></span>) &#123;&#125; <span class="hljs-comment">// 含有虚函数，不是聚合类</span><br>&#125;;<br><br>struct <span class="hljs-title class_">Base</span> &#123;&#125;;<br>struct B : public <span class="hljs-title class_">Base</span> &#123; <span class="hljs-comment">// 有基类，不是聚合类</span><br>      int a;<br>    int b;<br>&#125;;<br><br>struct C &#123;<br>    int a;<br>    int b = <span class="hljs-number">10</span>; <span class="hljs-comment">// 有等号初始化，不是聚合类</span><br>&#125;;<br><br>struct D &#123;<br>    int a;<br>    int b;<br><span class="hljs-attr">private</span>:<br>    int c; <span class="hljs-comment">// 含有私有的非静态数据成员，不是聚合类</span><br>&#125;;<br><br>struct E &#123;<br>      int a;<br>    int b;<br>    <span class="hljs-title function_">E</span>() : <span class="hljs-title function_">a</span>(<span class="hljs-number">0</span>), <span class="hljs-title function_">b</span>(<span class="hljs-params"><span class="hljs-number">0</span></span>) &#123;&#125; <span class="hljs-comment">// 含有默认成员初始化器，不是聚合类</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>上面列举了一些不是聚合类的例子，对于一个聚合类型，使用列表初始化相当于对其中的每个元素分别赋值；对于非聚合类型，需要先自定义一个对应的构造函数，此时列表初始化将调用相应的构造函数。<br>
+<strong>列表初始化的好处如下：</strong></p>
+<ul>
+<li>方便，且基本上可以替代括号初始化</li>
+<li>可以使用初始化列表接受任意长度</li>
+<li>可以防止类型窄化，避免精度丢失的隐式类型转换</li>
+</ul>
+<p>这里扩展一下类型窄化，类型窄化是列表初始化通过禁止下列转换，对隐式转化加以限制：</p>
+<ul>
+<li>从浮点类型到整数类型的转换</li>
+<li>从 long double 到 double 或 float 的转换，以及从 double 到 float 的转换，除非源是常量表达式且不发生溢出</li>
+<li>从整数类型到浮点类型的转换，除非源是其值能完全存储于目标类型的常量表达式</li>
+<li>从整数或无作用域枚举类型到不能表示原类型所有值的整数类型的转换，除非源是其值能完全存储于目标类型的常量表达式</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs javascript">int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    int a = <span class="hljs-number">1.2</span>; <span class="hljs-comment">// ok</span><br>    int b = &#123;<span class="hljs-number">1.2</span>&#125;; <span class="hljs-comment">// error</span><br><br>    float c = <span class="hljs-number">1e70</span>; <span class="hljs-comment">// ok</span><br>    float d = &#123;<span class="hljs-number">1e70</span>&#125;; <span class="hljs-comment">// error</span><br><br>    float e = (unsigned long long)-<span class="hljs-number">1</span>; <span class="hljs-comment">// ok</span><br>    float f = &#123;(unsigned long long)-<span class="hljs-number">1</span>&#125;; <span class="hljs-comment">// error</span><br>    float g = (unsigned long long)<span class="hljs-number">1</span>; <span class="hljs-comment">// ok</span><br>    float h = &#123;(unsigned long long)<span class="hljs-number">1</span>&#125;; <span class="hljs-comment">// ok</span><br><br>    <span class="hljs-keyword">const</span> int i = <span class="hljs-number">1000</span>;<br>    <span class="hljs-keyword">const</span> int j = <span class="hljs-number">2</span>;<br>    char k = i; <span class="hljs-comment">// ok</span><br>    char l = &#123;i&#125;; <span class="hljs-comment">// error</span><br><br>    char m = j; <span class="hljs-comment">// ok</span><br>    char m = &#123;j&#125;; <span class="hljs-comment">// ok，因为是const类型，这里如果去掉const属性，也会报错</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>下面再扩展一下迭代器的概念：</strong><br>
+迭代器（Iterator）是一种设计模式，它提供了一种方法顺序访问一个集合对象中的各个元素，而不需要暴露该对象的内部表示。迭代器模式属于行为型模式，它使得集合对象可以通过一个统一的接口被遍历，而无需知道集合对象的内部具体实现。<br>
+在C++中，迭代器是一个非常重要的概念，它被广泛用于STL（Standard Template Library，标准模板库）中。C++ STL提供了大量的容器（如vector、list、map等），这些容器都支持迭代器接口，使得我们可以使用相同的代码来遍历不同的容器。<br>
+迭代器通常具有以下特性：</p>
+<ul>
+<li>迭代器指向容器中的元素：迭代器可以看作是一个指针，它指向容器中的某个元素。通过迭代器，我们可以访问或修改该元素的值。</li>
+<li>迭代器提供遍历容器的方法：迭代器提供了如++（前进到下一个元素）、–（回退到上一个元素）、*（解引用，获取当前元素的值）、-&gt;（获取当前元素的成员）等操作符，使得我们可以方便地遍历容器中的元素。</li>
+<li>迭代器类型：C++ STL中的迭代器有多种类型，包括输入迭代器、输出迭代器、前向迭代器、双向迭代器和随机访问迭代器。不同类型的迭代器提供了不同级别的功能。例如，随机访问迭代器支持高效的元素访问（如通过下标访问），而输入迭代器则只保证可以顺序读取元素。</li>
+<li>迭代器失效：在某些情况下，迭代器可能会失效。例如，当容器被修改（如添加或删除元素）时，指向该容器的迭代器可能会变得无效。因此，在使用迭代器时，需要注意迭代器的有效性。</li>
+</ul>
+<p>下面是一个简单的C++代码示例，展示了如何使用迭代器来遍历一个std::vector容器：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;iostream&gt;<br>#include &lt;vector&gt;<br> <br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-attr">std</span>::vector&lt;int&gt; vec = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>&#125;;<br> <br>    <span class="hljs-comment">// 使用迭代器遍历vector</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-attr">std</span>::vector&lt;int&gt;::iterator it = vec.<span class="hljs-title function_">begin</span>(); it != vec.<span class="hljs-title function_">end</span>(); ++it) &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; *it &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br>    &#125;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-attr">std</span>::endl;<br> <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在这个示例中，vec.begin()返回一个指向vec第一个元素的迭代器，vec.end()返回一个指向vec最后一个元素之后位置的迭代器（注意，这个迭代器不指向任何有效的元素，仅用作遍历的结束标志）。然后，我们使用一个for循环来遍历这个迭代器范围，并打印出每个元素的值。</p>
+<h1>总结</h1>
+<p>由于篇幅原因，作者将在下一篇文章中讲解类的抽象类型。最优引用下面这段文字来讲解c++ 为什么在参数中使用initializer_list而不是vector这个问题：</p>
+<blockquote>
+<p>It is a sort of contract between the programmer and the compiler. The programmer says {1,2,3,4}, and the compiler creates an object of type initializer_list out of it, containing the same sequence of elements in it. This contract is a requirement imposed by the language specification on the compiler implementation.<br>
+That means, it is not the programmer who creates manually such anobject but it is the compiler which creates the object, and pass thatobject to function which takes initializer_list as argument.<br>
+The std::vector implementation takes advantage of this contract, andtherefore it defines a constructor which takes initializer_list asargument, so that it could initialize itself with the elements in theinitializer-list.<br>
+Now suppose for a while that the std::vector doesn’t have anyconstructor that takes std::initializer_list as argument, then youwould get this:<br>
+void f(std::initializer_list const &amp;items);<br>
+void g(std::vector const &amp;items);<br>
+f({1,2,3,4}); //okay<br>
+g({1,2,3,4}); //error (as per the assumption)<br>
+As per the assumption, since std::vector doesn’t have constructor thattakes std::initializer_list as argument, which implies you cannotpass {1,2,3,4} as argument to g() as shown above, because the compilercannot create an instance of std::vector out of the expression{1,2,3,4} directly. It is because no such contract is ever made<br>
+between programmer and the compiler, and imposed by the language. Itis through std::initializer_list, the std::vector is able to createitself out of expression {1,2,3,4}.<br>
+Now you will understand that std::initializer_list can be usedwherever you need an expression of the form of {value1, value2, …,valueN}. It is why other containers from the Standard library also define constructor that takes std::initializer_list as argument. In this way, no container depends on any other container for construction<br>
+from expressions of the form of {value1, value2, …, valueN}.Hope that helps.</p>
+</blockquote>
+<p>翻译如下：<br>
+这是程序员与编译器之间的一种约定。程序员写出{1,2,3,4}，编译器则根据这个序列创建一个initializer_list类型的对象，其中包含了相同的元素序列。这个约定是语言规范对编译器实现所提出的要求。<br>
+这意味着，不是程序员手动创建这样的对象，而是编译器创建这个对象，并将其传递给以initializer_list作为参数的函数。<br>
+std::vector的实现利用了这个约定，因此它定义了一个接受initializer_list作为参数的构造函数，以便能够使用初始化列表中的元素来初始化自身。<br>
+现在，假设std::vector没有任何接受std::initializer_list作为参数的构造函数，那么你会遇到这样的情况：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">f</span>(<span class="hljs-attr">std</span>::initializer_list <span class="hljs-keyword">const</span> &amp;items);<br><span class="hljs-keyword">void</span> <span class="hljs-title function_">g</span>(<span class="hljs-attr">std</span>::vector <span class="hljs-keyword">const</span> &amp;items);<br><span class="hljs-title function_">f</span>(&#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>&#125;); <span class="hljs-comment">// 可以</span><br><span class="hljs-title function_">g</span>(&#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>&#125;); <span class="hljs-comment">// 错误（根据假设）</span><br></code></pre></td></tr></table></figure>
+<p>根据假设，由于std::vector没有接受std::initializer_list作为参数的构造函数，这意味着你不能像上面那样将{1,2,3,4}作为参数传递给g()函数，因为编译器无法直接从表达式{1,2,3,4}创建std::vector的实例。这是因为程序员与编译器之间从未建立过这样的约定，并且语言规范也没有强制要求这样做。正是通过std::initializer_list，std::vector才能够从表达式{1,2,3,4}中创建自身。<br>
+现在你会明白，std::initializer_list可以在你需要形如{value1, value2, …, valueN}的表达式时使用。这就是为什么标准库中的其他容器也定义了接受std::initializer_list作为参数的构造函数。这样，任何容器都不依赖于其他容器来从形如{value1, value2, …, valueN}的表达式中构造自身。希望这能帮助你理解。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C-%E7%AC%94%E8%AE%B0/" class="category-chain-item">C++笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C++程序设计语言笔记——引言：第三章 C++概览之抽象机制1</div>
+      <div>https://mounthuangshan.github.io/C-笔记/C++笔记/C++程序设计语言笔记——引言：第三章 C++概览之抽象机制1/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD%EF%BC%9A%E8%AF%AD%E5%8F%A5/" title="C++程序设计语言笔记——基本功能：语句">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C++程序设计语言笔记——基本功能：语句</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%BC%95%E8%A8%80%EF%BC%9A%E7%AC%AC%E4%B8%89%E7%AB%A0%20C++%E6%A6%82%E8%A7%88%E4%B9%8B%E6%8A%BD%E8%B1%A1%E6%9C%BA%E5%88%B62/" title="C++程序设计语言笔记——引言：第三章 C++概览之抽象机制2">
+                        <span class="hidden-mobile">C++程序设计语言笔记——引言：第三章 C++概览之抽象机制2</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

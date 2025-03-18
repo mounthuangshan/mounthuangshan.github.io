@@ -1,0 +1,770 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、算法描述 前面讨论的查找算法在处理小数据量(顺序查找)或者有序的数据集合(二分查找)时才使用。我们需要更加强大的算法能够查找较大的集合,而且并不需要有序。最常使用的一个方法是使用散列函数来将目标元素的一个或者多个特征转换成一个值,这个值用来索引一个已经索引的散列表,基于散列的查找有着比本章描述的其他算法在平均情况下更好的性能。很多算法的书籍都是在讨论散列表时才介绍基于散列的查找,你也能够 在数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析——你真的理解查找算法吗——基于散列的查找（代码详解+万字长文）">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、算法描述 前面讨论的查找算法在处理小数据量(顺序查找)或者有序的数据集合(二分查找)时才使用。我们需要更加强大的算法能够查找较大的集合,而且并不需要有序。最常使用的一个方法是使用散列函数来将目标元素的一个或者多个特征转换成一个值,这个值用来索引一个已经索引的散列表,基于散列的查找有着比本章描述的其他算法在平均情况下更好的性能。很多算法的书籍都是在讨论散列表时才介绍基于散列的查找,你也能够 在数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C368002874cee4fd6a7158e0bab8a326c.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C76be2652efe141c190c5173938808435.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C5ce6657375a94c589369d4968e3d44c2.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5Cc19cc81f6282485097813cd6990f227b.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C4e3c9bbdecca443688a68e2bf3a69014.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.850Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C368002874cee4fd6a7158e0bab8a326c.png">
+  
+  
+  
+  <title>数据结构与算法分析——你真的理解查找算法吗——基于散列的查找（代码详解+万字长文） - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析——你真的理解查找算法吗——基于散列的查找（代码详解+万字长文）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          71 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析——你真的理解查找算法吗——基于散列的查找（代码详解+万字长文）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、算法描述</h1>
+<p>前面讨论的查找算法在处理小数据量(顺序查找)或者有序的数据集合(二分查找)时才使用。我们需要更加强大的算法能够查找较大的集合,而且并不需要有序。最常使用的一个方法是使用散列函数来将目标元素的一个或者多个特征转换成一个值,这个值用来索引一个已经索引的散列表,基于散列的查找有着比本章描述的其他算法在平均情况下更好的性能。很多算法的书籍都是在讨论散列表时才介绍基于散列的查找,你也能够<br>
+在数据结构的书籍中讨论散列表的章节中找到这个算法。<br>
+在一个基于散列的查找,集合C的n个元素首先会加载到一个有着6个桶的散列表A中。键值的概念使得这个操作可行。对于每个元素$e\in C$来说,它能够通过k=key(e)映<br>
+射到一个值k,如果$e_{i}=e_{j}$,那么$key(e_{i})=key(e_{j})$（注意，由于键值不唯一，因此反过来可能不成立）。一个散列函数h=hash(e)使用了键值key(e)来将。插人到桶A[h]中。一且散列表A被构造好了,那么查找一个元素t也被转换成在桶A[h]中寻找一个元素t,h=hash(t)。<br>
+下图用一个小小的例子表示了基于散列查找的一般模式，基于散列的查找包括：<br>
+<strong>1.可能键值的全集U。每一个元素$e\in C$将映射到一个键值</strong><br>
+<strong>2.散列表A存储着原始集合C的n个元素。A也许包含着元素本身或者也包含了元素的<br>
+键值、在A中有b个位置。</strong><br>
+<strong>3.散列函数hash,使用key(e)计算一个整数素引h。</strong><br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C368002874cee4fd6a7158e0bab8a326c.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+当实现基于散列的查找时,有两个需要注意的地方:散列函数的设计以及如何处理冲突<br>
+(当两个键值映射到A的同一个桶),对于b&lt;&lt;|U|,几乎在所有的情况下,冲突都会发生。注意,如果b&lt;n,那么A中没有足够的空间存储原始集合的n个元素。当这种情况出现时,通常的做法是在A中每一个桶中都存储一个元素集合(一般使用链表实现),如上图中的“存储元素”和“存储值”的选项(此外，如果元素直接存于A中，如上图中的“存放元素，没有列表支持”，那么你需要处理冲突，否则之前存放在散列表中的元素可能丢失)。<br>
+不适当的散列函数可能会导致一个不均匀的键值分布,这样会导致两个结果:·散列表中<br>
+的很多桶会是没有使用过的,浪费了空间,而使用的桶又会因为多个健值同时映射到了<br>
+一个桶中,导致了大量的冲突,这样使得性能更加糟糕。<br>
+对于大多数输入来说，冲突都是可能存在的，期望的冲突数量增长时，处理冲突的策略对于算法的性能有着非常重要的作用。<br>
+寻找的目标元素:必须有一个或者多个特征能够用来作为键值,这些健值组成了全集U。<br>
+不像二分查找,原始集合C不需要是有序的。事实上,即使C中的元素在某种程度上是有<br>
+序的,散列方法在插入元素到散列表A时也不会尝试去保持其有序性。<br>
+基于散列的查找的输入是散列表A,以及寻找的目标元素,如果:在A[h]的指向的链表<br>
+中,算法返回真,这里h=hash(t)。如果A[h]是空或者不在A[h]指向的健表中,那么返回<br>
+假表示(不在A中(也就是说也不在C中)。存储在A中的列表的元素本身就是键值。<br>
+变量n是元素集合C中的元素数目,b表示素引集合A中的桶数目。<br>
+基于散列的查找过程，主要涉及散列表（哈希表）的使用，以下是对其详细的步骤和原理介绍：</p>
+<h2 id="一、散列表的基本概念">一、散列表的基本概念</h2>
+<p>散列表是一种数据结构，它支持通过关键字进行快速查找。在散列表中，每个关键字都通过一个散列函数映射到一个特定的存储位置，这个位置称为散列地址。</p>
+<h2 id="二、散列函数的构造">二、散列函数的构造</h2>
+<p>散列函数是散列表的核心，它决定了关键字如何映射到散列地址。构造一个好的散列函数需要遵循以下原则：<br>
+散列函数的值域应在散列表的长度范围内。<br>
+计算出的散列地址应尽可能均匀分布，以减少冲突。<br>
+常见的散列函数构造方法包括：<br>
+<strong>1.直接地址法：以关键字本身或关键字加上某个常量C作为散列地址。这种方法简单，但可能因关键字分布不连续而造成空间浪费。</strong><br>
+<strong>2.数字分析法：从关键字中提取数字分布比较均匀的若干位作为散列地址。这种方法适用于事先明确知道所有关键字的数字分布情况。</strong><br>
+<strong>3.平方取中法：取关键字平方后的中间几位或其组合作为散列地址。这种方法产生的散列地址较为均匀，适用于不知道关键字的全部情况。</strong><br>
+<strong>4.折叠法：将关键字分割成位数相同的几段（最后一段位数可少一些），然后将它们的叠加和（舍去最高位进位）作为散列地址。这种方法适用于关键字位数较多的情况。</strong><br>
+<strong>5.随机乘数法：使用一个随机实数与关键字相乘，然后取结果的某几位作为散列地址。这种方法可以产生较为均匀的散列地址分布。</strong></p>
+<h2 id="三、散列表的查找过程">三、散列表的查找过程</h2>
+<p><strong>1.计算散列地址：给定一个关键字，通过散列函数计算其对应的散列地址。</strong><br>
+<strong>2.访问散列地址：根据计算出的散列地址，直接访问散列表中的相应位置。</strong><br>
+<strong>3.比较关键字：如果散列表中的记录与给定关键字相匹配，则查找成功；否则，需要处理冲突。</strong></p>
+<h2 id="四、冲突的处理">四、冲突的处理</h2>
+<p>冲突是指两个不同的关键字映射到同一个散列地址的情况。处理冲突的方法包括：<br>
+<strong>1.开放定址法：当发生冲突时，通过一定的探测序列在散列表中查找下一个空闲的存储单元。常见的开放定址法包括线性探查法、平方探查法和双散列函数探查法。</strong><br>
+<strong>2.再散列函数法：事先准备多个散列函数，当第一个散列函数发生冲突时，使用下一个散列函数进行计算，直到找到一个不冲突的散列地址。</strong><br>
+<strong>3.链地址法：将所有同义词（即具有相同散列地址的关键字）存储在一个单链表中，散列表中只存储这些链表的头指针。这种方法可以避免堆积现象，但查找时需要遍历链表。</strong><br>
+<strong>4.公共溢出区法：为所有冲突的关键字建立一个公共的溢出区来存放。这种方法在冲突数据很少的情况下性能较好。</strong></p>
+<h2 id="五、示例">五、示例</h2>
+<p>假设有一个散列表长度为13，散列函数为h(key)=key%13。现在要向表中插入关键字31和58。<br>
+插入31：计算h(31)=31%13=5，发现H[5]已被占用，使用线性探查法，探查下一个单元H[6]，发现H[6]空闲，将31插入H[6]。<br>
+插入58：计算h(58)=58%13=6，发现H[6]已被占用（之前插入了31），继续探查下一个单元H[7]，H[7]仍不空闲，再接着向下探查，直到探查到H[9]空闲，将58插入H[9]。<br>
+查找过程类似，首先计算关键字的散列地址，然后访问该地址并比较关键字，如果匹配则查找成功，否则按插入时的冲突处理策略继续查找。</p>
+<h1>二、复杂度分析</h1>
+<p><img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C76be2652efe141c190c5173938808435.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+也许相比其他的查找方法,基于散列的查找更能够反映出我们设计的优劣,尤其是我们选择了什么样的存储元素的数据集合,理解输人数据的动态性质是非常必要的,这有助于选择合适的数据结构。<br>
+基于散列的查找有着非常优秀的性能特征。我们将简略地分析一下。在散列表中查找一个元素可以分为如下几个部分:<br>
+<strong>1.计算散列值。</strong><br>
+<strong>2.通过散列值素引到相应元素。</strong><br>
+<strong>3.如果有冲突,那么寻找到需要找的元素。</strong><br>
+所有基于散列的查找算法都包舍头两个部分,但是不同的变种处理冲突的策略是不同的。<br>
+计算散列值的开销必须限制在常数时间内。如果你思考一下本节的例子,计算散列值将会和字符串的长度成比例。对于任何有穷单词集合来说,都存在一个最长的字符串,长度为k。如果,是计算最长字符串散列值的时间,那么它计算任何散列值需要st的时间。计算散列值因此被认为是一个常数时间的操作。<br>
+算法的第二部分也是时间的操作。如果表存储在二级存储器,根据元素的位置以及在设备上定位元素所需要的时间可能会有相应的改进算法,不过这个也是常数时间的操作。<br>
+如果我们能够证明计算的第三部分也是有着常数时间的上界,那么我们就能很容易地证明基于敢列的查找是常数时间的性能。当我们使用链时,我们将会定义一个负载因子,a=n/b,b是散列表中桶的数量,n是存储在散列表中元素的数量。负载因子表示的是在单个链中的平均元素数量。<br>
+在链中寻找元素的最坏时间是O(n),只有在所有的元素都被映射到表中同样的桶时。要查找的桶的平均数目是a。如果希望能够知道详细的分析,请参见(Cormen等,2001)的第11章。原书这里是对java代码的比较，待作者学习java后会补充这里的实验分析。</p>
+<h1>三、适用情况</h1>
+<p>假设我们创建了一个文本编辑器,并且希望能检查用户输入单词的拼写,有一些免费的单词表可以从网上下载(<a target="_blank" rel="noopener" href="http://www.wordlist.com">http://www.wordlist.com</a>)。性能对于这个应用程序来说非常要。我们必须快速地查找这个单词表,否则即使是最慢的打字员,程序也都是不可用的。我们也许需要一个单独的线程,这个线程用来获得文档或者文件的最新修改,并且能够检查单词的拼写(在搜索之前基于散列的查找需要完整的单词，而使用二分查找，我们并不需要一次性输入所有的字母，但是这样程序变得更加复杂了)。<br>
+我们必须将这些单词保存在内存中,因为磁盘操作将会导致性能退化太多,一个典型的英语单词列表包含超过200000个单词,而且能够以数组的形式存储在内存中,占用大约2.5MB的内存（如上上个图所示,这个包含了单词本身的空间以及指向单词的指针的空<br>
+间),我们使用指针是因为单词的长度是改变的,而且我们希望能够使用最少的内存。<br>
+在“二分查找”一节中我们得知,如果使用二分查找需要进行大约18次字符串比较<br>
+($log(200000)=17.61$)。字符串比较是非常昂贵的,即使我们优化代码,也需要循环比较字节。有时候我们使用汇编语言手动编写这些循环确保能够在特定架构上进行优化,例如确保我们不会在大部分的情况下停顿在流水线上以及在可能时展开循环来填充流水线。目标是最小化字符串比较的次数。<br>
+我们首先需要定义一个函数来计算字符串s的键值。这个键值函数的一个目标是产生足够多的不同值,不过并不要求这些值都是唯一的。根据初始字符串的每一块信息来产生值的一个流行的方法是:<br>
+$key(s)=s[0]^{<em>}31^{(kn-1)}+s[1]^{</em>}31^{(kn-2)}+…+s[len-1]$<br>
+s[i)是第认字符(值在0~255之间),len就是字符串s的长度。计算这个函数的值非常简单,下例就是这个函数的实现(根据Open  JDK源代码改写),chars是字符数组,即一个宇符串,根据我们的定义,java.lang.String的hashcode()方法是key（）函数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript">public  int  <span class="hljs-title function_">hashCode</span>(<span class="hljs-params"></span>)<br>&#123;<br>    int  h - hash;<br>    <span class="hljs-keyword">if</span> (h--<span class="hljs-number">0</span>)<br>    &#123;<br>        <span class="hljs-keyword">for</span> (int <span class="hljs-number">1</span> = <span class="hljs-number">0</span>; <span class="hljs-number">1</span> &lt; chars.<span class="hljs-property">length</span>; <span class="hljs-number">1</span>++)<br>        &#123;<br>            h - <span class="hljs-number">31</span> * h + chars[<span class="hljs-number">1</span>];<br>        &#125;<br>        hash - h;<br>    &#125;<br>    <span class="hljs-keyword">return</span>  h;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>因为hashCode方法尽量尝试优化,它缓存了已经计算过的散列值,避免重复计算(例如,当且仅当散列是0时的计算值),<br>
+下一步,我们构造散列表,我们有n个字符串,那么散列表A的大小应该是多少呢?在最理想的情况下,A有b=n个桶,散列函数是一个从字符申集合到整数[0,n)的一一映射函数。这是在正常情况下不可能发生的,所以我们尝试着构造一个空桶尽可能少的散列表。如果我们的散列函数平均分配健值,我们就能够获得一个比较理想的情况,数组的大小和集合的大小差不多,我们定义hash(s)=key(s)%b,%是取模运算符,返回key(s)除以b的余数。<br>
+高水平读者此时就会向基本的散列函数和散列表在这里会起什么作用。因为单词表是静态的,所以我们能够通过构建一个完美的散列函数来做得更好。一个完美的散列函数能够保证在一个特定的键值集合中没有冲突产生。在这种情况下,一个完美的散列函数就能投入使用,在接下来的“算法优化”一节中将讨论这个问题。让我们先在没有这个完美散列函数的情况下会试解决这个问题。<br>
+在我们第一次会试解决这个向题时,我们选择了一个数组A,有着217个桶,以及262143个元素。我们的单词表包含213557个单词。如果我们的散列函数能够使字符申完美地分布,那么就会没有冲突产生并且需要大约40000个槽。但是情况并非如此。下表给出了我们单词表中字符串的散列值(注8)分布情况,散列表有着262143个槽。正如你所<br>
+见,没有一个槽会存储超过7个字符串,对于非空槽来说,每个槽的平均字符申数量大约是1.46。下表的每一行表明了使用的槽的数量以及有多少字符串被映射到这些植中。散列表中几乎一半的槽(116186个)没有字符串映射到。所以,这个散列函数浪费了大概500K的内存空间——假设每个指针的大小是4个字节,我们不会使用在空条目上使用冲<br>
+突处理策略。你也许会非常惊诉这是一个非常优秀的散列函数,如果需要寻找到一个比这个更好的,那么需要一个更加复杂的结构。对于这个数据集来说,只有五对字符串有着相同的键值(例如,hypoplankton和unheavenly有着相同的健值427589249)!<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C5ce6657375a94c589369d4968e3d44c2.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+最后,我们需要决定采取什么策略来处理冲突。一个可行的办法是在主散列表存储指向一系列条目的指针,而不是存储一个对象。这个方法,如下图所示,叫做链式。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5Cc19cc81f6282485097813cd6990f227b.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+这个方法的总开销取决于你在每个槽中是元素列表还是nii值(表示没有列表)。当一个槽只有一个元素时,它可以使用列表来存取。作为我们的第一个近似的解决方案,我们将会使用这种方法并且在性能成为瓶颈时改进它。<br>
+选择散列函数是在实现基于散列的查找之前必须做的第一个决定。散列已经被研究多年,并且有大量的描述高效散列函数的论文,不过用在查找上使用这些函数简直是杀鸡用牛刀。例如,某些特定的散列函数对于加密非常重要。对于查找来说,一个散列函数必须要有一个好的分布,并且计算速度非常快。<br>
+存储器空间是设计基于散列查找时需要考虑的另外一个因素。主存储器A必须能够足够大,以存下所有的查找键值,并且要给冲突键值留下足够的空间。A的大小通常是一个素数。但是,如果我们不使用开放定址的话(见接下来的“算法优化 ”一节),我们能够使用任何数字作为A的大小。实践中一个好的选择是2*-1,即使这个值并不是素数。存储在散列表的元素对内存有直接的影响,考虑图5-3的是如何在链表中存储每个字符串的,所以存储在A中的元素看做链表元素。堆中包含着指向元素的指针。每一个链表都有存储的开销,包含着指向链表中的第一个和最后一个元素。如果你使用Java的LinkedList类,一些很重要的附加字段和类使得实现非常灵活。程序员可以写一个简单得多的链表类,只提供必需的功能,但是确实给基于教列查找算法带来了额外的开销。<br>
+如果你使用LinkedList类,假设指针是四个字节,那么A中的每一个非空元素都需要12字节内存。每个字符申元素不可以直接转换成ListElement,需要12个额外字节。对于之前的那个有213557个单词的例子,我们需要5005488字节的额外存储。这种情况是:<br>
+<strong>1.主表的规模:1048572字节。</strong><br>
+<strong>2.包含116186个元素的规模:1394232字节。</strong><br>
+<strong>3.包含213557元素的规模:2562684字节。</strong><br>
+如果你使用Java的String类,那么存储字符串还会需要额外的开销。每个字符串有12个字节的额外开销。因此我们就将增加213  557×12=2562684个额外字节,所以,例子中选择的算法需要7568172字节的内存来正常运行。单词表中字符申的实际字符数量只有2099075,我们的算法还需要大约是字符的存储空间4.6倍的额外存储空间。<br>
+我们之后将会讨论一些优化内存使用的变种,当内存价格高高在上时,你可以使用这些变种来节省开支。但是,如果你有足够的内存,还有一个合理的并不会产生太多的冲突的散列函数以及一个可以立即使用的链表实现,那么你为什么不选择JDK提供的解决方案呢?<br>
+只要散列函数能够将元素均匀分布,那么基于散列的查找将会得到非常好的性能。查找一个元素的平均时间将是常数,也就是O(1)。<br>
+有其他的影响实现的因素。主要都是关于如何处理集合的静态或者动态特性。在我们的例子中,我们知道我们的单词表有多大,并且我们不会在单词表中添加或者剩除单词,至少不会在程序执行时操作。但是,如果我们有一个动态的集合,会做很多插入或者副除元素的操作,我们必须为散列表选择一个合适的数据结构来优化性能。在我们的例子<br>
+中,我们的冲突处理策略工作得非常好,因为在链表中插入元素只需要常数时间,删除元素的时间和键表长度成比例。如果散列函数能够较好地分布元素,那么每一个健表相对都比较短。</p>
+<h1>四、算法实现</h1>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;stdio.<span class="hljs-property">h</span>&gt;<br>#include &lt;stdlib.<span class="hljs-property">h</span>&gt;<br>#include &lt;string.<span class="hljs-property">h</span>&gt;<br><br><span class="hljs-comment">//散列表的大小</span><br>#define <span class="hljs-variable constant_">TABLE_SIZE</span> <span class="hljs-number">10</span><br><br><span class="hljs-comment">// 哈希表中的节点</span><br>typedef struct <span class="hljs-title class_">Node</span> &#123;<br>    int key;<br>    int value;<br>    struct <span class="hljs-title class_">Node</span>* next;<br>&#125; <span class="hljs-title class_">Node</span>;<br><br><span class="hljs-comment">// 哈希表</span><br>typedef struct <span class="hljs-title class_">HashTable</span> &#123;<br>    <span class="hljs-title class_">Node</span>* table[<span class="hljs-variable constant_">TABLE_SIZE</span>];<br>&#125; <span class="hljs-title class_">HashTable</span>;<br><br><span class="hljs-comment">// 创建一个新的节点</span><br><span class="hljs-title class_">Node</span>* <span class="hljs-title function_">create_node</span>(<span class="hljs-params">int key, int value</span>) &#123;<br>    <span class="hljs-title class_">Node</span>* new_node = (<span class="hljs-title class_">Node</span>*)<span class="hljs-title function_">malloc</span>(<span class="hljs-title function_">sizeof</span>(<span class="hljs-title class_">Node</span>));<br>    new_node-&gt;key = key;<br>    new_node-&gt;value = value;<br>    new_node-&gt;next = <span class="hljs-variable constant_">NULL</span>;<br>    <span class="hljs-keyword">return</span> new_node;<br>&#125;<br><br><span class="hljs-comment">// 创建哈希表</span><br><span class="hljs-title class_">HashTable</span>* <span class="hljs-title function_">create_table</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-title class_">HashTable</span>* hash_table = (<span class="hljs-title class_">HashTable</span>*)<span class="hljs-title function_">malloc</span>(<span class="hljs-title function_">sizeof</span>(<span class="hljs-title class_">HashTable</span>));<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-variable constant_">TABLE_SIZE</span>; i++) &#123;<br>        hash_table-&gt;table[i] = <span class="hljs-variable constant_">NULL</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> hash_table;<br>&#125;<br><br><span class="hljs-comment">// 哈希函数</span><br>int <span class="hljs-title function_">hash_function</span>(<span class="hljs-params">int key</span>) &#123;<br>    <span class="hljs-keyword">return</span> key % <span class="hljs-variable constant_">TABLE_SIZE</span>;<br>&#125;<br><br><span class="hljs-comment">// 插入键值对</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">HashTable* hash_table, int key, int value</span>) &#123;<br>    int index = <span class="hljs-title function_">hash_function</span>(key);<br>    <span class="hljs-title class_">Node</span>* new_node = <span class="hljs-title function_">create_node</span>(key, value);<br><br>    <span class="hljs-comment">// 如果该位置为空，直接插入</span><br>    <span class="hljs-keyword">if</span> (hash_table-&gt;table[index] == <span class="hljs-variable constant_">NULL</span>) &#123;<br>        hash_table-&gt;table[index] = new_node;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 否则在链表的头部插入</span><br>        new_node-&gt;next = hash_table-&gt;table[index];<br>        hash_table-&gt;table[index] = new_node;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 查找键对应的值</span><br>int <span class="hljs-title function_">search</span>(<span class="hljs-params">HashTable* hash_table, int key</span>) &#123;<br>    int index = <span class="hljs-title function_">hash_function</span>(key);<br>    <span class="hljs-title class_">Node</span>* temp = hash_table-&gt;table[index];<br><br>    <span class="hljs-comment">// 遍历链表查找键</span><br>    <span class="hljs-keyword">while</span> (temp != <span class="hljs-variable constant_">NULL</span>) &#123;<br>        <span class="hljs-keyword">if</span> (temp-&gt;key == key) &#123;<br>            <span class="hljs-keyword">return</span> temp-&gt;value;<br>        &#125;<br>        temp = temp-&gt;next;<br>    &#125;<br><br>    <span class="hljs-comment">// 如果没找到，返回 -1</span><br>    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-comment">// 删除键值对</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span>(<span class="hljs-params">HashTable* hash_table, int key</span>) &#123;<br>    int index = <span class="hljs-title function_">hash_function</span>(key);<br>    <span class="hljs-title class_">Node</span>* temp = hash_table-&gt;table[index];<br>    <span class="hljs-title class_">Node</span>* prev = <span class="hljs-variable constant_">NULL</span>;<br><br>    <span class="hljs-comment">// 查找要删除的节点</span><br>    <span class="hljs-keyword">while</span> (temp != <span class="hljs-variable constant_">NULL</span> &amp;&amp; temp-&gt;key != key) &#123;<br>        prev = temp;<br>        temp = temp-&gt;next;<br>    &#125;<br><br>    <span class="hljs-comment">// 如果未找到要删除的节点</span><br>    <span class="hljs-keyword">if</span> (temp == <span class="hljs-variable constant_">NULL</span>) &#123;<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Key %d not found.\n&quot;</span>, key);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// 如果找到了要删除的节点</span><br>    <span class="hljs-keyword">if</span> (prev == <span class="hljs-variable constant_">NULL</span>) &#123;<br>        <span class="hljs-comment">// 要删除的是第一个节点</span><br>        hash_table-&gt;table[index] = temp-&gt;next;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 要删除的节点在链表中</span><br>        prev-&gt;next = temp-&gt;next;<br>    &#125;<br><br>    <span class="hljs-title function_">free</span>(temp);<br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Key %d deleted.\n&quot;</span>, key);<br>&#125;<br><br><span class="hljs-comment">// 打印哈希表</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">print_table</span>(<span class="hljs-params">HashTable* hash_table</span>) &#123;<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-variable constant_">TABLE_SIZE</span>; i++) &#123;<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Index %d: &quot;</span>, i);<br>        <span class="hljs-title class_">Node</span>* temp = hash_table-&gt;table[i];<br>        <span class="hljs-keyword">while</span> (temp != <span class="hljs-variable constant_">NULL</span>) &#123;<br>            <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;(Key: %d, Value: %d) -&gt; &quot;</span>, temp-&gt;key, temp-&gt;value);<br>            temp = temp-&gt;next;<br>        &#125;<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;NULL\n&quot;</span>);<br>    &#125;<br>&#125;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-title class_">HashTable</span>* hash_table = <span class="hljs-title function_">create_table</span>();<br><br>    <span class="hljs-title function_">insert</span>(hash_table, <span class="hljs-number">1</span>, <span class="hljs-number">10</span>);<br>    <span class="hljs-title function_">insert</span>(hash_table, <span class="hljs-number">2</span>, <span class="hljs-number">20</span>);<br>    <span class="hljs-title function_">insert</span>(hash_table, <span class="hljs-number">11</span>, <span class="hljs-number">110</span>); <span class="hljs-comment">// 产生冲突，将存储在相同的索引位置</span><br>    <span class="hljs-title function_">insert</span>(hash_table, <span class="hljs-number">21</span>, <span class="hljs-number">210</span>); <span class="hljs-comment">// 冲突</span><br><br>    <span class="hljs-title function_">print_table</span>(hash_table);<br><br>    int key = <span class="hljs-number">11</span>;<br>    int value = <span class="hljs-title function_">search</span>(hash_table, key);<br>    <span class="hljs-keyword">if</span> (value != -<span class="hljs-number">1</span>) &#123;<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Key %d has value %d\n&quot;</span>, key, value);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Key %d not found.\n&quot;</span>, key);<br>    &#125;<br><br>    <span class="hljs-title function_">delete</span>(hash_table, <span class="hljs-number">11</span>);<br>    <span class="hljs-title function_">print_table</span>(hash_table);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这段哈希表的代码可以通过以下几种方式进行优化：<br>
+<strong>1.哈希函数改进</strong>：当前的哈希函数 key % TABLE_SIZE 比较简单，可能在某些数据分布下会产生较多的冲突。可以考虑使用更复杂的哈希函数以减少冲突，如：<br>
+乘法哈希法：使用更复杂的数学运算进行哈希映射。<br>
+装载因子控制：根据元素数量动态调整哈希表大小，减少冲突。<br>
+链表优化（尾插法）：插入时使用尾插法而不是头插法，可以让链表保持插入顺序，减少冲突时的顺序混乱，方便查找和删除。<br>
+<strong>2.内存管理优化</strong>：对于较大规模的哈希表，可以使用动态内存管理来动态调整哈希表大小，避免浪费内存或哈希表太小导致频繁冲突。<br>
+<strong>3.增量扩容</strong>：当哈希表中的元素超过一定的装载因子时（如 0.75），可以动态调整哈希表大小并重新哈希已有元素（rehashing），从而降低冲突率，提高性能。<br>
+<strong>4.使用标记删除</strong>：对于删除操作，可以考虑使用标记删除而不是物理删除，特别是当哈希表较大时，删除操作可能会影响查找性能。标记删除可以延迟删除操作，等到需要扩容或重建哈希表时再统一清理。<br>
+优化后的代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;stdio.<span class="hljs-property">h</span>&gt;<br>#include &lt;stdlib.<span class="hljs-property">h</span>&gt;<br>#include &lt;string.<span class="hljs-property">h</span>&gt;<br><br>#define <span class="hljs-variable constant_">INITIAL_TABLE_SIZE</span> <span class="hljs-number">10</span><br>#define <span class="hljs-variable constant_">LOAD_FACTOR_THRESHOLD</span> <span class="hljs-number">0.75</span><br><br><span class="hljs-comment">// 哈希表中的节点</span><br>typedef struct <span class="hljs-title class_">Node</span> &#123;<br>    int key;<br>    int value;<br>    struct <span class="hljs-title class_">Node</span>* next;<br>&#125; <span class="hljs-title class_">Node</span>;<br><br><span class="hljs-comment">// 哈希表</span><br>typedef struct <span class="hljs-title class_">HashTable</span> &#123;<br>    <span class="hljs-title class_">Node</span>** table;<br>    int size;     <span class="hljs-comment">// 当前哈希表大小</span><br>    int count;    <span class="hljs-comment">// 当前表中的元素个数</span><br>&#125; <span class="hljs-title class_">HashTable</span>;<br><br><span class="hljs-comment">// 创建一个新的节点</span><br><span class="hljs-title class_">Node</span>* <span class="hljs-title function_">create_node</span>(<span class="hljs-params">int key, int value</span>) &#123;<br>    <span class="hljs-title class_">Node</span>* new_node = (<span class="hljs-title class_">Node</span>*)<span class="hljs-title function_">malloc</span>(<span class="hljs-title function_">sizeof</span>(<span class="hljs-title class_">Node</span>));<br>    new_node-&gt;key = key;<br>    new_node-&gt;value = value;<br>    new_node-&gt;next = <span class="hljs-variable constant_">NULL</span>;<br>    <span class="hljs-keyword">return</span> new_node;<br>&#125;<br><br><span class="hljs-comment">// 创建哈希表</span><br><span class="hljs-title class_">HashTable</span>* <span class="hljs-title function_">create_table</span>(<span class="hljs-params">int size</span>) &#123;<br>    <span class="hljs-title class_">HashTable</span>* hash_table = (<span class="hljs-title class_">HashTable</span>*)<span class="hljs-title function_">malloc</span>(<span class="hljs-title function_">sizeof</span>(<span class="hljs-title class_">HashTable</span>));<br>    hash_table-&gt;table = (<span class="hljs-title class_">Node</span>**)<span class="hljs-title function_">malloc</span>(<span class="hljs-title function_">sizeof</span>(<span class="hljs-title class_">Node</span>*) * size);<br>    hash_table-&gt;size = size;<br>    hash_table-&gt;count = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; size; i++) &#123;<br>        hash_table-&gt;table[i] = <span class="hljs-variable constant_">NULL</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> hash_table;<br>&#125;<br><br><span class="hljs-comment">// 哈希函数 (改进版，使用乘法哈希)</span><br>unsigned int <span class="hljs-title function_">hash_function</span>(<span class="hljs-params">int key, int size</span>) &#123;<br>    <span class="hljs-keyword">const</span> double A = <span class="hljs-number">0.6180339887</span>; <span class="hljs-comment">// 取黄金分割比例</span><br>    <span class="hljs-keyword">return</span> (unsigned int)(size * (key * A - (int)(key * A)));<br>&#125;<br><br><span class="hljs-comment">// 重新哈希表（扩容）</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">resize_table</span>(<span class="hljs-title class_">HashTable</span>* hash_table);<br><br><span class="hljs-comment">// 插入键值对</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">HashTable* hash_table, int key, int value</span>) &#123;<br>    <span class="hljs-comment">// 检查装载因子</span><br>    <span class="hljs-keyword">if</span> ((double)hash_table-&gt;count / hash_table-&gt;size &gt;= <span class="hljs-variable constant_">LOAD_FACTOR_THRESHOLD</span>) &#123;<br>        <span class="hljs-title function_">resize_table</span>(hash_table);<br>    &#125;<br><br>    int index = <span class="hljs-title function_">hash_function</span>(key, hash_table-&gt;size);<br>    <span class="hljs-title class_">Node</span>* new_node = <span class="hljs-title function_">create_node</span>(key, value);<br><br>    <span class="hljs-comment">// 尾插法插入到链表末尾</span><br>    <span class="hljs-title class_">Node</span>* current = hash_table-&gt;table[index];<br>    <span class="hljs-keyword">if</span> (current == <span class="hljs-variable constant_">NULL</span>) &#123;<br>        hash_table-&gt;table[index] = new_node;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">while</span> (current-&gt;next != <span class="hljs-variable constant_">NULL</span>) &#123;<br>            current = current-&gt;next;<br>        &#125;<br>        current-&gt;next = new_node;<br>    &#125;<br>    hash_table-&gt;count++;<br>&#125;<br><br><span class="hljs-comment">// 查找键对应的值</span><br>int <span class="hljs-title function_">search</span>(<span class="hljs-params">HashTable* hash_table, int key</span>) &#123;<br>    int index = <span class="hljs-title function_">hash_function</span>(key, hash_table-&gt;size);<br>    <span class="hljs-title class_">Node</span>* temp = hash_table-&gt;table[index];<br><br>    <span class="hljs-comment">// 遍历链表查找键</span><br>    <span class="hljs-keyword">while</span> (temp != <span class="hljs-variable constant_">NULL</span>) &#123;<br>        <span class="hljs-keyword">if</span> (temp-&gt;key == key) &#123;<br>            <span class="hljs-keyword">return</span> temp-&gt;value;<br>        &#125;<br>        temp = temp-&gt;next;<br>    &#125;<br>    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-comment">// 删除键值对</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span>(<span class="hljs-params">HashTable* hash_table, int key</span>) &#123;<br>    int index = <span class="hljs-title function_">hash_function</span>(key, hash_table-&gt;size);<br>    <span class="hljs-title class_">Node</span>* temp = hash_table-&gt;table[index];<br>    <span class="hljs-title class_">Node</span>* prev = <span class="hljs-variable constant_">NULL</span>;<br><br>    <span class="hljs-comment">// 查找要删除的节点</span><br>    <span class="hljs-keyword">while</span> (temp != <span class="hljs-variable constant_">NULL</span> &amp;&amp; temp-&gt;key != key) &#123;<br>        prev = temp;<br>        temp = temp-&gt;next;<br>    &#125;<br><br>    <span class="hljs-comment">// 如果未找到要删除的节点</span><br>    <span class="hljs-keyword">if</span> (temp == <span class="hljs-variable constant_">NULL</span>) &#123;<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Key %d not found.\n&quot;</span>, key);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// 删除节点</span><br>    <span class="hljs-keyword">if</span> (prev == <span class="hljs-variable constant_">NULL</span>) &#123;<br>        hash_table-&gt;table[index] = temp-&gt;next;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        prev-&gt;next = temp-&gt;next;<br>    &#125;<br><br>    <span class="hljs-title function_">free</span>(temp);<br>    hash_table-&gt;count--;<br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Key %d deleted.\n&quot;</span>, key);<br>&#125;<br><br><span class="hljs-comment">// 重新哈希表（扩容函数）</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">resize_table</span>(<span class="hljs-params">HashTable* hash_table</span>) &#123;<br>    int new_size = hash_table-&gt;size * <span class="hljs-number">2</span>;<br>    <span class="hljs-title class_">Node</span>** new_table = (<span class="hljs-title class_">Node</span>**)<span class="hljs-title function_">malloc</span>(<span class="hljs-title function_">sizeof</span>(<span class="hljs-title class_">Node</span>*) * new_size);<br><br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; new_size; i++) &#123;<br>        new_table[i] = <span class="hljs-variable constant_">NULL</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// 重新插入所有旧元素到新表中</span><br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; hash_table-&gt;size; i++) &#123;<br>        <span class="hljs-title class_">Node</span>* current = hash_table-&gt;table[i];<br>        <span class="hljs-keyword">while</span> (current != <span class="hljs-variable constant_">NULL</span>) &#123;<br>            <span class="hljs-title class_">Node</span>* next = current-&gt;next;<br>            int new_index = <span class="hljs-title function_">hash_function</span>(current-&gt;key, new_size);<br><br>            <span class="hljs-comment">// 采用尾插法将节点插入新表</span><br>            current-&gt;next = new_table[new_index];<br>            new_table[new_index] = current;<br>            current = next;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-title function_">free</span>(hash_table-&gt;table);  <span class="hljs-comment">// 释放旧表</span><br>    hash_table-&gt;table = new_table;<br>    hash_table-&gt;size = new_size;<br>&#125;<br><br><span class="hljs-comment">// 打印哈希表</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">print_table</span>(<span class="hljs-params">HashTable* hash_table</span>) &#123;<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; hash_table-&gt;size; i++) &#123;<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Index %d: &quot;</span>, i);<br>        <span class="hljs-title class_">Node</span>* temp = hash_table-&gt;table[i];<br>        <span class="hljs-keyword">while</span> (temp != <span class="hljs-variable constant_">NULL</span>) &#123;<br>            <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;(Key: %d, Value: %d) -&gt; &quot;</span>, temp-&gt;key, temp-&gt;value);<br>            temp = temp-&gt;next;<br>        &#125;<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;NULL\n&quot;</span>);<br>    &#125;<br>&#125;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-title class_">HashTable</span>* hash_table = <span class="hljs-title function_">create_table</span>(<span class="hljs-variable constant_">INITIAL_TABLE_SIZE</span>);<br><br>    <span class="hljs-title function_">insert</span>(hash_table, <span class="hljs-number">1</span>, <span class="hljs-number">10</span>);<br>    <span class="hljs-title function_">insert</span>(hash_table, <span class="hljs-number">2</span>, <span class="hljs-number">20</span>);<br>    <span class="hljs-title function_">insert</span>(hash_table, <span class="hljs-number">11</span>, <span class="hljs-number">110</span>);<br>    <span class="hljs-title function_">insert</span>(hash_table, <span class="hljs-number">21</span>, <span class="hljs-number">210</span>);<br>    <span class="hljs-title function_">insert</span>(hash_table, <span class="hljs-number">31</span>, <span class="hljs-number">310</span>);  <span class="hljs-comment">// 扩容触发</span><br><br>    <span class="hljs-title function_">print_table</span>(hash_table);<br><br>    int key = <span class="hljs-number">11</span>;<br>    int value = <span class="hljs-title function_">search</span>(hash_table, key);<br>    <span class="hljs-keyword">if</span> (value != -<span class="hljs-number">1</span>) &#123;<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Key %d has value %d\n&quot;</span>, key, value);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Key %d not found.\n&quot;</span>, key);<br>    &#125;<br><br>    <span class="hljs-title function_">delete</span>(hash_table, <span class="hljs-number">11</span>);<br>    <span class="hljs-title function_">print_table</span>(hash_table);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">//var code = &quot;36e60145-848e-4165-8fae-566cd315d05f&quot;</span><br></code></pre></td></tr></table></figure>
+<p>原书在此是java实现，与C的实现略有不同，后续作者学习java后会填补上这块。</p>
+<h1>五、算法优化</h1>
+<p>基于散列查找的一个主要变种是修改了处理冲突的策略。与其在槽中放入一个元素的链表,我们能够使用一种叫做开放定址的技术,这种技术直接将冲突元素存储在散列表A中。如下图所示。使用了开放定址技术,散列表减少了存储开销,例如在冲突的健表中使用指针指向元素。使用开放定址技术,我们将散列函数调整成为带两个参数的函数,h(uJ)=i,uEU,/和)都是在范圈[0,b)中的整数,b是A的规模。一般来说,我们使h(w.0)=i=h(u),h是之前描述过的一个散列函数。如果A[的的槽被占用了,并且这个元素和目标元素不匹配,我们计算h(u,1)的值。如果这个值指向的槽还是被占用了,并且这个元素和目标元素不匹配,那么我们计算h(u,2)的值,我们将重复这个过程,直到目标元素被找到,或者植是空,或者散列函数产生了一个我们之前已经访问过得槽(此时就产生了一个错误)。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89image%5C4e3c9bbdecca443688a68e2bf3a69014.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+假设我们能够确保我们不会重新访问一个槽,那么这种方法的最坏性能是O(b)。开放定址技术在查找时表现非常好。即使在一个不成功的查找中,期望的探测数目也只是1/(1-α),并且最坏情况下,成功查找的性能时(1/a)ln(1/1-a)(注11),详细信息请参见算法导论(Cormen等,2001)。开放定址技术中有两种广泛使用的探测方法。第一种是线性探测,这种方法下,我们的散列函数是$h(u,j)=(h(u)+j)\mathrm{mod} n,$,当我们发现有冲突时,我们简单地查看散列表中的下一个槽,使用这个散列函数构成一个环形的查找。这个方法受元素的分布范围影响较大,当元素分布比较密集时,将会导致需要探测很多槽,尤其是α接近于1.0时。为了避免这种情况,我们可以使用二次方探测,散列函数变为$h(u,j)=(h (u)+f(j))\mathrm{mod} m ，$f是的一个二次方函数。<br>
+在表5-5（<strong>待补充</strong>）,我们看到在强制使用散列表不进行重散列之后,节省了大量的时间。如果在一个元素插入之前,原散列表的负载因子已经非常高了,那么一个重散列操作是有必要的。当散列表包含的元素比其预想的要多时,那么可以调整自身的大小。最典型的方式就是将共桶的数目加倍然后加一(因为散列表通常包含奇数个桶)。当只有很少的桶可用时,所有表中存在的元素必须重散列以放到新的位置。这是一个昂贵的操作,但是能够减少未来查找的总开销,不过这个操作不能非常频繁,要不然散列表的性能将会退化。当你对散列表的性能不满时,你必须允许散列表能够重散列使得元素平均分布到散列表中。java.util.Hashtable歌认的负载因子是0.75,如果你将这个值设为n/b,那么它将永远不会重散列。<br>
+之前的例子中使用了一个静态的字符串集合。当面对这种特殊情况时,我们能够通过使用完美的散列函数,得到最优化的性能。完美的散列使用两个散列函数,我们用一个标准的散列函数来素引主表A,每一个槽,A[i]。指向一个小得多的二级散列表,S,这个散列表和散列函数h,绑定。如果有k个键值映射到槽A[i]。那么S将包含个槽。这看起来浪费了很多内存,但是明智地选择初始散列函数能够减少这种浪费。选择合适的散列函数能够保证在二级表中不会存在冲突,也就是说,我们能够得到一个性能为O(1)的算法。完美散列分析的细节在算法导论(Cormen等,2001)中能够找到。Doug  Schmidt(1990)发表过一篇非常优秀的论文,论述了完美散列操作。网络上有一些免费的多种语言的完美散列函数生成器可以下载。<br>
+一般来说,虽然有着很多潜在的元素e会得到特定的健值k,但是散列表也许被设计成只能存储其中的一个元素,也就是说,如果e,ECNe,EC,那么i=当且仅当$key(e_i)=key(e_j)$,有这个限制的原因是使得给定键值key(e)下,能够快速寻找到元素e.如果原始集合C包含两个相同的元素,那么仅仅只有一个会正确存储到散列表A中。</p>
+<h1>六、引用及参考文献</h1>
+<p>1.《算法参考手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析——你真的理解查找算法吗——基于散列的查找（代码详解+万字长文）</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析——你真的理解查找算法吗——基于散列的查找（代码详解+万字长文）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析——你真的理解查找算法吗——二叉查找树（代码详解）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析——你真的理解查找算法吗——二叉查找树（代码详解）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF1%E4%B9%8B%E6%A6%82%E8%BF%B0%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：专题内容——人工智能中的寻路1之概述（代码详解）">
+                        <span class="hidden-mobile">数据结构与算法分析：专题内容——人工智能中的寻路1之概述（代码详解）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

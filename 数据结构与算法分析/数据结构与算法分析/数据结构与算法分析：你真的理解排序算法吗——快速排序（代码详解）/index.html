@@ -1,0 +1,729 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、算法描述 上一篇我们讲到了中值排序，如果我们仔细考虑中值排序的性能，我们会发现随机选择pivotIndex将仍使slectKth的性能为线性时间。我们可以简化算法但是不会引起额外的性能开销吗？在某些情况下，这种简化实现能够快些吗？快速排序虽然使用了大致相同的思想，但事实上确实比中值排序简单。 在快速排序中，我们不再寻找中值，而是通过某些策略（有时是随机的，有时是最左的，有时是中间的）来选择一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析：你真的理解排序算法吗——快速排序（代码详解）">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、算法描述 上一篇我们讲到了中值排序，如果我们仔细考虑中值排序的性能，我们会发现随机选择pivotIndex将仍使slectKth的性能为线性时间。我们可以简化算法但是不会引起额外的性能开销吗？在某些情况下，这种简化实现能够快些吗？快速排序虽然使用了大致相同的思想，但事实上确实比中值排序简单。 在快速排序中，我们不再寻找中值，而是通过某些策略（有时是随机的，有时是最左的，有时是中间的）来选择一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C06ab996f4dbe452a82308deb9ac71cbd.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Cf03be3185b1546e09a1c7e6e36460bcd.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C77def692381e43b1aca6dec162e65e44.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.850Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C06ab996f4dbe452a82308deb9ac71cbd.png">
+  
+  
+  
+  <title>数据结构与算法分析：你真的理解排序算法吗——快速排序（代码详解） - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析：你真的理解排序算法吗——快速排序（代码详解）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          34 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析：你真的理解排序算法吗——快速排序（代码详解）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、算法描述</h1>
+<p>上一篇我们讲到了中值排序，如果我们仔细考虑中值排序的性能，我们会发现随机选择pivotIndex将仍使slectKth的性能为线性时间。我们可以简化算法但是不会引起额外的性能开销吗？在某些情况下，这种简化实现能够快些吗？快速排序虽然使用了大致相同的思想，但事实上确实比中值排序简单。<br>
+在快速排序中，我们不再寻找中值，而是通过某些策略（有时是随机的，有时是最左的，有时是中间的）来选择一个元素，这个元素将数组切分成了两个子数组。快速排序包含两步，如下图所示，首先数组根据中枢值分成两个数组，左子数组的元素都小于或者等于中枢值，右子数组的元素都大于或者等于中枢值。然后每个子数组被递归的排序。<br>
+下面是快速排序的详细过程：<br>
+快速排序（Quick Sort）是一种高效的排序算法，由C. A. R. Hoare在1960年提出，其基本思想是通过一趟排序将待排序的数据分割成独立的两部分，其中一部分的所有数据都比另一部分的所有数据要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。以下是快速排序的详细过程：<br>
+<strong>1.选择基准值（Pivot）</strong><br>
+在待排序序列中选取一个元素作为基准值。传统的快速排序实现可能会选择序列的第一个、最后一个或中间元素作为基准值，但这些策略在某些情况下（如输入序列已经部分或完全有序）可能导致算法性能退化到O(n^2)。为了避免这种情况，一种常用的改进方法是随机选择基准值。<br>
+<strong>2.分区操作（Partitioning）</strong><br>
+分区操作是快速排序的核心步骤，其目的是将待排序序列划分为两个子序列，使得一个子序列中的所有元素都小于基准值，而另一个子序列中的所有元素都大于或等于基准值。具体过程如下：<br>
+设置两个指针，通常分别指向序列的起始位置和末尾位置。<br>
+从后往前搜索（即右指针向左移动），找到第一个小于基准值的元素，将其与左指针所指的元素交换。<br>
+从前往后搜索（即左指针向右移动），找到第一个大于或等于基准值的元素，将其与右指针所指的元素交换。<br>
+重复上述步骤，直到左指针和右指针相遇。此时，基准值就位于其最终位置，且左指针（或右指针）左边的所有元素都小于基准值，右边的所有元素都大于或等于基准值。<br>
+<strong>3.递归排序（Recursion）</strong><br>
+对基准值左右两边的子序列递归地执行上述分区操作，直到子序列的长度为1或0（即已经有序）。具体过程如下：<br>
+对基准值左边的子序列进行快速排序。<br>
+对基准值右边的子序列进行快速排序。<br>
+通过递归调用，快速排序能够逐步将待排序序列划分为更小的子序列，并对其进行排序，直到整个序列变得有序。</p>
+<h1>二、复杂度分析</h1>
+<p><img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C06ab996f4dbe452a82308deb9ac71cbd.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>就像描述的那样，此算法的随机性使得我们很难证明平均情况下的性能仍然为O（n log n）。<br>
+下图中的是快速排序的行为。图中的黑色方块表示切分函数第一行中的中枢值。选择的第一个中枢值是“2”，这时一个质量比较差的选择，因为这个值将数组切分成两个数组，一个大小为1，另一个为14。在下一次快速排序的递归调用，右边数组中的“12”被选中作为中枢值，这个中枢值切分成两个大小为9和4的子数组。在这里，你已经可以看到使用切分的好处，因为数组中的最后四个元素是最大的四个。因为中枢值选择的随机性，所以会有很多不同的行为。在不同的执行过程中，如下图所示，第一次选择的中枢值精确的将这个问题细分成两个可比较的问题。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Cf03be3185b1546e09a1c7e6e36460bcd.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C77def692381e43b1aca6dec162e65e44.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1>三、适用情况</h1>
+<p>快速排序是一种高效的通用排序算法，其使用情况非常广泛，特别是在处理大规模数据时表现出色。以下是快速排序的具体使用情况的举例：<br>
+<strong>1.通用排序需求</strong><br>
+快速排序适用于各种类型的数据排序，无论是整数、浮点数还是字符串，都能高效地进行排序。这种通用性使得快速排序成为许多应用场景中的首选排序算法。<br>
+<strong>2.数据库索引构建</strong><br>
+在数据库中，快速排序常用于构建索引。通过对数据库表中的数据进行排序，可以加速对数据的检索操作，提高数据库查询性能。快速排序的高效性和稳定性使得它成为数据库索引构建中的重要工具。<br>
+<strong>3.文件系统排序</strong><br>
+在文件系统中，快速排序也是一个快速且常用的算法。例如，在按照文件名、文件大小或创建时间对文件或目录进行排序时，快速排序能够迅速完成排序任务，提高文件系统的管理效率。<br>
+<strong>4.编译器优化</strong><br>
+编译器优化过程中，常涉及到对代码中的符号表、变量等信息进行排序。快速排序是一个被广泛使用的算法，用于加速这类排序操作，从而提高编译器的性能和效率。<br>
+<strong>5.财务交易排序</strong><br>
+在财务系统中，对交易记录进行排序是一项常见的任务。快速排序能够快速对交易记录按照日期、金额等进行排序，便于财务人员进行审计和分析。<br>
+<strong>6.搜索引擎结果排序</strong><br>
+搜索引擎需要对网页、文档等进行排序以提供相关性较高的搜索结果。快速排序在这种情境下的效率表现优异，能够迅速完成大量数据的排序任务，提高搜索引擎的响应速度和准确性。<br>
+<strong>7.大数据处理</strong><br>
+在大数据处理领域，快速排序同样发挥着重要作用。由于快速排序的平均时间复杂度为O(n log n)，它在处理大规模数据时具有显著的性能优势。因此，快速排序常被用于大数据排序、数据挖掘和分析等任务中。<br>
+<strong>8.网络协议实现</strong><br>
+在某些网络协议的实现中，需要对数据包按照特定规则进行排序。快速排序可以应用在这类场景中，确保数据包能够按照正确的顺序进行传输和处理。</p>
+<h1>四、算法实现</h1>
+<p>下面的实现中我们使用了一些在“中值排序”中已经写过的函数，有些做了一点改动，同时使用了一个标准的优化技术，即当待排序的数组大小低于某个预先设定的值时，我们将会使用插入排序。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include&lt;stdio.<span class="hljs-property">h</span>&gt;<br>#include&lt;stdlib.<span class="hljs-property">h</span>&gt;<br><br><span class="hljs-comment">//使用插入排序的数组大小的阈值</span><br>#define <span class="hljs-variable constant_">MINSIZE</span> <span class="hljs-number">4</span><br><br>int <span class="hljs-title function_">cmp</span>(<span class="hljs-params"><span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* x, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* y</span>)<br>&#123;<br>  int standard;<br>  <span class="hljs-comment">//这里比较时也是需要做强制类型转换</span><br>  standard = *(int*)x - *(int*)y;<br><br>  <span class="hljs-keyword">return</span> standard;<br>&#125;<br><br>int <span class="hljs-title function_">selectpivotIndex</span>(<span class="hljs-params"><span class="hljs-keyword">void</span>** ar, int left, int right</span>)<br>&#123;<br>  <br>  <span class="hljs-comment">// 计算中间位置的索引</span><br>  int mid = (left + right) / <span class="hljs-number">2</span>;<br><br>  <span class="hljs-comment">// 获取左端、中间和右端的值</span><br>  int left_val = *((int*)ar[left]);<br>  int mid_val = *((int*)ar[mid]);<br>  int right_val = *((int*)ar[right]);<br><br>  <span class="hljs-comment">// 找出这三个值的中值</span><br>  <span class="hljs-keyword">if</span> ((left_val &lt; mid_val &amp;&amp; mid_val &lt; right_val) || (right_val &lt; mid_val &amp;&amp; mid_val &lt; left_val))<br>  &#123;<br>    <span class="hljs-keyword">return</span> mid;<br>  &#125;<br>  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((mid_val &lt; left_val &amp;&amp; left_val &lt; right_val) || (right_val &lt; left_val &amp;&amp; left_val &lt; mid_val))<br>  &#123;<br>    <span class="hljs-keyword">return</span> left;<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    <span class="hljs-keyword">return</span> right;<br>  &#125;<br><br>&#125;<br><br>int <span class="hljs-title function_">partition</span>(<span class="hljs-params"><span class="hljs-keyword">void</span>** ar, int(*cmp)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*), int left, int right, int pivotIndex</span>)<br>&#123;<br>  int idx;<br>  int store;<br>  <span class="hljs-keyword">void</span>* pivot = ar[pivotIndex];<br>  <span class="hljs-comment">//将中枢值移动到数组结尾</span><br>  <span class="hljs-keyword">void</span>* tmp = ar[right];<br>  ar[right] = ar[pivotIndex];<br>  ar[pivotIndex] = tmp;<br>  <span class="hljs-comment">//将所有小于等于中枢值的元素都会移动到数组的前面，然后将中枢值插在它们后面</span><br>  store = left;<br>  <span class="hljs-keyword">for</span> (idx = left;idx &lt; right;idx++)<br>  &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">cmp</span>(ar[idx], pivot) &lt;= <span class="hljs-number">0</span>)<br>    &#123;<br>      tmp = ar[idx];<br>      ar[idx] = ar[store];<br>      ar[store] = tmp;<br>      store++;<br>    &#125;<br>  &#125;<br>  <span class="hljs-comment">//又一次交换，中枢值插在后面</span><br>  tmp = ar[right];<br>  ar[right] = ar[store];<br>  ar[store] = tmp;<br>  <span class="hljs-comment">//返回中值的位置</span><br>  <span class="hljs-keyword">return</span> store;<br>&#125;<br><br><span class="hljs-comment">//之前实现的基于指针的插入排序函数，但由于左值不再确定为0，因此有所改动</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">insertionSortPointers</span>(<span class="hljs-params"><span class="hljs-keyword">void</span>** ar,int(*cmp)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*),int m,int n</span>)<br>&#123;<br>  int j;<br>  <span class="hljs-keyword">for</span> (j = m+<span class="hljs-number">1</span>;j &lt;= n;j++)<br>  &#123;<br>    int i = j - <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">void</span>* value = ar[j];<br>    <span class="hljs-keyword">while</span> (i &gt;= <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-title function_">cmp</span>(ar[i], value) &gt; <span class="hljs-number">0</span>)<br>    &#123;<br>      ar[i + <span class="hljs-number">1</span>] = ar[i];<br>      i--;<br>    &#125;<br>    ar[i + <span class="hljs-number">1</span>] = value;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">//使用快速排序来对ar[left,right]排序，比较函数cmp用来严格的排序元素</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">do_qsort</span>(<span class="hljs-params"><span class="hljs-keyword">void</span>** ar, int(*cmp)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* ,<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*), int left, int right</span>)<br>&#123;<br>  int pivotIndex;<br>  <span class="hljs-keyword">if</span> (right &lt;= left)<br>  &#123;<br>    <span class="hljs-keyword">return</span>;<br>  &#125;<br>  <span class="hljs-comment">//切分</span><br>  pivotIndex = <span class="hljs-title function_">selectpivotIndex</span>(ar, left, right);<br>  pivotIndex = <span class="hljs-title function_">partition</span>(ar, cmp, left, right, pivotIndex);<br>  <span class="hljs-keyword">if</span> (pivotIndex - <span class="hljs-number">1</span> - left &lt;= <span class="hljs-variable constant_">MINSIZE</span>)<br>  &#123;<br>    <span class="hljs-title function_">insertionSortPointers</span>(ar, cmp, left, pivotIndex - <span class="hljs-number">1</span>);<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    <span class="hljs-title function_">do_qsort</span>(ar, cmp, left, pivotIndex-<span class="hljs-number">1</span>);<br>  &#125;<br>  <span class="hljs-keyword">if</span>(right-pivotIndex-<span class="hljs-number">1</span>&lt;=<span class="hljs-variable constant_">MINSIZE</span>)<br>  &#123;<br>    <span class="hljs-title function_">insertionSortPointers</span>(ar, cmp,pivotIndex +<span class="hljs-number">1</span>,right);<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    <span class="hljs-title function_">do_qsort</span>(ar, cmp,pivotIndex + <span class="hljs-number">1</span>,right);<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">//直接快速排序</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">sortPointers</span>(<span class="hljs-params"><span class="hljs-keyword">void</span>** vals, int total_elems, int(*cmp)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*)</span>)<br>&#123;<br>  <span class="hljs-title function_">do_qsort</span>(vals, cmp, <span class="hljs-number">0</span>, total_elems - <span class="hljs-number">1</span>);<br>&#125;<br><br><span class="hljs-comment">// 打印整数数组（通过指针数组）  </span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">printArray</span>(<span class="hljs-params"><span class="hljs-keyword">void</span>** ar, int total_elems</span>) &#123;<br>  <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; total_elems; i++) &#123;<br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, *((int*)ar[i]));<br>  &#125;<br>  <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br>&#125;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">//int nums[] = &#123; 34, 7, 23, 32, 5, 62, 32, 19, 45, 2, 90, 35 &#125;;</span><br>  int nums[] = &#123; <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>&#125;;<br>  int total_elems = <span class="hljs-title function_">sizeof</span>(nums) / <span class="hljs-title function_">sizeof</span>(nums[<span class="hljs-number">0</span>]);<br><br>  <span class="hljs-comment">// 创建指针数组  </span><br>  <span class="hljs-keyword">void</span>** vals = (<span class="hljs-keyword">void</span>**)<span class="hljs-title function_">malloc</span>(total_elems * <span class="hljs-title function_">sizeof</span>(<span class="hljs-keyword">void</span>*));<br>  <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; total_elems; i++) &#123;<br>    vals[i] = (<span class="hljs-keyword">void</span>*)&amp;nums[i];<br>  &#125;<br><br>  <span class="hljs-comment">// 排序  </span><br>  <span class="hljs-title function_">sortPointers</span>(vals, total_elems, cmp);<br><br>  <span class="hljs-comment">// 打印排序后的数组  </span><br>  <span class="hljs-title function_">printArray</span>(vals, total_elems);<br><br>  <span class="hljs-comment">// 释放内存  </span><br>  <span class="hljs-title function_">free</span>(vals);<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>令人惊奇的是，随机选择中枢值的算使得快速排序在平均情况下表现的比其他排序算法要好。不仅如此，大量的对快速排序的优化和强化研究使得快速排序成为最高效的算法。</p>
+<h1>五、算法优化</h1>
+<p>快速排序是大多数系统选择的排序算法。在基于UNIX和Linux的系统中,有内建的库函<br>
+数qsort(有些版本的Linux模作系统是使用堆排序来实现qsort的,在接下来的“堆排序”中将会讲到)。操作系统经常使用的是优化过的快速排序算法。在论述如何优化的资源中,两个经常被引用的是Sedgewick(1978)和Bentley与Mcllroy(1993)。<br>
+各种各样的优化:<br>
+<em>1.利用存储子任务的栈来消除递归。</em><br>
+<em>2.选择基于三中值分区的中枢值。</em><br>
+<em>3.设定一个使用切分时数组长度的最小值,如果小于这个值,就使用插入排序(这个值根据实现和机器架构的不同而不同;例如,在Sun4架构上,这个最小值根据经验,一般设定为4)。</em><br>
+<em>4.当处理子数组的时候,首先将大的子数组压入树中,这样来最小化树的总大小,确保小的问题首先被解决。</em><br>
+认识到这样一个问题是非常重要的,那就是这些优化都不能够使最坏情况下快速排序的<br>
+性能高于O(n²)。唯一能够确保最坏情况下O($nlogn$)性能的是使用例如BFPRT的选择算法,虽然使用这个算法会使平均情况下的性能降低,。如果要求最坏情况下O($nlogn$)的性能,那么考虑使用堆排序,这个算法将在接下来讲述。</p>
+<h2 id="选择中枢值">选择中枢值</h2>
+<p>从一个子数组A[left.left+n)中选择一个中枢元素的操作必须是高效的,不应该需要检查子数组中的所有n个元素。有一些改进如下:<br>
+<em>1.选择第一个或者最后一个:A[left]或者A[lefttn-1]。</em><br>
+<em>在A[left,left+n-1]中选择一个随机元素。</em><br>
+<em>选择k中值:在A[left,left+n-1]随机选择k个元素,然后选择这k个元素的中值。</em><br>
+通常我们都选择k=3,这个变种叫做三中值。Sedgewick描述了这个方法,并且认为这个<br>
+改进能够有5%的性能提升,不过他注意到数据的某些排列将会使得算法,包括这个改进<br>
+的性能在一般水准以下。一个五中值的中枢值选择也投入使用。这个改进进行更深入的计算来选择合适的中枢值,由于带来了过多开销,所以很少能够得到性能提升。这种改<br>
+进使得性能和中值排序的性能很接近(事实上,中值排序也会接受这种选择n中值的极端变化)。</p>
+<h2 id="处理切分">处理切分</h2>
+<p>在前面的切分函数中,小于或者等于中枢元素的值的元素都被插入到子数组的前端。如果数组中有很多和选择的中枢元素重复的元素,这个方法也许会使得子数组的大小不平衡。一种减少失衡问题的解决方法是将等于中枢元素值的元素轮流地插入到第一个和第二个子数组中。</p>
+<h2 id="处理子数组">处理子数组</h2>
+<p>快速排序通常在切分出来的两个子数组上分别进行递归调用快速排序。当处理一个子数组时,另一个的活动记录将会被压入执行找中。如果大的子数组首先被处理,那么此时<br>
+树中可能存储了线性数目的活动记录(虽然现代编译器也许会观察到并且消除这个开<br>
+销)。为了最小化树的可能深度,那么首先处理小的子数组。<br>
+如果系统栈的深度是可预见的,那么快速排序也许不适合你的应用程序。一种打破这个<br>
+值局的方法是使用一个栈的数据结构来存储将要解决的子问题,而不是依赖于递归。<br>
+为小数组使用简单的插入排序在小数组上,插入排序比快速排序要快得多,当处理大数组时,快速排序最终还是将大数组切分成无数的待排序的小数组。为了改善快速排序的递归性能,一个广泛使用的技术是在排序大子数组时调用快速排序,在排序小子数组时使用插入排序Sedgewick(1978)建议在快速排序中结合三中值和在排序小数组时使用插入排序这两种手段,这样能够相比纯快速排序提高20%~25%的性能。</p>
+<h2 id="内观排序">内观排序</h2>
+<p>是否切换到对小数组的插入排序取决于数组的大小。Musser(1997)介绍了一个快速排序的变种,叫做内观排序(IntroSort),这个算法监视快速排序的递归深度,以确保高效地处理。如果快速排序的递归深度超过log(n)级,那么内观排序切换到堆排序。C++STL的SGI实现使用了内观排序作为其默认的排序算(<a target="_blank" rel="noopener" href="http://www.sgi.com/tech/stl/sort.html">http://www.sgi.com/tech/stl/sort.html</a>)。</p>
+<h1>六、引用及参考文献</h1>
+<p>1.《算法设计手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析：你真的理解排序算法吗——快速排序（代码详解）</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析：你真的理解排序算法吗——快速排序（代码详解）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/" title="数据结构与算法分析：你真的理解图算法吗——深度优先搜索（代码详解+万字长文）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解图算法吗——深度优先搜索（代码详解+万字长文）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%80%BB%E7%BB%93/" title="数据结构与算法分析：你真的理解排序算法吗——总结">
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解排序算法吗——总结</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,696 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="配置WSL 首先查看默认的Linux发行版，如果默认为docker之类的则设置Kali linux或其他linux系统为默认，下面是wsl的常用命令： 12345678910111213查看帮助信息：wsl --help 或 wsl -h更新WSL：wsl --update查看可用的Linux发行版：wsl --list --online 或 wsl -l -o安装Linux发行版：wsl --i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%99%E7%A8%8B%E7%B1%BB/%E6%95%99%E7%A8%8B%E7%B1%BB/Kali%20linux%E5%9C%A8WSL2%E4%B8%AD%E7%9A%84%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8kex%E5%AE%9E%E7%8E%B0%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%EF%BC%88%E6%95%99%E7%A8%8B%E6%80%BB%E7%BB%93%EF%BC%89%20(1)/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="配置WSL 首先查看默认的Linux发行版，如果默认为docker之类的则设置Kali linux或其他linux系统为默认，下面是wsl的常用命令： 12345678910111213查看帮助信息：wsl --help 或 wsl -h更新WSL：wsl --update查看可用的Linux发行版：wsl --list --online 或 wsl -l -o安装Linux发行版：wsl --i">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.849Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1) - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>配置WSL</h1>
+<p>首先查看默认的Linux发行版，如果默认为docker之类的则设置Kali linux或其他linux系统为默认，下面是wsl的常用命令：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript">查看帮助信息：wsl --help 或 wsl -h<br>更新<span class="hljs-variable constant_">WSL</span>：wsl --update<br>查看可用的<span class="hljs-title class_">Linux</span>发行版：wsl --list --online 或 wsl -l -o<br>安装<span class="hljs-title class_">Linux</span>发行版：wsl --install -d &lt;<span class="hljs-title class_">Distro</span>&gt;，例如安装<span class="hljs-title class_">Debian</span>：wsl --install -d <span class="hljs-title class_">Debian</span><br>设置默认<span class="hljs-title class_">Linux</span>发行版：wsl --set-<span class="hljs-keyword">default</span> &lt;<span class="hljs-title class_">Distro</span>&gt; 或 wsl -s &lt;<span class="hljs-title class_">Distro</span>&gt;<br>将<span class="hljs-title class_">WSL2</span>设置为默认版本：wsl --set-<span class="hljs-keyword">default</span>-version <span class="hljs-number">2</span><br>设置特定发行版为<span class="hljs-title class_">WSL2</span>：wsl --set-version &lt;<span class="hljs-title class_">Distro</span>&gt; <span class="hljs-number">2</span>，例如将<span class="hljs-title class_">Ubuntu</span>设置为<span class="hljs-title class_">WSL2</span>：wsl --set-version ubuntu <span class="hljs-number">2</span><br>查看当前状态：wsl --status<br>查看详细信息：wsl --list --verbose 或 wsl -l -v<br>直接运行子系统命令：wsl -d &lt;<span class="hljs-title class_">Distro</span>&gt; &lt;command&gt;，例如在默认子系统中运行ls：wsl ls<br>关闭特定子系统：wsl --terminate &lt;<span class="hljs-title class_">Distro</span>&gt; 或 wsl -t &lt;<span class="hljs-title class_">Distro</span>&gt;<br>关闭所有子系统：wsl --shutdown<br>卸载特定子系统：wsl --unregister &lt;<span class="hljs-title class_">Distro</span>&gt;<br></code></pre></td></tr></table></figure>
+<h1>配置kali linux</h1>
+<p>首先更换软件源，执行sudo vim /etc/apt/sources.list在其中添加如下字段：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript">deb <span class="hljs-attr">https</span>:<span class="hljs-comment">//mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main non-free contrib non-free-firmware</span><br>deb-src <span class="hljs-attr">https</span>:<span class="hljs-comment">//mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main non-free contrib non-free-firmware</span><br><br># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释<br>deb <span class="hljs-attr">https</span>:<span class="hljs-comment">//mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware</span><br># deb-src <span class="hljs-attr">https</span>:<span class="hljs-comment">//mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware</span><br><br>deb <span class="hljs-attr">https</span>:<span class="hljs-comment">//mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware</span><br># deb-src <span class="hljs-attr">https</span>:<span class="hljs-comment">//mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware</span><br><br>deb <span class="hljs-attr">https</span>:<span class="hljs-comment">//mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware</span><br># deb-src <span class="hljs-attr">https</span>:<span class="hljs-comment">//mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware</span><br><br># 以下安全更新软件源包含了官方源与镜像站配置，如有需要可自行修改注释切换<br>deb <span class="hljs-attr">https</span>:<span class="hljs-comment">//security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware</span><br># deb-src <span class="hljs-attr">https</span>:<span class="hljs-comment">//security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware</span><br></code></pre></td></tr></table></figure>
+<p>如果有需要可以通过以下命令安装kali工具集：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//安装kali标准工具集</span><br>sudo apt install kali-linux-<span class="hljs-keyword">default</span><br><span class="hljs-comment">//安装kali大工具集</span><br>sudo apt install kali-linux-large<br><span class="hljs-comment">//安装kali完整工具集（体积较大，大多数情况下安装标准工具集即可）</span><br>sudo apt install kali-linux-everything<br><span class="hljs-comment">//安装完成后可以使用此命令自动清理不需要的软件包</span><br>sudo apt autoremove<br></code></pre></td></tr></table></figure>
+<h1>安装kex</h1>
+<p>通过下面的命令更新索引并安装kex</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">sudo apt update &amp;&amp; sudo apt install kali-win-kex<br></code></pre></td></tr></table></figure>
+<h1>kex的三种模式</h1>
+<p>kex有三种模式：<br>
+1.窗口模式：在专用窗口中启动 Kali Linux 桌面<br>
+2.无缝模式：在 Windows 和 Kali 应用程序和菜单之间共享 Windows 桌面<br>
+3.增强会话模式：与 Hyper-V 类似，使用 RDP 获得功能更丰富的体验<br>
+如果只使用窗口模式的话则在安装kex后，进入~目录直接执行kex即可，如果需要声音支持则在kex后面加上-s，这种模式会直接覆盖当前的屏幕，建议在有更多屏幕的情况下使用。<br>
+如果要使用无缝模式，则需要安装VcXsrv，网址如下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">https</span>:<span class="hljs-comment">//sourceforge.net/projects/vcxsrv/</span><br></code></pre></td></tr></table></figure>
+<p>还需要安装微软运行库vcredist140 ，根据官方文档的要求应该安装以下该链接的Visual C++ Redistributable for Visual Studio 2015 ( vcredist140 )</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">https</span>:<span class="hljs-comment">//www.microsoft.com/en-US/download/details.aspx?id=48145</span><br></code></pre></td></tr></table></figure>
+<p>如果你的机器上存在其它版本的vcredist14x，需要在控制面版中卸载卸载其它版本，然后安装vcredist140，如果你安装过微软运行库合集，如果后面测试可以使用则没有必要一定安装这个版本。</p>
+<h1>无缝模式下配置kex</h1>
+<p>在安装完VcXsrv后运行并按照如下进行设置 ：<br>
+![在这里插入图片描述](./Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\e60fa6f2b6d54aa0b7690aef86d1b2a6.png)<br>
+这四个模式里作者推荐使用默认的（据说在多屏幕情况下会有问题），默认模式运行起来很流畅，One large window这个模式在别的教程中被推荐，但是作者实测运行卡顿，并且经常无法显示图像，当然，如果在你的电脑上可以流畅运行也可以使用。<br>
+![在这里插入图片描述](./Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\7d72a643d81d46a0a9e2f53b281c107a.png)<br>
+![在这里插入图片描述](./Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\6617c790897b433f8515a35147fc7ad5.png)<br>
+![在这里插入图片描述](./Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\11dafb450cc042d48f584da5a5f12bfb.png)<br>
+如果弹出窗口后，注意不要关闭窗口，这时处于等待链接的状态，否则会报如下错误：<br>
+![在这里插入图片描述](./Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\1435997fbe60404880adb1573d357b20.png)</p>
+<p>这里我引用一下另一篇博文的解释来阐述这个设置过程发生了什么，原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39653078/article/details/113016353">link</a>：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs routeros">整个过程中比较重要的概念是 Display number 和环境变量 <span class="hljs-variable">$DISPLAY</span> 。在 VcXsrv 中设置的 Display <br>number 就是 <span class="hljs-variable">$DISPLAY</span> 中的分号后面的那个数字。当然，如果 VcXsrv 使用默认的 Display number <br>(-1)就是让 VcXsrv 自动设置这个数字，在当前情况下用默认设置也是可以的。<br>当启动好 VcXsrv 后就相当于在 Windows 上启动了一个虚拟显示器，然后 WSL 的桌面程序需要连接<br>上这个虚拟显示器才能正常显示。Linux 就是通过 <span class="hljs-variable">$DISPLAY</span> 这个环境变量来寻找目标显示器。网络<br>上有很多 wsl 连接 VcXsrv 的教程的方法是将 <span class="hljs-variable">$DISPLAY</span> 设置成 :0.0 ，这貌似在 WSL1 上是可行<br>的，但是在 WSL2 上就行不通了。(但是如果用 xrdp 来使用图形界面使用这个设置就是可以的，因为 <br>xrdp 是运行在 wsl 的 Linux 上的，而且 :0.0 的意思其实就是 localhost:0.0 。至于为什么是 0.0 ，是<br>因为这两个数字分别代表 Display 和 Screen，即 D.S 。 0.0 的意思是 0 号 Display 的 0 号<span class="hljs-built_in"> Screen </span><br>。至于更详细的解释可以在 Linux 中执行 man X 来查看。)<br>网络上另外还有一个方法是将 <span class="hljs-variable">$DISPLAY</span> 设置成 $(cat /etc/resolv.conf | grep nameserver | awk <br><span class="hljs-string">&#x27;&#123;print $2&#125;&#x27;</span>):0 ，这个值是 /etc/resolv.conf 中的 nameserver 的<span class="hljs-built_in"> IP </span>。不知道为什么这个方法在我的机<br>子上也行不通(可能是因为别人的 wsl2 的 nameserver 的<span class="hljs-built_in"> IP </span>和 Windows 的<span class="hljs-built_in"> IP </span>是一样的？)。<br>而 <span class="hljs-variable">$DISPLAY</span> 的本质是为了告诉 Linux 的图形程序 X<span class="hljs-built_in"> server </span>的地址和 Display number。所以将地址<br>设置成 VcXsrv 所在主机的<span class="hljs-built_in"> IP </span>地址那应该是没问题的。如果执行 startxfce4 还是连接不上，并显示 <br>xrdb:<span class="hljs-built_in"> Connection </span>timed out 那么检查下<span class="hljs-built_in"> IP </span>能否<span class="hljs-built_in"> ping </span>通，以及可能要设置下 WIndows 的防火墙规<br>则。<br><br>为什么设置的最后一步要全点上钩？<br>最后一个勾是 <span class="hljs-built_in">Disable</span> access control ，这是允许所有客户程序都能连接这个 VcXsrv。有的教程说要<br>在最后一步的 Additional parameters fo VcXsrv 中加上 -ac 这个参数，但其实这个参数应该和勾上 <br><span class="hljs-built_in">Disable</span> access control 的作用是一样的。因为 -ac 的解释就是 <span class="hljs-built_in">disable</span> access control restrictions 。<br>如果不把 <span class="hljs-built_in">export</span> 写在 .bashrc 中会怎么样?<br>如果只在终端里设置 <span class="hljs-variable">$DISPLAY</span> 的值其实也能运行，但是这样在图形界面中运行一些图形程序的时<br>候可能就会出问题了。因为只在终端执行 <span class="hljs-built_in">export</span> <span class="hljs-built_in">..</span>. 那么环境变量只会在这个终端有用，如果退出终<br>端或者打开新的终端 <span class="hljs-variable">$DISPLAY</span> 的值就没了，所以要放在 .bashrc 中。当然用其他永久设置环境的方<br>法也是可以的。                        <br></code></pre></td></tr></table></figure>
+<p>然后我们打开cmd，输入ipconfig，记住这个虚拟网卡的ipv4地址：<br>
+![在这里插入图片描述](./Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)image\6309947417b94fd39d791ec454830ae5.png)<br>
+然后在kali中输入如下命令：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">sudo vim /etc/resolv.<span class="hljs-property">conf</span><br></code></pre></td></tr></table></figure>
+<p>将其中的nameserver后面的ip改成上面的ipv4地址，这里的ipv4地址是wsl本身的地址，注意，每次重启wsl都需要重新更改一下，如果你有永久修改的方式也可，例如通过脚本。<br>
+然后我们就可以执行kex --sl，此时根据不同的窗口模式就有不同的显示方式了。</p>
+<h1>增强会话模式</h1>
+<p>键入kex -esm命令即可启动，这个模式是通过windows远程桌面的方式进行访问。</p>
+<h1>报错记录</h1>
+<p>如果报远程主机积极拒绝的错误，执行kex stop，然后重启kex服务即可。</p>
+<h1>其余</h1>
+<p>创建 Windows 终端快捷方式,以便下次快速进入图形界面：<br>
+在以下选项中进行选择：</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs fsharp">窗口模式下的基本 Win<span class="hljs-operator">-</span>KeX 有声：<br><br>&#123;<br>      <span class="hljs-string">&quot;guid&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;&#123;55ca431a-3a87-5fb3-83cd-11ececc031d2&#125;&quot;</span>,<br>      <span class="hljs-string">&quot;hidden&quot;</span><span class="hljs-operator">:</span> <span class="hljs-literal">false</span>,<br>      <span class="hljs-string">&quot;name&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;Win-KeX&quot;</span>,<br>      <span class="hljs-string">&quot;commandline&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;wsl -d kali-linux kex --wtstart -s&quot;</span>,<br>&#125;,<br>窗口模式下带声音的高级 Win<span class="hljs-operator">-</span>KeX <span class="hljs-operator">-</span> Kali 图标并在 kali 主目录中启动：<br><br>将图标复制到您的 Windows 图片目录，并将图标和启动目录添加到您的 WT 配置中：kali<span class="hljs-operator">-</span>menu.<span class="hljs-keyword">png</span><br><br>&#123;<br>        <span class="hljs-string">&quot;guid&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;&#123;55ca431a-3a87-5fb3-83cd-11ececc031d2&#125;&quot;</span>,<br>        <span class="hljs-string">&quot;hidden&quot;</span><span class="hljs-operator">:</span> <span class="hljs-literal">false</span>,<br>        <span class="hljs-string">&quot;icon&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;file:///c:/users/&lt;windows user&gt;/pictures/icons/kali-menu.png&quot;</span>,<br>        <span class="hljs-string">&quot;name&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;Win-KeX&quot;</span>,<br>        <span class="hljs-string">&quot;commandline&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;wsl -d kali-linux kex --wtstart -s&quot;</span>,<br>        <span class="hljs-string">&quot;startingDirectory&quot;</span> <span class="hljs-operator">:</span> <span class="hljs-string">&quot;//wsl$/kali-linux/home/&lt;kali user&gt;&quot;</span><br>&#125;,<br></code></pre></td></tr></table></figure>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs fsharp">带声音的无缝模式下的基本 Win<span class="hljs-operator">-</span>KeX：<br><br>&#123;<br>      <span class="hljs-string">&quot;guid&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;&#123;55ca431a-3a87-5fb3-83cd-11ececc031d2&#125;&quot;</span>,<br>      <span class="hljs-string">&quot;hidden&quot;</span><span class="hljs-operator">:</span> <span class="hljs-literal">false</span>,<br>      <span class="hljs-string">&quot;name&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;Win-KeX&quot;</span>,<br>      <span class="hljs-string">&quot;commandline&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;wsl -d kali-linux kex --sl --wtstart -s&quot;</span>,<br>&#125;,<br>无缝模式下带声音的高级 Win<span class="hljs-operator">-</span>KeX <span class="hljs-operator">-</span> Kali 图标并在 kali 主目录中启动：<br><br>将图标复制到您的 Windows 图片目录，并将图标和启动目录添加到您的 WT 配置中：kali<span class="hljs-operator">-</span>menu.<span class="hljs-keyword">png</span><br><br>&#123;<br>        <span class="hljs-string">&quot;guid&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;&#123;55ca431a-3a87-5fb3-83cd-11ececc031d2&#125;&quot;</span>,<br>        <span class="hljs-string">&quot;hidden&quot;</span><span class="hljs-operator">:</span> <span class="hljs-literal">false</span>,<br>        <span class="hljs-string">&quot;icon&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;file:///c:/users/&lt;windows user&gt;/pictures/icons/kali-menu.png&quot;</span>,<br>        <span class="hljs-string">&quot;name&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;Win-KeX&quot;</span>,<br>        <span class="hljs-string">&quot;commandline&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;wsl -d kali-linux kex --sl --wtstart -s&quot;</span>,<br>        <span class="hljs-string">&quot;startingDirectory&quot;</span> <span class="hljs-operator">:</span> <span class="hljs-string">&quot;//wsl$/kali-linux/home/&lt;kali user&gt;&quot;</span><br>&#125;,<br></code></pre></td></tr></table></figure>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs fsharp">ESM 模式下的基本 Win<span class="hljs-operator">-</span>KeX，带声音：<br><br>&#123;<br>      <span class="hljs-string">&quot;guid&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;&#123;55ca431a-3a87-5fb3-83cd-11ecedc031d2&#125;&quot;</span>,<br>      <span class="hljs-string">&quot;hidden&quot;</span><span class="hljs-operator">:</span> <span class="hljs-literal">false</span>,<br>      <span class="hljs-string">&quot;name&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;Win-KeX&quot;</span>,<br>      <span class="hljs-string">&quot;commandline&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;wsl -d kali-linux kex --esm --wtstart -s&quot;</span>,<br>&#125;,<br>ESM 模式下的高级 Win<span class="hljs-operator">-</span>KeX 有声 <span class="hljs-operator">-</span> Kali 图标并在 kali 主目录中启动：<br><br>将图标复制到您的 Windows 图片目录，并将图标和启动目录添加到您的 WT 配置中：kali<span class="hljs-operator">-</span>menu.<span class="hljs-keyword">png</span><br><br>&#123;<br>        <span class="hljs-string">&quot;guid&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;&#123;55ca431a-3a87-5fb3-83cd-11ecedd031d2&#125;&quot;</span>,<br>        <span class="hljs-string">&quot;hidden&quot;</span><span class="hljs-operator">:</span> <span class="hljs-literal">false</span>,<br>        <span class="hljs-string">&quot;icon&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;file:///c:/users/&lt;windows user&gt;/pictures/icons/kali-menu.png&quot;</span>,<br>        <span class="hljs-string">&quot;name&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;Win-KeX&quot;</span>,<br>        <span class="hljs-string">&quot;commandline&quot;</span><span class="hljs-operator">:</span> <span class="hljs-string">&quot;wsl -d kali-linux kex --esm --wtstart -s&quot;</span>,<br>        <span class="hljs-string">&quot;startingDirectory&quot;</span> <span class="hljs-operator">:</span> <span class="hljs-string">&quot;//wsl$/kali-linux/home/&lt;kali user&gt;&quot;</span><br>&#125;,<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%99%E7%A8%8B%E7%B1%BB/" class="category-chain-item">教程类</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)</div>
+      <div>https://mounthuangshan.github.io/教程类/教程类/Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/C-%E7%AC%94%E8%AE%B0/C#%E7%AC%94%E8%AE%B0/NET%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/" title="NET框架概述">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">NET框架概述</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%99%E7%A8%8B%E7%B1%BB/%E6%95%99%E7%A8%8B%E7%B1%BB/Windows%E4%B8%8B%E5%AE%89%E8%A3%85magenta%E5%8F%8A%E6%8A%A5%E9%94%99error_%20Building%20wheel%20for%20numba%EF%BC%88setup.py%EF%BC%89...%20error%E5%92%8Csubprocess-exited-with-error%E7%AD%89/" title="Windows下安装magenta及报错error_ Building wheel for numba（setup">
+                        <span class="hidden-mobile">Windows下安装magenta及报错error_ Building wheel for numba（setup</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

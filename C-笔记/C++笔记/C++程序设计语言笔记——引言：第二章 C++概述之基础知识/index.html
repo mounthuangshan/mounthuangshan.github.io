@@ -1,0 +1,891 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="第二章 C++概述：基础知识 0 基本概念 C＋＋是一种编译型语言。顾名思义，要想运行一段 C＋＋程序，需要首先用编译器把源文件转换为对象文件，然后再用链接器把这些对象文件组合生成可执行程序。一个 C＋＋程序通常包含许多源代码文件（通常简称为源文件）。 ![在这里插入图片描述](.&#x2F;C++程序设计语言笔记——引言：第二章 C++概述之基础知识image\55c41f0ad3d7444e83de4c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++程序设计语言笔记——引言：第二章 C++概述之基础知识">
+<meta property="og:url" content="https://mounthuangshan.github.io/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%BC%95%E8%A8%80%EF%BC%9A%E7%AC%AC%E4%BA%8C%E7%AB%A0%20C++%E6%A6%82%E8%BF%B0%E4%B9%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="第二章 C++概述：基础知识 0 基本概念 C＋＋是一种编译型语言。顾名思义，要想运行一段 C＋＋程序，需要首先用编译器把源文件转换为对象文件，然后再用链接器把这些对象文件组合生成可执行程序。一个 C＋＋程序通常包含许多源代码文件（通常简称为源文件）。 ![在这里插入图片描述](.&#x2F;C++程序设计语言笔记——引言：第二章 C++概述之基础知识image\55c41f0ad3d7444e83de4c">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.849Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>C++程序设计语言笔记——引言：第二章 C++概述之基础知识 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C++程序设计语言笔记——引言：第二章 C++概述之基础知识"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          73 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C++程序设计语言笔记——引言：第二章 C++概述之基础知识</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>第二章 C++概述：基础知识</h1>
+<h2 id="0-基本概念">0 基本概念</h2>
+<p>C＋＋是一种编译型语言。顾名思义，要想运行一段 C＋＋程序，需要首先用编译器把源文件转换为对象文件，然后再用链接器把这些对象文件组合生成可执行程序。一个 C＋＋程序通常包含许多源代码文件（通常简称为源文件）。<br>
+![在这里插入图片描述](./C++程序设计语言笔记——引言：第二章 C++概述之基础知识image\55c41f0ad3d7444e83de4c0b6d3720eb.png)<br>
+一个可执行程序适用于一种特定的硬件／系统组合，是不可移植的。例如，可执行程序无法直接从 Mac 移植到 Windows PC。当我们谈论 C＋＋程序的可移植性时，通常是指源代码的可移植性。也就是说，同一份源代码可以在不同系统上成功编译并运行。</p>
+<h2 id="1-ISO-的C＋＋标准定义了两种实体：">1 ISO 的C＋＋标准定义了两种实体：</h2>
+<ul>
+<li>核心语言功能，比如内置类型（如 char 和 int）和循环（如 for 语句和 while 语句）；</li>
+<li>标准库组件，比如容器（如 vector 和 map）和 1／O 操作（如＜＜和 getline（））。<br>
+每个 C＋＋实现都会提供标准库组件，其实它们也是非常普通的 C＋＋代码。换句话说，C＋＋标准库可以用 C＋＋语言本身实现（仅在实现线程上下文切换这样的功能时才使用少量机器代码）。这意味着 C＋＋在面对绝大多数要求较高的系统编程任务时高效且有足够的表达能力。</li>
+</ul>
+<h2 id="2-类型、变量和算术运算">2 类型、变量和算术运算</h2>
+<ul>
+<li>C＋＋是一种静态类型语言，这意味着编译器在处理任何实体（如对象、值、名称和表达式）时，都必须清楚它的类型。对象的类型决定了能在该对象上执行哪些操作。</li>
+<li>在每个 C++程序中有且只有一个名为 main（）的全局函数在执行一个程序时首先执行该函数。如果 main（）返回一个 int 值，则这个值将作为程序给&quot;系统&quot;的返回值。如果 main（）没有返回任何值，则系统也将收到一个表示程序成功完成的值。来自 main（）的非零返回值表示程序执行失败。并非所有操作系统和执行环境都会用到这个返回值：基于 Linux/Unix 的环境通常会用到，而基于 Windows 的环境一般不会用到。</li>
+<li>C++提供了好几种表示初始化的符号，比如上面用到的=，此外还有一种更加通用的形式，这种形式使用的是花括号内的一组初始化器列表。符号=是一种比较传统的形式，最早被 C 语言使用。但是如果拿不准的话，最好在 C++中使用更通用的{}列表形式。抛开其他因素不谈，使用初始化器列表的形式至。少可以确保不会发生某些可能导致信息丢失的类型转换（窄化类型转换，即隐式类型转化）。</li>
+</ul>
+<blockquote>
+<p>1.什么是隐式类型转化：<br>
+当一个值拷贝给另一个兼容类型的值时，隐式转换会自动进行。所谓隐式转换，是指不需要用户干预，编译器私下进行的类型转换行为。<br>
+2.为什么要进行隐式转换：<br>
+C++面向对象的多态特性，就是通过父类的类型实现对子类的封装。通过隐式转换，你可以直接将一个子类的对象使用父类的类型进行返回。再比如，数值和布尔类型的转换，整数和浮点数的转换等。某些方面来说，隐式转换给C++程序开发者带来了不小的便捷。C++是一门强类型语言，类型的检查是非常严格的。如果没有类型的隐式转换，这将给程序开发者带来很多的不便。<br>
+3：C++隐式转换的原则：<br>
+A.基本数据类型 基本数据类型的转换以取值范围的作为转换基础（保证精度不丢失）。隐式转换发生在从小-&gt;大的转换中。比如从char转换为int。从int-&gt;long。<br>
+B.自定义对象子类对象可以隐式的转换为父类对象。<br>
+4.隐式转换的风险：类的隐式转换<br>
+在类中，隐式转换可以被三个成员函数控制：<br>
+A.单参数构造函数：允许隐式转换特定类型来初始化对象。<br>
+B.赋值操作符：允许从特定类型的赋值进行隐式转换。<br>
+C.类型转换操作符：允许隐式转换到特定类型。<br>
+隐式转换的风险一般存在于自定义的类构造函数中。按照默认规定，只有一个参数的构造函数也定义了一个隐式转换，将该构造函数对应数据类型的数据转换为该类对象。<br>
+5.禁止隐式转换:<br>
+既然隐式转换存在这么多的风险，那如何能够禁止隐式转换的发生呢。C++中提供了explicit关键字，在构造函数声明的时候加上explicit关键字，能够禁止隐式转换。</p>
+</blockquote>
+<blockquote>
+<p>C++是一门强类型的语言，许多转换，特别是那些暗示值的不同解释的转换，需要显式转换，在c++中称为类型转换。泛型类型转换有两种主要语法:函数型和类c型：<br>
+double x = 10.3;<br>
+int y;<br>
+y = int (x);    // functional notation<br>
+y = (int) x;    // c-like cast notation<br>
+这些类型转换的通用形式的功能足以满足大多数基本数据类型的需求。但是，这些操作符可以不加区别地应用于类和指向类的指针上，这可能导致代码在语法正确的情况下导致运行时错误。编译器检查不出错误，可能导致运行时出错。<br>
+不受限制的显式类型转换允许将任何指针转换为任何其他指针类型，而不依赖于指针所指向的类型。<br>
+其他情况：<br>
+A.将指向const对象的指针转换成非const对象的指针<br>
+B.可能将基类对象指针转成了派生类对象的指针</p>
+</blockquote>
+<p>编译时报错优于运行时报错，所以C++引入的四种类型转换，不同场景下不同需求使用不同的类型转换方式，同时有利于代码审查:</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript">dynamic_cast &lt;new_type&gt; (expression)<br>reinterpret_cast &lt;new_type&gt; (expression)<br>static_cast &lt;new_type&gt; (expression)<br>const_cast &lt;new_type&gt; (expression)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>1.static_cast：<br>
+可以在类相关的指针中完成转换，不仅是向上转换，还有向下转换。在运行时期间不执行任何检查，以确保正在转换的对象实际上是目标类型的完整对象。因此它依靠编译器确保转换是否安全，另一方面，它没有dynamic_cast运行时检查的开销。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// dynamic_cast</span><br>#include &lt;iostream&gt;<br>#include &lt;exception&gt;<br><span class="hljs-keyword">using</span> namespace std;<br> <br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123;<br><span class="hljs-attr">public</span>:<br>  virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">show</span>(<span class="hljs-params"></span>) &#123;<br>  cout &lt;&lt; <span class="hljs-string">&quot;我是基类&quot;</span> &lt;&lt; endl;<br>&#125; &#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : public <span class="hljs-title class_">Base</span> &#123; <br>  int a; <br><span class="hljs-attr">public</span>:<br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">show</span>(<span class="hljs-params"></span>) &#123;<br>    cout &lt;&lt; <span class="hljs-string">&quot;我是派生类&quot;</span> &lt;&lt; endl;<br>  &#125;<br>&#125;;<br> <br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-title class_">Base</span> * a = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Base</span>;<br>    <span class="hljs-title class_">Derived</span> * b = static_cast&lt;<span class="hljs-title class_">Derived</span>*&gt;(a);<br>    b-&gt;<span class="hljs-title function_">show</span>(); <span class="hljs-comment">//如果show为虚函数，则显示我是基类，不是虚函数则显示我是派生类</span><br> <br>  &#125;<br>  <span class="hljs-keyword">catch</span> (exception&amp; e) &#123; cout &lt;&lt; <span class="hljs-string">&quot;Exception: &quot;</span> &lt;&lt; e.<span class="hljs-title function_">what</span>(); &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>使用场景：<br>
+A.基本数据类型之间的转换使用，例如float转int，int转char等，在有类型指针和void*之间转换使用，子类对象指针转换成父类对象指针也可以使用static_cast。<br>
+B.非多态类型转换一般都使用static_cast，而且最好把所有的隐式类型转换都是用static_cast进行显示替换，不能使用static_cast在有类型指针之间进行类型转换。</p>
+<ul>
+<li>2.const_cast:<br>
+这种类型的类型转换操作指针所指向的对象的常量，可以是要设置的，也可以是要删除的。例如，为了将const指针传递给需要非const实参的函数。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// const_cast</span><br>#include &lt;iostream&gt;<br><span class="hljs-keyword">using</span> namespace std;<br> <br><span class="hljs-keyword">void</span> <span class="hljs-title function_">print</span> (char * str)<br>&#123;<br>  cout &lt;&lt; str &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>&#125;<br> <br>int <span class="hljs-title function_">main</span> () &#123;<br>  <span class="hljs-keyword">const</span> char * c = <span class="hljs-string">&quot;sample text&quot;</span>;<br>  <span class="hljs-title function_">print</span> ( const_cast&lt;char *&gt; (c) );<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>使用场景：<br>
+用于常量指针或引用与非常量指针或引用之间的转换，只有const_cast才可以对常量进行操作，一般都是用它来去除常量性，去除常量性是危险操作，还是要谨慎操作。</p>
+<ul>
+<li>3.dynamic_cast:<br>
+只能用于指向类的指针和引用(或void*)。它的目的是确保类型转换的结果指向目标指针类型的有效完整对象。<br>
+将dynamic_cast用于引用时，其用法稍有不同：没有与空指针对应的引用值，也就是说没有空引用，引用必须要初始化，因此无法使用特殊的引用值来指示失败，当请求不正确时，dynamic_cast将引发bad_cast异常。<br>
+向上转换：将指向派生类的指针转为指向基类的指针，其方式与隐式转换相同。<br>
+向下转换：将指向基类的指针转为指向派生类的指针，此时的类需要是多态类（具有虚成员的类）</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;iostream&gt;<br> <br><span class="hljs-keyword">using</span> namespace std;<br> <br>struct <span class="hljs-title class_">Base</span> &#123;<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title class_">Func</span>() &#123; cout &lt;&lt; <span class="hljs-string">&quot;Base Func \n&quot;</span>; &#125;<br>&#125;;<br> <br>struct <span class="hljs-title class_">Derive</span> : public <span class="hljs-title class_">Base</span> &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title class_">Func</span>() override &#123; cout &lt;&lt; <span class="hljs-string">&quot;Derive Func \n&quot;</span>; &#125;<br>&#125;;<br> <br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-title class_">Derive</span> d;<br>    d.<span class="hljs-title class_">Func</span>();<br>    <span class="hljs-title class_">Base</span> *b = dynamic_cast&lt;<span class="hljs-title class_">Base</span> *&gt;(&amp;d);<br>    b-&gt;<span class="hljs-title class_">Func</span>();<br>    <span class="hljs-title class_">Derive</span> *dd = dynamic_cast&lt;<span class="hljs-title class_">Derive</span> *&gt;(b);<br>    dd-&gt;<span class="hljs-title class_">Func</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>使用场景：<br>
+用于将父类的指针或引用转换为子类的指针或引用，此场景下父类必须要有虚函数，因为dynamic_cast是运行时检查，检查需要运行时信息RTTI，而RTTI存储在虚函数表中。</p>
+<ul>
+<li>4.reinterpret_cast:<br>
+reinterpret_cast可以将指针类型任意转换，甚至是不相关的类之间。</li>
+</ul>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript">int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    int data = <span class="hljs-number">10</span>;<br>    int *pi = &amp;data;<br> <br>    float *fpi = reinterpret_cast&lt;float *&gt;(pi);<br> <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>使用场景：<br>
+没啥场景，类似C语言中的强制类型转换，什么都可以转，万不得已不要使用，一般前三种转换方式不能解决问题了使用这种强制类型转换方式。操作结果是从一个指针到另一个指针的值的简单二进制拷贝。</p>
+<ul>
+<li>5.允许所有的指针转换：<br>
+既不检查指针所指向的内容，也不检查指针类型本身。<br>
+可以由reinterpret_cast执行但不能由static_cast执行的转换是基于重新解释类型的二进制表示的低级操作，在大多数情况下，这将导致特定于系统的代码，因此不可移植。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> &#123; <span class="hljs-comment">/* ... */</span> &#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> &#123; <span class="hljs-comment">/* ... */</span> &#125;;<br>A * a = <span class="hljs-keyword">new</span> A;<br>B * b = reinterpret_cast&lt;B*&gt;(a);<br></code></pre></td></tr></table></figure>
+<p>它还可以强制转换指向或来自整数类型的指针。这个整数值表示指针的格式与平台有关。唯一的保证是，将指针转换为足够大的整数类型以完全包含它(如intptr_t)，保证能够将其转换回有效的指针。<br>
+常量在声明时不能不进行初始化，普通变量也只应在极有限的情况下不进行初始化。换句话说，在引入一个新名字时最好已经有了一个合适的值。用户定义的类型（如 string、 vector、 Matrix、Motor_controller 和 Orc_warrior）可以在定义时进行隐式初始化。<br>
+在定义一个变量时，如果变量的类型可以由初始化器推断得到，则我们无须显式指定其类型:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript">auto b=<span class="hljs-literal">true</span>；<span class="hljs-comment">//变量的类型是 </span><br>bool auto ch=<span class="hljs-string">&#x27;x&#x27;</span>；<span class="hljs-comment">//变量的类型是 </span><br>char auto i = <span class="hljs-number">123</span>；<span class="hljs-comment">//变量的类型是 </span><br>int auto d = <span class="hljs-number">1</span>。<span class="hljs-number">2</span>；<span class="hljs-comment">//变量的类型是 double</span><br>auto z= sqrt（y）；<span class="hljs-comment">//z 的类型是 sqrt（y）的返回类型</span><br></code></pre></td></tr></table></figure>
+<p>我们可以使用=的初始化形式与 auto 配合，因为在此过程中不存在可能引发错误的类型转换。<br>
+当我们没有明显的理由需要显式指定数据类型时，一般使用 auto。在这里，“明显的理由”包括：</p>
+<ul>
+<li>该定义位于一个较大的作用域中，我们希望代码的读者清楚地知道其类型；</li>
+<li>我们希望明确规定某个变量的范围和精度（比如希望使用 double 而非 float）。</li>
+</ul>
+<p>通过使用 auto 可以帮助我们避免冗余，并且无须再书写长类型名。这一点在泛型编程中尤其重要，因为在泛型编程中程序员很难知道对象的确切类型，况且类型名字可能相当长。</p>
+<h2 id="3-常量">3 常量</h2>
+<p>C++支持如下两种不变性概念：<br>
+const：大致意思是&quot;我承诺不改变这个值&quot;。主要用于说明接口，这样在把变量传入函数时就不必担心变量会在函数内被改变了。编译器负责确认并执行 const 的承诺。<br>
+constexpr：大致意思是&quot;在编译时求值&quot;。主要用于说明常量，作用是允许将数据置于只读内存中（不太可能被破坏）以及提升性能。<br>
+例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> int dmv= <span class="hljs-number">17</span>;<span class="hljs-comment">// dmv 是一个命名的常量 </span><br>int <span class="hljs-keyword">var</span>= <span class="hljs-number">17</span>;<span class="hljs-comment">// var 不是常量</span><br>constexpr double max1=<span class="hljs-number">1.4</span>*<span class="hljs-title function_">square</span> (dmv);<span class="hljs-comment">//如果 square (17) 是常量表达式,则正确 </span><br>constexpr double max2=<span class="hljs-number">1.4</span>*<span class="hljs-title function_">square</span> (<span class="hljs-keyword">var</span>);<span class="hljs-comment">//错误: var 不是常量表达式</span><br><span class="hljs-keyword">const</span> double max3=<span class="hljs-number">1.4</span>*<span class="hljs-title function_">square</span> (<span class="hljs-keyword">var</span>);<span class="hljs-comment">//OK,可在运行时求值</span><br>double <span class="hljs-title function_">sum</span> (<span class="hljs-keyword">const</span> vector&lt;double&gt;&amp;);<span class="hljs-comment">//I sum 不会更改它的参数的值 </span><br>vector&lt;double&gt;v&#123;<span class="hljs-number">1.2</span>,<span class="hljs-number">3.4</span>, <span class="hljs-number">4.5</span>&#125;;<span class="hljs-comment">//v 不是常量</span><br><span class="hljs-keyword">const</span> double s1= <span class="hljs-title function_">sum</span> (v);<span class="hljs-comment">//OK:在运行时求值</span><br>constexpr double s2= <span class="hljs-title function_">sum</span> (v);<span class="hljs-comment">//错误: sum (v) 不是常量表达式</span><br></code></pre></td></tr></table></figure>
+<p>如果某个函数用在常量表达式（constant expression）中，即该表达式在编译时求值，则函数必须定义成 constexpr。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">constexpr double square（double x）&#123;<span class="hljs-keyword">return</span> x*x；&#125;<br></code></pre></td></tr></table></figure>
+<p>要想定义成 constexpr，函数必须非常简单：函数中只能有一条用于计算某个值的 return 语句。constexpr 函数可以接受非常量实参，但此时其结果将不会是一个常量表达式。<br>
+当程序的上下文不需要常量表达式时，我们可以使用非常量表达式实参来调用 constexpr 函数，这样我们就不用把同一个函数定义两次了：其中一个用于常量表达式，另一个用于变量。<br>
+在有的场合中，常量表达式是语言规则所必需的（如数组的界、case 标签、某些模板实参和使用 constexpr 声明的常量）。另一些情况下，编译时求值对程序的性能非常重要，所以需要使用常量。即使不考虑性能因素，不变性概念（对象状态不发生改变）也是程序设计中要考虑的一个重要问题。</p>
+<h2 id="4-循环">4 循环</h2>
+<p>C++还提供了一种更简单的for语句，即范围for语句，它可以用最简单的方式遍历一个序列：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include&lt;iostream&gt;<br><span class="hljs-keyword">using</span> namespace std;<br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>)<br>&#123;<br>  int v[] = &#123; <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span> &#125;;<br>  <span class="hljs-keyword">for</span> (auto x : v)<br>  &#123;<br>    cout &lt;&lt; x &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>  &#125;<br>  <span class="hljs-keyword">for</span> (auto x : &#123; <span class="hljs-number">10</span>,<span class="hljs-number">21</span>,<span class="hljs-number">32</span>,<span class="hljs-number">43</span>,<span class="hljs-number">54</span>,<span class="hljs-number">65</span> &#125;)<br>  &#123;<br>    cout &lt;&lt; x &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上面的第一个范围for语句可以解读为“对于v的每个元素,将其从头到尾依次放入x并打印”。注意,当我们使用一个列表初始化数组时无须指定其大小。范围for语句可用于任意的元素序列。<br>
+如果我们不希望把v的值拷贝到变量x中,而只想令x指向一个元素,则可以书写如下的代码:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include&lt;iostream&gt;<br><span class="hljs-keyword">using</span> namespace std;<br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>)<br>&#123;<br>  int v[] = &#123; <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span> &#125;;<br>  <span class="hljs-keyword">for</span> (auto&amp; x : v)<br>  &#123;<br>    ++x;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这里对于只写过C语言的人可能会感到困惑“:”冒号的作用是什么，解释如下：<br>
+在C++中，冒号（:）有多种用途，具体取决于其上下文环境。以下是一些常见的用法：</p>
+<ul>
+<li>作用域解析运算符（::）：<br>
+这个运算符被用于指定一个特定的作用域或命名空间中的成员。例如，如果你有一个名为std的命名空间，并且其中有一个vector类型，你可以通过std::vector来引用它。同样，在类继承中，如果你需要访问基类的成员，也可以使用作用域解析运算符。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">std</span>::vector&lt;int&gt; myVector; <span class="hljs-comment">// 使用std命名空间中的vector</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123;<br><span class="hljs-attr">public</span>:<br>    int baseVar;<br>&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : public <span class="hljs-title class_">Base</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">func</span>(<span class="hljs-params"></span>) &#123;<br>        int x = <span class="hljs-title class_">Base</span>::baseVar; <span class="hljs-comment">// 访问基类中的成员变量</span><br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>基于范围的for循环：<br>
+在C++11及更高版本中，冒号也用于基于范围的for循环语法中，用于迭代容器或数组中的元素。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">std</span>::vector&lt;int&gt; vec = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>&#125;;<br><span class="hljs-keyword">for</span>(int x : vec) &#123;<br>    <span class="hljs-attr">std</span>::cout &lt;&lt; x &lt;&lt; <span class="hljs-attr">std</span>::endl; <span class="hljs-comment">// 输出vec中的每个元素</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在这个例子中，int x : vec表示对于vec容器中的每个元素，都将其值赋给变量x，并执行循环体。</p>
+<ul>
+<li>位字段中的位位置（在结构体定义中）：<br>
+当定义结构体时，可以使用冒号来指定一个位字段的位宽。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript">struct <span class="hljs-title class_">PackedData</span> &#123;<br>    unsigned int a : <span class="hljs-number">1</span>; <span class="hljs-comment">// a只占1位</span><br>    unsigned int b : <span class="hljs-number">3</span>; <span class="hljs-comment">// b占3位</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>标签声明（在goto语句中，尽管现代C++中不推荐使用）：<br>
+冒号还可以用于标记一个标签，该标签可以在后续的goto语句中被引用。然而，由于goto语句通常会导致代码难以理解和维护，因此在现代C++编程中很少使用。</li>
+<li>三元运算符中的分隔符（?:）：<br>
+虽然这不是单独的冒号，但三元运算符?:确实包含了冒号，并且它是C++中唯一的三元运算符。它根据条件表达式的真假来选择两个表达式中的一个进行求值。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">int x = (condition) ? valueIfTrue : valueIfFalse;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>继承语法（在类定义中，但通常与关键字一起使用，如public:、protected:、private:）：<br>
+这些不是单独的冒号用法，但它们确实在类定义中使用了冒号来指定访问说明符。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br><span class="hljs-attr">public</span>:<br>    int publicVar;<br><span class="hljs-attr">private</span>:<br>    int privateVar;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h2 id="5-类">5 类</h2>
+<p>对于用户自定义类型来说,为了将其所有属性捏合在一起,形成一个“真正的类型”,在表示形式和操作之间建立紧密的联系还是很有必要的。特别是,我们常常希望自己构建的类型易于使用和修改,数据的使用具有一致性,并且表示形式最好对用户是不可见的。此时,最理想的做法就是把类型的接口(所有代码都可使用的部分)与其实现(对其他不可访问的数据具有访问权限)分离开来。在C++中,实现上述目的的语言机制被称为类(class)。类含有一系列成员(member),可能是数据、函数或者类型。类的public成员定义该类的接口,private成员则只能通过接口访问。例如:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//这里定义了一个名为Vector的类。类是C++中用于封装数据和函数（或称为成员变量和成员函数）的结构。</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Vector</span> <br>&#123;<br><span class="hljs-attr">public</span>:<br>  <span class="hljs-comment">//作用：构造函数是一个特殊的函数，当创建类的新实例时自动调用。这里的构造函数接受一个整数s作为参数，表示向量的初始大小。</span><br>  <span class="hljs-comment">//成员初始化列表：:elem&#123; new double[s] &#125;, sz&#123; s &#125;是成员初始化列表的语法，它直接在构造函数体内初始化成员变量。这里，elem被初始化为指向一个新分配的double类型数组（大小为s）的指针，sz被初始化为s。</span><br>  <span class="hljs-comment">//动态内存分配：new double[s]在堆上动态分配了一个大小为s的double数组，并返回指向这个数组的指针。这意味着Vector类的实例将负责管理这块内存（包括在不再需要时释放它）。</span><br>  <span class="hljs-title class_">Vector</span>(int s) :elem&#123; <span class="hljs-keyword">new</span> double[s] &#125;, sz&#123; s &#125; &#123;&#125;<br>  <span class="hljs-comment">//作用：这个成员函数重载了[]运算符，使得Vector对象可以像数组一样通过下标访问其元素。</span><br>  <span class="hljs-comment">//返回值：它返回一个double类型的引用（double&amp; ），这意味着通过这个运算符不仅可以读取元素的值，还可以修改它。</span><br>  <span class="hljs-comment">//参数：int i是下标参数，表示要访问的元素的位置。</span><br>  double&amp; operator[](int i) <br>  &#123; <br>    <span class="hljs-keyword">return</span> elem[i]; <br>  &#125;<br>  <span class="hljs-comment">//作用：这个函数返回向量的大小，即它包含的元素数量。</span><br>  <span class="hljs-comment">//返回值：它返回一个int类型的值，表示向量的大小。</span><br>  int <span class="hljs-title function_">size</span>(<span class="hljs-params"></span>)<br>  &#123;<br>    <span class="hljs-keyword">return</span> sz;<br>  &#125;<br><span class="hljs-attr">private</span>:<br>  double* elem;<span class="hljs-comment">//elem：这是一个指向double类型的指针，用于存储向量元素的地址（即动态分配的数组的地址）。</span><br>  int sz;<span class="hljs-comment">//sz：这是一个int类型的变量，用于存储向量的大小（即元素的数量）。</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>下面是C++中结构体与类的区别：</p>
+<ul>
+<li>一、默认访问权限<br>
+类（class）：<br>
+默认的成员访问权限是私有（private）。这意味着，除非显式地声明为public或protected，类成员在类外部是不可访问的。<br>
+结构体（struct）：<br>
+默认的成员访问权限是公开（public）。这使得结构体在定义接口或传递数据时更方便一些。</li>
+<li>二、用途和设计哲学<br>
+类（class）：<br>
+通常用于定义更复杂的数据抽象和行为封装，强调面向对象的编程理念，如封装、继承和多态。<br>
+类的成员变量和方法可以是公有的（public）、私有的（private）或受保护的（protected）。<br>
+结构体（struct）：<br>
+通常用于定义较为简单的数据结构，重点在于数据的存储，而不涉及太多的行为。<br>
+结构体通常用于创建简单的数据对象，而类用于创建更复杂的对象，且具有更强的封装性。</li>
+<li>三、内存管理<br>
+类（class）：<br>
+对象是引用类型，通常分配在堆上，通过指针或引用进行操作。<br>
+可以有默认构造函数和析构函数，用于对象的初始化和资源清理。<br>
+结构体（struct）：<br>
+通常是值类型，直接分配在栈上，传递和赋值时会进行复制。<br>
+没有默认的构造函数和析构函数（在C++中，但C#中结构体可以有构造函数）。</li>
+<li>四、继承<br>
+类（class）：<br>
+可以进行继承，派生类可以重用和扩展基类的功能。<br>
+结构体（struct）：<br>
+在C++中，结构体也可以继承，但其默认继承方式是公有继承（public），而类的默认继承方式是私有继承（private）。<br>
+在C#中，结构体不支持继承（但可以实现接口）。</li>
+<li>五、使用场景<br>
+类（class）：<br>
+适用于需要复杂行为、状态封装、继承和多态的场景。<br>
+结构体（struct）：<br>
+适用于仅需要存储数据，且数据结构较为简单的场景。由于结构体是值类型，它们在传递和赋值时更高效，但也可能导致性能问题（如大量复制数据）。</li>
+<li>六、语法和声明<br>
+类（class）和结构体（struct）在语法上非常相似，都可以包含成员变量、方法、构造函数等。主要的区别在于它们的默认访问权限和设计哲学。</li>
+</ul>
+<h2 id="6-枚举">6 枚举</h2>
+<p>除了类之外，C++还提供了另一种简单形式的用户自定义类型，使得我们可以枚举一系列值：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript">enum <span class="hljs-keyword">class</span> <span class="hljs-title class_">Color</span> &#123;red,blue,green&#125;;<br>enum <span class="hljs-keyword">class</span> <span class="hljs-title class_">Traffic_light</span> &#123;green,yellow,red&#125;;<br><br>   <span class="hljs-title class_">Color</span> col = <span class="hljs-title class_">Color</span>::red;<br>   <span class="hljs-title class_">Traffic</span>_light light = <span class="hljs-title class_">Traffic</span><span class="hljs-attr">_light</span>::red;<br></code></pre></td></tr></table></figure>
+<p>其中枚举值(如red)位于其enum  class的作用域之内,因此我们可以在不同的enumclass  中重复使用这些枚举值而不致引起混滑。例如,Color:red  是指Color的red,它与Traffic_light:red  显然不同。<br>
+枚举类型常用于描述规模较小的整数值集合。通过使用有指代意义的(且易于记忆的)枚举值名字可提高代码的可读性,降低出错的风险。<br>
+enum后面的class指明了枚举是强类型的,且它的枚举值位于指定的作用域中。不同的enum  class  是不同的类型,这有助于防止对常量的意外误用。在上面的例子中,我们不能混用Traffic_light和Color的值：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">Color</span> x = red;  <span class="hljs-comment">//错误:哪个red?</span><br><span class="hljs-title class_">Color</span> y = <span class="hljs-title class_">Traffic</span><span class="hljs-attr">_light</span>::red; <span class="hljs-comment">//错误:这个red不是Color的对象</span><br><span class="hljs-title class_">Color</span> z = <span class="hljs-title class_">Color</span>:red;  <span class="hljs-comment">//OK</span><br></code></pre></td></tr></table></figure>
+<p>同样,我们也不能隐式地混用Color和整数值:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript">int i = <span class="hljs-title class_">Color</span>:red;  <span class="hljs-comment">//错误:Color::red不是一个int</span><br><span class="hljs-title class_">Color</span> c = <span class="hljs-number">2</span>;  <span class="hljs-comment">//“错误:2不是一个Color对象</span><br></code></pre></td></tr></table></figure>
+<p>如果你不想显式地限定枚举值名字,并且希望枚举值可以是int(无须显式转换),则应该去掉enum  class  中的  class  而得到一个“普通的”enum。<br>
+默认情况下,enum  class只定义了赋值、初始化和比较(即==和&lt;)操作。然而,既然枚举类型是一种用户自定义类型,那么我们就可以为它定义别的运算符:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">Traffic</span>_light&amp;  operator++(<span class="hljs-title class_">Traffic</span>_light&amp;t)<br><span class="hljs-comment">//前置递增运算符+</span><br>&#123;<br>      <span class="hljs-keyword">switch</span>(t)&#123;<br>      <span class="hljs-keyword">case</span>  <span class="hljs-title class_">Traffic</span><span class="hljs-attr">_light</span>:<span class="hljs-attr">green</span>:  <span class="hljs-keyword">return</span>  t=<span class="hljs-title class_">Traffic</span><span class="hljs-attr">_light</span>:yellow;<br>      <span class="hljs-keyword">case</span>  <span class="hljs-title class_">Traffic</span><span class="hljs-attr">_light</span>:<span class="hljs-attr">yellow</span>:  <span class="hljs-keyword">return</span>  t=<span class="hljs-title class_">Traffic</span><span class="hljs-attr">_light</span>:red;<br>      <span class="hljs-keyword">case</span>  <span class="hljs-title class_">Traffic</span><span class="hljs-attr">_light</span>::<span class="hljs-attr">red</span>:  <span class="hljs-keyword">return</span>  t=<span class="hljs-title class_">Traffic</span><span class="hljs-attr">_light</span>:green;<br>      &#125;<br>&#125;<br><span class="hljs-title class_">Traffic</span>_light  next=++light;  <span class="hljs-comment">//next变成了Traffic_light:green</span><br></code></pre></td></tr></table></figure>
+<p>C++也提供了次强类型的“普通的”enum。</p>
+<h2 id="7-分离编译">7 分离编译</h2>
+<p>C++支持一种名为分离编译的概念,用户代码只能看见所用类型和函数的声明,它们的定义则放置在分离的源文件里,并被分别编译。这种机制有助于将一个程序组织成一组半独立的代码片段。其优点是编译时间减到最少,并且强制要求程序中逻辑独立的部分分离开来(从而将发生错误的几率降到最低)。一个库通常是一组分离编译的代码片段(如函数)的集合。<br>
+严格来说,使用分离编译并不是一个语言问题;而是关于如何以最佳方式利用特定语言实现的问题。不管怎么说,分离编译机制在实际的编程过程中非常重要。最好的方法是最大限度地模块化,逻辑上通过语言特性描述模块,而后在物理上通过划分文件及高效分离编译来充分利用模块化。</p>
+<h2 id="8-名字空间">8 名字空间</h2>
+<p>在函数、类和枚举之外，C++还提供了一种称为名字空间的机制，一方面表达某些声明是属于一个整体的，另一方面表面它们的名字不会与其他名字空间中的名字冲突。要想访问其他名字空间中的某个名字，最简单的方法是在这个名字前加上名字空间的名字作为限定（例如std::cout和My_code::main）。“真正的main()”定义在全局名字空间中，换句话说，它不属于任何自定义名字空间、类或函数。要想获取标准库名字空间中名字的访问权，我们应该使用using指示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">using</span> namespace std<br></code></pre></td></tr></table></figure>
+<p>名字空间主要用于组织较大规模的程序组件，最典型的例子是库。使用名字空间，我们就可以很容易的把若干独立开发的部件组织成一个程序。</p>
+<h2 id="9-错误处理">9 错误处理</h2>
+<p>错误处理是一个略显繁杂的主题,它的内容和影响都远远超越了语言特性的层面,而应被归结为程序设计技术和工具的范畴。不过C++还是提供了一些有益的功能,其中最主要的一个工具就是类型系统本身。在构建应用程序时,通常的做法不是仅仅依靠内置类型(如char、int和double)和语句(如if、while和for),而是建立更多适合应用的新类型(如string、map和regex)和算法(如sort()、find_if()和draw_all()）。这些高层次的结构简化了程序设计,减少了产生错误的机会(你大概不会把遍历树的算法应用在对话框上),同时也增加了编译器捕获错误的概率。大多数C++的结构都致力于设计并实现优雅而高效的抽象模型(例如用户自定义类型以及基于这些自定义类型的算法)。这种模块化和抽象机制(特别是库的使用)的一个重要影响就是运行时错误的捕获位置与错误处理的位置被分离开来。随着程序规模不断增长,特别是库的应用越来越广泛,处理错误的规范和标准变得愈加重要。</p>
+<ul>
+<li>异常<br>
+让我们重新考虑Vector的例子。对于向量,当我们试图访问某个越界的元素时,应该做什么呢?<br>
+●  Vector  的作者并不知道使用者在面临这种情况时希望如何处理(通常情况下,Vector的作者甚至不知道向量将在何种程序场景中使用)。<br>
+●  Vector  的使用者不能保证每次都检测到问题(如果他们能做到的话,越界访问也就不会发生了)。<br>
+因此最佳的解决方案是由Vector的实现者负责检测可能的越界访问,然后通知使用者。之后Vector的使用者可以采取适当的应对措施。例如,Vector::operator<a href=""></a>能够检测到潜在的越界访问错误并且抛出一个out_of_range异常:</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript">double&amp; <span class="hljs-title class_">Vector</span>::operator[](int i)<br>&#123;<br>  <span class="hljs-keyword">if</span> (i &lt; <span class="hljs-number">0</span> || <span class="hljs-title function_">size</span>() &lt;= i)<br>  &#123;<br>    <span class="hljs-keyword">throw</span> out_of_range&#123; <span class="hljs-string">&quot;Vector::operator[]&quot;</span> &#125;;<br>    <span class="hljs-keyword">return</span> elem[i];<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>throw  负责把程序的控制权从某个直接或间接调用了  Vector::operator[)()的函数转移到out_of_range异常处理代码。为了完成这一目标,实现部分需要展开函数调用树以便返回主调函数的上下文。例如:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">Vector&amp; v</span>)<br>&#123;<br>  <span class="hljs-comment">//...</span><br>  <span class="hljs-keyword">try</span> <br>  &#123;<br>    <span class="hljs-comment">//此处的异常将被后面定义的处理模块吹里</span><br>    v[v.<span class="hljs-title function_">size</span>()] = <span class="hljs-number">7</span>;<span class="hljs-comment">//试图访问v末尾之后的位置</span><br>  &#125;<br>  <span class="hljs-keyword">catch</span> (out_of_range)<br>  &#123;<br>    <span class="hljs-comment">//糟糕！发生了越界错误</span><br>    <span class="hljs-comment">//在此处处理越界错误</span><br>  &#125;<br>  <span class="hljs-comment">//...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>我们把可能处理异常的程序放在一个try块当中。显然,对v[v.size()]的赋值操作将出错。因此,程序进入到提供了out_of_range错误处理代码的catch从句中。out_of_range类型定义在标准库中(在<stdexcept>中),事实上,它也被一些标准库容器访问函数使用。<br>
+<strong>不变式</strong><br>
+通过使用异常处理机制,错误处理变得更简单,条理性和可读性也得到了加强。使用异常机制通报越界访问错误是函数检查实参的一个示例,此时,因为基本假设,即所谓的前置条件(precondition)没有得到满足,所以两数将拒绝执行。在正式说明Vector的下标运算符时,我们应该规定类似于“索引值必须在[0:size())范围内”的规则,这一规则是在operator()内被检查的。无论什么时候只要我们试图定义一个函数,就应该考虑它的前置条件是什么,以及检验该条件的过程是否足够简洁。<br>
+然而在上面的定义中,operatorD()作用于Vector类型的对象并且只在Vector的成员有“合理”的值时它才有意义。特别是,我们说过“elem指向一个含有sz个double的数组”,但这只是注释中的说明而已。对于类来说,这样一条假定某事为真的声明称为类的不变式(class  invariant),简称为不变式(invariant)。建立类的不变式是构造函数的任务(从而成员函数可以依赖于该不变式),它的另一个作用是确保当成员函数退出时不变式仍然成立。不幸的是,我们的Vector构造两数只履行了一部分职责。它正确地初始化了Vector成员,<br>
+但是没有检验传入的实参是否有效。考虑如下情况:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">Vector</span>  <span class="hljs-title function_">v</span>(-<span class="hljs-number">27</span>);<br></code></pre></td></tr></table></figure>
+<p>这条语句很可能会引起混乱。<br>
+与原来的版本相比,下面的定义更好:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">Vector</span>::<span class="hljs-title class_">Vector</span>(int  s)<br>&#123;<br>    <span class="hljs-keyword">if</span> (s&lt;<span class="hljs-number">0</span>)<br>    &#123;<br>      <span class="hljs-keyword">throw</span> <span class="hljs-title function_">length_error</span>();<br>    &#125; <br>    elem=<span class="hljs-keyword">new</span> double[s];<br>    sz=s;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>我使用标准库异常length_error报告元素数目为非正数的错误,因为一些标准库操作也是这么做的。如果new运算符找不到可分配的内存,就会抛出std:bad_alloc。我们可以接着书写:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span>  <span class="hljs-title function_">test</span>()<br>(<br>   <span class="hljs-keyword">try</span><br>   &#123;<br>       <span class="hljs-title class_">Vector</span>  <span class="hljs-title function_">v</span>(-<span class="hljs-number">27</span>);<br>   &#125;<br>   <span class="hljs-keyword">catch</span>  (<span class="hljs-attr">std</span>::length_error)<br>   &#123;<br>      <span class="hljs-comment">//处理负值问题</span><br>   &#125;<br>   <span class="hljs-keyword">catch</span>(<span class="hljs-attr">std</span>::bad_alloc)<br>   &#123;<br>      <span class="hljs-comment">//处理内存耗尽问题</span><br>   &#125;<br></code></pre></td></tr></table></figure>
+<p>你可以自定义异常类,然后让它们把指定的信息从检测到异常的点传递到处理异常的点。<br>
+通常情况下,当遭遇异常后函数就无法继续完成工作了。此时,“处理”异常的含义仅仅是做一些简单的局部资源清理,然后重新抛出异常。<br>
+不变式的概念是设计类的关键,而前置条件也在设计函数的过程中起到同样的作用。不变式<br>
+●帮助我们准确地理解想要什么;<br>
+●强制要求具体而明确地描述设计,而这有助于确保代码正确(在调试和测试之后)。<br>
+不变式的概念是C++当中由构造函数和析构函数支撑的资源管理概念的基础。<br>
+<strong>静态断言</strong><br>
+程序异常负责报告运行时发生的错误。如果我们能在编译时发现错误,显然效果更好。这是大多数类型系统以及自定义类型接口的主要目的。不过,我们也能对其他一些编译时可知的属性做一些简单检查,并以编译器错误消息的形式报告所发现的问题。例如:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title function_">static_assert</span>(<span class="hljs-number">4</span>&lt;=<span class="hljs-title function_">sizeof</span>(int),<span class="hljs-string">&quot;integers are too small&quot;</span>); <span class="hljs-comment">//检查整数的尺寸</span><br></code></pre></td></tr></table></figure>
+<p>如果4&lt;=siz  eof(int)不满足,将输出integers  are  too  small的信息。也就是说,如果在当前系统上一个int占有的空间不足4个字节,就会报错。我们把这种表达某种期望的语句称为断言(assertion)。<br>
+static_assert机制能用于任何可以表达为常量表达式的东西。<br>
+例如:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript">constexpr  double  C=<span class="hljs-number">299792.458</span>;  <span class="hljs-comment">//km/s</span><br><span class="hljs-keyword">void</span>  <span class="hljs-title function_">f</span>(<span class="hljs-params">double  speed</span>)<br>&#123;<br><span class="hljs-keyword">const</span>  double  local_max=<span class="hljs-number">160.0</span>/(<span class="hljs-number">60</span>*<span class="hljs-number">60</span>);  <span class="hljs-comment">//160km/h==160.0/(60*60)km/s</span><br><span class="hljs-title function_">static_assert</span>(speed&lt;C,<span class="hljs-string">&quot;can&#x27;t  go  that  fast&quot;</span>); <span class="hljs-comment">//错误:速度必须是个常量</span><br><span class="hljs-title function_">static_assert</span>(local_max&lt;C,<span class="hljs-string">&quot;can&#x27;t  go  that  fast&quot;</span>); <span class="hljs-comment">//OK</span><br><span class="hljs-comment">//...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>通常情况下,static_asser  t(A,S)的作用是当A不为true时,把S作为一条编译器错误信息输出。<br>
+static_assert最重要的用途是为泛型编程中作为形参的类型设置断言。</p>
+<h2 id="10-建议">10 建议</h2>
+<p>1.不必慌张，一切知识都会随着时间推移变得逐渐清晰；<br>
+2.即使你没有掌握C++的所有细节，也能写出漂亮的程序；<br>
+3.请关注编程技术，而非语言特性。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C-%E7%AC%94%E8%AE%B0/" class="category-chain-item">C++笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C++程序设计语言笔记——引言：第二章 C++概述之基础知识</div>
+      <div>https://mounthuangshan.github.io/C-笔记/C++笔记/C++程序设计语言笔记——引言：第二章 C++概述之基础知识/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%BC%95%E8%A8%80%EF%BC%9A%E7%AC%AC%E4%B8%89%E7%AB%A0%20C++%E6%A6%82%E8%A7%88%E4%B9%8B%E6%8A%BD%E8%B1%A1%E6%9C%BA%E5%88%B63/" title="C++程序设计语言笔记——引言：第三章 C++概览之抽象机制3">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C++程序设计语言笔记——引言：第三章 C++概览之抽象机制3</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%BC%95%E8%A8%80%EF%BC%9A%E7%AC%AC%E4%BA%94%E7%AB%A0%20C++%E6%A6%82%E8%A7%88%E4%B9%8B%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%AE%9E%E7%94%A8%E5%8A%9F%E8%83%BD/" title="C++程序设计语言笔记——引言：第五章 C++概览之并发与实用功能">
+                        <span class="hidden-mobile">C++程序设计语言笔记——引言：第五章 C++概览之并发与实用功能</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

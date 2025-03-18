@@ -1,0 +1,891 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="0 容器 如果一个类的主要目的是保存一些对象，那么我们通常称之为容器。 C++ 标准模板库（STL）提供了多种容器，这些容器可以分为三大类别：序列容器、关联容器和容器适配器。每种类型的容器都有其特定的用途和特点，选择合适的容器对于编写高效且易于维护的代码至关重要。 1. 序列容器 序列容器按照插入顺序存储元素，并提供连续访问元素的功能。这类容器的特点是它们内部维护着元素之间的线性关系，即每个元素都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2">
+<meta property="og:url" content="https://mounthuangshan.github.io/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%BC%95%E8%A8%80%EF%BC%9A%E7%AC%AC%E5%9B%9B%E7%AB%A0%20C++%E6%A6%82%E8%A7%88%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%B8%8E%E7%AE%97%E6%B3%952/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="0 容器 如果一个类的主要目的是保存一些对象，那么我们通常称之为容器。 C++ 标准模板库（STL）提供了多种容器，这些容器可以分为三大类别：序列容器、关联容器和容器适配器。每种类型的容器都有其特定的用途和特点，选择合适的容器对于编写高效且易于维护的代码至关重要。 1. 序列容器 序列容器按照插入顺序存储元素，并提供连续访问元素的功能。这类容器的特点是它们内部维护着元素之间的线性关系，即每个元素都">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.849Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          60 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>0 容器</h1>
+<p><strong>如果一个类的主要目的是保存一些对象，那么我们通常称之为容器。</strong><br>
+C++ 标准模板库（STL）提供了多种容器，这些容器可以分为三大类别：序列容器、关联容器和容器适配器。每种类型的容器都有其特定的用途和特点，选择合适的容器对于编写高效且易于维护的代码至关重要。</p>
+<h3 id="1-序列容器">1. 序列容器</h3>
+<p>序列容器按照插入顺序存储元素，并提供连续访问元素的功能。这类容器的特点是它们内部维护着元素之间的线性关系，即每个元素都有一个明确的位置，这个位置是由元素插入的时间点决定的，而不是由元素本身的值决定的。</p>
+<ul>
+<li>
+<p><strong><code>vector</code></strong>：动态数组，支持随机访问，大小可变。它在内存中以连续的方式存储元素，因此非常适合需要频繁随机访问但较少进行插入或删除操作的场景。</p>
+</li>
+<li>
+<p><strong><code>deque</code></strong>（双端队列）：支持在两端进行快速插入/删除。虽然也允许随机访问，但在中间位置插入或删除元素时效率较低。</p>
+</li>
+<li>
+<p><strong><code>list</code></strong>：双向链表，支持在开头和结尾快速插入/删除元素。由于元素不是连续存储的，所以不支持高效的随机访问。</p>
+</li>
+<li>
+<p><strong><code>forward_list</code></strong>（C++11新增）：单向链表，只支持向前遍历。相比 <code>list</code> 更加轻量级，适用于只需要单向遍历的情况。</p>
+</li>
+<li>
+<p><strong><code>array</code></strong>（C++11新增）：固定长度的数组，提供了更好的类型安全性和边界检查，但一旦创建后其大小不可改变。</p>
+</li>
+</ul>
+<h3 id="2-关联容器">2. 关联容器</h3>
+<p>关联容器根据元素的关键字来组织数据，通常用于需要快速查找、插入或删除操作的场景。它们内部使用平衡二叉搜索树（如红黑树）或哈希表实现，确保了对数级别的复杂度或者平均情况下常数级别的性能。</p>
+<ul>
+<li>
+<p><strong><code>set</code></strong> 和 <strong><code>multiset</code></strong>：分别表示不允许重复和允许重复的有序集合。所有元素都是唯一的，并且按照一定规则排序。</p>
+</li>
+<li>
+<p><strong><code>map</code></strong> 和 <strong><code>multimap</code></strong>：键值对映射，基于红黑树实现。<code>map</code> 中的键是唯一的，而 <code>multimap</code> 允许多个相同的键存在。</p>
+</li>
+<li>
+<p><strong><code>unordered_set</code></strong> 和 <strong><code>unordered_multiset</code></strong>（C++11新增）：无序集合，基于哈希表实现，不允许重复元素。提供了比有序集合更快的查找速度，但在最坏情况下可能会退化为线性时间复杂度。</p>
+</li>
+<li>
+<p><strong><code>unordered_map</code></strong> 和 <strong><code>unordered_multimap</code></strong>（C++11新增）：无序键值对映射，同样基于哈希表实现。与 <code>unordered_set</code> 类似，提供了更快的查找速度。</p>
+</li>
+</ul>
+<h3 id="3-容器适配器">3. 容器适配器</h3>
+<p>容器适配器并不直接管理元素，而是通过包装其他容器来提供特定接口。它们通常用来实现栈、队列等抽象数据类型。</p>
+<ul>
+<li>
+<p><strong><code>stack</code></strong>：后进先出（LIFO）的数据结构。默认底层容器为 <code>vector</code>，也可以指定为 <code>deque</code> 或 <code>list</code>。</p>
+</li>
+<li>
+<p><strong><code>queue</code></strong>：先进先出（FIFO）的数据结构。默认底层容器为 <code>deque</code>，也可以指定为 <code>list</code>。</p>
+</li>
+<li>
+<p><strong><code>priority_queue</code></strong>：优先级队列，总是将最大（或最小）元素放在队首。默认底层容器为 <code>vector</code>，也可以指定为 <code>deque</code> 或 <code>list</code>。</p>
+</li>
+</ul>
+<p>其中要额外说明的是，在C++23中引入了平坦容器，“平坦容器”指的是那些试图通过使用连续内存存储（如数组）来优化某些操作性能的容器。与传统的基于树或哈希表的关联容器不同，平坦容器利用了连续内存的优点，比如更好的缓存局部性和更快的遍历速度。然而，这种设计通常会牺牲一些插入和删除操作的效率，因为这些操作可能需要移动大量数据以维持顺序。</p>
+<h3 id="平坦容器的种类">平坦容器的种类</h3>
+<p>在C++23标准提案中，讨论了几种新的平坦容器，它们是：</p>
+<ul>
+<li><strong><code>flat_set</code></strong>：一个按键排序且不允许重复元素的集合。</li>
+<li><strong><code>flat_multiset</code></strong>：类似于<code>flat_set</code>，但是允许重复元素。</li>
+<li><strong><code>flat_map</code></strong>：一个按键排序的键值对集合，其中每个键都是唯一的。</li>
+<li><strong><code>flat_multimap</code></strong>：类似于<code>flat_map</code>，但是允许相同的键对应多个值。</li>
+</ul>
+<h3 id="特性与优缺点">特性与优缺点</h3>
+<p>平坦容器的主要特性包括：</p>
+<ul>
+<li><strong>快速查找</strong>：由于底层使用的是有序数组，查找可以采用二分查找算法，时间复杂度为O(log n)。</li>
+<li><strong>空间紧凑</strong>：连续内存布局使得数据更加紧凑，减少了内存碎片，并提高了缓存命中率。</li>
+<li><strong>随机访问支持</strong>：因为元素是连续存储的，所以支持高效的随机访问。</li>
+</ul>
+<p>然而，平坦容器也有其局限性：</p>
+<ul>
+<li><strong>插入/删除效率低</strong>：当插入或删除元素时，可能需要移动大量的元素以保持有序状态，这导致了较高的开销。</li>
+<li><strong>迭代器失效问题</strong>：任何修改容器的操作都可能导致现有的迭代器失效。</li>
+</ul>
+<h3 id="实现细节">实现细节</h3>
+<p>平坦容器通常是在现有的关联容器基础上进行改造，将原本基于红黑树的数据结构替换为基于数组的数据结构。例如，在<code>flat_set</code>和<code>flat_multiset</code>中，数据被存储在一个有序的数组里；而在<code>flat_map</code>和<code>flat_multimap</code>中，则是用两个数组分别存放键和值，或者是一个包含键值对的数组 。</p>
+<h2 id="vector">vector</h2>
+<p>最有用的标准库容器当属vector，一个vector就是一个给定类型元素的序列，元素在内存中是连续存储的。拷贝和移动vector是通过构造函数和赋值运算符实现的。vector的赋值过程包括拷贝其中的元素。当一个vector包含很多元素时，这样一个看起来无害的赋值或初始化操作可能非常耗时。因此，当拷贝并非必要时，我们应该优先使用引用或指针或是移动操作。<br>
+![在这里插入图片描述](./C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2image\7a5f775fc2d949799c0926ab074d87cd.png)</p>
+<h3 id="拷贝构造函数与赋值运算符">拷贝构造函数与赋值运算符</h3>
+<p><code>std::vector</code> 的拷贝构造函数用于创建一个新对象作为现有对象的副本。这意味着新创建的 <code>vector</code> 将拥有与源 <code>vector</code> 相同的所有元素。同样地，赋值运算符（<code>operator=</code>）用于将一个已存在的 <code>vector</code> 设置为另一个 <code>vector</code> 的副本。这两种情况下，都会触发对每个元素的拷贝构造或赋值操作。</p>
+<p>例如，当我们执行如下代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">std::vector&lt;<span class="hljs-type">int</span>&gt; v1 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;;<br>std::vector&lt;<span class="hljs-type">int</span>&gt; v2 = v1; <span class="hljs-comment">// 使用拷贝构造函数</span><br>v2 = v1;                   <span class="hljs-comment">// 使用赋值运算符</span><br></code></pre></td></tr></table></figure>
+<p>这里，<code>v2</code> 被初始化为 <code>v1</code> 的副本，随后又被重新赋值为 <code>v1</code> 的副本。如果 <code>v1</code> 包含了大量的元素，那么这两个操作都可能导致显著的时间开销，因为每一个元素都需要被单独拷贝。</p>
+<h3 id="移动语义">移动语义</h3>
+<p>为了提高效率，特别是在处理大型 <code>vector</code> 时，C++11 引入了移动语义。移动构造函数允许我们将一个临时对象（右值）中的资源直接转移到一个新的对象中，而不需要进行深拷贝。这不仅节省了内存，还减少了不必要的计算量。类似地，移动赋值运算符可以用来从一个右值对象中转移资源到一个已经存在的左值对象。</p>
+<p>考虑下面的例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">std::vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">createVector</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> std::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-type">int</span>&gt;(<span class="hljs-number">1000000</span>, <span class="hljs-number">42</span>); <span class="hljs-comment">// 创建并返回一个包含百万个42的vector</span><br>&#125;<br><br>std::vector&lt;<span class="hljs-type">int</span>&gt; v3 = <span class="hljs-built_in">createVector</span>(); <span class="hljs-comment">// 使用移动构造函数</span><br></code></pre></td></tr></table></figure>
+<p>在这个例子中，<code>createVector()</code> 函数返回的是一个临时对象，即右值。因此，在给 <code>v3</code> 赋值时，编译器可以选择使用移动构造函数而不是拷贝构造函数，从而大大提高了效率。</p>
+<h3 id="引用与指针">引用与指针</h3>
+<p>当不需要真正复制整个 <code>vector</code> 时，可以考虑使用引用或指针。这样做可以避免任何实际的数据复制，并且只传递对原始 <code>vector</code> 的访问权限。然而，需要注意的是，使用引用或指针意味着多个部分可能会共享同一个 <code>vector</code> 的所有权，这可能带来生命周期管理和线程安全方面的问题。</p>
+<p>例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">process</span><span class="hljs-params">(<span class="hljs-type">const</span> std::vector&lt;<span class="hljs-type">int</span>&gt;&amp; v)</span> </span>&#123;<br>    <span class="hljs-comment">// 处理v而不修改它</span><br>&#125;<br><br><span class="hljs-built_in">process</span>(v1); <span class="hljs-comment">// 传递v1的常量引用</span><br></code></pre></td></tr></table></figure>
+<p>这里，<code>process</code> 函数接收的是 <code>v1</code> 的一个常量引用，这样既不会发生复制也不会改变 <code>v1</code> 的内容。</p>
+<h3 id="性能考量">性能考量</h3>
+<p>根据一些实验结果，<code>std::vector</code> 在某些场景下的性能可能不如固定大小的数组。特别是当涉及到大量的插入、删除或者随机访问操作时，由于 <code>vector</code> 需要频繁地调整内部缓冲区的大小，这可能会导致额外的时间消耗。此外，如果 <code>vector</code> 中存储的是复杂类型的对象，则每次复制这些对象也会增加额外的开销。因此，在高性能要求的应用程序中，开发者应该仔细评估是否真的需要使用 <code>vector</code>，或者是否有更合适的数据结构可用。</p>
+<h2 id="list">list</h2>
+<p>C++标准库提供了一个名为list的双向链表，如果我们希望在一个序列中添加和删除元素的同时无需移动其他元素，则应该使用list。当使用链表时，我们通常并不想像使用向量那样使用它，即，不会用下标操作来访问链表元素，而是想进行“在链表中搜素具有给定值的元素”这类操作。为了完成这样的操作我们可以利用“list是序列”这样一个事实。<br>
+![在这里插入图片描述](./C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2image\edae3d740fae471cbaf2cea43b6a5ccf.png)<br>
+C++ 标准库中的 <code>std::list</code> 是一个双向链表容器，它允许在序列中任何位置以常量时间复杂度 O(1) 进行插入和删除操作，而无需移动其他元素。这使得 <code>std::list</code> 成为频繁执行插入和删除操作的理想选择，尤其是在需要在序列中间进行这些操作的情况下。与 <code>std::vector</code> 不同，<code>std::list</code> 的元素不是连续存储的，因此不支持通过下标直接访问元素的操作。相反，<code>std::list</code> 提供了迭代器来遍历和操作元素，这使得我们可以更灵活地处理数据。</p>
+<h3 id="在链表中搜索具有给定值的元素">在链表中搜索具有给定值的元素</h3>
+<p>由于 <code>std::list</code> 不支持随机访问，我们不能像使用 <code>std::vector</code> 那样通过下标来快速定位元素。然而，<code>std::list</code> 作为一个序列容器，提供了多种方法来查找特定值的元素。以下是几种常见的搜索方式：</p>
+<h4 id="使用标准算法-std-find">使用标准算法 <code>std::find</code></h4>
+<p><code>std::find</code> 是 C++ 标准库提供的一个通用算法，它可以用于任何支持迭代器的容器，包括 <code>std::list</code>。<code>std::find</code> 会从给定的起始迭代器开始，逐个检查每个元素，直到找到与给定值匹配的元素或到达结束迭代器为止。如果找到了匹配的元素，则返回指向该元素的迭代器；否则返回结束迭代器 <code>end()</code>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;list&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::list&lt;<span class="hljs-type">int</span>&gt; lst = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>&#125;;<br>    <span class="hljs-type">int</span> value_to_find = <span class="hljs-number">3</span>;<br><br>    <span class="hljs-keyword">auto</span> it = std::<span class="hljs-built_in">find</span>(lst.<span class="hljs-built_in">begin</span>(), lst.<span class="hljs-built_in">end</span>(), value_to_find);<br>    <span class="hljs-keyword">if</span> (it != lst.<span class="hljs-built_in">end</span>()) &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Found value: &quot;</span> &lt;&lt; *it &lt;&lt; std::endl;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Value not found.&quot;</span> &lt;&lt; std::endl;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="使用成员函数-remove-和-remove-if">使用成员函数 <code>remove</code> 和 <code>remove_if</code></h4>
+<p>虽然 <code>remove</code> 和 <code>remove_if</code> 主要用于删除元素，但它们也可以用来查找符合条件的元素。<code>remove</code> 会移除所有等于指定值的元素，而 <code>remove_if</code> 则根据自定义的谓词移除元素。需要注意的是，<code>remove</code> 和 <code>remove_if</code> 并不会改变容器的大小，而是将被移除的元素移到容器的末尾，并返回一个新的结束迭代器。因此，如果我们只想查找而不删除，可以结合 <code>std::find</code> 或 <code>std::find_if</code> 来实现。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;list&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::list&lt;<span class="hljs-type">int</span>&gt; lst = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>&#125;;<br>    <span class="hljs-type">int</span> value_to_remove = <span class="hljs-number">3</span>;<br><br>    lst.<span class="hljs-built_in">remove</span>(value_to_remove); <span class="hljs-comment">// 移除所有等于 value_to_remove 的元素</span><br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; elem : lst) &#123;<br>        std::cout &lt;&lt; elem &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br>    &#125;<br>    std::cout &lt;&lt; std::endl;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="使用成员函数-find（C-20）">使用成员函数 <code>find</code>（C++20）</h4>
+<p>从 C++20 开始，<code>std::list</code> 引入了成员函数 <code>find</code>，可以直接用于查找特定值的元素。<code>find</code> 返回指向找到的第一个匹配元素的迭代器，如果没有找到则返回 <code>end()</code>。这简化了查找操作，使得代码更加简洁。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;list&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::list&lt;<span class="hljs-type">int</span>&gt; lst = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>&#125;;<br>    <span class="hljs-type">int</span> value_to_find = <span class="hljs-number">3</span>;<br><br>    <span class="hljs-keyword">auto</span> it = lst.<span class="hljs-built_in">find</span>(value_to_find); <span class="hljs-comment">// C++20</span><br>    <span class="hljs-keyword">if</span> (it != lst.<span class="hljs-built_in">end</span>()) &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Found value: &quot;</span> &lt;&lt; *it &lt;&lt; std::endl;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Value not found.&quot;</span> &lt;&lt; std::endl;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="利用-std-list-的特性">利用 <code>std::list</code> 的特性</h3>
+<p>除了上述的查找方法外，<code>std::list</code> 还提供了许多其他有用的成员函数和算法，可以帮助我们在链表中高效地进行各种操作。例如：</p>
+<ul>
+<li>
+<p><strong><code>insert</code></strong>：可以在指定位置插入一个或多个元素。<code>std::list</code> 的 <code>insert</code> 函数接受一个迭代器作为插入点，并可以在该位置之前插入新元素。插入操作不会影响其他元素的位置，因此非常适合在链表中间插入元素。</p>
+</li>
+<li>
+<p><strong><code>erase</code></strong>：可以从链表中删除一个或多个元素。<code>erase</code> 接受一个迭代器或一对迭代器，表示要删除的元素范围。删除操作也不会影响其他元素的位置，因此非常适合在链表中间删除元素。</p>
+</li>
+<li>
+<p><strong><code>splice</code></strong>：可以将另一个 <code>std::list</code> 中的元素移动到当前链表的指定位置。<code>splice</code> 是一个非常高效的操作，因为它只是修改指针而不涉及元素的复制或移动。</p>
+</li>
+<li>
+<p><strong><code>merge</code></strong>：可以将两个已排序的 <code>std::list</code> 合并成一个有序的链表。<code>merge</code> 会将两个链表中的元素按顺序合并，并且不会创建新的节点，而是直接重用现有的节点。</p>
+</li>
+<li>
+<p><strong><code>sort</code></strong>：可以对链表中的元素进行排序。<code>sort</code> 是一个成员函数，可以直接用于 <code>std::list</code>，并且不需要额外的空间来存储临时数据。排序后，链表中的元素将按照升序排列，或者可以根据自定义的比较函数进行排序。</p>
+</li>
+</ul>
+<h3 id="实际应用示例">实际应用示例</h3>
+<p>假设我们有一个任务队列，其中的任务具有不同的优先级。我们可以使用 <code>std::list</code> 来管理这些任务，并根据优先级动态地插入新任务或删除已完成的任务。以下是一个简单的示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;list&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span><br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Task</span> &#123;<br>    <span class="hljs-type">int</span> id;<br>    <span class="hljs-type">int</span> priority; <span class="hljs-comment">// 优先级越高，数字越小</span><br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">compare_priority</span><span class="hljs-params">(<span class="hljs-type">const</span> Task&amp; t1, <span class="hljs-type">const</span> Task&amp; t2)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> t<span class="hljs-number">1.</span>priority &lt; t<span class="hljs-number">2.</span>priority;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add_task</span><span class="hljs-params">(std::list&lt;Task&gt;&amp; tasks, <span class="hljs-type">const</span> Task&amp; new_task)</span> </span>&#123;<br>    <span class="hljs-comment">// 查找第一个优先级大于等于新任务优先级的位置</span><br>    <span class="hljs-keyword">auto</span> it = std::<span class="hljs-built_in">find_if</span>(tasks.<span class="hljs-built_in">begin</span>(), tasks.<span class="hljs-built_in">end</span>(),<br>                           [&amp;new_task](<span class="hljs-type">const</span> Task&amp; task) &#123;<br>                               <span class="hljs-keyword">return</span> task.priority &gt;= new_task.priority;<br>                           &#125;);<br>    <span class="hljs-comment">// 在该位置之前插入新任务</span><br>    tasks.<span class="hljs-built_in">insert</span>(it, new_task);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">remove_task</span><span class="hljs-params">(std::list&lt;Task&gt;&amp; tasks, <span class="hljs-type">int</span> task_id)</span> </span>&#123;<br>    <span class="hljs-comment">// 查找并删除指定ID的任务</span><br>    tasks.<span class="hljs-built_in">remove_if</span>([task_id](<span class="hljs-type">const</span> Task&amp; task) &#123;<br>        <span class="hljs-keyword">return</span> task.id == task_id;<br>    &#125;);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print_tasks</span><span class="hljs-params">(<span class="hljs-type">const</span> std::list&lt;Task&gt;&amp; tasks)</span> </span>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; task : tasks) &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Task ID: &quot;</span> &lt;&lt; task.id &lt;&lt; <span class="hljs-string">&quot;, Priority: &quot;</span> &lt;&lt; task.priority &lt;&lt; std::endl;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::list&lt;Task&gt; tasks;<br><br>    <span class="hljs-comment">// 添加一些任务</span><br>    <span class="hljs-built_in">add_task</span>(tasks, &#123;<span class="hljs-number">1</span>, <span class="hljs-number">3</span>&#125;);<br>    <span class="hljs-built_in">add_task</span>(tasks, &#123;<span class="hljs-number">2</span>, <span class="hljs-number">1</span>&#125;);<br>    <span class="hljs-built_in">add_task</span>(tasks, &#123;<span class="hljs-number">3</span>, <span class="hljs-number">2</span>&#125;);<br><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;After adding tasks:\n&quot;</span>;<br>    <span class="hljs-built_in">print_tasks</span>(tasks);<br><br>    <span class="hljs-comment">// 删除一个任务</span><br>    <span class="hljs-built_in">remove_task</span>(tasks, <span class="hljs-number">2</span>);<br><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;After removing task 2:\n&quot;</span>;<br>    <span class="hljs-built_in">print_tasks</span>(tasks);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在这个例子中，我们定义了一个 <code>Task</code> 结构体来表示任务，并使用 <code>std::list</code> 来管理任务队列。<code>add_task</code> 函数负责根据优先级插入新任务，而 <code>remove_task</code> 函数则用于删除指定ID的任务。通过这种方式，我们可以高效地管理和调度任务，而无需担心插入或删除操作对其他任务的影响。</p>
+<h2 id="map">map</h2>
+<p>编写程序在一个（名字，数值）对的列表中查找给定名字，是一项很烦人的工作。而且除非列表很短否则顺序搜索是非常低效的，标准库提供了一个名为map的搜索树（红黑树）：<br>
+![在这里插入图片描述](./C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2image\4b9e15fe722041f0b6955f0f42c0c67a.png)<br>
+在某些情境下，map也被称为关联数组或字典。map通常用平衡二叉树实现。标准库map是值对的容器，经过特殊优化来提高搜索性能。我们可以像初始化vector和list那样来初始化map。map也支持下标操作，给定的下标值应该是map的第一个类型（称为关键字，key），得到的结果也是与关键字关联的值（是map的第二个类型，称为值或映射类型）。换句话说，对map进行下标操作本质上是进行一次搜索，我们称为get_number()。如果未找到key，则向map插入一个新元素，它具有给定的key且关联的值是value类型的默认值。</p>
+<h2 id="unordered-map">unordered_map</h2>
+<p>搜索map的时间代价是O(log(n))，其中n是map元素的数目。通常情况下，这样的性能非常好。例如一个包含100万个元素的map，我们只需执行约20次比较和间接寻址操作即可找到元素。不过，在很多情况下我们还可以做得更好，那就是使用哈希查找，而不是使用基于某种序函数的比较操作（如&lt;）。标准库哈希容器被称为“无序”容器，因为它们不需要序函数：<br>
+![在这里插入图片描述](./C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2image\2eb26e16ee6e4876856345ad13e7b702.png)<br>
+标准库unordered_map为string提供了默认的哈希函数。如有必要，你也可以定义自己的哈希函数。</p>
+<h1>1 算法</h1>
+<p>无序容器针对关键字（通常是一个字符串）搜索进行了优化，这是通过使用哈希表来实现的。<br>
+前面提到的容器分别定义在 <vector>、<list> 和 <map> 等头文件中，这些容器都属于名字空间 std。此外，标准库还提供了容器适配器 queue<T>、stack<T>、deque<T>和 priority_queue<T>。标准库还提供了一些更特殊的类似容器的类型，如定长数组 array&lt;T,N&gt;和 bitset<N>。<br>
+从符号表示的角度来看，标准库的各种容器和它们的基本操作比较类似。而且，不同容器的操作含义也大致相同。基本操作可用于每一种适用的容器，且可高效实现。例如：</p>
+<ul>
+<li>begin() 和 end() 分别返回指向首元素和尾后位置的迭代器。</li>
+<li>push_back() 可用来（高效地）向 vector、list 及其他容器末尾添加元素。</li>
+<li>size() 返回元素数目。</li>
+</ul>
+<p>形式和语义上的一致性使得程序员可以设计出与标准库容器在使用方式上非常相似的新的容器类型，包含范围检查功能的向量 Vector就是一个很好的例子。容器接口的一致性还便于我们设计与容器类型无关的算法。但是，凡事皆有两面性，某种技术的优点和缺点常常并存。例如，下标操作和遍历 vector 的操作很高效也很简单。但另一方面，当我们在 vector 中插入或删除元素时，不得不每次都移动元素，效率不佳；list 则恰好具有相反的特性。请注意，当序列较短且元素尺寸较小时，vector 通常比 list 高效（insert() 和 erase() 操作也是如此）。推荐将标准库 vector 作为存储元素序列的默认类型；只有当你的理由足够充分时，再考虑选择其他容器。<br>
+对于编程任务来说，仅仅定义链表和向量等数据结构是远远不够的。为了使用某种数据结构，我们还需要一些基本访问操作，比如添加和删除元素的操作（就像为 list 和 vector 提供的那样）。而且，我们一般不会只把对象保存在容器中了事，而是需要对它们进行排序、打印、抽取子集、删除元素、搜索等更复杂的操作。因此，标准库在提供最常用的容器类型之外，还为这些容器提供了最常用的算法。<br>
+迭代器的一个重要作用是分离算法和容器。算法通过迭代器来处理数据，但它对存储元素的容器一无所知。反之亦然，容器对处理其元素的算法也是一无所知。反之亦然，容器对处理其元素的算法也是一无所知，它所做的全部事情就是按需求提供迭代器（如begin()和end()）。这种数据存储和算法分离的模型催生出非常通用和灵活的软件。<br>
+迭代器本质上是什么？当然，任何一种特定的迭代器都是某种类型的对象。不过，迭代器的类型非常多，毕竟每个迭代器都是与某个特定容器类型相关联的。它需要保存一些必要的信息，以便我们对容器执行某些特定的任务。因此，有多少种特殊要求就有多少种迭代器。例如，vector的迭代器可能就是一个普通指针，因为就引用vector中的元素而言指针再恰当不过了：<br>
+![在这里插入图片描述](./C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2image\abc05cca3c8d4f3ca66c4c9e23d65d37.png)<br>
+或者，vecotr的迭代器也可以实现为指向vector（存储空间起始地址）的指针再加上一个索引：<br>
+![在这里插入图片描述](./C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2image\f652787cc9394aed952635fdd9f730a5.png)<br>
+采用这种实现方式便于进行范围检查。<br>
+list迭代器必须是某种比普通指针更复杂的东西，这里的普通指针是指那些指向某个元素的指针。因为list的元素通常不知道它的下一个元素在哪里，所以list迭代器应该指向某个链接：<br>
+![在这里插入图片描述](./C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2image\8b48dd231dbe4c638baa758f2389f5f0.png)<br>
+所有迭代器类型的语义及其操作的命名都是相似的。例如，对任何迭代器使用++运算符都会得到一个指向下一个元素的迭代器，而*运算符则得到迭代器所指的元素。实际上，任何符合这些简单规则的对象都能被看成是迭代器。用户不需要知道某个特定迭代器的类型，迭代器“知道”它自己的迭代器类型是什么，而且都能通过规范的名字iterator和const_iterator来正确声明自己的类型。例如，list<Entry>::iterator是list<Entry>的迭代器类型，程序员很少需要操心“这些类型是如何定义的？”等细节问题。<br>
+迭代器是处理容器中元素序列的一个很有用的通用概念。但是，容器并非容纳元素序列的唯一场所。例如，一个输入流产生一个值的序列，我们还可以将一个值的序列写入一个输出流。因此，将迭代器的概念应用到输入输出是很有用的。<br>
+在前面的例子中，算法都是对序列中每个元素简单地进行“内置”操作，但我们常常需要把操作也作为算法的参数。例如，find算法提供了一种查找给定值的便捷途径。而对于查找满足特定要求元素的问题，还有一种更通用的方法，称为谓词。例如，我们可能需要在一个map中搜索第一个大于42的值。我们在访问map的元素时，实际访问的是（关键字，值）对的序列。因此，我们可以将任务转化为在map&lt;string,int&gt;中搜索一个特定的pair&lt;const string,int&gt;，并要求它的int部分大于42。<br>
+算法的一个更一般性的定义是“一个有限规则集合，给出了一个操作序列，用来求解一组特定问题 [且]具有5个重要特性：有限性……确定性……输入……输出……有效性”。在C++标准库的语境中，算法就是一个对元素序列进行操作的函数模板。<br>
+标准库提供了很多算法，它们都定义在头文件<algorithm>中且属于名字空间std。这些标准库算法的输入都是序列。一个从b到e的半开序列表示为[b:e)。下面是一些特别有用的算法的简介：</p>
+<table>
+<thead>
+<tr>
+<th>调用</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>p=find(b,e,x)</code></td>
+<td><code>p</code> 是 <code>[b:e)</code> 中第一个满足 <code>*p==x</code> 的迭代器</td>
+</tr>
+<tr>
+<td><code>p=find_if(b,e,f)</code></td>
+<td><code>p</code> 是 <code>[b:e)</code> 中第一个满足 <code>f(*p)==true</code> 的迭代器</td>
+</tr>
+<tr>
+<td><code>n=count(b,e,x)</code></td>
+<td><code>n</code> 是 <code>[b:e)</code> 中满足 <code>*q==x</code> 的元素 <code>*q</code> 的数量</td>
+</tr>
+<tr>
+<td><code>n=count_if(b,e,f)</code></td>
+<td><code>n</code> 是 <code>[b:e)</code> 中满足 <code>f(*q)==true</code> 的元素 <code>*q</code> 的数量</td>
+</tr>
+<tr>
+<td><code>replace(b,e,v,v2)</code></td>
+<td>将 <code>[b:e)</code> 中满足 <code>*q==v</code> 的元素 <code>*q</code> 替换为 <code>v2</code></td>
+</tr>
+<tr>
+<td><code>replace_if(b,e,f,v2)</code></td>
+<td>将 <code>[b:e)</code> 中满足 <code>f(*q)==true</code> 的元素 <code>*q</code> 替换为 <code>v2</code></td>
+</tr>
+<tr>
+<td><code>p=copy(b,e,out)</code></td>
+<td>将 <code>[b:e)</code> 复制到 <code>[out:p)</code></td>
+</tr>
+<tr>
+<td><code>p=copy_if(b,e,out,f)</code></td>
+<td>将 <code>[b:e)</code> 中满足 <code>f(*q)==true</code> 的元素 <code>*q</code> 复制到 <code>[out:p)</code></td>
+</tr>
+<tr>
+<td><code>p=unique_copy(b,e,out,f)</code></td>
+<td>将 <code>[b:e)</code> 复制到 <code>[out:p)</code>，不复制连续的重复元素</td>
+</tr>
+<tr>
+<td><code>sort(b,e)</code></td>
+<td>使用 <code>&lt;</code> 作为排序准则，对 <code>[b:e)</code> 中的元素进行排序</td>
+</tr>
+<tr>
+<td><code>sort(b,e,f)</code></td>
+<td>使用谓词 <code>f</code> 作为排序准则，对 <code>[b:e)</code> 中的元素进行排序</td>
+</tr>
+<tr>
+<td><code>(p1,p2)=equal_range(b,e,v)</code></td>
+<td><code>[p1:p2)</code> 是已排序序列 <code>[b:e)</code> 中值等于 <code>v</code> 的子序列，本质上相当于对 <code>v</code> 进行二分查找</td>
+</tr>
+<tr>
+<td><code>p=merge(b,e,b2,e2,out)</code></td>
+<td>将两个序列 <code>[b:e)</code> 和 <code>[b2:e2)</code> 合并，结果存储到 <code>[out:p)</code></td>
+</tr>
+</tbody>
+</table>
+<h1>2 建议</h1>
+<p>1.没必要推倒重来，直接使用标准库是最好的选择；<br>
+2.除非万不得已，大多数时候先考虑使用标准库，再考虑别的库；<br>
+3.标准库绝非万能；<br>
+4.如果你用到了某些标准库设施，记得把头文件#include进来；<br>
+5.标准库设施位于名字空间std中；<br>
+6.标准库string优于C风格字符串（即char*）;<br>
+7.iostream具有类型敏感、类型安全和可扩展等特点；<br>
+8.与T[]相比，vector<T>、map&lt;K,T&gt;和unordered_map&lt;K,T&gt;更优；<br>
+9.一定要了解各种标准库容器的设计思想和优缺点；<br>
+10.优先选用vector作为你的容器类型；<br>
+11.数据结构应力求小巧；<br>
+12.如果你拿不准会不会越界，记得使用带边界检查的容器（比如Vec）；<br>
+13.用push_back()或者back_inserter()给容器添加元素；<br>
+14.在vecto上使用push_back()要比数组上使用realloc()更好；<br>
+15.在main()函数中捕获常见的异常；<br>
+16.了解常用的标准库算法，用它们代替你自己手写的循环；<br>
+17.如果用迭代器实现某算法过于冗长，不妨改写成使用容器的版本。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C-%E7%AC%94%E8%AE%B0/" class="category-chain-item">C++笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2</div>
+      <div>https://mounthuangshan.github.io/C-笔记/C++笔记/C++程序设计语言笔记——引言：第四章 C++概览之容器与算法2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%BC%95%E8%A8%80%EF%BC%9A%E7%AC%AC%E5%9B%9B%E7%AB%A0%20C++%E6%A6%82%E8%A7%88%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%B8%8E%E7%AE%97%E6%B3%951/" title="C++程序设计语言笔记——引言：第四章 C++概览之容器与算法1">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C++程序设计语言笔记——引言：第四章 C++概览之容器与算法1</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%8A%BD%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%9A%E6%A8%A1%E6%9D%BF%E5%92%8C%E7%B1%BB%E5%B1%82%E6%AC%A1/" title="C++程序设计语言笔记——抽象机制：模板和类层次">
+                        <span class="hidden-mobile">C++程序设计语言笔记——抽象机制：模板和类层次</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
