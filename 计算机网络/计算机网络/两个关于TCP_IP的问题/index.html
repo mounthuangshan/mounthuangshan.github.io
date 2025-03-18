@@ -1,0 +1,757 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="tcp的客户端是会随机选择一个端口连接到服务端的，那么如果在非常短的时间内，在客户端生产上百万个的tcp连接，会导致什么问题？出现这样的问题，在linux操作系统里面要怎么解决？在其他的操作系统里面又要怎么解决？既然是端口有限，为什么操作系统的端口个数不是无限的？ 在非常短的时间内，在客户端生成上百万个TCP连接确实可能导致一系列问题，主要与操作系统对TCP连接管理的限制有关。具体来说，可能会遇到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="两个关于TCP_IP的问题">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B8%A4%E4%B8%AA%E5%85%B3%E4%BA%8ETCP_IP%E7%9A%84%E9%97%AE%E9%A2%98/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="tcp的客户端是会随机选择一个端口连接到服务端的，那么如果在非常短的时间内，在客户端生产上百万个的tcp连接，会导致什么问题？出现这样的问题，在linux操作系统里面要怎么解决？在其他的操作系统里面又要怎么解决？既然是端口有限，为什么操作系统的端口个数不是无限的？ 在非常短的时间内，在客户端生成上百万个TCP连接确实可能导致一系列问题，主要与操作系统对TCP连接管理的限制有关。具体来说，可能会遇到">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.851Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>两个关于TCP_IP的问题 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="两个关于TCP_IP的问题"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">两个关于TCP_IP的问题</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>tcp的客户端是会随机选择一个端口连接到服务端的，那么如果在非常短的时间内，在客户端生产上百万个的tcp连接，会导致什么问题？出现这样的问题，在linux操作系统里面要怎么解决？在其他的操作系统里面又要怎么解决？既然是端口有限，为什么操作系统的端口个数不是无限的？</p>
+<p>在非常短的时间内，在客户端生成上百万个TCP连接确实可能导致一系列问题，主要与操作系统对TCP连接管理的限制有关。具体来说，可能会遇到以下几个方面的问题：</p>
+<ol>
+<li>
+<p><strong>端口耗尽</strong>：如前所述，每个TCP连接都需要一个唯一的四元组（源IP地址、源端口号、目标IP地址、目标端口号）来标识。对于客户端而言，当它尝试建立大量到同一服务端的连接时，会迅速消耗本地可用的临时端口资源。由于TCP头部中用于表示端口号的空间只有16位，因此理论上每个IP地址最多只能有65535个端口可用（实际上是从1024开始分配给用户程序）。如果所有这些端口都被占用，新的连接请求将因为无法找到空闲端口而失败，报错“address already in use”。</p>
+</li>
+<li>
+<p><strong>TIME_WAIT状态堆积</strong>：当TCP连接正常关闭时，主动关闭方（通常是客户端）会进入TIME_WAIT状态，该状态下连接需要等待两倍的最大段生命周期（2MSL），以确保任何可能迟到的数据包都能被正确处理。这意味着即使连接已经逻辑上关闭，其对应的套接字仍然占用着系统资源，包括但不限于文件描述符和内存。如果短时间内创建了大量短寿命的连接，那么很快就会有大量的TIME_WAIT状态的连接累积起来，进一步加剧了端口资源的紧张。</p>
+</li>
+<li>
+<p><strong>文件描述符限制</strong>：在Linux和其他类Unix系统中，每个TCP连接都对应着一个打开的文件描述符。默认情况下，单个进程能够打开的最大文件数是有限制的（例如，默认可能是1024）。一旦达到这个上限，就无法再创建新的连接，除非释放一些现有的连接或增加此限制。</p>
+</li>
+</ol>
+<p>针对上述问题，在Linux操作系统中可以采取以下措施进行优化：</p>
+<ul>
+<li>
+<p><strong>调整<code>ip_local_port_range</code>参数</strong>：通过修改<code>/etc/sysctl.conf</code>文件中的<code>net.ipv4.ip_local_port_range</code>配置项，扩大可使用的动态端口范围，从而允许更多的并发连接。例如，可以将其设置为<code>32768 60999</code>，这将提供大约28,000个额外的端口。</p>
+</li>
+<li>
+<p><strong>启用<code>tcp_tw_reuse</code>和<code>tcp_timestamps</code></strong>：同样是在<code>/etc/sysctl.conf</code>中，添加或修改<code>net.ipv4.tcp_tw_reuse = 1</code>和<code>net.ipv4.tcp_timestamps = 1</code>，允许处于TIME_WAIT状态的端口被重用，并使用时间戳来区分不同的连接。请注意，<code>tcp_tw_recycle</code>已经被移除，不再推荐使用。</p>
+</li>
+<li>
+<p><strong>减少<code>tcp_fin_timeout</code>值</strong>：适当降低<code>net.ipv4.tcp_fin_timeout</code>的值，缩短FIN-WAIT-2状态的超时时间，加快连接关闭的速度，但不要设置得太低以免影响正常通信。</p>
+</li>
+<li>
+<p><strong>提高文件描述符限制</strong>：编辑<code>/etc/security/limits.conf</code>文件，增加特定用户或所有用户的最大打开文件数（<code>nofile</code>）。同时，确保系统的全局文件描述符限制（<code>fs.file-max</code>）足够大，可以通过修改<code>/etc/sysctl.conf</code>中的相应条目实现。</p>
+</li>
+</ul>
+<p>对于其他操作系统，如Windows Server，虽然具体的命令行工具和配置文件路径不同，但原理相似：</p>
+<ul>
+<li><strong>Windows Server</strong>：可以通过PowerShell命令如<code>Set-NetTCPSetting</code>来调整TCP/IP堆栈的行为，比如改变TIME_WAIT状态的回收策略。此外，还可以通过注册表编辑器调整相关参数，或者利用高级防火墙规则来控制入站和出站连接的行为。</li>
+</ul>
+<p>至于为什么操作系统的端口个数不是无限的，主要是出于以下几个原因：</p>
+<ul>
+<li>
+<p><strong>协议设计约束</strong>：TCP/IP协议栈的设计决定了端口号是一个16位的整数，这就意味着它的取值范围固定为0到65535之间。这是一个硬件层面和技术标准上的限制，无法轻易改变。</p>
+</li>
+<li>
+<p><strong>性能考虑</strong>：即使理论上可以扩展端口数量，实际操作中过多的端口也会带来管理复杂性和性能开销。操作系统需要跟踪每一个活动的连接及其相关的状态信息，过多的连接会导致更高的CPU和内存消耗，进而影响整体性能。</p>
+</li>
+<li>
+<p><strong>安全因素</strong>：大量的开放端口增加了潜在的安全风险，尤其是在互联网环境中。为了防止恶意攻击者利用未受保护的服务端口发起攻击，保持合理的端口数量有助于加强系统的安全性。</p>
+</li>
+</ul>
+<p>假设如果写这么一个程序，疯狂的给一个正在监听的服务端的端口发送syn包会怎么样？如果是拼命发确认包呢？或者拼命发送错误重传的包呢？这个时候服务端会出现什么问题？</p>
+<p>如果编写一个程序来疯狂地给一个正在监听的服务端端口发送SYN包、确认（ACK）包或错误重传的包，服务端可能会遇到一系列严重的问题。下面我们将分别讨论这三种情况对服务端的影响。</p>
+<h3 id="1-疯狂发送SYN包">1. 疯狂发送SYN包</h3>
+<p>当客户端频繁向服务端发送SYN包时，实际上是在尝试建立大量的TCP连接。这种行为可以被视作一种SYN Flood攻击。在正常情况下，服务端接收到SYN包后会回复SYN+ACK，并将该连接的信息存储在一个称为“半连接队列”中的数据结构里，等待客户端的最终确认（ACK）。然而，在遭受SYN Flood攻击的情况下：</p>
+<ul>
+<li>
+<p><strong>半连接队列溢出</strong>：由于大量的SYN请求涌入，服务端的半连接队列很快就会填满。一旦队列满了，新的SYN请求将被丢弃，导致合法用户的连接请求无法成功建立。</p>
+</li>
+<li>
+<p><strong>资源耗尽</strong>：每个未完成的连接都会占用一定的系统资源，包括内存和CPU时间。随着未完成连接数量的增加，服务端可能会因为资源耗尽而变得响应缓慢甚至完全不可用。</p>
+</li>
+<li>
+<p><strong>拒绝服务</strong>：最终，这种攻击可能导致服务端对外提供服务的能力受到严重影响，形成拒绝服务（DoS）的状态，使得正常的用户无法访问服务。</p>
+</li>
+</ul>
+<p>为了缓解这种情况，可以在Linux操作系统中采取以下措施：</p>
+<ul>
+<li>
+<p><strong>启用SYN Cookie</strong>：通过设置<code>/proc/sys/net/ipv4/tcp_syncookies = 1</code>，可以让内核使用SYN Cookie机制来处理过多的SYN请求。这种方法不需要为每个SYN请求分配资源，而是直到收到客户端的ACK确认之后才创建完整的连接条目。</p>
+</li>
+<li>
+<p><strong>调整半连接队列大小</strong>：可以通过修改<code>/proc/sys/net/ipv4/tcp_max_syn_backlog</code>来增大半连接队列的最大长度，但这并不是根本性的解决方案，因为它只是延缓了问题的发生。</p>
+</li>
+<li>
+<p><strong>防火墙规则</strong>：配置防火墙规则限制来自同一IP地址的SYN请求速率，或者直接屏蔽已知的恶意IP地址。</p>
+</li>
+</ul>
+<h3 id="2-疯狂发送ACK包">2. 疯狂发送ACK包</h3>
+<p>如果程序不停地向服务端发送ACK包，特别是针对那些尚未建立的连接，这将导致服务端出现混乱。通常情况下，ACK包是用来确认之前接收到的数据段的，但在没有相应上下文的情况下接收大量ACK包可能会引起以下几个问题：</p>
+<ul>
+<li>
+<p><strong>状态机混乱</strong>：服务端可能会尝试匹配这些ACK包与现有的连接状态，但由于它们并不对应任何实际的连接，这可能导致状态机进入异常状态，进而影响其他正常工作的连接。</p>
+</li>
+<li>
+<p><strong>性能下降</strong>：处理这些无效的ACK包会消耗额外的CPU周期和带宽，降低服务器的整体性能。尤其是在高负载环境下，这种额外负担可能加剧系统的不稳定。</p>
+</li>
+<li>
+<p><strong>潜在的安全风险</strong>：虽然单纯的ACK洪流不太容易直接造成服务中断，但如果结合其他形式的攻击（如组合式DDoS），则可能增强攻击效果。</p>
+</li>
+</ul>
+<p>对于这种情况，服务端应该确保其TCP栈实现了良好的输入验证逻辑，能够有效地过滤掉不合理的ACK包，并且保持稳健的状态管理以防止意外崩溃。</p>
+<h3 id="3-疯狂发送错误重传的包">3. 疯狂发送错误重传的包</h3>
+<p>当程序持续不断地发送带有错误序列号或其他异常特征的重传包时，服务端必须应对这些非标准的数据包。这类行为可能是由于网络故障引起的，但也可能是恶意企图干扰服务端的工作。具体后果包括但不限于：</p>
+<ul>
+<li>
+<p><strong>拥塞窗口收缩</strong>：根据TCP的拥塞控制算法，每当检测到丢失的数据包时，发送方会减小其发送窗口大小，以便减少网络压力。因此，即使实际并没有发生真正的丢包，频繁的错误重传也会触发这一机制，从而限制了传输速率。</p>
+</li>
+<li>
+<p><strong>重复数据处理</strong>：服务端需要花费更多的时间和资源来检查并丢弃重复或无效的数据包，增加了处理延迟并降低了效率。</p>
+</li>
+<li>
+<p><strong>连接终止</strong>：如果重传次数超过了预设阈值，服务端可能会认为连接已经失效，并主动关闭它。这不仅会影响当前的通信会话，还可能触发应用程序层面的错误处理流程。</p>
+</li>
+</ul>
+<p>为了应对这种情况，服务端可以考虑以下几种策略：</p>
+<ul>
+<li>
+<p><strong>优化重传检测</strong>：采用更智能的重传检测算法，比如快速重传（Fast Retransmit）配合选择性确认（Selective Acknowledgment, SACK），可以更快地识别并修复真正丢失的数据包，同时避免不必要的重传。</p>
+</li>
+<li>
+<p><strong>增强安全性</strong>：实施严格的流量监控和入侵检测系统，及时发现并阻止异常的重传活动。此外，还可以利用加密通信协议（如TLS/SSL）来保护数据完整性，防止中间人篡改数据包内容。</p>
+</li>
+<li>
+<p><strong>应用层防护</strong>：确保应用程序本身具备足够的容错能力和恢复机制，能够在遇到异常情况时迅速恢复正常运行，而不至于长时间挂起或崩溃。</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>两个关于TCP_IP的问题</div>
+      <div>https://mounthuangshan.github.io/计算机网络/计算机网络/两个关于TCP_IP的问题/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/nmap%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A%E7%BF%BB%E8%AF%91/" title="nmap命令参数解释翻译">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">nmap命令参数解释翻译</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%94%BB%E7%95%A5%EF%BC%9A%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%86%99%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%941.%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%20(1)/" title="操作系统攻略：自己动手从零开始写操作系统——1">
+                        <span class="hidden-mobile">操作系统攻略：自己动手从零开始写操作系统——1</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

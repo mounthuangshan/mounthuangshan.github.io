@@ -1,0 +1,1703 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="网络协议与套接字的区别 网络协议与套接字的区别 网络协议和套接字是网络通信中两个紧密相关但完全不同的概念，它们的关系类似于**“交通规则”与“汽车方向盘”**。以下是详细对比：  1. 定义与核心作用    特性 网络协议 套接字（Socket）     本质 通信规则（数据格式、传输方式、错误处理等）。 编程接口（API），提供网络通信的操作接口。   核心作用 确保不同设备间数据能正确封装、传">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UNIX网络编程笔记：一些网络协议的相关知识">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="网络协议与套接字的区别 网络协议与套接字的区别 网络协议和套接字是网络通信中两个紧密相关但完全不同的概念，它们的关系类似于**“交通规则”与“汽车方向盘”**。以下是详细对比：  1. 定义与核心作用    特性 网络协议 套接字（Socket）     本质 通信规则（数据格式、传输方式、错误处理等）。 编程接口（API），提供网络通信的操作接口。   核心作用 确保不同设备间数据能正确封装、传">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5Cf8cb39a8bbd8433da5851d9080aa60d4.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5C7c9d7dbd15d54b03931fd08ef7e2cd44.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5Cae69097ae79e4ee3845e13136ff7b53b.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5C0108c561963744f781fb3ab0d0670cd8.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5C82322ddf3d164810a4788778392deb92.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5C900f81591c664a8bb00760972b476f4b.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5Cccace48098b24ec58cc04c1e45206c04.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5C864e2cceea4841c99bcacfde0338cf69.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5C61ee8bbc6d484226a162a9aedf618e6d.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.851Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5Cf8cb39a8bbd8433da5851d9080aa60d4.png">
+  
+  
+  
+  <title>UNIX网络编程笔记：一些网络协议的相关知识 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="UNIX网络编程笔记：一些网络协议的相关知识"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          96 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">UNIX网络编程笔记：一些网络协议的相关知识</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>网络协议与套接字的区别</h1>
+<h3 id="网络协议与套接字的区别"><strong>网络协议与套接字的区别</strong></h3>
+<p>网络协议和套接字是网络通信中两个紧密相关但完全不同的概念，它们的关系类似于**“交通规则”与“汽车方向盘”**。以下是详细对比：</p>
+<hr>
+<h4 id="1-定义与核心作用"><strong>1. 定义与核心作用</strong></h4>
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>网络协议</strong></th>
+<th><strong>套接字（Socket）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>本质</strong></td>
+<td><strong>通信规则</strong>（数据格式、传输方式、错误处理等）。</td>
+<td><strong>编程接口</strong>（API），提供网络通信的操作接口。</td>
+</tr>
+<tr>
+<td><strong>核心作用</strong></td>
+<td>确保不同设备间数据能正确封装、传输、路由和解析。</td>
+<td>让应用程序通过代码调用协议，实现网络通信功能。</td>
+</tr>
+<tr>
+<td><strong>层级定位</strong></td>
+<td>分层模型中的各层（如 TCP/IP 分层模型）。</td>
+<td>介于应用层和传输层之间的编程接口（API）。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="2-具体区别"><strong>2. 具体区别</strong></h4>
+<h5 id="1-功能差异"><strong>(1) 功能差异</strong></h5>
+<p>• <strong>网络协议</strong>：<br>
+• 定义数据如何封装（如 IP 数据包、TCP 报文段）。<br>
+• 规定传输规则（如 TCP 的三次握手、流量控制）。<br>
+• 解决寻址问题（如 IP 地址标识设备）。</p>
+<p>• <strong>套接字</strong>：<br>
+• 提供函数（如 <code>bind()</code>、<code>connect()</code>、<code>send()</code>）让开发者操作协议。<br>
+• 隐藏底层协议细节（如开发者无需手动组装 TCP 报文）。<br>
+• 管理通信端点（如绑定端口、监听连接）。</p>
+<h5 id="2-抽象层级"><strong>(2) 抽象层级</strong></h5>
+<p>• <strong>网络协议</strong>：<br>
+• 属于底层规则，由操作系统或硬件实现（如网卡处理 IP 协议）。<br>
+• 对开发者透明（如 HTTP 协议的数据分包由浏览器自动处理）。</p>
+<p>• <strong>套接字</strong>：<br>
+• 是暴露给开发者的高层接口（如调用 <code>socket()</code> 创建套接字）。<br>
+• 开发者通过套接字间接使用协议（如选择 TCP 或 UDP）。</p>
+<h5 id="3-使用场景"><strong>(3) 使用场景</strong></h5>
+<p>• <strong>网络协议</strong>：<br>
+• 所有网络通信的基础（如网页访问依赖 HTTP + TCP/IP）。<br>
+• 协议栈由操作系统和网络设备实现（如路由器处理 IP 协议）。</p>
+<p>• <strong>套接字</strong>：<br>
+• 编程时直接操作的对象（如用 Python 的 <code>socket</code> 库写聊天程序）。<br>
+• 开发者通过套接字选择协议（如 <code>socket(AF_INET, SOCK_STREAM)</code> 表示使用 TCP）。</p>
+<hr>
+<h4 id="3-协作关系"><strong>3. 协作关系</strong></h4>
+<ol>
+<li>
+<p><strong>协议是基础，套接字是工具</strong>：<br>
+• 协议定义了通信规则，套接字提供操作这些规则的接口。<br>
+• 例如：通过套接字调用 <code>send()</code> 发送数据时，底层 TCP 协议会处理数据分段、重传等细节。</p>
+</li>
+<li>
+<p><strong>协议分层与套接字的关系</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">应用层（HTTP、FTP） → 调用套接字 API<br>    ↓<br>传输层（TCP、UDP） → 套接字绑定端口和协议<br>    ↓<br>网络层（IP）       → 协议处理寻址和路由<br></code></pre></td></tr></table></figure>
+<p>• 开发者通过套接字选择传输层协议（TCP/UDP），网络层以下的操作由协议栈自动完成。</p>
+</li>
+</ol>
+<hr>
+<h4 id="4-示例对比"><strong>4. 示例对比</strong></h4>
+<table>
+<thead>
+<tr>
+<th><strong>场景</strong></th>
+<th><strong>网络协议的作用</strong></th>
+<th><strong>套接字的作用</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>访问一个网页</strong></td>
+<td>HTTP 定义请求格式，TCP 保证可靠传输。</td>
+<td>浏览器调用套接字 API 发送 HTTP 请求。</td>
+</tr>
+<tr>
+<td><strong>发送 UDP 消息</strong></td>
+<td>UDP 协议处理无连接、不可靠传输。</td>
+<td>开发者通过 <code>sendto()</code> 函数发送数据。</td>
+</tr>
+<tr>
+<td><strong>视频流传输</strong></td>
+<td>RTP 协议封装视频数据，UDP 快速传输。</td>
+<td>调用套接字接口绑定 UDP 端口并发送数据包。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="总结"><strong>总结</strong></h3>
+<p>• <strong>网络协议</strong>是通信的规则，解决“数据如何传输”的问题。<br>
+• <strong>套接字</strong>是开发者使用的工具，解决“如何通过代码实现通信”的问题。<br>
+• <strong>关系</strong>：套接字是协议的“控制器”，开发者通过套接字选择并调用协议，协议在底层确保通信可靠高效。</p>
+<h1>一、端口号</h1>
+<p>任何时候，多个进程可能同时使用TCP、UDP和SCTP这3种传输层协议中的任何一种。这3种协议都使用16位整数的端口号(port number)来区分这些进程。<br>
+当一个客户想要跟一个服务器联系时，它必须标识想要与之通信的这个服务器。TCP、UDP和SCTP定义了一组众所周知的端口(well-known port)，用于标识众所周知的服务。举例来说，支持FTP的任何TCP/IP实现都把21这个众所周知的端口分配给FTP服务器。分配给简化文件传送协议(Trivial File Trqnsfer Protocol，TFTP)的是UDP端口号69。<br>
+另一方面，客户通常使用短期存活的临时端口(ephemeral port)。这些端口号通常由传输层协议自动赋予客户。客户通常不关心其临时端口的具体值，而只需确信该端口在所在主机中是唯一的就行。传输协议的代码确保这种唯一性。<br>
+IANA(the Internet Assigned Numbers Authority，因特网已分配数值权威机构)维护着一个端口号分配状况的清单。该清单一度作为RFC多次发布;RFC 1700[Reynolds and Postel 1994]是这个系列的最后一个。RFC 3232[Reynolds 2002]给出了替代RFC 1700的在线数据库的位置:<a target="_blank" rel="noopener" href="http://www.iana.org/%E3%80%82%E7%AB%AF%E5%8F%A3%E5%8F%B7%E8%A2%AB%E5%88%92%E5%88%86%E6%88%90%E4%BB%A5%E4%B8%8B3%E6%AE%B5%E3%80%82">http://www.iana.org/。端口号被划分成以下3段。</a><br>
+(1)众所周知的端口为0~1023。这些端口由IANA分配和控制。可能的话，相同端口号就分配给TCP、UDP和SCTP的同一给定服务。例如，不论TCP还是UDP端口号80都被赋予Web服务器，尽管它目前的所有实现都单纯使用TCP。<br>
+端口号80分配时SCTP尚不存在。新的端口分配将针对这3种协议执行，RFC2960则声明所有现有的TCP端口号对于使用SCTP的同一服务同样有效。<br>
+(2)已登记的端口(registered port)为1024到49151。这些端口不受IANA控制，不过由IANA登记并提供它们的使用情况清单，以方便整个群体。可能的话，相同端口号也分配给TCP和UDP的同一给定服务。例如，6000~6063分配给这两种协议的XWindow服务器，尽管它的所有实现当前单纯使用TCP。49151这个上限的引入是为了给临时端口留出范围，而RFC1700[Reynolds and Postel 1994]所列的上限为65535。<br>
+(3)49152~65535是动态的(dynamic)或私用的(private)端口。IANA不管这些端口。它们就是我们所称的临时端口。(49152这个魔数是65536的四分之三。)<br>
+下图展示了端口号的划分情况和常见的分配情况。<br>
+<img src="./UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5Cf8cb39a8bbd8433da5851d9080aa60d4.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>我们要注意图中以下几点。</p>
+<ul>
+<li>
+<p>Unix系统有保留端口(reserved port)的概念，指的是小于1024的任何端口。这些端口只能赋予特权用户进程的套接字。所有IANA众所周知的端口都是保留端口，分配使用这些端口的服务器(例如FTP服务器)必须以超级用户特权启动。<br>
+由于历史原因，源自Berkeley的实现(从4.3BSD开始)曾在1024~5000范围内分配临时端口。这在20世纪80年代初期是可行的，但是如今很容易就找到一个在任何给定时间内同时支持多于3977个连接的主机。于是许多较新的系统从另外的范围分配临时端口以提供更多的临时端口，它们或者使用由IANA定义的临时端口范围，或者使用一个更大的其他范围。<br>
+由于这个原因，许多较平的系统实现的临时端口范围的上限为5000。5000这个上限后来发现是一个排版错误[Borman 1997a]，本应该是5000。</p>
+</li>
+<li>
+<p>有少数客户(而不是服务器)需要一个保留端口用于客户/服务器的认证：rlogin和rsh客户就是常见的例子。这些客户调用库函数resvport创建一个TCP套接字，并赋予它一个在513~1023范围内未使用的端口。该函数通常先尝试绑定端口1023，若失败则尝试1022，依次类推，直到在端口513上亦或成功，亦或失败。<br>
+注意：BSD的保留端口和resvport函数都跟IANA众所周知端口的后半部分重叠。这是因为IANA众所周知端口早先的上限为255。1992年的RFC 1340(早先的一个“Assigned Numbers”RFC)开始在256到1023之间分配众所周知的端口。1990年的RFC 1060(更早的一个“Assigned Numbers”RFC)称256到1023之间的端口为Unix标准服务(Unix Standard Services)。20世纪80年代有不少源自Berkeley的服务器在512以后挑选它们的众所周知的端口(留下256~511这个空档)。resvport函数选择从1023开始往下寻找，直至513。</p>
+</li>
+</ul>
+<h2 id="套接字对">套接字对</h2>
+<p>一个TCP连接的套接字对(socket pair)是一个定义该连接的两个端点的四元组：本地IP地址、本地TCP端口号、外地IP地址、外地TCP端口号。套接字对唯一标识一个网络上的每个TCP连接。就SCTP而言，一个关联由一组本地IP地址、一个本地端口、一组外地IP地址、一个外地端口标识。在两个端点均非多宿这一最简单的情形下，SCTP与TCP所用的四元组套接字对一致。然而在某个关联的任何一个端点为多宿的情形下，同一个关联可能需要多个四元组标识(这些四元组的IP地址各不相同，但端口号是一样的)。<br>
+标识每个端点的两个值(IP地址和端口号)通常称为一个套接字。<br>
+我们可以把套接字对的概念扩展到UDP，即使UDP是无连接的。当讲解套接字函数(bind、connect、getpeername等)时，我们将指明它们在指定套接字对中的哪些值。举例来说，bind函数要求应用程序给TCP、UDP或SCTP套接字指定本地IP地址和本地端口号。</p>
+<h2 id="并发服务器">并发服务器</h2>
+<p>并发服务器中主服务器循环通过派生一个子进程来处理每个新的连接。如果一个子进程<br>
+续使用服务器众所周知的端口来服务一个长时间的请求，那将发生什么?让我们来看一个典型的序列。首先，在主机freebsd上启动服务器，该主机是多宿的，其IP地址为12.106.32.254和192.168.42.1。服务器在它的众所周知的端口(本案为21)上执行被动打开，从而开始等待客户的请求，如下图所示。<br>
+<img src="./UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5C7c9d7dbd15d54b03931fd08ef7e2cd44.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+我们使用记号(<em>:21, <em>:</em>)指出服务器的套接字对。服务器在任意本地接口（第一个星号）的端口21上等待连接请求。外地IP地址和外地端口都没有指定，我们用“</em>.*”来表示。我们称它为监听套接字（listening socket）。<br>
+我们用分号来分割IP地址和端口号，因为这是HTTP的用法，其他地方也常见。netstat程序使用点号来分割IP地址和端口号，不过如此表示有时候会让人混淆，因为点号既用于域名（如freebsd.unpbook.com.21），也用于IPv4的点分十进制数记法（如12.106.32.254.21）。<br>
+这里指定本地IP地址的星号称为通配（wildcard）符。如果运行服务器的主机是多宿的（如本例），服务器可以指定它只接受到达某个特定本地接口的外来连接。这里要么选一个接口要么选任意接口。服务器不能指定一个包含多个地址的清单。通配的本地地址表示“任意”这个选择。通配地址通过在调用bind之前把套接字地址结构中的IP地址字段设置成INADDR_ANY来指定。<br>
+稍后在IP地址为206.168.112.219的主机上启动第一个客户，它对服务器的IP地址之一12.106.32.254执行主动打开。我们假设本例中客户主机的TCP为此选择的临时端口为1500，如下图所示。图中在该客户的下方标出了它的套接字对。<br>
+<img src="./UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5Cae69097ae79e4ee3845e13136ff7b53b.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+当服务器接收并接受这个客户的连接时，它fork一个自身的副本，让子进程来处理该客户的请求，如下图所示。<br>
+至此，我们必须在服务器主机上区分监听套接字和已连接套接字（connected socket）。注意已连接套接字使用与监听套接字相同的本地端口（21）。还要注意在多宿服务器主机上，连接一旦建立，已连接套接字的本地地址（12.106.32.254）随即填入。<br>
+<img src="./UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5C0108c561963744f781fb3ab0d0670cd8.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+通过本例应注意，TCP无法仅仅通过查看目的端口号来分离外来的分节到不同的端点。它必须查看套接字对的所有4个元素才能确定由哪个端点接收某个到达的分节。图2-14中对于同一个本地端口(21)存在3个套接字。如果一个分节来自206.168.112.219端口1500，目的地为12.106.32.254端口21，它就被递送给第一个子进程。如果一个分节来自206.168.112.219端口1501，目的地为12.106.32.254端口21，它就被递送给第二个子进程。所有目的端口为21的其他TCP分节都被递送给拥有监听套接字的最初那个服务器(父进程)。</p>
+<h1>二、缓冲区大小及限制</h1>
+<p>下面我们将介绍一些影响IP数据报大小的限制。我们首先介绍这些限制，然后就它们如何影响应用进程能够传送的数据进行综合分析。</p>
+<ul>
+<li>IPv4数据报的最大大小是65535字节，包括IPv4首部。这是因为如图A-1所示其总长度字段占16位。</li>
+<li>IPv6数据报的最大大小是6575字节，包括40字节的IPv6首部，这是因为如图A-2所示其净荷长度字段占16位。注意，IPv6的净荷长度字段不包括IPv6首部，而IPv4的总长度字段包括IPv4首部。</li>
+<li>IPv6有一个特大净荷（jumbo payload）选项，它把净荷长度字段扩展到32位，不过这个选项需要MTU（maximum transmission unit，最大传输单元）超过65535的数据链路提供支持。（这是为主机的内部连接而设计的，譬如HIPPI，它们通常没有内在的MTU。）</li>
+<li>许多网络有一个可硬件规定的MTU。举例来说，以太网的MTU是1500字节。另有一些链路（例如使用PPP协议的点到点链路）其MTU可以人为配置。较老的SLIP链路通常使用1006字节或2596字节的MTU。</li>
+<li>IPv4要求的最小链路MTU是68字节。这允许最大的IPv4首部（包括20字节的固定长度部分和最多40字节的选项部分）拼接最小的片段（IPv4首部中片段偏移字段以8个字节为单位）。IPv6要求的最小链路MTU为1280字节。IPv6可以运行在MTU小于此最小值的链路上，不过需要特定于链路的分片和重组功能，以使得这些链路看起来具有至少为1280字节的MTU（RFC 2460 [Deering and Hinden 1998]）。</li>
+<li>在两个主机之间的路径中最小的MTU称为路径MTU（path MTU）。1500字节的以太网MTU是当常见的路径MTU。两个主机之间相反的两个方向上路径MTU可以不一致，因为在因特网中路由选择往往是不对称的[Paxson 1996]，也就是说从A到B的路径与从B到A的路径可以不相同。</li>
+<li>当一个IP数据报从某个接口送出时，如果它的大小超过相应链路的MTU，IPv4和IPv6都将执行分片（fragmentation）。这些片段在到达最终目的地之前通常不会被重新组装（reassembling）。IPv4主机对其产生的数据报执行分片，IPv4路由器则对其转发的数据报执行分片。然而IPv6只有主机对其产生的数据报执行分片，IPv6路由器不对其转发的数据报执行分片。</li>
+</ul>
+<p>我们必须小心这些术语的使用。一个标记为IPv6路由器的设备可能执行分片，不过只是对那些它产生的数据报，而不是对那些它转发的数据报。当该设备产生IPv6数据报时，它实际上为主机操作。举例来说，大多数路由器支持Telnet协议，管理员就用它来配置路由器。由路由器产生的IP数据报是由路由器产生的，而不是由路由器转发的。<br>
+你可能注意到，IPv4首部（图A-1）有用于处理IPv4分片的字段。IPv6首部（图A-2）却没有类似的字段，既然分片是例外情况而不是通常情况，IPv6于是引入一个可选首部以提供分片信息。<br>
+<img src="./UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5C82322ddf3d164810a4788778392deb92.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+IP层提供无连接不可靠的数据报递送服务(RFC 791 [Postel 1981a])。它会尽最大努力把IP数据报递送到指定的目的地，然而并不保证它们一定到达，也不保证它们的到达顺序与发送顺序一致，还不保证每个IP数据报只到达一次。任何期望的可靠性(即无差错按顺序不重复地递送用户数据)必须由上层提供支持。对于TCP(或SCTP)应用程序而言，这由TCP(或SCTP)本身完成。对于UDP应用程序而言，这得由应用程序完成，因为UDP是不可靠的。<br>
+IP层最重要的功能之一是路由(routing)。每个IP数据报包含一个源地址和一个目的地址。图A-1展示了IPv4数据报首部的格式。<br>
+4位版本（version）字段值为4。这是自20世纪80年代早期以来一直在用的IP版本。</p>
+<ul>
+<li>首部长度（header length）字段包括任何选项在内的整个IP首部的32位长度。这个4字节的最大取值为15，因而IP首部的最大长度为60个字节。扣除首部固定部分所占据的20字节外，它最多允许40个字节的选项。</li>
+<li>历史性的8位服务类型（type-of-service，TOS）字段（RFC 1349 [Almquist 1992]）已被替换为两个字段：6位区分服务码点（Differentiated Services Code Point，DSCP，RFC 2474 [Nichols et al. 1998]）和2位显式拥塞通知（Explicit Congestion Notification，ECN，RFC 3168 [Ramakrishnan, Floyd, and Black 2001]）。我们可以使用IP ToS拼接字选项设置该字段（7.6节），虽然内核可能覆盖为了实施DiffServ策略或实现ECN而设置的值。</li>
+<li>16位总长度（total length）字段是包括IP首部在内的整个IP数据报的字节长度。数据报中的数据量就是本字段减去4乘以首部长度（回顾一下，首部长度都是32位或4字节的整数倍）。本字段是必需的，因为有些数据链路要求把帧补成某个最小长度（例如以太网），因而有效IP数据报的大小不可能小于数据链路的最小长度。</li>
+<li>16位标识（identification）字段由IP模块为每个IP数据报设置成不同的值，用于分片和重组（2.11节）。该字段必须源自IPv4地址、目的IPv4地址和协议这三个字段至少在数据报的网络生存期[9]唯一标识每个IP数据报。如果分组不会被分片（但如设置了DF位），那么就不需设置此字段。</li>
+<li>DF（表示don’t fragment，不要分片）位、MF（表示more fragments，还有片段）位和13位片段偏移（fragment offset）字段也用于分片和重组。DF位还用于路径MTU发现（2.11节）。</li>
+<li>8位生存时间（time-to-live，TTL）字段由本IP数据报的发送者设置，并由转发它的每个路由器递减（即减去1）。当减到0时，相应路径就丢弃该数据报。任何IP数据报的生命周期限定为最多255。本字段的常用默认值为64，不过我们可以使用套接字选项IP_TTL和IP_MULTICAST_TTL（7.6节）查询和修改这个默认值。</li>
+<li>8位协议（protocol）字段指定包含在本IP数据报中的数据类型。它的典型值有1（ICMPv4）、2（IGMPv4）、6（TCP）和17（UDP）。这些值由IANA的“Protocol Numbers”注册处[IANA]登记并提供查询。</li>
+<li>16位首部检验和（header checksum）字段只对IP首部（包括任何选项）进行计算。其算法是标准的网络校验和算法，即简单的16位反码加法（16-bit ones-complement addition），如图28-15所示。</li>
+<li>源IPv4地址（source IPv4 address）和目的IPv4地址（destination IPv4 address）都是32位字段。</li>
+<li>选项（options）字段我们已在27.2节叙述过，并在27.3节给出了一个使用IPv4源路径选项的例子。</li>
+</ul>
+<p>下图给出了IPv6首部的格式：</p>
+<ul>
+<li>
+<p>4位版本（version）字段值为6。由于本字段只占据第一个字节的前4位（就如IPv4和IPv6版本），因此它允许支持这两个版本的协议在它们之间区分。不由如图所示，IPv4和IPv6互不兼容需要被视为不同的协议族，值IPv4或IPv6收集的数据链路层（如以太网）就已经使用不同的协议族字段区分了它们，接收数据链路层据此把它们送到分离的IP模块或IPv6模块。<br>
+20世纪90年代初期开发IPv6时，在赋予它6这个版本号之前，该协议称为IPng，表示“下一代IP（IP next generation）&quot;。你可能仍然会碰到IPng这个称谓。</p>
+</li>
+<li>
+<p>历史性的8位流通类别（traffic class）字段（RFC 2460）现已被替换为两个字段：6位区分服务码点（Differentiated Services Code Point，DSCP，RFC 2474 [Nichols et al. 1998]）和2位显式拥塞通知（Explicit Congestion Notification，ECN，RFC 3168 [Ramakrishnan，Floyd，and Black 2001]）。我们可以使用IPV6_TCLASS套接字选项设置该字段（22.8节），虽然内核可能覆盖为了实施DiffServ策略或实现ECN所设置的值。</p>
+</li>
+<li>
+<p>20位流标签（flow label）字段可以由应用进程或内核为某个给定的套接字选取，应用于通过该套接字发送的任何IPv6数据报。所谓的流（flow）指的是从某个特定源头到某个特定目的地的一个分组序列，而且该源头期望中间的路由器对这些分组进行特殊处理。对于一个给定的流，其流标签一经源头选定就不再改变，也就是说中间路由器不能像对待DSCP和ECN字段那样重新设置本字段。值为0的流标签（默认设置）标识并不属于任何一个流的分组。[Rajahalme et al. 2003]讲解了本字段尚处于试验之中的用途。</p>
+</li>
+<li>
+<p>流标签的访问接口尚未完全定义。sockaddr_in6套接字地址结构的sin6_flowinfo成员（图3-4）原初是为留待他用所保留的。有些系统直接将sin6_flowinfo的低28位复制到IPv6分组首部中，来覆盖DSCP和ECN字段。</p>
+</li>
+<li>
+<p>16位净荷长度（payload length）字段是40字节IPv6首部之后所有内容的字节长度（可能出现的扩展首部也计算在内，因此并非真正的净荷即所承载上层协议数据单元的长度）。本字段与IPv4总长度字段的区别在于后者把IPv4首部也计算在内。本字段值为0表示实际长度超过16位字段的表示范围（可见不存在只含有IPv6首部的IPv6数据报），于是存放在一个特大净荷选项中（图27-9）。这样的数据报称为特大报（jumbogram）。</p>
+</li>
+<li>
+<p>8位下一个首部（next header）字段类似于IPv4的协议字段。事实上如果上层协议基本上无变化，IPv6和IPv4的这两个字段就使用相同的值，例如6代表TCP，17代表UDP。从ICMPv4到ICMPv6的变化却比较多，以至于后者被赋给一个新值58。</p>
+</li>
+<li>
+<p>一个IPv6数据报可以在其40字节的IPv6首部之后跟以多个首部。这就是之所以称本字段为“下一个首部”而非“协议”的原因。</p>
+</li>
+<li>
+<p>8位跳限（hop limit）字段类似于IPv4的TTL字段。一个IPv6分组的跳限字段值由转发它的每个路由器递减（即减去1），如果某个路由器把该字段值减成0，它就丢弃该分组。我们可以使用套接字选项IPv6_UNICAST_HOPS和IPv6_MULTICAST_HOPS设置与获取本字段的默认值（7.8节和21.6节），也可以使用IPv6_HOPLIMIT套接字选项设置本字段的当前值，并使用IPv6_RCVHOPLIMIT套接字选项获取接收数据报的本字段值。</p>
+</li>
+<li>
+<p>IPv4早期规范要求路由器把所转发IPv4分组的TTL字段值或者减去1，或者减去路由器存储该分组的秒数，具体取决于哪个值比较大。其名称“存活时间”就是如此而来。然而在现实中该字段值总是减去1。IPv6要求它的跳限字段总是减去1，因而换了个不同于IPv4的名称。</p>
+</li>
+<li>
+<p>源IPv6地址（source IPv6 address）和目的IPv6地址（destination IPv6 address）都是128位字段。<br>
+从IPv4到IPv6的最显著变化自然是IPv6采用更大的地址字段。另一个变化是简化IPv6首部，因为首部越简单，路由器处理起来也更快。这两种首部之间的其他变化还有以下几点。</p>
+</li>
+<li>
+<p>IPv6没有首部长度字段，因为IPv6首部没有选项字段。固定为40字节的IPv6首部之后可跟以任意种类和数目的扩展首部，不过它们都有各自的长度字段。</p>
+</li>
+<li>
+<p>如果首部本身64位对齐，那两个IPv6地址字段也在64位边界对齐。这样可以加快在64位体系结构上的处理。而IPv4地址即使在64位对齐的IPv4首部中也只是32位对齐的。</p>
+</li>
+<li>
+<p>IPv6首部没有用于分片的字段，因为IPv6另有一个独立的分片首部用于该目的。做出如此设计决策是因为分片属于异常情况，而异常情况不应该减慢正常处理。</p>
+</li>
+<li>
+<p>IPv6首部没有其自身的校验和字段。这是因为所有上层协议（TCP、UDP和ICMPv6）数据单元都有各自的校验和字段，其校验范围包括上层协议首部、上层协议数据及IPv6首部的下列字段：IPv6源地址、IPv6目的地址、净荷长度和下一个首部。通过从IPv6首部省去校验和字段，转发IPv6分组的路由器不必在修改跳限字段值之后重新计算首部校验和。这里加快路由器的转发速度再次成为设计的关键点。<br>
+我们另外指出从IPv4到IPv6的以下重要变更，以防你还是首次接触IPv6。</p>
+</li>
+<li>
+<p>IPv6没有广播（第20章）。对于IPv4是可选的多播（第21章）却是IPv6一个组成部分。向子网中所有系统发送数据的任务是由全节点多播组处理的。</p>
+</li>
+<li>
+<p>IPv6路由器不对所转发的分组执行分片。如果不经分片无法转发某个分组，路由器就丢弃该分组，同时向其源头发送一个ICMPv6错误（A.6节）。也就是说IPv6的分片只发生在IPv6数据报的源头主机上。</p>
+</li>
+<li>
+<p>IPv6要求支持路径MTU发现功能(2.11节)。从技术上说这种支持是可选的，诸如自举引导加载器等程序中的最小实现就可以省略这种支持，然而如果某个节点没有实现这个功能，它就不能发送超过IPv6最小链路MTU(1280字节)的数据报。22.9节讲解了控制路径MTU发现行为的套接字选项。<br>
+IPv6要求支持认证和安全选项。这些选项出现在固定首部之后。</p>
+</li>
+</ul>
+<p><img src="./UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5C900f81591c664a8bb00760972b476f4b.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+某些通常用作防火墙的防火墙可能会重组分片的分组，以便检查整个IP数据报的内容。这样做不必在防火墙上引入额外的复杂性就能防止某些攻击。它还要求防火墙设备是进出网络的唯一路径上的设备，从而减少了冗余的机会。</p>
+<ul>
+<li>IPv4首部（图A-1）的“不分片（don’t fragment）”位（即DF位）若被设置，那么不管是发送这些数据报的主机还是转发它们的路由器，都不允许对它们分片。当路由器接收到一个超过其外出链路MTU大小且设置了DF位的IPv4数据报时，它将产生一个ICMPv4“destination unreachable, fragmentation needed but DF bit set”（目的地不可达，需要分片但DF位已设置）出错消息。（图A-15）</li>
+</ul>
+<h3 id="图A-15">图A-15</h3>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>代码</th>
+<th>说明</th>
+<th>处理者或errno</th>
+<th>RFC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>回射应答(Ping)</td>
+<td>用户进程(Ping)</td>
+<td>792</td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+<td>目的地不可达:</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>网络不可达</td>
+<td>EHOSTUNREACH</td>
+<td>792</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>主机不可达</td>
+<td>EHOSTUNREACH</td>
+<td>792</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>协议不可达</td>
+<td>ECONNREFUSED</td>
+<td>792</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>端口不可达(*)</td>
+<td>ECONNREFUSED</td>
+<td>792</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>需分片但DF位已设</td>
+<td>EMSGSIZE</td>
+<td>792,1191</td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>源路径失败</td>
+<td>EHOSTUNREACH</td>
+<td>792</td>
+</tr>
+<tr>
+<td></td>
+<td>6</td>
+<td>目的网络不可知</td>
+<td>EHOSTUNREACH</td>
+<td>1122</td>
+</tr>
+<tr>
+<td></td>
+<td>7</td>
+<td>目的主机不可知</td>
+<td>EHOSTUNREACH</td>
+<td>1122</td>
+</tr>
+<tr>
+<td></td>
+<td>8</td>
+<td>源主机被隔离(过时不用)</td>
+<td>EHOSTUNREACH</td>
+<td>1122</td>
+</tr>
+<tr>
+<td></td>
+<td>9</td>
+<td>目的网络由管理手段禁用</td>
+<td>EHOSTUNREACH</td>
+<td>1108,1122</td>
+</tr>
+<tr>
+<td></td>
+<td>10</td>
+<td>目的主机由管理手段禁用</td>
+<td>EHOSTUNREACH</td>
+<td>1108,1122</td>
+</tr>
+<tr>
+<td></td>
+<td>11</td>
+<td>因TOS网络不可达</td>
+<td>EHOSTUNREACH</td>
+<td>1122</td>
+</tr>
+<tr>
+<td></td>
+<td>12</td>
+<td>因TOS主机不可达</td>
+<td>EHOSTUNREACH</td>
+<td>1122</td>
+</tr>
+<tr>
+<td></td>
+<td>13</td>
+<td>通信由管理手段禁止</td>
+<td>ECONNREFUSED</td>
+<td>1812</td>
+</tr>
+<tr>
+<td></td>
+<td>14</td>
+<td>主机优先级侵权</td>
+<td>ECONNREFUSED</td>
+<td>1812</td>
+</tr>
+<tr>
+<td></td>
+<td>15</td>
+<td>优先级有效截止</td>
+<td>ECONNREFUSED</td>
+<td>1812</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>源熄灭</td>
+<td>TCP由内核处理,UDP被忽略</td>
+<td>792,1812</td>
+</tr>
+<tr>
+<td>5</td>
+<td></td>
+<td>重定向:</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td></td>
+<td>为网络重定向</td>
+<td>内核更新路由表(+)</td>
+<td>792</td>
+</tr>
+<tr>
+<td>1</td>
+<td></td>
+<td>为主机重定向</td>
+<td>内核更新路由表(+)</td>
+<td>792</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>为服务类型和网络重定向</td>
+<td>内核更新路由表(+)</td>
+<td>792</td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+<td>为服务类型和主机重定向</td>
+<td>内核更新路由表(+)</td>
+<td>792</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0</td>
+<td>回射请求(ping)</td>
+<td>内核产生应答</td>
+<td>792</td>
+</tr>
+<tr>
+<td>9</td>
+<td></td>
+<td>路由器通告:</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td></td>
+<td>普通路由器</td>
+<td>用户进程</td>
+<td>1256</td>
+</tr>
+<tr>
+<td>16</td>
+<td></td>
+<td>仅限可移动IP路由器</td>
+<td>用户进程</td>
+<td>2002</td>
+</tr>
+<tr>
+<td>10</td>
+<td></td>
+<td>路由器征求:</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td></td>
+<td>普通路由器</td>
+<td>用户进程</td>
+<td>1256</td>
+</tr>
+<tr>
+<td>16</td>
+<td></td>
+<td>仅限可移动IP路由器</td>
+<td>用户进程</td>
+<td>2002</td>
+</tr>
+<tr>
+<td>11</td>
+<td></td>
+<td>超时:</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td></td>
+<td>传送期间TTL等于0</td>
+<td>用户进程</td>
+<td>792</td>
+</tr>
+<tr>
+<td>1</td>
+<td></td>
+<td>片段重组发生超时</td>
+<td>用户进程</td>
+<td>792</td>
+</tr>
+<tr>
+<td>12</td>
+<td></td>
+<td>参数问题:</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td></td>
+<td>IP首部坏(包罗一切的错误)</td>
+<td>ENOPROTOOPT</td>
+<td>792</td>
+</tr>
+<tr>
+<td>1</td>
+<td></td>
+<td>所需选项遗漏</td>
+<td>ENOPROTOOPT</td>
+<td>1108,1122</td>
+</tr>
+<tr>
+<td>13</td>
+<td>0</td>
+<td>时间戳请求</td>
+<td>内核产生应答</td>
+<td>792</td>
+</tr>
+<tr>
+<td>14</td>
+<td>0</td>
+<td>时间戳应答</td>
+<td>用户进程</td>
+<td>792</td>
+</tr>
+<tr>
+<td>15</td>
+<td>0</td>
+<td>信息请求(过时不用)</td>
+<td>(忽略)</td>
+<td>792</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0</td>
+<td>信息应答(过时不用)</td>
+<td>用户进程</td>
+<td>792</td>
+</tr>
+<tr>
+<td>17</td>
+<td>0</td>
+<td>地址掩码请求</td>
+<td>内核产生应答</td>
+<td>950</td>
+</tr>
+<tr>
+<td>18</td>
+<td>0</td>
+<td>地址掩码应答</td>
+<td>用户进程</td>
+<td>950</td>
+</tr>
+</tbody>
+</table>
+<p>既然IPv6路由器不执行分片，每个IPv6数据报于是隐含一个DF位。当IPv6路由器接收到一个超过其外出链路MTU大小的IPv6数据报时，它将产生一个ICMPv6“packet too big”（分组太大）出错消息。（图A-16）</p>
+<h3 id="图A-16">图A-16</h3>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>代码</th>
+<th>说明</th>
+<th>处理者或errno</th>
+<th>RFC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>没有到目的地的路径</td>
+<td>EHOSTUNREACH</td>
+<td>2463</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>由管理手段禁止（防火墙过滤器）</td>
+<td>EHOSTUNREACH</td>
+<td>2463</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>超越围绕源地址的范围</td>
+<td>ENOPROTOOPT</td>
+<td>2463bis(**)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>3</td>
+<td>地址不可达（任何其他原因）</td>
+<td>EHOSTDOWN</td>
+<td>2463</td>
+</tr>
+<tr>
+<td>1</td>
+<td>4</td>
+<td>端口不可达(*)</td>
+<td>ECONNREFUSED</td>
+<td>2463</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>分组太大</td>
+<td>内核进行PMTU发现</td>
+<td>2463</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0</td>
+<td>传送期间超过跳限</td>
+<td>用户进程</td>
+<td>2463</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>片段重组发生超时</td>
+<td>用户进程</td>
+<td>2463</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>错误的首部字段</td>
+<td>ENOPROTOOPT</td>
+<td>2463</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1</td>
+<td>无法认出下一个首部</td>
+<td>ENOPROTOOPT</td>
+<td>2463</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>无法认出选项</td>
+<td>ENOPROTOOPT</td>
+<td>2463</td>
+</tr>
+<tr>
+<td>128</td>
+<td>0</td>
+<td>回射请求（Ping）</td>
+<td>内核产生应答</td>
+<td>2463</td>
+</tr>
+<tr>
+<td>129</td>
+<td>0</td>
+<td>回射应答（Ping）</td>
+<td>用户进程（Ping）</td>
+<td>2463</td>
+</tr>
+<tr>
+<td>130</td>
+<td>0</td>
+<td>多播收听者查询</td>
+<td>用户进程</td>
+<td>2710</td>
+</tr>
+<tr>
+<td>131</td>
+<td>0</td>
+<td>多播收听者汇报</td>
+<td>用户进程</td>
+<td>2710</td>
+</tr>
+<tr>
+<td>132</td>
+<td>0</td>
+<td>多播收听者结束</td>
+<td>用户进程</td>
+<td>2710</td>
+</tr>
+<tr>
+<td>133</td>
+<td>0</td>
+<td>路由器征求</td>
+<td>用户进程</td>
+<td>2461</td>
+</tr>
+<tr>
+<td>134</td>
+<td>0</td>
+<td>路由器通告</td>
+<td>用户进程</td>
+<td>2461</td>
+</tr>
+<tr>
+<td>135</td>
+<td>0</td>
+<td>邻居征求</td>
+<td>用户进程</td>
+<td>2461</td>
+</tr>
+<tr>
+<td>136</td>
+<td>0</td>
+<td>邻居通告</td>
+<td>用户进程</td>
+<td>2461</td>
+</tr>
+<tr>
+<td>137</td>
+<td>0</td>
+<td>重定向</td>
+<td>内核更新路由表</td>
+<td>2461</td>
+</tr>
+<tr>
+<td>141</td>
+<td>0</td>
+<td>反向邻居征求</td>
+<td>用户进程</td>
+<td>3122</td>
+</tr>
+<tr>
+<td>142</td>
+<td>0</td>
+<td>反向邻居通告</td>
+<td>用户进程</td>
+<td>3122</td>
+</tr>
+</tbody>
+</table>
+<p>从网络编程角度看，我们需要知道哪些ICMP消息能够返送到应用程序，哪些条件导致出错以及这些出错消息如何返送到应用程序。图A-15列出了所有的ICMPv4消息以及FreeBSD对它们的处理，图A-16则列出了ICMPv6消息。倒数第二栏指出导致向发送主机返送ICMP出错消息的IP数据报发送操作返回给调用进程的errno变量值。对于TCP应用进程，这些错误只是在TCP最终放弃重传尝试时才返回。对于使用已连接套接字的UDP应用进程，这些错误由下次发送或接收操作返回，但在使用已连接套接字时是个例外（如8.9节所述）。</p>
+<ul>
+<li>IPv4的DF位和IPv6的隐含DF位可用于路径MTU发现（IPv4的情形见RFC 1191 [Mogul and Deering 1990]，IPv6的情形见RFC 1981 [McCann, Deering, and Mogul 1996]）。举例来说，如果基于IPv4的TCP使用该技术，那么它将在所发送的所有数据报中设置DF位。如果某个中间路由器返回一个ICMP“destination unreachable, fragmentation needed but DF bit set”错误，TCP就减小每个数据报的数据量并重传。路径MTU发现对于IPv4是可选的，然而IPv6的所有实现要么必须支持它，要么必须总是使用最小的MTU发送IPv6数据报。</li>
+<li>路径MTU发现在如今的因特网上是有问题的，许多防火墙丢弃所有ICMP消息，包括用于路径MTU发现的上述消息。这意味着TCP永远得不到要求它降低所发送数据量的信号。编写本书时，IETF已经开始尝试定义不依赖于ICMP出错消息的另一种路径MTU发现方法。</li>
+<li>IPv4和IPv6都定义了最小重组缓冲区大小（minimum reassembly buffer size），它是IPv4或IPv6的任何实现都必须保证支持的最小数据报大小。其值对于IPv4为576字节，对于IPv6为1500字节。例如，就IPv4而言，我们不能判定某个给定目的地能否接受577字节的数据报。为此有许多使用UDP的IPv4网络应用（如DNS、RIP、TFTP、BOOTP、SNMP）避免产生大于这个大小的数据报。</li>
+<li>TCP有一个MSS（maximum segment size，最大分节大小），用于向对端TCP通告对端在每个分节中能发送的最大TCP数据量。在图2-5中我们看到过SYN分节上的MSS选项。MSS的目的是告诉对端其重组缓冲区大小的实际值，从而试图避免分片。MSS经常设置成MTU减去IP和TCP首部的固定长度。在以太网中使用IPv4的MSS值为1460，使用IPv6的MSS值为1440（两者的TCP首部都是20个字节，但IPv4首部是20字节，IPv6首部却是40字节）。在TCP的MSS选项中，MSS值是一个16位的字段，限定其最大值为65 535。这对于IPv4是适合的，因为IPv4数据报中的最大TCP数据量为65 495（65 535减去IPv4首部的20字节和TCP首部的20字节）。然而对于具有特大净荷选项的IPv6，却需要使用另外一种技巧（RFC 2675 [Borman, Deering, and Hinden 1999]）。首先，没有特大净荷选项的IPv6数据报中的最大TCP数据量为65 515（65 535减去TCP首部的20字节）。65 535这个MSS值于是被视为表示“无限”的一个特殊值。该值只在用到特大净荷选项时才使用，不过这种情况却要求实际的MTU超过65 535。其次，如果TCP使用特大净荷选项，并且接收到的对端通告的MSS为65 535，那么它所发送数据报的大小限制就是接口MTU。如果这个值太大（也就是说所在路径中某个链路的MTU比较小），那么路径MTU发现功能将确定这个较小值。</li>
+<li>SCTP基于到对端所有地址发现的最小路径MTU保持一个分片点。这个最小MTU大小用于把较大的用户消息分割成较小的能够以单个IP数据报发送的若干片段。SCTP_MAXSEG套接字选项可以影响该值，使得用户能够请求一个更小的分片点。</li>
+</ul>
+<h1>三、TCP、UDP、SCTP输出</h1>
+<h2 id="TCP输出">TCP输出</h2>
+<p>下图展示了某个应用进程写数据到一个TCP套接字中时发生的步骤。<br>
+<img src="./UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5Cccace48098b24ec58cc04c1e45206c04.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+每一个TCP套接字有一个发送缓冲区，我们可以使用so_SNDBUF套接字选项来更改该缓冲区的大小（见7.5节）。当某个应用进程调用write时，内核从该应用进程的缓冲区中复制所有数据到所写套接字的发送缓冲区。如果该套接字的发送缓冲区容不下该应用进程的所有数据（或是应用进程的缓冲区大于套接字的发送缓冲区，或是套接字的发送缓冲区中已有其他数据），该应用进程将被投入睡眠。这里假设该套接字是阻塞的，它是通常的默认设置。内核将不从write系统调用返回，直到应用进程缓冲区中的所有数据都复制到套接字发送缓冲区。因此，从写一个TCP套接字的write调用成功返回仅仅表示我们可以重新使用原来的应用进程缓冲区，并不表明对端的TCP或应用进程已接收到数据。<br>
+这一端的TCP提取套接字发送缓冲区中的数据并把它发送给对端TCP,其过程基于TCP数据传送的所有规则。对端TCP必须确认收到的数据，伴随来自对端的ACK的不断到达,本端TCP至此才能从套接字发送缓冲区中丢弃已确认的数据。TCP必须为已发送的数据保留一个副本，直到它被对端确认为止。<br>
+本端TCP以MSS大小的或更小的块把数据传递给IP，同时给每个数据块安上一个TCP首部以构成TCP分节，其中MSS或是由对端通告的值，或是536(若对端未发送一个MSS选项)。(536是IPv4最小重组缓冲区字节数576减去IPv4首部字节数20和TCP首部字节数20的结果。)IP给每个TCP分节安上一个IP首部以构成IP数据报,并按照其目的IP地址查找路由表项以确定外出接口,然后把数据报传递给相应的数据链路。IP可能在把数据报传递给数据链路之前将其分片，不过我们已经谈到MSS选项的目的之一就是试图避免分片，较新的实现还使用了路径MTU发现功能。每个数据链路都有一个输出队列，如果该队列已满，那么新到的分组将被丢弃，并沿协议栈向上返回一个错误:从数据链路到IP，再从IP到TCP。TCP将注意到这个错误，并在以后某个时刻重传相应的分节。应用进程并不知道这种暂时的情况。</p>
+<h2 id="UDP输出">UDP输出</h2>
+<p>下图展示了某个应用进程写数据到一个UDP套接字中时发生的步骤。<br>
+<img src="./UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5C864e2cceea4841c99bcacfde0338cf69.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+这一次我们以虚线框展示套接字发送缓冲区，因为它实际上并不存在。任何UDP套接字都有发送缓冲区大小，不过它仅仅是可写到该套接字的UDP数据报的大小上限。如果一个应用进程写一个大于套接字发送缓冲区大小的数据报,内核将返回该进程一个EMSGSIZE错误。既然UDP是不可靠的,它不必保存应用进程数据的一个副本，因此无需一个真正的发送缓冲区。(应用进程的数据在沿协议栈向下传递时，通常被复制到某种格式的一个内核缓冲区中，然而当该数据被发送之后，这个副本就被数据链路层丢弃了。)<br>
+这一端的UDP简单地给来自用户的数据报安上它的8字节的首部以构成UDP数据报，然后传递给IP。IPv4或IPv6给UDP数据报安上相应的IP首部以构成IP数据报，执行路由操作确定外出接口，然后或者直接把数据报加入数据链路层输出队列（如果适合于MTU），或者分片后再把每个片段加入数据链路层的输出队列。如果某个UDP应用进程发送大数据报（譬如说2000字节的数据报），那么它们相比TCP应用数据更有可能被分片，因为TCP会把应用数据划分成MSS大小的块，而UDP却没有对等的手段。<br>
+从写一个UDP套接字的write调用成功返回表示所写的数据报或其所有片段已被加入数据链路层的输出队列。如果该队列没有足够的空间存放该数据报或它的某个片段，内核通常会返回一个ENOBUFFS错误给它的应用进程。<br>
+不幸的是，有些UDP的实现不返回这种错误，这样甚至数据报未经发送就被丢弃的情况应用进程也不知道。</p>
+<h2 id="SCTP输出">SCTP输出</h2>
+<p>下图展示了某个应用进程写数据到一个SCTP套接字中时发生的步骤。<br>
+<img src="./UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86image%5C61ee8bbc6d484226a162a9aedf618e6d.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+既然SCTP是与TCP类似的可靠协议，它的套接字也有一个发送缓冲区，而且跟TCP一样，我们可以用SO_SNDBUF套接字选项来更改这个缓冲区的大小。当一个应用进程调用write时，内核从该应用进程的缓冲区中复制所有数据到所写套接字的发送缓冲区。如果该套接字的发送缓冲区容不下该应用进程的所有数据（或是应用进程的缓冲区大于套接字的发送缓冲区），应用进程将被投入睡眠。这里假设该套接字是阻塞的，它是通常的默认设置。（我们将在第16章中阐述非阻塞的套接字。）内核将不从write系统调用返回，直到应用进程缓冲区中的所有数据都复制到套接字发送缓冲区。因此，从写一个SCTP套接字的write调用成功返回仅仅表示我们可以重新使用原来的应用进程缓冲区，并不表明对端的SCTP或应用进程已接收到数据。</p>
+<h1>四、标准因特网服务</h1>
+<p>下面是TCP/IP协议栈中常见的标准服务及其应用方法（多数实现都提供的标准服务）：</p>
+<h3 id="一、核心服务概述">一、核心服务概述</h3>
+<p>图中列举了5种基础网络服务，均同时支持TCP/UDP协议且共用相同端口：</p>
+<ol>
+<li>
+<p><strong>Echo（回射服务）</strong><br>
+• 端口号：TCP 7 / UDP 7<br>
+• 功能：将客户端发送的数据原样返回（RFC 862）<br>
+• 典型应用：网络连通性测试</p>
+</li>
+<li>
+<p><strong>Discard（丢弃服务）</strong><br>
+• 端口号：TCP 9 / UDP 9<br>
+• 功能：静默丢弃客户端发送的所有数据（RFC 863）<br>
+• 用途：测试数据传输的可靠性</p>
+</li>
+<li>
+<p><strong>Daytime（时间服务）</strong><br>
+• 端口号：TCP 13 / UDP 13<br>
+• 功能：返回人类可读的ASCII时间字符串（RFC 867）<br>
+• 示例输出：<code>Mon Jul 28 11:56:22 2003</code></p>
+</li>
+<li>
+<p><strong>Chargen（字符生成）</strong><br>
+• 端口号：TCP 19 / UDP 19<br>
+• 功能：<br>
+◦ <strong>TCP模式</strong>：持续发送ASCII字符流直到连接终止<br>
+◦ <strong>UDP模式</strong>：每个数据报触发响应随机长度的字符数据报（RFC 864）<br>
+• 用途：网络带宽压力测试</p>
+</li>
+<li>
+<p><strong>Time（二进制时间）</strong><br>
+• 端口号：TCP 37 / UDP 37<br>
+• 功能：返回32位二进制数值（自1900年1月1日至今的秒数，RFC 868）<br>
+• 与Daytime的区别：提供机器可处理的时间格式</p>
+</li>
+</ol>
+<hr>
+<h3 id="二、测试方法演示">二、测试方法演示</h3>
+<p>通过Telnet客户端进行服务测试（需目标主机开启对应服务）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 测试Daytime服务</span><br>telnet freebsd daytime  <span class="hljs-comment"># 连接后自动返回时间并断开</span><br><br><span class="hljs-comment"># 测试Echo服务</span><br>telnet freebsd <span class="hljs-built_in">echo</span>     <span class="hljs-comment"># 输入文字后回显（需Ctrl+]后输入quit退出）</span><br></code></pre></td></tr></table></figure>
+<p>测试过程特征：<br>
+• <strong>自动关闭连接</strong>：如Daytime服务完成响应后立即断开<br>
+• <strong>交互式操作</strong>：如Echo服务需手动终止连接（Ctrl+J进入命令模式）</p>
+<hr>
+<h3 id="三、协议实现特征">三、协议实现特征</h3>
+<ol>
+<li><strong>双重协议支持</strong>：所有服务同时提供TCP/UDP版本，体现协议无关性设计</li>
+<li><strong>端口复用</strong>：同一服务在TCP/UDP使用相同端口号（如echo均用7号端口）</li>
+<li><strong>RFC标准化</strong>：每个服务对应RFC文档定义行为规范</li>
+<li><strong>Unix实现</strong>：通过inetd守护进程统一管理（按需启动服务）</li>
+</ol>
+<hr>
+<h3 id="四、应用价值">四、应用价值</h3>
+<ol>
+<li><strong>网络诊断</strong>：验证端到端通信是否正常</li>
+<li><strong>协议学习</strong>：直观观察TCP/UDP交互过程</li>
+<li><strong>基础测试</strong>：验证防火墙规则、服务配置有效性</li>
+<li><strong>历史意义</strong>：这些服务是早期互联网的基础设施原型</li>
+</ol>
+<blockquote>
+<p><strong>注意</strong>：现代网络环境中这些服务可能默认关闭，因存在安全隐患（DDoS反射攻击风险），建议仅在受控环境测试使用。</p>
+</blockquote>
+<h1>五、常见因特网应用的协议使用</h1>
+<p>下表总结了各种常见的因特网应用对协议的使用情况。<br>
+以下是图中表格的打印版本：</p>
+<table>
+<thead>
+<tr>
+<th>因特网应用</th>
+<th>IP</th>
+<th>ICMP</th>
+<th>UDP</th>
+<th>TCP</th>
+<th>SCTP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ping</td>
+<td></td>
+<td>●</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>traceroute</td>
+<td></td>
+<td>●</td>
+<td>●</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>OSPF（路由协议）</td>
+<td>●</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>RIP（路由协议）</td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>BGP（路由协议）</td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>BOOTP（引导协议）</td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>DHCP（引导协议）</td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>NTP（时间协议）</td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>TFTP（低级FTP）</td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>SNMP（网络管理）</td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>SMTP（电子邮件）</td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>Telnet（远程登录）</td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>SSH（安全的远程登录）</td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>FTP（文件传送）</td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>HTTP（Web）</td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>NNTP（网络新闻）</td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>LPR（远程打印）</td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>DNS（域名系统）</td>
+<td></td>
+<td></td>
+<td>●</td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>NFS（网络文件系统）</td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>Sun RPC（远程过程调用）</td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>DCE RPC（远程过程调用）</td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>IUA（IP之上的ISDN）</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+</tr>
+<tr>
+<td>M2UA/M3UA（SS7电话信令）</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+</tr>
+<tr>
+<td>H.248（媒体网关控制）</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+</tr>
+<tr>
+<td>H.323（IP电话）</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+</tr>
+<tr>
+<td>SIP（IP电话）</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>●</td>
+</tr>
+</tbody>
+</table>
+<p>表中前两个因特网应用ping和traceroute是使用ICMP协议实现的网络诊断应用。traceroute自行构造UDP分组来发送并读取所引发的ICMP应答。<br>
+紧接着是三个流行的路由协议，它们展示了路由协议使用的各种传输协议。OSPF通过原始套接字直接使用IP、RIP使用UDP，BGP使用TCP。<br>
+接下来五个是基于UDP的网络应用。<br>
+然后是7个TCP网络应用和4个同时使用UDP和TCP的网络应用。<br>
+最后5个是IP电话网络应用，它们或者独自使用SCTP，或者选用UDP、TCP或SCTP。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" class="category-chain-item">软件工程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>UNIX网络编程笔记：一些网络协议的相关知识</div>
+      <div>https://mounthuangshan.github.io/软件工程/软件工程/UNIX网络编程笔记：一些网络协议的相关知识/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86%EF%BC%9A%E5%8F%A6%E4%B8%80%E4%BA%9B%E6%96%AD%E8%A8%80/" title="计算机系统原理：另一些断言">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机系统原理：另一些断言</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/hello-world/" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

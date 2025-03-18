@@ -1,0 +1,693 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、前言 我们可能会在一个给定的元素集合C上执行下述三个基本查询: 存在性查询:C包含一个目标元素吗? 很多时候我们只想知道一个给定集合C中是否包含一个特定的值,如果这样的元素存在并且其值和&#x2F;相等,那么这个查询的结果将是真,否则的话就是假。 检素查询:返回C中值和匹配的元素。 当复杂的元素存储在该集合时,元素区配的定义是基于键值或者元素的属性集合的子集区配,例如,当在一个从机动车辆部门获得的信息集">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析：你真的理解查找算法吗——顺序查找（代码详解）">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、前言 我们可能会在一个给定的元素集合C上执行下述三个基本查询: 存在性查询:C包含一个目标元素吗? 很多时候我们只想知道一个给定集合C中是否包含一个特定的值,如果这样的元素存在并且其值和&#x2F;相等,那么这个查询的结果将是真,否则的话就是假。 检素查询:返回C中值和匹配的元素。 当复杂的元素存储在该集合时,元素区配的定义是基于键值或者元素的属性集合的子集区配,例如,当在一个从机动车辆部门获得的信息集">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Ccc188c7a7cfa4543812b37c983495f53.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C5a5df0c53d264c4d9d98b61c7945fa09.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.851Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Ccc188c7a7cfa4543812b37c983495f53.png">
+  
+  
+  
+  <title>数据结构与算法分析：你真的理解查找算法吗——顺序查找（代码详解） - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析：你真的理解查找算法吗——顺序查找（代码详解）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析：你真的理解查找算法吗——顺序查找（代码详解）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、前言</h1>
+<p>我们可能会在一个给定的元素集合C上执行下述三个基本查询:<br>
+<strong>存在性查询:C包含一个目标元素吗?</strong><br>
+很多时候我们只想知道一个给定集合C中是否包含一个特定的值,如果这样的元素存在并且其值和/相等,那么这个查询的结果将是真,否则的话就是假。<br>
+<strong>检素查询:返回C中值和匹配的元素。</strong><br>
+当复杂的元素存储在该集合时,元素区配的定义是基于键值或者元素的属性集合的子集区配,例如,当在一个从机动车辆部门获得的信息集合中检索时,查询者需要提供驾驶员的驾照号码来获得许可驾驶员的全部信息。<br>
+<strong>关联查找:返回集合中和目标键值元素k关联的信息。</strong><br>
+在复杂的结构中存储额外的信息是非常常见的。我们可以将额外的信息和集合中的元素k相关联,然后根据需要检索和操作。</p>
+<p>对于这轮讨论的算法,我们假设存在一个集合U,并且U包含了将要检素的值e,集合C是U的一个子集,目标元素t是U的一个元素。如果t是一个健值,那么U是一个可能的键值集合。<br>
+正如我们所见,知道C中的元素能否被随机存储或者能否被遍历是非常重要的。当集合能够为任意元素建立索引时,我们使用记号A来表示这种集合,用A（i）表示集合中的第个元素。为了方便起见,我们使用值nil来表示不在U中的元素,当查询要求返回集合中的特定元素,但是元素又不是当前指向的元素时,这个值是非常有用的。一般来说,我<br>
+们假设不可能在集合中寻找mil。<br>
+这轮的算法描述了特定的方法来结构化数据,以便于更加高效地处理这些请求。一种方法是考虑使用之前介绍过的排序算法对集合C进行排序,我们将会看到,处理查询的效率的确会得到改善,但是在维护有序集合时,会有一些其他开销,尤其是在可能会有对几何中的元素进行大量的剩除和插入操作的时候。你首先必须选择合适的结构,并不仅<br>
+仅是为了加速某一类查询的性能,同时也要在面对随机存储和大量重复的查询,维护集合结构时,降低整体的性能开销。</p>
+<h1>二、算法描述</h1>
+<p>顺序查找也叫做线性查找,是最简单的查询算法。它通过穷举来寻找集合C中的单独目标元素,它从集合中的第一个元素开始查找,然后检查每一个随后的元素,知道匹配的元素查找到或者集合中每一个元素都被查找过。<br>
+考虑这样一个案例,一个中等规模的饭店有10~20张桌子可以被顾客预定。这个饭店靠近一个大型的医疗中心,这个饭店的很多顾客都是中心的医疗人员或者病人家属,饭店宣传说他们能够在紧急时刻定位任何一位顾客,然后顺序地将信息传递给这个人。当顾客在指定的桌子旁坐下来,饭店老板将记录下这张桌子的顾客的名字,在他们离开时会擦除名字。为了能够在任何时候寻找到饭店中的顾客,饭店老板将简单地浏覧记录中每张桌子的顾客姓名。</p>
+<h1>三、复杂度分析</h1>
+<p><img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Ccc188c7a7cfa4543812b37c983495f53.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+从集合C中的元素个数,以及你将要执行的查找次数来看,顺序查找也许是最有效的查找算法。如果相当低效,或者你不经常执行查找操作,那么对元素排序或者使用一个复杂的数据结构将得不使失。<br>
+如果集合是无序的,并且是以链表的形式存储的,那么插入元素是一个常数时间的操作(仅仅简单地插人到表头或者表尾)。频繁地插入到一个数组形式存储的集合需要动态的数组管理,这个特性要么由编程语言提供,要么需要程序员自己处理。在这两种情况下,寻找一个元素的期望时间是O(n),因此,移除一个元素需要至少O(n)时间。<br>
+顺序查找在元素的类型上限制最少。唯一的要求就是必须有一个匹配函数来决定是否目标元素和集合中的当前元素匹配,这个功能适合元素本身相关的。对于是否有序没有额外的要求。<br>
+如果寻找的元素属于集合并且在任意素引位置的概率是相等的(換句话说,它被选代器在任意位置找到的几率是相等的),那么这就是平均情况下顺序查找。<br>
+$1/2n+1/2$<br>
+也就是说,对于每个目标元素来说,你将需要寻找集合中大约一半的元素,最好情况即待查找的元素是集合中的第一个,算法在最坏和平均情况下都是线性增长的。如果你加倍集合的大小,那么查找的时间也大约会是两倍。<br>
+为了得到顺序查找的实际性能,我们构造了一个包含n个整数(范围为[1.n])的有序集合。虽然这个集合是有序的,但是查找时并没有用到这个信息。我们将会进行100次试验,每一次试验我们执行1000次查找随机值,我们损弃最好和最坏的结果,然后对剩余的结果取平均值。下表是四个特定的p值,剩余9次的平均时间。注意当集合的大小加倍时,执行时间也大约加倍。你也需要看到,对每一种输入集合的大小来说,最后一列表示最坏情况的时间。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C5a5df0c53d264c4d9d98b61c7945fa09.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+在最好情况下,集合的第一个元素就是需要的元素,这样仅仅需要花费O(1)常数时间。最坏的情况是寻找的元素不在集合中,在这种情况下,你需要检查集合中的所有元素,导致了0(n)的性能,平均情况下性能是O(n)。</p>
+<h1>四、适用情况</h1>
+<p>有时你需要在集合中定位元素。你也许不得不在一个未知是否有序的集合中频繁地查找元素。当无法知道集合中更多的信息时,题序查找能够以穷举的方式完成这个工作。如果集合只能通过选代器来存取,并且一次只能返回集合中的一个元素,那么顺序查找就是你能使用的唯一查找算法。</p>
+<h1>五、算法实现</h1>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include&lt;stdio.<span class="hljs-property">h</span>&gt;<br>#include&lt;stdlib.<span class="hljs-property">h</span>&gt;<br><br>int <span class="hljs-title function_">cmp</span>(<span class="hljs-params"><span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* x, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* y</span>)<br>&#123;<br>    int standard;<br>    <span class="hljs-comment">//这里比较时也是需要做强制类型转换</span><br>    standard = *(int*)x - *(int*)y;<br><br>    <span class="hljs-keyword">return</span> standard;<br>&#125;<br><br>int <span class="hljs-title function_">search</span>(<span class="hljs-params"><span class="hljs-keyword">void</span>** ar, <span class="hljs-keyword">void</span>* t, int n, int(*cmp)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*)</span>)<br>&#123;<br>    int i;<br>    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>;i &lt; n;i++)<br>    &#123;<br>        <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">cmp</span>(ar[i], t))<br>        &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    int a = <span class="hljs-number">5</span>;<br>    int b = <span class="hljs-number">7</span>;<br>    int c = <span class="hljs-number">4</span>;<br>    int d = <span class="hljs-number">6</span>;<br>    int e = <span class="hljs-number">3</span>;<br>    int f = <span class="hljs-number">8</span>;<br>    int g = <span class="hljs-number">1</span>;<br>    int h = <span class="hljs-number">0</span>;<br>    int i = <span class="hljs-number">9</span>;<br>    int j = <span class="hljs-number">2</span>;<br>    <span class="hljs-comment">/*使用int* num[10]这样的数组作为参数传入insertionSortPointers中在C语言的编译器中是可以通过编译的，</span><br><span class="hljs-comment">    这就是void* 的泛型用法，由于void* 无法在C++中执行隐式转换，所以如果是传入void **ar这样的参数中则需要使用void* num[10]这样的数组，</span><br><span class="hljs-comment">    否则会报实参与形参不兼容的问题，因为在C++中有更加严格的类型安全检查，这是语言特性的问题*/</span><br>    <span class="hljs-keyword">void</span>* arr[<span class="hljs-number">10</span>] = &#123; &amp;a,&amp;b,&amp;c,&amp;d,&amp;e,&amp;f ,&amp;g ,&amp;h ,&amp;i ,&amp;j &#125;;<br>    int n = <span class="hljs-title function_">sizeof</span>(arr)/<span class="hljs-title function_">sizeof</span>(arr[<span class="hljs-number">0</span>]);<br>    int target = <span class="hljs-number">6</span>;<br><br>    <span class="hljs-comment">// 搜索目标值  </span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">search</span>(arr, &amp;target, n, cmp)) &#123;<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Target %d found in the array.\n&quot;</span>, target);<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Target %d not found in the array.\n&quot;</span>, target);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>六、算法优化</h1>
+<p>当目标元素并不是均匀分布时,有时就有一些变种可以来改善顺序查找的性能,而不是给程序员添加额外的负担。我们本能地希望待查找的元素能够尽可能地参近数组的最前面。如果你知道一些目标元素的信息(尤其是你查找的顺序),这里有一些策略能够改善顺序查找的性能。这些策略是非常有用的,但是仅仅对于能够按照如下的查找过程来修改的索引数组:<br>
+<strong>成功查找到则移动到最前面：</strong><br>
+这个策略适用于一个查找的元素:有更大的可能被再次查找到。当t在位置i找到时,将A[0,i-1]的所有元素移动A[1，i],然后把t移动到A[0]。这个就是最多最近使用(MRU)分页算法的基础。<br>
+<strong>成功查找到则移动前一位：</strong><br>
+这个策略适用于如果一个查找的元素:有更大的可能能够被再次查找到,并且,这里可以避免移动大量元素所带来的开销。当在位置找到时,交换A[i-1]和A<a href="%E9%99%A4%E9%9D%9E%E5%BD%93i%E5%9C%A8%E9%9B%86%E5%90%88%E7%9A%84%E6%9C%80%E5%89%8D%E9%9D%A2">i</a>。直观地看,如果元素非常频繁地被找到,它们就会<br>
+最终臂泡到集合的最前面,并且总开销非常小(仅仅是一个元素的交换)。<br>
+<strong>成功查找到则移动到最后：</strong><br>
+如果一个元素不会被多次查找,那么当它被查找到一次之后移动到集合的末尾将会改善未来查找的性能,将A[i+1,n)移动到A[i,n-1),然后将找到的元素移动到A[n-1]。<br>
+这些优化变种的性能都各不相同,但是都是基于某个查找元素的概率。根据你对数据集合的深刻理解和目标元素,选择这些策略中的一个,分析这样的算法是众所周知的难,需要的高级数学技巧已经超出了基础范围。</p>
+<h1>七、引用及参考文献</h1>
+<p>1.《算法分析手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析：你真的理解查找算法吗——顺序查找（代码详解）</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析：你真的理解查找算法吗——顺序查找（代码详解）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87+%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3)/" title="数据结构与算法分析：你真的理解排序算法吗——插入算法（万字长文+代码详解)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解排序算法吗——插入算法（万字长文+代码详解)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E7%BD%91%E7%BB%9C%E6%B5%81%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9C%A8%E5%A2%9E%E5%B9%BF%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%B7%B1%E5%85%A5%E6%80%9D%E8%80%83%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/" title="数据结构与算法分析：你真的理解网络流算法吗——在增广路上的深入思考（代码详解+万字长文）">
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解网络流算法吗——在增广路上的深入思考（代码详解+万字长文）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

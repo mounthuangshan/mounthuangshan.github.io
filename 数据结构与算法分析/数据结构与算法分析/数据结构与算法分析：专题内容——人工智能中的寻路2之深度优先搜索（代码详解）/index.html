@@ -1,0 +1,1200 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、前言 深度优先搜索不断地向前寻找可行状态，试图一次找到通向目标状态的道路，它并不会两次访问同一个状态。因为某些搜索树包含大量的棋面状态，因此深度优先搜索只是在最大搜索深度固定的情况下才具有可行性。深度优先搜索维护一个栈，保存未访问过的棋面状态。在每次迭代时，深度优先搜索从栈中弹出一个未访问的棋面状态，然后从这个棋面状态开始扩展，根据走法计算其后继棋面状态。如果达到了目标棋面状态，搜索终止。如果">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析：专题内容——人工智能中的寻路2之深度优先搜索（代码详解）">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、前言 深度优先搜索不断地向前寻找可行状态，试图一次找到通向目标状态的道路，它并不会两次访问同一个状态。因为某些搜索树包含大量的棋面状态，因此深度优先搜索只是在最大搜索深度固定的情况下才具有可行性。深度优先搜索维护一个栈，保存未访问过的棋面状态。在每次迭代时，深度优先搜索从栈中弹出一个未访问的棋面状态，然后从这个棋面状态开始扩展，根据走法计算其后继棋面状态。如果达到了目标棋面状态，搜索终止。如果">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C46a2d9aa764e4f93ab5fc102a3d1d6bc.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C79a25a6334654d3dab02b0683f9cb917.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Ce93c7612d1254fd7a92d804d83dee0c4.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C485eb0dd820a40958ee803000c704618.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C4be11c780ee244a18deead73cf255213.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.850Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C46a2d9aa764e4f93ab5fc102a3d1d6bc.png">
+  
+  
+  
+  <title>数据结构与算法分析：专题内容——人工智能中的寻路2之深度优先搜索（代码详解） - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析：专题内容——人工智能中的寻路2之深度优先搜索（代码详解）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析：专题内容——人工智能中的寻路2之深度优先搜索（代码详解）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、前言</h1>
+<p>深度优先搜索不断地向前寻找可行状态，试图一次找到通向目标状态的道路，它并不会两次访问同一个状态。因为某些搜索树包含大量的棋面状态，因此深度优先搜索只是在最大搜索深度固定的情况下才具有可行性。深度优先搜索维护一个栈，保存未访问过的棋面状态。在每次迭代时，深度优先搜索从栈中弹出一个未访问的棋面状态，然后从这个棋面状态开始扩展，根据走法计算其后继棋面状态。如果达到了目标棋面状态，搜索终止。如果没有达到的话，任何在闭合集中的后继棋面状态都会被抛弃。剩余的未访问棋面状态被压入栈中，然后继续搜索。<br>
+在一个八数码问题中，从初始棋面状态开始，限定最大深度为9，我们可以得到一棵搜索树，如下图所示。我们从图中可以看到，虽然有些地方已经扩展到深度9，但是我们找到的解只需经过8步。在这棵树中，我们已经访问了50个棋面状态，还剩下4个未访问（浅灰色表示）。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C46a2d9aa764e4f93ab5fc102a3d1d6bc.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1>二、复杂度分析</h1>
+<p><img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C79a25a6334654d3dab02b0683f9cb917.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>博弈树和搜索树的一个不同就是搜索树必须在搜索中存储棋面状态的副本（在开放集和闭合集中）。基于博弈树的搜索算法在搜索过程中只需要执行或者撤销走法。<br>
+没有任何条件限制的深度优先搜索将会在搜索树中盲目地搜索，我们可以预见到它将会搜索巨量的节点，而不是有目标地尝试找到一条可行路。更加讽刺的是，使用固定的搜索深度限制在巨型搜索树中显得微不足道，无法在所限制的深度中找到解。<br>
+我们存储棋面状态，避免重复访问同一状态。为了改进算法的性能，我们假设存在一个高效函数，能够为每个棋面状态生成一个唯一键值，也就是说，如果两个棋面状态有着相同的键值，那么这两个棋面状态是等价的。等价的意思也包括其他的相等情况，比如对称。例如棋面状态：<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Ce93c7612d1254fd7a92d804d83dee0c4.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+旋转90°得到如下棋面状态：<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C485eb0dd820a40958ee803000c704618.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+这两个棋面状态可以认为是等价的。<br>
+相比广度优先搜索，深度优先搜索在开放集中存储更少的信息，因此需要的空间更少。<br>
+算法的性能取决问题的共性和特性。一般来说，开放集和闭合集的核心操作会出乎意料地降低算法的性能，因为在集合中寻找元素的朴素实现将会需要O(n)的时间。核心操作包括：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript">open.<span class="hljs-title function_">remove</span>()<br><span class="hljs-comment">//从开放集中删除状态。</span><br>closed.<span class="hljs-title function_">insert</span>(<span class="hljs-title class_">INode</span> state)<br><span class="hljs-comment">//向闭合集中添加状态。</span><br>closed.<span class="hljs-title function_">contains</span>(<span class="hljs-title class_">INode</span> state)<br>/查询是否给定的状态在闭合集中。<br>open.<span class="hljs-title function_">insert</span>(<span class="hljs-title class_">INode</span> state)<br><span class="hljs-comment">//向开放集中添加状态，以供稍后访问。</span><br></code></pre></td></tr></table></figure>
+<p>因为深度优先搜索使用了栈来存储开放集，因此添加和删除操作只需要常数时间。但是，如果闭合集是一个简单链表，那么closed.contains(INode)的时间花费将会是O(n)，n是闭合集中状态的数目。这个高昂的开销可以通过使用树或者散列结构来避免，在两种结构中，都需要用到键值（实现INode接口的棋面状态类提供）。<br>
+问题的特性在如下方面能够影响性能：（a）一个棋面状态的后继状态数目，以及（b）可行走法的顺序。有些问题中，一个棋面状态下有着大量的可行走法，也就是说，深度优先地选择很多的路径将会是不明智的。同样的，走法的排序也会影响整个搜索过程。如果可以使用某些启发式信息，那么我们将看起来可能能够得到解的走法排在表的前面。我们也可以利用对称性来改进搜索。无论棋盘如何旋转，计算出来的棋面状态键值都是相等的，现在，我们不可能改进开放集的<br>
+结构，因为深度优先搜索的确需要一个栈结构，但是，我们可以从闭合集入手，减少空间消耗。<br>
+我们使用三个例子来讨论一下深度优先搜索的性能，我们可以看到仅仅是状态的些许不同，搜索却差异甚大。在每个例子中，至多需要走10步才能找到解，下表列出了使用可变深度限制的深度优先搜索性能。<br>
+$\mathbf{N1:size(n)=0.3429*d^{2.6978}}$</p>
+<p>$\mathbf{N2:~size(n)=0.2403*d^{3.2554}}$</p>
+<p>$\mathbf{N3:~size(n)=0.2814*}d^{3.044}$<br>
+<strong>初始位置1：</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td></td>
+<td>7</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<p><strong>初始位置2：</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>7</td>
+<td>2</td>
+<td>5</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>初始位置3：</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>3</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>表：三个初始位置下，搜索树的规模</strong></p>
+<table>
+<thead>
+<tr>
+<th>深度限制 ( d )</th>
+<th>初始位置1</th>
+<th>初始位置2</th>
+<th>初始位置3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td>4</td>
+<td>15</td>
+<td>15</td>
+<td>15</td>
+</tr>
+<tr>
+<td>5</td>
+<td>31</td>
+<td>31</td>
+<td>31</td>
+</tr>
+<tr>
+<td>6</td>
+<td>51</td>
+<td>51</td>
+<td>51</td>
+</tr>
+<tr>
+<td>7</td>
+<td>90</td>
+<td>90</td>
+<td>90</td>
+</tr>
+<tr>
+<td>8</td>
+<td>25</td>
+<td>149</td>
+<td>150</td>
+</tr>
+<tr>
+<td>9</td>
+<td>37</td>
+<td>254</td>
+<td>259</td>
+</tr>
+<tr>
+<td>10</td>
+<td>54</td>
+<td>345</td>
+<td>113</td>
+</tr>
+<tr>
+<td>11</td>
+<td>81</td>
+<td>421</td>
+<td>195</td>
+</tr>
+<tr>
+<td>12</td>
+<td>105</td>
+<td>518</td>
+<td>293</td>
+</tr>
+<tr>
+<td>13</td>
+<td>168</td>
+<td>728</td>
+<td>401</td>
+</tr>
+<tr>
+<td>14</td>
+<td>216</td>
+<td>678</td>
+<td>400</td>
+</tr>
+<tr>
+<td>15</td>
+<td>328</td>
+<td>1,133</td>
+<td>652</td>
+</tr>
+<tr>
+<td>16</td>
+<td>1,374</td>
+<td>1,991</td>
+<td>886</td>
+</tr>
+<tr>
+<td>17</td>
+<td>2,121</td>
+<td>2,786</td>
+<td>1,443</td>
+</tr>
+<tr>
+<td>18</td>
+<td>729</td>
+<td>1,954</td>
+<td>1,897</td>
+</tr>
+<tr>
+<td>19</td>
+<td>1,218</td>
+<td>3,240</td>
+<td>3,575</td>
+</tr>
+<tr>
+<td>20</td>
+<td>1,601</td>
+<td>4,350</td>
+<td>2,211</td>
+</tr>
+<tr>
+<td>21</td>
+<td>1,198</td>
+<td>5,496</td>
+<td>7,437</td>
+</tr>
+<tr>
+<td>22</td>
+<td>2,634</td>
+<td>6,315</td>
+<td>1,740</td>
+</tr>
+<tr>
+<td>23</td>
+<td>4,993</td>
+<td>11,053</td>
+<td>6,267</td>
+</tr>
+<tr>
+<td>24</td>
+<td>3,881</td>
+<td>8,031</td>
+<td>4,214</td>
+</tr>
+<tr>
+<td>25</td>
+<td>6,723</td>
+<td>20,441</td>
+<td>11,494</td>
+</tr>
+<tr>
+<td>26</td>
+<td>2,071</td>
+<td>15,074</td>
+<td>15,681</td>
+</tr>
+<tr>
+<td>27</td>
+<td>5,401</td>
+<td>10,796</td>
+<td>26,151</td>
+</tr>
+<tr>
+<td>28</td>
+<td>1,206</td>
+<td>16,233</td>
+<td>2,081</td>
+</tr>
+<tr>
+<td>29</td>
+<td>1,958</td>
+<td>33,526</td>
+<td>22,471</td>
+</tr>
+<tr>
+<td>无限制</td>
+<td>53</td>
+<td>1,962</td>
+<td>67,808</td>
+</tr>
+</tbody>
+</table>
+<p>偶尔深度优先搜索能够很快地找到解，见下表，使用固定深度8，算法从棋面状态N1开始，在搜索25个棋面状态之后，找到了一个需要走8步的解（比我们预想的要好两步）。图7-7表示的是随着搜索深度的增长，深度优先搜索的搜索树规模变化情况。一般来说，搜索树的规模是分支因子b的指数级。对于八数码问题来说，根据空格的位置，分支因子在1.6～3.81之间变化（Reinefeld，1993）。三个近似函数表示的是给定搜索深度d，从三个初始位置开始，搜索树的规模。<br>
+<strong>表：三个初始位置下，深度优先搜索树得到的结果</strong></p>
+<table>
+<thead>
+<tr>
+<th>深度限制 ( d )</th>
+<th>N1走法</th>
+<th>N2走法</th>
+<th>N3走法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>8</td>
+<td>8</td>
+<td>8</td>
+<td>0</td>
+</tr>
+<tr>
+<td>9</td>
+<td>8</td>
+<td>8</td>
+<td>0</td>
+</tr>
+<tr>
+<td>10</td>
+<td>8</td>
+<td>8</td>
+<td>10</td>
+</tr>
+<tr>
+<td>11</td>
+<td>8</td>
+<td>8</td>
+<td>10</td>
+</tr>
+<tr>
+<td>12</td>
+<td>12</td>
+<td>12</td>
+<td>10</td>
+</tr>
+<tr>
+<td>13</td>
+<td>12</td>
+<td>0</td>
+<td>10</td>
+</tr>
+<tr>
+<td>14</td>
+<td>8</td>
+<td>14</td>
+<td>14</td>
+</tr>
+<tr>
+<td>15</td>
+<td>8</td>
+<td>14</td>
+<td>14</td>
+</tr>
+<tr>
+<td>16</td>
+<td>10</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>17</td>
+<td>10</td>
+<td>0</td>
+<td>10</td>
+</tr>
+<tr>
+<td>18</td>
+<td>12</td>
+<td>18</td>
+<td>10</td>
+</tr>
+<tr>
+<td>19</td>
+<td>12</td>
+<td>18</td>
+<td>10</td>
+</tr>
+<tr>
+<td>20</td>
+<td>20</td>
+<td>18</td>
+<td>10</td>
+</tr>
+<tr>
+<td>21</td>
+<td>20</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>22</td>
+<td>20</td>
+<td>18</td>
+<td>22</td>
+</tr>
+<tr>
+<td>23</td>
+<td>20</td>
+<td>18</td>
+<td>10</td>
+</tr>
+<tr>
+<td>24</td>
+<td>24</td>
+<td>14</td>
+<td>22</td>
+</tr>
+<tr>
+<td>25</td>
+<td>8</td>
+<td>0</td>
+<td>18</td>
+</tr>
+<tr>
+<td>26</td>
+<td>26</td>
+<td>14</td>
+<td>26</td>
+</tr>
+<tr>
+<td>27</td>
+<td>20</td>
+<td>24</td>
+<td>0</td>
+</tr>
+<tr>
+<td>28</td>
+<td>28</td>
+<td>14</td>
+<td>28</td>
+</tr>
+<tr>
+<td>29</td>
+<td>28</td>
+<td>26</td>
+<td>18</td>
+</tr>
+<tr>
+<td>无限制</td>
+<td>30</td>
+<td>1,029</td>
+<td>37,980</td>
+</tr>
+</tbody>
+</table>
+<p>程序员想知道下图的搜索树这样的规模下，解的质量如何。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C4be11c780ee244a18deead73cf255213.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>我们可以得到如下两个结论：</p>
+<ul>
+<li>一个不恰当的搜索深度得不到解：<br>
+考虑初始状态N2，搜索深度为25，在搜索20 441个棋面状态之后，我们仍然没有得到解。这怎么可能？因为深度优先搜索不会重复访问棋面状态。搜索可是能够在第3451个棋面状态时就能够找到解。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>7</td>
+<td>8</td>
+<td>4</td>
+</tr>
+<tr>
+<td>6</td>
+<td></td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p>上图是在深度为25时得到的棋面状态，这个棋面状态只有3步就能够得到解。由于这个棋面状态已经访问过，搜索树不会再继续扩展，所以这个状态会被加到闭合集中。并且搜索深度已经达到了深度限制，所以不会从这个状态开始继续搜索，即使之后深度优先搜索在较早的等级访问到这个状态，它也不会继续搜索，因为这个状态已经在<br>
+闭合集中。</p>
+<ul>
+<li>随着深度的增加，解的质量可能会越来越不尽如人意：<br>
+随着深度的增加，我们可以看到有时得到的解的规模是如何数倍于期望规模的。</li>
+</ul>
+<p>很有意思的是，给定初始状态N1，一个没有限制的深度优先搜索将会在访问30个棋面状态之后找到一个30步的解，这时开放集中仍然有23个棋面状态。但是，这种好事可不会一直发生，我们可以从初始状态N2和N3得到的解中可以看出。</p>
+<h1>三、适用情况</h1>
+<p>深度优先搜索是属于盲目的搜索，只有在搜索空间小于计算机内存空间时才具有可行性。程序员可以使用最大搜索深度来控制对资源的使用 。</p>
+<h1>四、算法实现</h1>
+<ul>
+<li>输入<br>
+算法从一个初始棋面状态开始，寻找一个目标状态。算法假设在给定棋面状态下可以尝试所有的可行走法。</li>
+<li>输出<br>
+返回一个走法的序列，表示从初始状态到目标状态的路径（或者只是输出是否存在一个解）。</li>
+<li>假设<br>
+为了分析方便，我们假设d为深度优先搜索的最大深度，d为搜索树的分支因子。</li>
+</ul>
+<p>深度优先搜索在栈中存储一系列开放（例如还未被访问）棋面状态，处理时每次从中取出一个。在下面的实现中闭合集的结构是一个散列表，可以高效的查询是否一个棋面状态已经访问，根据INode对象来计算散列函数的键值、每个旗面状态有一个叫做DepthTransition引用，记录（a）到达这个状态的走法，（b）之前状态，以及（c）从最初位置开始到此的深度。算法会多次复制一个棋面状态，用来尝试各种走法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;iostream&gt;<br>#include &lt;vector&gt;<br>#include &lt;stack&gt;<br>#include &lt;unordered_set&gt;<br>#include &lt;memory&gt;<br>#include &lt;list&gt;<br><br><span class="hljs-comment">// Forward declarations</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IMove</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">INode</span>;<br><br><span class="hljs-comment">// Helper struct to store transition information</span><br>struct <span class="hljs-title class_">DepthTransition</span> &#123;<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IMove</span>&gt; move;<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; previousNode;<br>    int depth;<br><br>    <span class="hljs-title class_">DepthTransition</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IMove</span>&gt; m, <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; prev, int d)<br>        : <span class="hljs-title function_">move</span>(m), <span class="hljs-title function_">previousNode</span>(prev), <span class="hljs-title function_">depth</span>(<span class="hljs-params">d</span>) &#123;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// Solution class to store search results</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; initial;<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; goal;<br>    bool success;<br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IMove</span>&gt;&gt; path;<br><br>    <span class="hljs-title class_">Solution</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; init, <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; g, bool s = <span class="hljs-literal">true</span>)<br>        : <span class="hljs-title function_">initial</span>(init), <span class="hljs-title function_">goal</span>(g), <span class="hljs-title function_">success</span>(<span class="hljs-params">s</span>) &#123;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// Interface for moves</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IMove</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">execute</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; node) = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-attr">std</span>::string <span class="hljs-title function_">getName</span>() <span class="hljs-keyword">const</span> = <span class="hljs-number">0</span>;<br>    virtual ~<span class="hljs-title class_">IMove</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// Interface for nodes</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">INode</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual bool <span class="hljs-title function_">equals</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; other) = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; <span class="hljs-title function_">copy</span>() = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-attr">std</span>::list&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IMove</span>&gt;&gt; <span class="hljs-title function_">validMoves</span>() = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">storedData</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">DepthTransition</span>&gt; data) = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">DepthTransition</span>&gt; <span class="hljs-title function_">storedData</span>() <span class="hljs-keyword">const</span> = <span class="hljs-number">0</span>;<br>    virtual ~<span class="hljs-title class_">INode</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// Concrete Move: Add 1</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">AddOneMove</span> : public <span class="hljs-title class_">IMove</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">execute</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; node) override;<br>    <span class="hljs-attr">std</span>::string <span class="hljs-title function_">getName</span>() <span class="hljs-keyword">const</span> override &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Add 1&quot;</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// Concrete Move: Multiply by 2</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MultiplyTwoMove</span> : public <span class="hljs-title class_">IMove</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">execute</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; node) override;<br>    <span class="hljs-attr">std</span>::string <span class="hljs-title function_">getName</span>() <span class="hljs-keyword">const</span> override &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Multiply by 2&quot;</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// Concrete Node</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ConcreteNode</span> : public <span class="hljs-title class_">INode</span> &#123;<br><span class="hljs-attr">public</span>:<br>    int value;<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">DepthTransition</span>&gt; data;<br><br>    <span class="hljs-title class_">ConcreteNode</span>(int val) : <span class="hljs-title function_">value</span>(val), <span class="hljs-title function_">data</span>(<span class="hljs-params">nullptr</span>) &#123;&#125;<br><br>    bool <span class="hljs-title function_">equals</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; other) override &#123;<br>        auto o = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">ConcreteNode</span>&gt;(other);<br>        <span class="hljs-keyword">return</span> o &amp;&amp; (<span class="hljs-variable language_">this</span>-&gt;value == o-&gt;value);<br>    &#125;<br><br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; <span class="hljs-title function_">copy</span>() override &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">ConcreteNode</span>&gt;(value);<br>    &#125;<br><br>    <span class="hljs-attr">std</span>::list&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IMove</span>&gt;&gt; <span class="hljs-title function_">validMoves</span>() override &#123;<br>        <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">AddOneMove</span>&gt;(), <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">MultiplyTwoMove</span>&gt;() &#125;;<br>    &#125;<br><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">storedData</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">DepthTransition</span>&gt; d) override &#123;<br>        data = d;<br>    &#125;<br><br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">DepthTransition</span>&gt; <span class="hljs-title function_">storedData</span>() <span class="hljs-keyword">const</span> override &#123;<br>        <span class="hljs-keyword">return</span> data;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// Implement execute for AddOneMove</span><br><span class="hljs-keyword">void</span> <span class="hljs-title class_">AddOneMove</span>::<span class="hljs-title function_">execute</span>(<span class="hljs-params">std::shared_ptr&lt;INode&gt; node</span>) &#123;<br>    auto concreteNode = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">ConcreteNode</span>&gt;(node);<br>    <span class="hljs-keyword">if</span> (concreteNode) &#123;<br>        concreteNode-&gt;value += <span class="hljs-number">1</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// Implement execute for MultiplyTwoMove</span><br><span class="hljs-keyword">void</span> <span class="hljs-title class_">MultiplyTwoMove</span>::<span class="hljs-title function_">execute</span>(<span class="hljs-params">std::shared_ptr&lt;INode&gt; node</span>) &#123;<br>    auto concreteNode = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">ConcreteNode</span>&gt;(node);<br>    <span class="hljs-keyword">if</span> (concreteNode) &#123;<br>        concreteNode-&gt;value *= <span class="hljs-number">2</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// NodeSet class to manage states</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">INodeSet</span> &#123;<br>    <span class="hljs-attr">std</span>::unordered_set&lt;int&gt; nodes;<br>    <span class="hljs-attr">std</span>::stack&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt;&gt; stack;<br><br><span class="hljs-attr">public</span>:<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">std::shared_ptr&lt;INode&gt; node</span>) &#123;<br>        auto concreteNode = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">ConcreteNode</span>&gt;(node);<br>        <span class="hljs-keyword">if</span> (concreteNode) &#123;<br>            nodes.<span class="hljs-title function_">insert</span>(concreteNode-&gt;value);<br>            stack.<span class="hljs-title function_">push</span>(node);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; <span class="hljs-title function_">remove</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">if</span> (stack.<span class="hljs-title function_">empty</span>()) <span class="hljs-keyword">return</span> nullptr;<br>        auto node = stack.<span class="hljs-title function_">top</span>();<br>        stack.<span class="hljs-title function_">pop</span>();<br>        <span class="hljs-keyword">return</span> node;<br>    &#125;<br><br>    bool <span class="hljs-title function_">contains</span>(<span class="hljs-params">std::shared_ptr&lt;INode&gt; node</span>) &#123;<br>        auto concreteNode = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">ConcreteNode</span>&gt;(node);<br>        <span class="hljs-keyword">if</span> (concreteNode) &#123;<br>            <span class="hljs-keyword">return</span> nodes.<span class="hljs-title function_">find</span>(concreteNode-&gt;value) != nodes.<span class="hljs-title function_">end</span>();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    bool <span class="hljs-title function_">isEmpty</span>() <span class="hljs-keyword">const</span> &#123;<br>        <span class="hljs-keyword">return</span> stack.<span class="hljs-title function_">empty</span>();<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// Main search function</span><br><span class="hljs-title class_">Solution</span> <span class="hljs-title function_">search</span>(<span class="hljs-params">std::shared_ptr&lt;INode&gt; initial, std::shared_ptr&lt;INode&gt; goal, int depthBound</span>) &#123;<br>    <span class="hljs-comment">// If initial state is goal state, return current state</span><br>    <span class="hljs-keyword">if</span> (initial-&gt;<span class="hljs-title function_">equals</span>(goal)) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Solution</span>(initial, goal);<br>    &#125;<br><br>    <span class="hljs-title class_">INodeSet</span> open;<br>    open.<span class="hljs-title function_">insert</span>(initial-&gt;<span class="hljs-title function_">copy</span>());<br>    <span class="hljs-title class_">INodeSet</span> closed;<br><br>    <span class="hljs-keyword">while</span> (!open.<span class="hljs-title function_">isEmpty</span>()) &#123;<br>        auto n = open.<span class="hljs-title function_">remove</span>();<br>        closed.<span class="hljs-title function_">insert</span>(n);<br>        auto trans = n-&gt;<span class="hljs-title function_">storedData</span>();<br><br>        <span class="hljs-comment">// Get valid moves and process successors</span><br>        auto moves = n-&gt;<span class="hljs-title function_">validMoves</span>();<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> auto&amp; move : moves) &#123;<br>            auto successor = n-&gt;<span class="hljs-title function_">copy</span>();<br>            move-&gt;<span class="hljs-title function_">execute</span>(successor);<br><br>            <span class="hljs-comment">// Skip if already visited</span><br>            <span class="hljs-keyword">if</span> (closed.<span class="hljs-title function_">contains</span>(successor)) &#123;<br>                <span class="hljs-keyword">continue</span>;<br>            &#125;<br><br>            int depth = <span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">if</span> (trans != nullptr) &#123;<br>                depth = trans-&gt;depth + <span class="hljs-number">1</span>;<br>            &#125;<br><br>            <span class="hljs-comment">// Store transition data</span><br>            successor-&gt;<span class="hljs-title function_">storedData</span>(<span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">DepthTransition</span>&gt;(move, n, depth));<br><br>            <span class="hljs-keyword">if</span> (successor-&gt;<span class="hljs-title function_">equals</span>(goal)) &#123;<br>                <span class="hljs-title class_">Solution</span> <span class="hljs-title function_">sol</span>(initial, successor);<br>                <span class="hljs-comment">// 回溯路径</span><br>                auto current = successor;<br>                <span class="hljs-keyword">while</span> (current-&gt;<span class="hljs-title function_">storedData</span>() != nullptr) &#123;<br>                    sol.<span class="hljs-property">path</span>.<span class="hljs-title function_">push_back</span>(current-&gt;<span class="hljs-title function_">storedData</span>()-&gt;move);<br>                    current = current-&gt;<span class="hljs-title function_">storedData</span>()-&gt;previousNode;<br>                &#125;<br>                <span class="hljs-keyword">return</span> sol;<br>            &#125;<br><br>            <span class="hljs-keyword">if</span> (depth &lt; depthBound) &#123;<br>                open.<span class="hljs-title function_">insert</span>(successor);<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Solution</span>(initial, goal, <span class="hljs-literal">false</span>); <span class="hljs-comment">// No solution found</span><br>&#125;<br><br><span class="hljs-comment">// Example main function</span><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 创建初始节点和值</span><br>    auto initial = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">ConcreteNode</span>&gt;(<span class="hljs-number">1</span>);<br>    auto goal = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">ConcreteNode</span>&gt;(<span class="hljs-number">10</span>);<br><br>    <span class="hljs-comment">// 设置搜索深度限制</span><br>    int depthBound = <span class="hljs-number">10</span>;<br><br>    <span class="hljs-comment">// 执行搜索</span><br>    <span class="hljs-title class_">Solution</span> sol = <span class="hljs-title function_">search</span>(initial, goal, depthBound);<br><br>    <span class="hljs-keyword">if</span> (sol.<span class="hljs-property">success</span>) &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;找到解答！路径如下：&quot;</span> &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>        <span class="hljs-comment">// 由于路径是逆序存储，需反转输出</span><br>        <span class="hljs-keyword">for</span> (auto it = sol.<span class="hljs-property">path</span>.<span class="hljs-title function_">rbegin</span>(); it != sol.<span class="hljs-property">path</span>.<span class="hljs-title function_">rend</span>(); ++it) &#123;<br>            <span class="hljs-attr">std</span>::cout &lt;&lt; (*it)-&gt;<span class="hljs-title function_">getName</span>() &lt;&lt; <span class="hljs-string">&quot; -&gt; &quot;</span>;<br>        &#125;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;达成目标 &quot;</span> &lt;&lt; <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">ConcreteNode</span>&gt;(sol.<span class="hljs-property">goal</span>)-&gt;value &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;未找到解答。&quot;</span> &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述的实现必须关注于闭合集所使用的数据结构，以便高效地得知一个棋面状态是否已经访问。例如，如果闭合集使用的是一个简单的链表，那么在闭合集中搜索一个元素所花费的时间将会占用整个算法花费时间的大部分，注意，当后续状态是目标状态时，搜索算法终止（在广度优先搜索中同样如此）。</p>
+<h1>五、引用及参考文献</h1>
+<p>1.《算法设计手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析：专题内容——人工智能中的寻路2之深度优先搜索（代码详解）</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析：专题内容——人工智能中的寻路2之深度优先搜索（代码详解）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF1%E4%B9%8B%E6%A6%82%E8%BF%B0%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：专题内容——人工智能中的寻路1之概述（代码详解）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析：专题内容——人工智能中的寻路1之概述（代码详解）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF3%E4%B9%8B%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：专题内容——人工智能中的寻路3之广度优先搜索（代码详解）">
+                        <span class="hidden-mobile">数据结构与算法分析：专题内容——人工智能中的寻路3之广度优先搜索（代码详解）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

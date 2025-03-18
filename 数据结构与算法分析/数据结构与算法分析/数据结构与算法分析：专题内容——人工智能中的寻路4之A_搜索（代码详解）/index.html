@@ -1,0 +1,1028 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、算法描述 广度优先搜索能够找到一个最优解（如果存在），但是可能需要访问大量的节点，因为我们可以看到，它并没有尝试对候选走法进行排序。相反，深度优先搜索却是尽可能多地向前探测路径，不过，深度优先搜索的搜索深度必须得到限制，要不然它很有可能会在没有任何结果的路径上花费大量的时间。A搜索在搜索时能够利用启发式信息，智能地调整搜索策略。 如下图所示，A搜索是一种迭代的有序搜索，它维护一个棋面状态的开放">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析：专题内容——人工智能中的寻路4之A_搜索（代码详解）">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、算法描述 广度优先搜索能够找到一个最优解（如果存在），但是可能需要访问大量的节点，因为我们可以看到，它并没有尝试对候选走法进行排序。相反，深度优先搜索却是尽可能多地向前探测路径，不过，深度优先搜索的搜索深度必须得到限制，要不然它很有可能会在没有任何结果的路径上花费大量的时间。A搜索在搜索时能够利用启发式信息，智能地调整搜索策略。 如下图所示，A搜索是一种迭代的有序搜索，它维护一个棋面状态的开放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C3c859ac6437844c2896e72b6bca1c3d4.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C7e796530e8eb4dfe93723bd94b8a1995.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C9416ddb3a5a94ccabed36870936fe501.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C09d17584bc0548f2ad4edaf23b3f49a5.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Cca6f008b8aa14841accafb687c43c9c2.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.850Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C3c859ac6437844c2896e72b6bca1c3d4.png">
+  
+  
+  
+  <title>数据结构与算法分析：专题内容——人工智能中的寻路4之A_搜索（代码详解） - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析：专题内容——人工智能中的寻路4之A_搜索（代码详解）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          44 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析：专题内容——人工智能中的寻路4之A_搜索（代码详解）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、算法描述</h1>
+<p>广度优先搜索能够找到一个最优解（如果存在），但是可能需要访问大量的节点，因为我们可以看到，它并没有尝试对候选走法进行排序。相反，深度优先搜索却是尽可能多地向前探测路径，不过，深度优先搜索的搜索深度必须得到限制，要不然它很有可能会在没有任何结果的路径上花费大量的时间。A<em>搜索在搜索时能够利用启发式信息，智能地调整搜索策略。<br>
+如下图所示，A</em>搜索是一种迭代的有序搜索，它维护一个棋面状态的开放集合。在每次迭代时，A<em>搜索使用一个评价函数f</em>(n)评价开放集合中的所有棋面状态，选择最小的棋面状态。我们定义f* (n)=g*(n)+h*(n)：</p>
+<ul>
+<li>g*(n)估算从初始状态到状态n的最短走法序列。</li>
+<li>h*(n)估算从状态n到目标状态的最短走法序列。</li>
+<li>f*(n)估算从初始状态开始，经过状态n，到达目标状态的最短走法序列。</li>
+</ul>
+<p>星号<em>表示使用了启发式信息（自从1968年开发出此算法后，这个记法被广泛接受），因此f</em>(n)，g*(n)以及h*(n)是对实际开销f(n)，g(n)和h(n)的估算，这些实际开销只能在得到解之后才能够知道。简而言之，f*(n)越低，表示状态n越接近目标状态。<br>
+f*(n)最关键的部分是启发式的计算h*(n)，因为g*(n)能够在搜索的过程中，通过记录状态n的深度计算出来。如果h*(n)不能够准确地区分开有继续搜索价值的状态和没有价值的状态，那么A<em>搜索不会表现得比上述任何盲目搜索要好。如果能够准确地估算h</em>(n)，那么使用f*(n)就能够得到一个开销最小的解。</p>
+<h1>二、复杂度分析</h1>
+<p><img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C3c859ac6437844c2896e72b6bca1c3d4.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>A<em>搜索的行为完全取决于启发函数。最近的研究结果（Russel和Norvig，2003）表明，如果|h(x)-h</em>(x)|≤logh*(x)，那么性能将会是O(d)，d表示解的距离，而不是O(bd)，b表示搜索树的分支因子。但是，这个条件难以满足，在八数码问题表现很好的GoodEvaluator函数也不能满足这个条件。<br>
+随着棋面状态变得越来越复杂，启发式函数越来越重要，同时也越来越难以设计。首先启发式函数必须足够高效，或者能够影响整个搜索过程。但是，即使是最差的启发式函数都能够较好地剪枝搜索空间。例如，十五数码问题，八数码问题的一个扩展，使用八数码问题的GoodEvaluator函数扩展时，目标状态如下：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>9</td>
+<td>10</td>
+<td>11</td>
+<td>12</td>
+</tr>
+<tr>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>初始状态如下：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>10</td>
+<td>8</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>6</td>
+<td></td>
+<td>4</td>
+</tr>
+<tr>
+<td>5</td>
+<td>9</td>
+<td>7</td>
+<td>11</td>
+</tr>
+<tr>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p>A<em>搜索在处理39个棋面状态之后，快速找到了一个15步的解，这个时候开放集合中还有43个棋面状态，如下图所示。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C7e796530e8eb4dfe93723bd94b8a1995.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+由于有着15步的限制，深度优先搜索在处理22 136个棋面状态之后，仍然没有找到解。而广度优先搜索在处理172 567个状态（85 213在闭合集中，剩余87 354在开放集中）时，已经耗尽了所有的64MB内存。当然你可以加内存或者增大搜索深度限制，但是这些并不是你无法解出这些问题的理由。<br>
+不要被A</em>搜索这么容易解出十五数码所迷惑，当初始棋面状态更加复杂时，例如：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>1</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>14</td>
+<td>9</td>
+<td>3</td>
+<td>7</td>
+</tr>
+<tr>
+<td>13</td>
+<td>10</td>
+<td>12</td>
+<td>6</td>
+</tr>
+<tr>
+<td>15</td>
+<td>11</td>
+<td>8</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>A<em>搜索也耗尽了内存。很明显，这个评估函数并不高效，这个例子有超过1025个可能的状态（Korf，2000）。<br>
+广度优先搜索能够保证找到步数最少的解，但是它可能需要评价规模相当大的移动序列。深度优先搜索试着在每次搜索时能够前进更多步，它可能能够快速得到一个解，但是它也可能在搜索树的某个部分浪费大量的时间，尽管看起来这个部分不可能得到解。我们认为比较深度优先搜索，广度优先搜索和A</em>搜索是值得的。使用八数码问题作为样例，我们通过随机移动n个方块（n从2、4、8和16开始），注意同样的方块不会在一行中移动两次，因为这就等于什么也没做。当n≥32时，内存耗尽。对于每个棋面状态，我们执行<br>
+BREADTH-FIRST SEARCH,DEPTH-FIRST SEARCH(n),DEPTH-FIRST SEARCH(2<em>n)和A</em>搜索。对于每个n：</p>
+<ul>
+<li>我们将计算开放集合和闭合集中的状态数目，从而可以看出算法得到解的效率如何。标记为#的列表示的是多次运行的平均值。</li>
+<li>一旦找到解，我们将会计算解的步数，这样能够看出得到的路径的质量。标有s的列表示的是多次运行的结果。括号中的数字技术的是在给定深度限制下，没有能够得到解的次数。<br>
+下表综合了1000次运行的结果，列出了两个统计值：（a）生成的搜索树的平均状态数目，（b）同样的结果的平均步数。<br>
+以下是图中内容转换为表格形式的结果：</li>
+</ul>
+<p>表: 比较搜索算法</p>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>#A*</th>
+<th>#BFS</th>
+<th>#DFS(n)</th>
+<th>#DFS(2n)</th>
+<th>sA*</th>
+<th>sBFS</th>
+<th>sDFS(n)</th>
+<th>sDFS2(n)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>5.0</td>
+<td>4.5</td>
+<td>3.0</td>
+<td>6.4</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>7.0</td>
+<td>13.4</td>
+<td>7.0</td>
+<td>26.8</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>9.0</td>
+<td>25.6</td>
+<td>12.3</td>
+<td>66.1</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>11.1</td>
+<td>46.3</td>
+<td>21.2</td>
+<td>182.5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5.9</td>
+</tr>
+<tr>
+<td>6</td>
+<td>12.5</td>
+<td>77.2</td>
+<td>31.7</td>
+<td>317.8</td>
+<td>6</td>
+<td>6</td>
+<td>6</td>
+<td>9.5(45)</td>
+</tr>
+<tr>
+<td>7</td>
+<td>14.9</td>
+<td>136.5</td>
+<td>57.4</td>
+<td>751.4</td>
+<td>6.8</td>
+<td>6.8</td>
+<td>6.92</td>
+<td>9.6(279)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>17.1</td>
+<td>220.5</td>
+<td>85.6</td>
+<td>1095.2</td>
+<td>7.7</td>
+<td>7.7</td>
+<td>7.9(40)</td>
+<td>13(209)</td>
+</tr>
+<tr>
+<td>9</td>
+<td>22.0</td>
+<td>367.9</td>
+<td>147.2</td>
+<td>2621.7</td>
+<td>8.8</td>
+<td>8.7</td>
+<td>8.8(75)</td>
+<td>13.1(355)</td>
+</tr>
+<tr>
+<td>10</td>
+<td>25.5</td>
+<td>578.8</td>
+<td>211.7</td>
+<td>3152.9</td>
+<td>9.8</td>
+<td>9.6</td>
+<td>9.8(236)</td>
+<td>16.5(316)</td>
+</tr>
+<tr>
+<td>11</td>
+<td>33.1</td>
+<td>926.4</td>
+<td>296.6</td>
+<td>6723.3</td>
+<td>10.6</td>
+<td>10.4</td>
+<td>10.6(431)</td>
+<td>17.1(369)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>42.3</td>
+<td>1445.7</td>
+<td>440.8</td>
+<td>5860.5</td>
+<td>11.9</td>
+<td>11.3</td>
+<td>11.6(350)</td>
+<td>20.7(402)</td>
+</tr>
+<tr>
+<td>13</td>
+<td>56.6</td>
+<td>2351.3</td>
+<td>558.9</td>
+<td>12483.1</td>
+<td>13.2</td>
+<td>12.2</td>
+<td>12.3(615)</td>
+<td>21.7(313)</td>
+</tr>
+<tr>
+<td>14</td>
+<td>60.7</td>
+<td>3579.7</td>
+<td>900.3</td>
+<td>14328.1</td>
+<td>14.5</td>
+<td>13.0</td>
+<td>13.3(593)</td>
+<td>25.1(259)</td>
+</tr>
+</tbody>
+</table>
+<p>注意看随着n的增加，盲目搜索的搜索树的规模指数增长，但是A<em>搜索的搜索树规模还是可控的。更精确地说，这些盲目搜索的增长率如下：<br>
+${\mathrm{DFS2}}(n)\cong0.2867^{</em>}n^{4.0722}$</p>
+<p>${\mathrm{DFS}}( n)$ $\ll$ $0. 2405* n^{2.9517}$</p>
+<p>$BFS$$( n)$ $\cong$ $0. 2585* n^{3. 4041}$<br>
+广度优先搜索一直能够找到解的最短路径，但是注意即使A<em>搜索检查更少的棋面状态，但是得到的解质量也不错（由于GoodEvaluator启发函数）。在达到30步之后，搜索树的增长率达到O（n1.5147），虽然不是线性，但是相比起盲目搜索，这个规模已经相当小了。这些增长率函数的指数部分依赖于问题的分支因子。上表的图形化表示如下图所示。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C9416ddb3a5a94ccabed36870936fe501.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+广度优先搜索能够找到最短路径，而A</em>搜索找到的路径也差不多是最短的。最后，我们看看水平效应是如何阻止深度优先搜索解决问题的（回忆一下那些离目标状态只有两三步远的状态却被加入闭合集）。事实上，在1000次实验中，深度优先搜索使用最大深度限制为13时，60%的实验都失败了。<br>
+分析主要关注于搜索状态的数目，这是决定搜索效率的主要因素。当三种搜索都有可能搜索指数级的状态时，由于h*(n)函数计算出的启发式信息，A<em>搜索将搜索最少的状态。<br>
+解决滑动n2-1个方块这样的问题不仅仅只是有寻路这种方法。Parberry（1995）提出了一种别出心裁的方法，使用分治思想。也就是说，给定一个n×n数码，n＞3，首先完成最左边的列和最上部的行，然后递归解决(n-1)2-1数码问题。我们得到一个3×3的子问题，这是可以简单地使用穷举法来解决。这个方法保证能在5</em>n3步内找到解。</p>
+<h1>三、适用情况</h1>
+<p>我们使用如下的八数码：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td>2</td>
+<td>7</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<p><img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C09d17584bc0548f2ad4edaf23b3f49a5.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+上下两图是两棵计算出的搜索树。上图的搜索树使用的是Nilsson（1971）提出的GoodEvaluatorf*(n)函数。下图的搜索树使用的是同样由Nilsson提出的WeakEvaluator f*(n)函数。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Cca6f008b8aa14841accafb687c43c9c2.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>浅灰色的棋面状态表示达到目标状态时开放集合的元素。GoodEvaluator和WeakEvaluator都能够得到同样的解，但是使用GoodEvaluator函数在搜索中更加高效。根据两棵树中f*(n)的值，我们希望知道为什么WeakEvaluator需要访问更多的节点。仔细观察在GoodEvaluator产生的搜索树的最初两步，我们可以清楚地看到f*(n)呈递减趋势。而WeakEvaluator的搜索树在走了4步之后才能够减少搜索的候选方向。WeakEvaluator不能很好地差异化棋面状态，事实上，目标状态节点的f*(n)值比初始状态节点以及其子节点的f*(n)都大。<br>
+f*(n)函数的h*(n)部分需要非常优秀的设计，这是一门工程而不是一门科学。h*(n)必须非常高效，否则，搜索时间将会非常长。很多A<em>搜索相关的文献都指出，h</em>(n)函数是高度特化的，根据问题的不同而不同。例如在数字地形的寻路（Wichmann和Wuensche，2004）或者是有限资源下的工程排期（Hartmann，1999）。Pearl（1984）写过一篇设计高效启发式函数的文章（很遗憾已经绝版了）。Korf（2000）讨论了设计可行h*(n)函数的高级策略。Michalewicz和Fogel（2004）提出了一种新的解决问题的启发式思路，不仅仅是只能用于A<em>搜索。<br>
+在深度优先搜索和广度优先搜索中，棋面状态都会在处理之后放入闭合集中。由于A</em>搜索的启发式信息需要计算g*(n)，所以可能存在一种情况，这种情况下，A<em>搜索需要重新评价已经做出的决定。比如，如果存在一个将要被放入开放集合的棋面状态，其评估分数要比已经访问过的相同棋面状态评估函数低。这样，A</em>搜索会将这个状态<br>
+从闭合集中删除，因为我们可能能够得到一个最小耗费的解。<br>
+每个棋面状态都存储了一个后链，叫做DepthTransition，记录的是（a）生成此棋面状态的走法，（b）之前的状态以及（c）初始位置开始的深度。在A<em>搜索中，g</em>(n)通常当作深度。算法多次复制一个棋面状态，用来尝试各种走法。<br>
+广度优先搜索和深度优先搜索会检查闭合集是否包含某个棋面状态，所以我们可以用散列表来提高效率。但是，对于A<em>搜索来说，我们可能需要重新评估已经访问过的棋面状态。那么，会发生什么呢？回忆一下在深度优先搜索中，一个达到深度限制的棋面状态，尽管只离目标状态只有3步，但是也会被放入闭合集，并且不会再被处理。在A</em>搜索中，如果棋面状态的得分比之前更低，那么它们就需要重新处理。<br>
+A*搜索需要在开放集合中快速找到评价值最小的棋面状态。注意，深度优先搜索和广度优先搜索从开放集合中得到下一个棋面状态只需要常数时间，因为它们使用队列或者栈。如果开放集合是一个有序链表，那么插入棋面状态的性能将会是O(n)，我们不能使用二叉堆，因为我们事先不知道有多少棋面状态需要评估。因此我们使用平衡二叉树，插入棋面状态和得到最小开销的棋面状态的性能都是O(log n)。</p>
+<h1>四、算法实现</h1>
+<ul>
+<li>输入<br>
+算法从一个初始棋面状态开始，寻找一个目标状态。算法假设（a）在给定棋面状态下可以尝试所有的可行走法，以及（b）计算棋面状态n的评估函数f*(n)。</li>
+<li>输出<br>
+返回一个走法的序列，表示从初始状态到目标状态的近似开销最小的路径（或者只是输出是否存在一个解）。</li>
+<li>假设<br>
+如果估算得到的结果和实际结果相差不远，那么A*搜索得到的是开销最小的解。</li>
+</ul>
+<p>A<em>搜索在开放集合中存储棋面状态，所以能够高效地删除评价值最小的棋面状态。在深度优先搜索和广度优先搜索中，A</em>搜索查看是否已经达到目标状态的方式只是有些许不同。我们回忆一下，深度优先搜索和广度优先搜索会检查棋面状态是什么时候生成的。尤其，A*搜索在从开放集合中删除元素时，会检查是否已经达到目标状态，这样做的目的是确保得到的解是最短路径。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;iostream&gt;<br>#include &lt;vector&gt;<br>#include &lt;queue&gt;<br>#include &lt;unordered_set&gt;<br>#include &lt;memory&gt;<br>#include &lt;list&gt;<br>#include &lt;iterator&gt;<br>#include &lt;cmath&gt;<br><br><br><span class="hljs-comment">// Forward declarations</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IMove</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">INode</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DepthTransition</span>;<br><br><span class="hljs-comment">// Interface for scoring function</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IScoringFunction</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">score</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; node) = <span class="hljs-number">0</span>;<br>    virtual ~<span class="hljs-title class_">IScoringFunction</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// Interface for Node</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">INode</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; <span class="hljs-title function_">copy</span>() = <span class="hljs-number">0</span>;<br>    virtual bool <span class="hljs-title function_">equals</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; other) = <span class="hljs-number">0</span>;<br>    virtual double <span class="hljs-title function_">score</span>() <span class="hljs-keyword">const</span> = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">setScore</span>(double score) = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-attr">std</span>::list&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IMove</span>&gt;&gt; <span class="hljs-title function_">validMoves</span>() = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">storedData</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">DepthTransition</span>&gt; data) = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">DepthTransition</span>&gt; <span class="hljs-title function_">storedData</span>() <span class="hljs-keyword">const</span> = <span class="hljs-number">0</span>;<br>    virtual ~<span class="hljs-title class_">INode</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// Move interface</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IMove</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">execute</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; node) = <span class="hljs-number">0</span>;<br>    virtual ~<span class="hljs-title class_">IMove</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// 前置声明</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PuzzleNode</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PuzzleMove</span>;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DepthTransition</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IMove</span>&gt; move;<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; previousNode;<br>    int depth;<br>    <span class="hljs-title class_">DepthTransition</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IMove</span>&gt; m, <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; prev, int d)<br>        : <span class="hljs-title function_">move</span>(m), <span class="hljs-title function_">previousNode</span>(prev), <span class="hljs-title function_">depth</span>(<span class="hljs-params">d</span>) &#123;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 先声明 PuzzleNode，稍后在类外实现 validMoves</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PuzzleNode</span> : public <span class="hljs-title class_">INode</span> &#123;<br><span class="hljs-attr">private</span>:<br>    <span class="hljs-attr">std</span>::vector&lt;int&gt; board;<br>    double scoreValue;<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">DepthTransition</span>&gt; transitionData;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">PuzzleNode</span>(<span class="hljs-attr">std</span>::vector&lt;int&gt; initial) : <span class="hljs-title function_">board</span>(initial), <span class="hljs-title function_">scoreValue</span>(<span class="hljs-params"><span class="hljs-number">0.0</span></span>) &#123;&#125;<br><br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; <span class="hljs-title function_">copy</span>() override &#123;<br>        auto newNode = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">PuzzleNode</span>&gt;(board);<br>        newNode-&gt;scoreValue = scoreValue;<br>        newNode-&gt;transitionData = transitionData;<br>        <span class="hljs-keyword">return</span> newNode;<br>    &#125;<br><br>    bool <span class="hljs-title function_">equals</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; other) override &#123;<br>        auto o = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">PuzzleNode</span>&gt;(other);<br>        <span class="hljs-keyword">return</span> o &amp;&amp; (board == o-&gt;board);<br>    &#125;<br><br>    double <span class="hljs-title function_">score</span>() <span class="hljs-keyword">const</span> override &#123;<br>        <span class="hljs-keyword">return</span> scoreValue;<br>    &#125;<br><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">setScore</span>(double score) override &#123;<br>        scoreValue = score;<br>    &#125;<br><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">storedData</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">DepthTransition</span>&gt; data) override &#123;<br>        transitionData = data;<br>    &#125;<br><br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">DepthTransition</span>&gt; <span class="hljs-title function_">storedData</span>() <span class="hljs-keyword">const</span> override &#123;<br>        <span class="hljs-keyword">return</span> transitionData;<br>    &#125;<br><br>    <span class="hljs-comment">// 先声明 validMoves</span><br>    <span class="hljs-attr">std</span>::list&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IMove</span>&gt;&gt; <span class="hljs-title function_">validMoves</span>() override;<br><br>    <span class="hljs-keyword">const</span> <span class="hljs-attr">std</span>::vector&lt;int&gt;&amp; <span class="hljs-title function_">getBoard</span>() <span class="hljs-keyword">const</span> &#123;<br>        <span class="hljs-keyword">return</span> board;<br>    &#125;<br><br>    int <span class="hljs-title function_">getEmptyPos</span>() <span class="hljs-keyword">const</span> &#123;<br>        <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>; i++) &#123;<br>            <span class="hljs-keyword">if</span> (board[i] == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> i;<br>        &#125;<br>        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 定义 PuzzleMove</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PuzzleMove</span> : public <span class="hljs-title class_">IMove</span> &#123;<br><span class="hljs-attr">private</span>:<br>    int fromPos;<br>    int toPos;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">PuzzleMove</span>(int f, int t) : <span class="hljs-title function_">fromPos</span>(f), <span class="hljs-title function_">toPos</span>(<span class="hljs-params">t</span>) &#123;&#125;<br><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">execute</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; node) override &#123;<br>        auto puzzleNode = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">PuzzleNode</span>&gt;(node);<br>        <span class="hljs-keyword">if</span> (!puzzleNode) <span class="hljs-keyword">return</span>;<br>        auto&amp; b = const_cast&lt;<span class="hljs-attr">std</span>::vector&lt;int&gt;&amp;&gt;(puzzleNode-&gt;<span class="hljs-title function_">getBoard</span>());<br>        <span class="hljs-attr">std</span>::<span class="hljs-title function_">swap</span>(b[fromPos], b[toPos]);<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 在类外实现 PuzzleNode::validMoves，使用 PuzzleMove</span><br><span class="hljs-attr">std</span>::list&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IMove</span>&gt;&gt; <span class="hljs-title class_">PuzzleNode</span>::<span class="hljs-title function_">validMoves</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-attr">std</span>::list&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IMove</span>&gt;&gt; moves;<br>    int emptyPos = <span class="hljs-title function_">getEmptyPos</span>();<br>    int row = emptyPos / <span class="hljs-number">3</span>;<br>    int col = emptyPos % <span class="hljs-number">3</span>;<br><br>    <span class="hljs-comment">// 上</span><br>    <span class="hljs-keyword">if</span> (row &gt; <span class="hljs-number">0</span>) moves.<span class="hljs-title function_">push_back</span>(<span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">PuzzleMove</span>&gt;(emptyPos, emptyPos - <span class="hljs-number">3</span>));<br>    <span class="hljs-comment">// 下</span><br>    <span class="hljs-keyword">if</span> (row &lt; <span class="hljs-number">2</span>) moves.<span class="hljs-title function_">push_back</span>(<span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">PuzzleMove</span>&gt;(emptyPos, emptyPos + <span class="hljs-number">3</span>));<br>    <span class="hljs-comment">// 左</span><br>    <span class="hljs-keyword">if</span> (col &gt; <span class="hljs-number">0</span>) moves.<span class="hljs-title function_">push_back</span>(<span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">PuzzleMove</span>&gt;(emptyPos, emptyPos - <span class="hljs-number">1</span>));<br>    <span class="hljs-comment">// 右</span><br>    <span class="hljs-keyword">if</span> (col &lt; <span class="hljs-number">2</span>) moves.<span class="hljs-title function_">push_back</span>(<span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">PuzzleMove</span>&gt;(emptyPos, emptyPos + <span class="hljs-number">1</span>));<br><br>    <span class="hljs-keyword">return</span> moves;<br>&#125;<br><br><br><br><br><span class="hljs-comment">// Manhattan distance heuristic scoring function</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ManhattanScorer</span> : public <span class="hljs-title class_">IScoringFunction</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">score</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; node) override &#123;<br>        auto puzzleNode = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">PuzzleNode</span>&gt;(node);<br>        <span class="hljs-keyword">if</span> (!puzzleNode) <span class="hljs-keyword">return</span>;<br><br>        <span class="hljs-keyword">const</span> auto&amp; board = puzzleNode-&gt;<span class="hljs-title function_">getBoard</span>();<br>        int manhattan = <span class="hljs-number">0</span>;<br><br>        <span class="hljs-comment">// Calculate Manhattan distance for each tile</span><br>        <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>; i++) &#123;<br>            <span class="hljs-keyword">if</span> (board[i] == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;<br>            int targetRow = (board[i] - <span class="hljs-number">1</span>) / <span class="hljs-number">3</span>;<br>            int targetCol = (board[i] - <span class="hljs-number">1</span>) % <span class="hljs-number">3</span>;<br>            int currentRow = i / <span class="hljs-number">3</span>;<br>            int currentCol = i % <span class="hljs-number">3</span>;<br>            manhattan += <span class="hljs-attr">std</span>::<span class="hljs-title function_">abs</span>(targetRow - currentRow) + <span class="hljs-attr">std</span>::<span class="hljs-title function_">abs</span>(targetCol - currentCol);<br>        &#125;<br><br>        <span class="hljs-comment">// Add depth to break ties</span><br>        auto trans = puzzleNode-&gt;<span class="hljs-title function_">storedData</span>();<br>        int depth = trans ? trans-&gt;depth : <span class="hljs-number">0</span>;<br><br>        puzzleNode-&gt;<span class="hljs-title function_">setScore</span>(manhattan + depth * <span class="hljs-number">0.001</span>);<br>    &#125;<br>&#125;;<br><br><br><br><br><span class="hljs-comment">// Solution class</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">Solution</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; initial, <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; goal, bool success = <span class="hljs-literal">true</span>)<br>        : <span class="hljs-title function_">initialNode</span>(initial), <span class="hljs-title function_">goalNode</span>(goal), <span class="hljs-title function_">isSuccess</span>(<span class="hljs-params">success</span>) &#123;<br>    &#125;<br><br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; initialNode;<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; goalNode;<br>    bool isSuccess;<br>&#125;;<br><br><span class="hljs-comment">// Main search function</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SearchSolution</span> &#123;<br><span class="hljs-attr">private</span>:<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IScoringFunction</span>&gt; scoringFunction;<br><br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">SearchSolution</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IScoringFunction</span>&gt; scorer) : <span class="hljs-title function_">scoringFunction</span>(<span class="hljs-params">scorer</span>) &#123;&#125;<br><br>    <span class="hljs-title class_">Solution</span> <span class="hljs-title function_">search</span>(<span class="hljs-params">std::shared_ptr&lt;INode&gt; initial, std::shared_ptr&lt;INode&gt; goal</span>) &#123;<br>        <span class="hljs-comment">// Priority queue for open set</span><br>        auto compareNodes = [](<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; a, <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt; b) &#123;<br>            <span class="hljs-keyword">return</span> a-&gt;<span class="hljs-title function_">score</span>() &gt; b-&gt;<span class="hljs-title function_">score</span>();<br>            &#125;;<br>        <span class="hljs-attr">std</span>::priority_queue&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt;,<br>            <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt;&gt;,<br>            <span class="hljs-title function_">decltype</span>(compareNodes)&gt; <span class="hljs-title function_">open</span>(compareNodes);<br><br>        <span class="hljs-comment">// Initialize with initial state</span><br>        auto copy = initial-&gt;<span class="hljs-title function_">copy</span>();<br>        scoringFunction-&gt;<span class="hljs-title function_">score</span>(copy);<br>        open.<span class="hljs-title function_">push</span>(copy);<br><br>        <span class="hljs-comment">// Hash set for closed set</span><br>        <span class="hljs-attr">std</span>::unordered_set&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt;&gt; closed;<br><br>        <span class="hljs-keyword">while</span> (!open.<span class="hljs-title function_">empty</span>()) &#123;<br>            <span class="hljs-comment">// Remove node with lowest score</span><br>            auto n = open.<span class="hljs-title function_">top</span>();<br>            open.<span class="hljs-title function_">pop</span>();<br>            closed.<span class="hljs-title function_">insert</span>(n);<br><br>            <span class="hljs-comment">// Check if goal state reached</span><br>            <span class="hljs-keyword">if</span> (n-&gt;<span class="hljs-title function_">equals</span>(goal)) &#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-title class_">Solution</span>(initial, n);<br>            &#125;<br><br>            <span class="hljs-comment">// Calculate successor moves</span><br>            auto trans = n-&gt;<span class="hljs-title function_">storedData</span>();<br>            int depth = <span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">if</span> (trans) &#123;<br>                depth = trans-&gt;depth + <span class="hljs-number">1</span>;<br>            &#125;<br><br>            auto moves = n-&gt;<span class="hljs-title function_">validMoves</span>();<br>            <span class="hljs-keyword">for</span> (auto&amp; move : moves) &#123;<br>                <span class="hljs-comment">// Make move and evaluate new state</span><br>                auto successor = n-&gt;<span class="hljs-title function_">copy</span>();<br>                move-&gt;<span class="hljs-title function_">execute</span>(successor);<br><br>                <span class="hljs-comment">// Store transition data</span><br>                successor-&gt;<span class="hljs-title function_">storedData</span>(<span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">DepthTransition</span>&gt;(move, n, depth));<br>                scoringFunction-&gt;<span class="hljs-title function_">score</span>(successor);<br><br>                <span class="hljs-comment">// Check if state was previously visited</span><br>                auto it = closed.<span class="hljs-title function_">find</span>(successor);<br>                <span class="hljs-keyword">if</span> (it != closed.<span class="hljs-title function_">end</span>()) &#123;<br>                    <span class="hljs-keyword">if</span> (successor-&gt;<span class="hljs-title function_">score</span>() &gt;= (*it)-&gt;<span class="hljs-title function_">score</span>()) &#123;<br>                        <span class="hljs-keyword">continue</span>;<br>                    &#125;<br>                    closed.<span class="hljs-title function_">erase</span>(it);<br>                &#125;<br><br>                <span class="hljs-comment">// Add to open set</span><br>                open.<span class="hljs-title function_">push</span>(successor);<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-comment">// No solution found</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Solution</span>(initial, goal, <span class="hljs-literal">false</span>);<br>    &#125;<br>&#125;;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// Create initial state (example: 8-puzzle)</span><br>    <span class="hljs-attr">std</span>::vector&lt;int&gt; initialBoard = &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">0</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span> &#125;;  <span class="hljs-comment">// 0 represents empty space</span><br>    <span class="hljs-attr">std</span>::vector&lt;int&gt; goalBoard = &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">0</span> &#125;;<br><br>    auto initial = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">PuzzleNode</span>&gt;(initialBoard);<br>    auto goal = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">PuzzleNode</span>&gt;(goalBoard);<br><br>    <span class="hljs-comment">// Create scorer and search solver</span><br>    auto scorer = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">ManhattanScorer</span>&gt;();<br>    auto searchSolver = <span class="hljs-title class_">SearchSolution</span>(scorer);<br><br>    <span class="hljs-comment">// Find solution</span><br>    <span class="hljs-title class_">Solution</span> solution = searchSolver.<span class="hljs-title function_">search</span>(initial, goal);<br><br>    <span class="hljs-keyword">if</span> (solution.<span class="hljs-property">isSuccess</span>) &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;Solution found!\n&quot;</span>;<br><br>        <span class="hljs-comment">// Reconstruct path</span><br>        <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">INode</span>&gt;&gt; path;<br>        auto current = solution.<span class="hljs-property">goalNode</span>;<br>        <span class="hljs-keyword">while</span> (current) &#123;<br>            path.<span class="hljs-title function_">push_back</span>(current);<br>            auto trans = current-&gt;<span class="hljs-title function_">storedData</span>();<br>            <span class="hljs-keyword">if</span> (!trans) <span class="hljs-keyword">break</span>;<br>            current = trans-&gt;previousNode;<br>        &#125;<br><br>        <span class="hljs-comment">// Print solution path</span><br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;Number of moves: &quot;</span> &lt;&lt; path.<span class="hljs-title function_">size</span>() - <span class="hljs-number">1</span> &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;Path from goal to start:\n&quot;</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> auto&amp; node : path) &#123;<br>            auto puzzleNode = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">PuzzleNode</span>&gt;(node);<br>            <span class="hljs-keyword">if</span> (!puzzleNode) <span class="hljs-keyword">continue</span>;<br><br>            <span class="hljs-keyword">const</span> auto&amp; board = puzzleNode-&gt;<span class="hljs-title function_">getBoard</span>();<br>            <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>; i++) &#123;<br>                <span class="hljs-attr">std</span>::cout &lt;&lt; board[i] &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br>                <span class="hljs-keyword">if</span> (i % <span class="hljs-number">3</span> == <span class="hljs-number">2</span>) <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;<br>            &#125;<br>            <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;---\n&quot;</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;No solution exists.\n&quot;</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>五、算法优化</h1>
+<p>有一些算法使用了双向搜索（Kaindl和Kainz，1997），而不仅仅是从初始状态向前搜索。一开始这种方法由于不能工作，被早期的AI研究人员放弃，Kaindl和Kainz提出了强有力的理由，认为这种方法应该被重新考虑。<br>
+一种广为人知的A<em>搜索变种叫做迭代加深A</em>(IDA*)，由Korf（1985）提出。它依赖于一系列逐渐扩展的有限制的深度优先搜索。对于每次后继迭代，搜索深度限制都会在前次的基础上增加。<br>
+IDA<em>比单独的深度优先搜索或者广度优先搜索要高效得多，因为每次计算出的开销值都是基于实际的走法序列而不是启发式函数的估计。Korf（2000）描述了高效的启发式信息是如何和IDA</em>结合起来，用于解决十五数码问题，在整个搜索过程中，会对超过4亿个棋面状态进行评估。<br>
+Barr和Feigenbaum（1981）提出了一些改进方法，在不能高效地得到一个可接受的h*(n)函数时使用。<br>
+虽然A<em>搜索产生了最小耗费的解，但是搜索空间可能会过大以至于无法继续计算。增强A</em>搜索和处理这些巨大规模的问题的改进思想主要包括：</p>
+<ul>
+<li>迭代加深<br>
+这个策略重复迭代有深度限制的深度优先搜索，每次迭代都会增加深度限制。这种方法能够选择出在下次迭代中优先被处理的节点，因此减少了不必要的搜索，增加了快速收敛到获胜走法的可能性。同时，由于搜索空间被切分成离散的部分，实时算法能够在尽可能多的空间限制下，在时限内寻找到一个较优解。最先应用到A<em>搜索算法的是Korf（1985），他发明了IDA</em>。</li>
+<li>转移表<br>
+为了避免重复计算，程序员可以对局面状态进行散列，在一个转移表中存储路径长度。如果状态在后面的搜索中会出现，而且当前深度大于先前的深度，那么搜索将会终止。这种方法能够避免搜索一棵低效的子树。</li>
+<li>层次化<br>
+如果局面状态能够层次化地表示，那么我们可以重新构建一下搜索空间。层次化寻路A*（HPA*）就应用了这种方法（Botea等，2004）。</li>
+<li>内存限制<br>
+与其在计算时限制搜索空间，程序员可以执行一种“有损”搜索，在搜索的过程中舍弃一些节点，专注于搜索那些被认为和结果相关的区域。简化内存限制A*（SMA*）就是一个例子（Russel，1992）。</li>
+</ul>
+<p>Reinefeld和Marsland（1994）总结了一系列的A<em>的有趣的扩展。更多的在AI系统中使用A</em>搜索的信息在教科书和大量的在线资源可以找到相关信息（Barr和Feigenbaum，1981）。<br>
+我们现在结束对搜索树的讨论。后面的算法都是基于博弈树的。</p>
+<h1>六、引用及参考文献</h1>
+<p>1.《算法设计手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析：专题内容——人工智能中的寻路4之A_搜索（代码详解）</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析：专题内容——人工智能中的寻路4之A_搜索（代码详解）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF5%E4%B9%8BMinimax%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：专题内容——人工智能中的寻路5之Minimax（代码详解）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析：专题内容——人工智能中的寻路5之Minimax（代码详解）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：专题内容——人工智能中的寻路7之AlphaBeta（代码详解）">
+                        <span class="hidden-mobile">数据结构与算法分析：专题内容——人工智能中的寻路7之AlphaBeta（代码详解）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

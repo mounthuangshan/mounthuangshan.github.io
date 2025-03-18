@@ -1,0 +1,1646 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="这一次将详细学习curl的各个参数，下面将从第一个参数开始，逐一解析它们的含义和用法。 1. --abstract-unix-socket &lt;path&gt; 这个参数用于通过抽象的 Unix 域套接字进行连接。抽象的 Unix 域套接字与文件系统无关，可以在内存中进行通信。这在某些需要高效 IPC（进程间通信）的应用中非常有用。例如： [ curl --abstract-unix-sock">
+<meta property="og:type" content="article">
+<meta property="og:title" content="curl命令参数解释翻译">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/curl%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A%E7%BF%BB%E8%AF%91/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="这一次将详细学习curl的各个参数，下面将从第一个参数开始，逐一解析它们的含义和用法。 1. --abstract-unix-socket &lt;path&gt; 这个参数用于通过抽象的 Unix 域套接字进行连接。抽象的 Unix 域套接字与文件系统无关，可以在内存中进行通信。这在某些需要高效 IPC（进程间通信）的应用中非常有用。例如： [ curl --abstract-unix-sock">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.851Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>curl命令参数解释翻译 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="curl命令参数解释翻译"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          100 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">curl命令参数解释翻译</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这一次将详细学习curl的各个参数，下面将从第一个参数开始，逐一解析它们的含义和用法。</p>
+<h3 id="1-abstract-unix-socket-path">1. <code>--abstract-unix-socket &lt;path&gt;</code></h3>
+<p>这个参数用于通过抽象的 Unix 域套接字进行连接。抽象的 Unix 域套接字与文件系统无关，可以在内存中进行通信。这在某些需要高效 IPC（进程间通信）的应用中非常有用。例如：<br>
+[ curl --abstract-unix-socket /var/run.sock http://local_service ]<br>
+这样，curl 就可以通过 Unix 域套接字 <code>/var/run.sock</code> 与本地服务进行通信。</p>
+<h3 id="2-alt-svc-filename">2. <code>--alt-svc &lt;filename&gt;</code></h3>
+<p><code>alt-svc</code> 是 HTTP Alternative Service 的意思，这个参数允许 curl 使用指定的缓存文件来处理 alt-svc 信息。这在处理 HTTP/2 切换到其他服务时可能有用。例如：<br>
+[ curl --alt-svc alt_svc_cache.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+这样，curl 会使用 <code>alt_svc_cache.txt</code> 来存储或读取 alt-svc 的缓存信息。</p>
+<h3 id="3-anyauth">3. <code>--anyauth</code></h3>
+<p>这个参数告诉 curl 选择任何可用的认证方法。当与 <code>--user</code> 参数一起使用时，curl 会尝试使用诸如 Basic、Digest、NTLM 等认证方法。例如：<br>
+[ curl --anyauth -u username:password <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会根据服务器的支持情况选择最合适的认证方式。</p>
+<h3 id="4-a-append">4. <code>-a, --append</code></h3>
+<p>当上传文件时，这个参数指示 curl 将数据追加到目标文件而不是覆盖它。这在 FTP 上传时特别有用。例如：<br>
+[ curl -a -T localfile.txt <a href="ftp://ftp.example.com/remotefile.txt">ftp://ftp.example.com/remotefile.txt</a> ]<br>
+这样，<code>localfile.txt</code> 的内容会被追加到 <code>remotefile.txt</code> 中。</p>
+<h3 id="5-aws-sigv4-provider1-prvdr2-reg-srv">5. <code>--aws-sigv4 &lt;provider1[:prvdr2[:reg[:srv]]]&gt;</code></h3>
+<p>这个参数用于 AWS V4 签名认证。它需要指定签名的提供者、区域和服务器。例如：<br>
+[ curl --aws-sigv4 ‘aws:us-west-2:iam’ -X POST <a target="_blank" rel="noopener" href="https://iam.amazonaws.com">https://iam.amazonaws.com</a> ]<br>
+这样，curl 会使用 AWS V4 签名为请求进行认证。</p>
+<h3 id="6-basic">6. <code>--basic</code></h3>
+<p>指示 curl 使用 HTTP 基本认证。这通常与 <code>--user</code> 参数一起使用。例如：<br>
+[ curl --basic -u username:password <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在请求中包含 <code>Authorization</code> 头，使用 Base64 编码的用户名和密码。</p>
+<h3 id="7-ca-native">7. <code>--ca-native</code></h3>
+<p>这个参数告诉 curl 从操作系统中加载 CA 证书来验证服务器的证书。这在某些系统中可能比指定 <code>--cacert</code> 更方便。例如：<br>
+[ curl --ca-native <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用系统默认的 CA 证书来验证 <code>example.com</code> 的 SSL 证书。</p>
+<h3 id="8-cacert-file">8. <code>--cacert &lt;file&gt;</code></h3>
+<p>指定一个 CA 证书文件来验证服务器的证书。这在需要自定义 CA 证书时非常有用。例如：<br>
+[ curl --cacert ca_cert.pem <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>ca_cert.pem</code> 来验证 <code>example.com</code> 的 SSL 证书。</p>
+<h3 id="9-capath-dir">9. <code>--capath &lt;dir&gt;</code></h3>
+<p>指定一个包含 CA 证书的目录。curl 会在这个目录中查找 CA 证书来验证服务器的证书。例如：<br>
+[ curl --capath /etc/ssl/certs <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会在 <code>/etc/ssl/certs</code> 目录中查找 CA 证书。</p>
+<h3 id="10-E-cert-certificate-password">10. <code>-E, --cert &lt;certificate[:password]&gt;</code></h3>
+<p>指定一个客户端证书和可选的密码。这用于与服务器建立 SSL 连接时的客户端认证。例如：<br>
+[ curl --cert client_cert.pem:password <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>client_cert.pem</code> 和密码 <code>password</code> 进行客户端认证。</p>
+<h3 id="11-cert-status">11. <code>--cert-status</code></h3>
+<p>这个参数指示 curl 验证服务器证书的状态，通常使用 OCSP Stapling。例如：<br>
+[ curl --cert-status <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会验证 <code>example.com</code> 的证书状态。</p>
+<h3 id="12-cert-type-type">12. <code>--cert-type &lt;type&gt;</code></h3>
+<p>指定证书的类型，支持 DER、PEM、Eng 或 P12。例如：<br>
+[ curl --cert-type PEM --cert client_cert.pem <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 PEM 格式的 <code>client_cert.pem</code>。</p>
+<h3 id="13-ciphers-list-of-ciphers">13. <code>--ciphers &lt;list of ciphers&gt;</code></h3>
+<p>指定 curl 使用的 SSL 密码套件。这可以用来限制或扩展 curl 支持的密码套件。例如：<br>
+[ curl --ciphers ‘HIGH:!aNULL’ <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用高安全级别的密码套件，并排除匿名套件。</p>
+<h3 id="14-compressed">14. <code>--compressed</code></h3>
+<p>告诉 curl 请求压缩的响应。服务器可能会使用 gzip 或 deflate 等压缩格式。例如：<br>
+[ curl --compressed <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在请求中添加 <code>Accept-Encoding: gzip</code>，并自动解压缩响应。</p>
+<h3 id="15-compressed-ssh">15. <code>--compressed-ssh</code></h3>
+<p>这个参数用于 SSH 会话的压缩。它会通过 SSH 协商启用压缩。例如：<br>
+[ curl --compressed-ssh sftp://example.com ]<br>
+curl 会通过 SSH 压缩数据传输。</p>
+<h3 id="16-K-config-file">16. <code>-K, --config &lt;file&gt;</code></h3>
+<p>指定一个包含 curl 命令行选项的配置文件。这在需要重复使用一组选项时非常方便。例如：<br>
+[ curl --config curl_config.txt ]<br>
+curl 会读取 <code>curl_config.txt</code> 中的配置。</p>
+<h3 id="17-connect-timeout-seconds">17. <code>--connect-timeout &lt;seconds&gt;</code></h3>
+<p>设置 curl 尝试连接到服务器的最大时间。超过这个时间后，curl 会超时。例如：<br>
+[ curl --connect-timeout 10 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 最多等待 10 秒来建立连接。</p>
+<h3 id="18-connect-to-HOST1-PORT1-HOST2-PORT2">18. <code>--connect-to &lt;HOST1:PORT1:HOST2:PORT2&gt;</code></h3>
+<p>指定 curl 连接到另一个主机和端口，而不是请求的主机和端口。这在测试或绕过负载均衡器时可能有用。例如：<br>
+[ curl --connect-to <a target="_blank" rel="noopener" href="http://example.com:80">example.com:80</a>:localhost:8080 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会连接到 <code>localhost:8080</code> 而不是 <code>example.com:80</code>。</p>
+<h3 id="19-C-continue-at-offset">19. <code>-C, --continue-at &lt;offset&gt;</code></h3>
+<p>指定在断点续传时的偏移量。这在下载大文件时非常有用，如果连接中断，可以从中断的地方继续。例如：<br>
+[ curl -C 1000 -o file.zip <a target="_blank" rel="noopener" href="http://example.com/file.zip">http://example.com/file.zip</a> ]<br>
+curl 会从第 1000 字节开始下载。</p>
+<h3 id="20-b-cookie-data-filename">20. <code>-b, --cookie &lt;data|filename&gt;</code></h3>
+<p>从字符串或文件中发送 cookies。这在需要发送特定 cookies 时非常有用。例如：<br>
+[ curl -b ‘session=123456’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会发送 <code>session=123456</code> 的 cookie。</p>
+<h3 id="21-c-cookie-jar-filename">21. <code>-c, --cookie-jar &lt;filename&gt;</code></h3>
+<p>指定一个文件来保存 cookies。在请求过程中，curl 会将收到的 cookies 保存到这个文件中。例如：<br>
+[ curl -c cookies.txt -o file.html <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将 cookies 保存到 <code>cookies.txt</code>。</p>
+<h3 id="22-create-dirs">22. <code>--create-dirs</code></h3>
+<p>告诉 curl 在保存文件时创建必要的本地目录结构。如果路径中存在不存在的目录，curl 会自动创建它们。例如：<br>
+[ curl --create-dirs -o dir/file.txt <a target="_blank" rel="noopener" href="http://example.com/file.txt">http://example.com/file.txt</a> ]<br>
+如果 <code>dir</code> 不存在，curl 会创建它。</p>
+<h3 id="23-create-file-mode-mode">23. <code>--create-file-mode &lt;mode&gt;</code></h3>
+<p>指定创建文件的权限模式。这在 Unix 系统中特别有用，可以设置文件的权限。例如：<br>
+[ curl --create-file-mode 644 -o file.txt <a target="_blank" rel="noopener" href="http://example.com/file.txt">http://example.com/file.txt</a> ]<br>
+curl 会以 <code>644</code> 的权限创建 <code>file.txt</code>。</p>
+<h3 id="24-crlf">24. <code>--crlf</code></h3>
+<p>将 LF（换行符）转换为 CRLF（回车换行符）进行上传。这在与某些旧的 FTP 服务器通信时可能需要。例如：<br>
+[ curl --crlf -T localfile.txt <a href="ftp://ftp.example.com">ftp://ftp.example.com</a> ]<br>
+curl 会将 <code>localfile.txt</code> 中的 LF 转换为 CRLF。</p>
+<h3 id="25-crlfile-file">25. <code>--crlfile &lt;file&gt;</code></h3>
+<p>指定一个证书吊销列表（CRL）文件，用于验证服务器的证书是否被吊销。例如：<br>
+[ curl --crlfile crl.pem <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>crl.pem</code> 来检查 <code>example.com</code> 的证书是否被吊销。</p>
+<h3 id="26-curves-list">26. <code>--curves &lt;list&gt;</code></h3>
+<p>指定在使用 EC（椭圆曲线）密钥交换算法时要使用的曲线。例如：<br>
+[ curl --curves ‘prime256v1’ <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>prime256v1</code> 曲线。</p>
+<h3 id="27-d-data-data">27. <code>-d, --data &lt;data&gt;</code></h3>
+<p>指定 HTTP POST 请求的数据。这是发送表单数据的常用方法。例如：<br>
+[ curl -d ‘name=Kimi&amp;age=30’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会发送一个 POST 请求，数据为 <code>name=Kimi&amp;age=30</code>。</p>
+<h3 id="28-data-ascii-data">28. <code>--data-ascii &lt;data&gt;</code></h3>
+<p>类似于 <code>--data</code>，但确保数据以 ASCII 编码发送。这在处理非二进制数据时可能有用。例如：<br>
+[ curl --data-ascii ‘hello’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会发送 <code>hello</code> 作为 ASCII 编码的数据。</p>
+<h3 id="29-data-binary-data">29. <code>--data-binary &lt;data&gt;</code></h3>
+<p>指定二进制数据进行 POST。与 <code>--data</code> 不同，这个参数不会进行任何转换。例如：<br>
+[ curl --data-binary @file.bin <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将 <code>file.bin</code> 的内容作为二进制数据发送。</p>
+<h3 id="30-data-raw-data">30. <code>--data-raw &lt;data&gt;</code></h3>
+<p>类似于 <code>--data</code>，但允许使用 <code>@</code> 符号来指定文件，同时保持数据的原始格式。例如：<br>
+[ curl --data-raw @file.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将 <code>file.txt</code> 的内容作为原始数据发送。</p>
+<h3 id="31-data-urlencode-data">31. <code>--data-urlencode &lt;data&gt;</code></h3>
+<p>指定 POST 数据，并对数据进行 URL 编码。这在发送包含特殊字符的数据时非常有用。例如：<br>
+[ curl --data-urlencode ‘name=Kimi O&amp;age=30’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会发送 <code>name=Kimi+O%26age=30</code>。</p>
+<h3 id="32-delegation-LEVEL">32. <code>--delegation &lt;LEVEL&gt;</code></h3>
+<p>指定 GSS-API 委托权限的级别。这在使用 Kerberos 认证时可能需要。例如：<br>
+[ curl --delegation full -u username:password <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 full 委托级别。</p>
+<h3 id="33-digest">33. <code>--digest</code></h3>
+<p>告诉 curl 使用 HTTP 消化认证。这通常与 <code>--user</code> 一起使用。例如：<br>
+[ curl --digest -u username:password <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用消化认证。</p>
+<h3 id="34-disable">34. <code>--disable</code></h3>
+<p>这个参数会禁用 .curlrc 配置文件的读取。这在不希望使用默认配置时有用。例如：<br>
+[ curl --disable <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 不会读取任何配置文件。</p>
+<h3 id="35-disable-eprt">35. <code>--disable-eprt</code></h3>
+<p>禁用 EPRT 或 LPRT 命令的使用。这在某些 FTP 服务器不支持这些命令时可能需要。例如：<br>
+[ curl --disable-eprt <a href="ftp://ftp.example.com">ftp://ftp.example.com</a> ]<br>
+curl 不会使用 EPRT 或 LPRT。</p>
+<h3 id="36-disable-epsv">36. <code>--disable-epsv</code></h3>
+<p>禁用 EPSV 命令的使用。类似于 <code>--disable-eprt</code>，这在与某些 FTP 服务器交互时可能需要。例如：<br>
+[ curl --disable-epsv <a href="ftp://ftp.example.com">ftp://ftp.example.com</a> ]<br>
+curl 不会使用 EPSV。</p>
+<h3 id="37-disallow-username-in-url">37. <code>--disallow-username-in-url</code></h3>
+<p>这个参数会禁止在 URL 中使用用户名。这在安全策略要求不通过 URL 传递凭据时可能有用。例如：<br>
+[ curl --disallow-username-in-url <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会拒绝任何包含用户名的 URL。</p>
+<h3 id="38-dns-interface-interface">38. <code>--dns-interface &lt;interface&gt;</code></h3>
+<p>指定用于 DNS 请求的网络接口。这在有多个网络接口时可能有用。例如：<br>
+[ curl --dns-interface eth0 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>eth0</code> 接口进行 DNS 解析。</p>
+<h3 id="39-dns-ipv4-addr-address">39. <code>--dns-ipv4-addr &lt;address&gt;</code></h3>
+<p>指定用于 DNS 解析的 IPv4 地址。这在需要使用特定的 DNS 服务器时可能有用。例如：<br>
+[ curl --dns-ipv4-addr 8.8.8.8 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>8.8.8.8</code> 作为 IPv4 DNS 服务器。</p>
+<h3 id="40-dns-ipv6-addr-address">40. <code>--dns-ipv6-addr &lt;address&gt;</code></h3>
+<p>类似于 <code>--dns-ipv4-addr</code>，但用于 IPv6 地址。例如：<br>
+[ curl --dns-ipv6-addr 2001:4860:4860:0:0:0:0:8888 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>2001:4860:4860:0:0:0:0:8888</code> 作为 IPv6 DNS 服务器。</p>
+<h3 id="41-dns-servers-addresses">41. <code>--dns-servers &lt;addresses&gt;</code></h3>
+<p>指定一个或多个 DNS 服务器的地址。这个参数可以同时指定 IPv4 和 IPv6 地址。例如：<br>
+[ curl --dns-servers 8.8.8.8,2001:4860:4860:0:0:0:0:8888 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用这些 DNS 服务器进行解析。</p>
+<h3 id="42-doh-cert-status">42. <code>--doh-cert-status</code></h3>
+<p>验证 DoH（DNS over HTTPS）服务器的证书状态。例如：<br>
+[ curl --doh-cert-status <a target="_blank" rel="noopener" href="https://doh.example.com">https://doh.example.com</a> ]<br>
+curl 会验证 DoH 服务器的证书状态。</p>
+<h3 id="43-doh-insecure">43. <code>--doh-insecure</code></h3>
+<p>允许使用不安全的 DoH 服务器连接。这在测试环境中可能有用，但不建议在生产中使用。例如：<br>
+[ curl --doh-insecure <a target="_blank" rel="noopener" href="https://doh.example.com">https://doh.example.com</a> ]<br>
+curl 会接受任何 DoH 服务器的证书，不进行验证。</p>
+<h3 id="44-doh-url-URL">44. <code>--doh-url &lt;URL&gt;</code></h3>
+<p>指定 DoH 服务器的 URL。例如：<br>
+[ curl --doh-url <a target="_blank" rel="noopener" href="https://doh.example.com/dns-query">https://doh.example.com/dns-query</a> <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会通过 DoH 服务器 <code>doh.example.com</code> 进行 DNS 解析。</p>
+<h3 id="45-D-dump-header-filename">45. <code>-D, --dump-header &lt;filename&gt;</code></h3>
+<p>将接收到的 HTTP 头信息写入指定的文件。这在需要单独查看头信息时非常有用。例如：<br>
+[ curl -D headers.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将 HTTP 头信息保存到 <code>headers.txt</code>。</p>
+<h3 id="46-ech">46. <code>--ech</code></h3>
+<p>配置 ECH（加密的 HTTP 会话）。这个参数的具体用法比较复杂，通常需要特定的服务器支持。例如：<br>
+[ curl --ech config <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会尝试使用 ECH 进行会话。</p>
+<h3 id="47-egd-file-file">47. <code>--egd-file &lt;file&gt;</code></h3>
+<p>指定 EGD（Entropy Gathering Daemon）套接字路径以获取随机数据。这在需要高安全性的随机数时可能有用。例如：<br>
+[ curl --egd-file /var/run/egd-pool <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 EGD 作为随机数源。</p>
+<h3 id="48-engine-name">48. <code>--engine &lt;name&gt;</code></h3>
+<p>指定要使用的加密引擎。这在需要使用特定的加密库时可能有用。例如：<br>
+[ curl --engine openssl <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 OpenSSL 作为加密引擎。</p>
+<h3 id="49-etag-compare-file">49. <code>--etag-compare &lt;file&gt;</code></h3>
+<p>从文件中加载 ETag 并在条件请求中使用。这在基于 ETag 进行条件下载时非常有用。例如：<br>
+[ curl --etag-compare etagfile.txt -o file.html <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>etagfile.txt</code> 中的 ETag 进行条件请求。</p>
+<h3 id="50-etag-save-file">50. <code>--etag-save &lt;file&gt;</code></h3>
+<p>解析传入的 ETag 并将其保存到文件中。这在需要跟踪 ETag 以进行后续条件请求时非常有用。例如：<br>
+[ curl --etag-save etagfile.txt -o file.html <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将响应中的 ETag 保存到 <code>etagfile.txt</code>。</p>
+<h3 id="51-expect100-timeout-seconds">51. <code>--expect100-timeout &lt;seconds&gt;</code></h3>
+<p>设置在收到 100-continue 响应前的超时时间。这在上传大文件时可能有用，服务器可能在收到所有数据前发送 100-continue 响应。例如：<br>
+[ curl --expect100-timeout 10 -d @bigfile.zip <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会等待最多 10 秒来接收 100-continue 响应。</p>
+<h3 id="52-f-fail">52. <code>-f, --fail</code></h3>
+<p>在遇到 HTTP 错误时快速失败，不产生任何输出。这在脚本中需要明确的错误处理时非常有用。例如：<br>
+[ curl --fail <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+如果 HTTP 状态码为 400 或更高，curl 会返回错误代码 22。</p>
+<h3 id="53-fail-early">53. <code>--fail-early</code></h3>
+<p>在第一次传输错误时立即失败。这在处理多个文件或请求时可能有用，希望在第一次错误时停止。例如：<br>
+[ curl --fail-early -o file1.txt <a target="_blank" rel="noopener" href="http://example.com/file1">http://example.com/file1</a> -o file2.txt <a target="_blank" rel="noopener" href="http://example.com/file2">http://example.com/file2</a> ]<br>
+如果 <code>file1</code> 的下载失败，curl 不会尝试 <code>file2</code>。</p>
+<h3 id="54-fail-with-body">54. <code>--fail-with-body</code></h3>
+<p>在遇到 HTTP 错误时失败，但仍然显示响应体。这在需要查看错误响应的内容时非常有用。例如：<br>
+[ curl --fail-with-body <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+如果 HTTP 状态码为 400 或更高，curl 会显示响应体并返回错误代码 22。</p>
+<h3 id="55-false-start">55. <code>--false-start</code></h3>
+<p>启用 TLS False Start，这可以减少 TLS 握手的延迟。这在需要提高性能时可能有用。例如：<br>
+[ curl --false-start <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会在 TLS 握手过程中尝试 False Start。</p>
+<h3 id="56-form-name-content">56. <code>--form &lt;name=content&gt;</code></h3>
+<p>指定 multipart 表单数据。这在上传文件或发送表单时非常有用。例如：<br>
+[ curl --form ‘file=@localfile.txt’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将 <code>localfile.txt</code> 作为表单数据发送。</p>
+<h3 id="57-form-escape">57. <code>--form-escape</code></h3>
+<p>使用反斜杠转义表单字段。这在表单数据中包含特殊字符时可能有用。例如：<br>
+[ curl --form-escape ‘field=This is a \newline’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会正确转义反斜杠和换行符。</p>
+<h3 id="58-form-string-name-string">58. <code>--form-string &lt;name=string&gt;</code></h3>
+<p>类似于 <code>--form</code>，但用于发送简单的字符串。例如：<br>
+[ curl --form-string ‘name=Kimi’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将 <code>name=Kimi</code> 作为表单数据发送。</p>
+<h3 id="59-ftp-account-data">59. <code>--ftp-account &lt;data&gt;</code></h3>
+<p>指定 FTP 账户数据字符串。这在需要在 FTP 服务器上指定账户信息时可能有用。例如：<br>
+[ curl --ftp-account ‘accountname’ <a href="ftp://ftp.example.com">ftp://ftp.example.com</a> ]<br>
+curl 会在 FTP 会话中使用 <code>accountname</code>。</p>
+<h3 id="60-ftp-alternative-to-user-command">60. <code>--ftp-alternative-to-user &lt;command&gt;</code></h3>
+<p>指定一个替代的 USER 命令。这在与某些 FTP 服务器交互时可能需要。例如：<br>
+[ curl --ftp-alternative-to-user ‘ACCT user’ <a href="ftp://ftp.example.com">ftp://ftp.example.com</a> ]<br>
+curl 会使用 <code>ACCT user</code> 而不是 <code>USER user</code>。</p>
+<h3 id="61-ftp-create-dirs">61. <code>--ftp-create-dirs</code></h3>
+<p>如果远程目录不存在，curl 会创建它们。这在上传文件到不存在的目录时非常有用。例如：<br>
+[ curl --ftp-create-dirs -T localfile.txt <a href="ftp://ftp.example.com/path/to/dir">ftp://ftp.example.com/path/to/dir</a> ]<br>
+如果 <code>path/to/dir</code> 不存在，curl 会创建它。</p>
+<h3 id="62-ftp-method-method">62. <code>--ftp-method &lt;method&gt;</code></h3>
+<p>指定 curl 如何处理 FTP 目录。选项包括 <code>nocwd</code>、<code>cwd</code> 或 <code>auto</code>。例如：<br>
+[ curl --ftp-method nocwd -T localfile.txt <a href="ftp://ftp.example.com">ftp://ftp.example.com</a> ]<br>
+curl 不会尝试改变工作目录。</p>
+<h3 id="63-ftp-pasv">63. <code>--ftp-pasv</code></h3>
+<p>告诉 curl 使用 PASV 或 EPSV 命令进行 FTP 传输。这在通过防火墙时可能需要。例如：<br>
+[ curl --ftp-pasv <a href="ftp://ftp.example.com">ftp://ftp.example.com</a> ]<br>
+curl 会使用 PASV 模式。</p>
+<h3 id="64-ftp-port-address">64. <code>--ftp-port &lt;address&gt;</code></h3>
+<p>指定一个端口号或范围用于 FTP PORT 命令。这在需要使用特定端口范围时可能有用。例如：<br>
+[ curl --ftp-port 1024-2048 <a href="ftp://ftp.example.com">ftp://ftp.example.com</a> ]<br>
+curl 会从 <code>1024</code> 到 <code>2048</code> 之间选择一个端口。</p>
+<h3 id="65-ftp-pret">65. <code>--ftp-pret</code></h3>
+<p>在 PASV 之前发送 PRET 命令。这在某些 FTP 服务器需要特定的 PRET 命令时可能有用。例如：<br>
+[ curl --ftp-pret ‘PRET command’ <a href="ftp://ftp.example.com">ftp://ftp.example.com</a> ]<br>
+curl 会在发送 PASV 之前发送 <code>PRET command</code>。</p>
+<h3 id="66-ftp-skip-pasv-ip">66. <code>--ftp-skip-pasv-ip</code></h3>
+<p>跳过在 PASV 响应中收到的 IP 地址。这在 PASV 响应中的 IP 地址不可信时可能有用。例如：<br>
+[ curl --ftp-skip-pasv-ip <a href="ftp://ftp.example.com">ftp://ftp.example.com</a> ]<br>
+curl 不会使用 PASV 响应中的 IP 地址。</p>
+<h3 id="67-ftp-ssl-ccc">67. <code>--ftp-ssl-ccc</code></h3>
+<p>在 FTPS 连接后发送 CCC 命令以降级到明文。这在某些 FTPS 服务器需要此操作时可能有用。例如：<br>
+[ curl --ftp-ssl-ccc ftps://ftps.example.com ]<br>
+curl 会在连接后发送 CCC 命令。</p>
+<h3 id="68-ftp-ssl-ccc-mode-active-passive">68. <code>--ftp-ssl-ccc-mode &lt;active/passive&gt;</code></h3>
+<p>指定在发送 CCC 命令后使用的模式。例如：<br>
+[ curl --ftp-ssl-ccc-mode active ftps://ftps.example.com ]<br>
+curl 会在 CCC 后使用主动模式。</p>
+<h3 id="69-ftp-ssl-control">69. <code>--ftp-ssl-control</code></h3>
+<p>要求在 FTP 控制连接上使用 TLS。这在需要加密 FTP 控制通道时非常有用。例如：<br>
+[ curl --ftp-ssl-control ftps://ftps.example.com ]<br>
+curl 会加密 FTP 控制连接。</p>
+<h3 id="70-globoff">70. <code>--globoff</code></h3>
+<p>禁用 URL 中的花括号 <code>&#123;&#125;</code> 扩展。这在需要传递包含花括号的 URL 时有用。例如：<br>
+[ curl --globoff <a target="_blank" rel="noopener" href="http://example.com/file%7B1,2%7D.txt">http://example.com/file{1,2}.txt</a> ]<br>
+curl 会将 URL 视为 <code>http://example.com/file&#123;1,2&#125;.txt</code>，而不是扩展为两个独立的请求。</p>
+<h3 id="71-happy-eyeballs-timeout-ms-ms">71. <code>--happy-eyeballs-timeout-ms &lt;ms&gt;</code></h3>
+<p>设置在 IPv6 连接超时前等待的时间（以毫秒为单位）。这在支持 IPv6 的系统上可能有用。例如：<br>
+[ curl --happy-eyeballs-timeout-ms 200 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会等待 200 毫秒以查看 IPv6 连接是否成功，然后再回退到 IPv4。</p>
+<h3 id="72-haproxy-clientip-ip">72. <code>--haproxy-clientip &lt;ip&gt;</code></h3>
+<p>设置 HAProxy PROXY 协议中使用的客户端 IP 地址。这在通过 HAProxy 代理 curl 时可能有用。例如：<br>
+[ curl --haproxy-clientip 192.168.1.100 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在 PROXY 协议中使用 <code>192.168.1.100</code> 作为客户端 IP。</p>
+<h3 id="73-haproxy-protocol">73. <code>--haproxy-protocol</code></h3>
+<p>在连接中使用 HAProxy PROXY 协议 v1。这在通过 HAProxy 代理 curl 时可能有用。例如：<br>
+[ curl --haproxy-protocol <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在连接中包含 PROXY 协议头。</p>
+<h3 id="74-head">74. <code>--head</code></h3>
+<p>仅显示文档信息，不下载内容。这在需要查看 HTTP 头信息时非常有用。例如：<br>
+[ curl --head <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会显示 HTTP 头信息。</p>
+<h3 id="75-header-header-file">75. <code>--header &lt;header/@file&gt;</code></h3>
+<p>自定义 HTTP 头。这在需要添加或覆盖特定头时非常有用。例如：<br>
+[ curl --header ‘X-Custom-Header: Value’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会添加 <code>X-Custom-Header: Value</code> 到请求中。</p>
+<h3 id="76-help-category">76. <code>--help &lt;category&gt;</code></h3>
+<p>显示特定类别的帮助。例如：<br>
+[ curl --help http ]<br>
+curl 会显示与 HTTP 相关的帮助。</p>
+<h3 id="77-hostpubmd5-md5">77. <code>--hostpubmd5 &lt;md5&gt;</code></h3>
+<p>指定可接受的 MD5 哈希值以验证主机的公钥。这在需要确保连接到正确的主机时可能有用。例如：<br>
+[ curl --hostpubmd5 ‘MD5Hash’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会验证主机的公钥是否匹配指定的 MD5 哈希值。</p>
+<h3 id="78-hostpubsha256-sha256">78. <code>--hostpubsha256 &lt;sha256&gt;</code></h3>
+<p>类似于 <code>--hostpubmd5</code>，但使用 SHA256 哈希值。例如：<br>
+[ curl --hostpubsha256 ‘SHA256Hash’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会验证主机的公钥是否匹配指定的 SHA256 哈希值。</p>
+<h3 id="79-hsts-filename">79. <code>--hsts &lt;filename&gt;</code></h3>
+<p>指定 HSTS（HTTP 严格传输安全）缓存文件。这在需要处理 HSTS 时非常有用。例如：<br>
+[ curl --hsts hsts_cache.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>hsts_cache.txt</code> 来处理 HSTS。</p>
+<h3 id="80-http0-9">80. <code>--http0.9</code></h3>
+<p>允许 HTTP 0.9 响应。这在与非常旧的 HTTP 服务器交互时可能有用。例如：<br>
+[ curl --http0.9 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会接受 HTTP 0.9 响应。</p>
+<h3 id="81-http1-0">81. <code>--http1.0</code></h3>
+<p>强制使用 HTTP 1.0。这在需要与不支持 HTTP 1.1 的服务器交互时可能有用。例如：<br>
+[ curl --http1.0 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 HTTP 1.0。</p>
+<h3 id="82-http1-1">82. <code>--http1.1</code></h3>
+<p>强制使用 HTTP 1.1。这在需要确保使用 HTTP 1.1 时非常有用。例如：<br>
+[ curl --http1.1 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 HTTP 1.1。</p>
+<h3 id="83-http2">83. <code>--http2</code></h3>
+<p>启用 HTTP/2。这在需要使用 HTTP 2.0 时非常有用。例如：<br>
+[ curl --http2 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 HTTP 2.0。</p>
+<h3 id="84-http2-prior-knowledge">84. <code>--http2-prior-knowledge</code></h3>
+<p>在没有 HTTP/1.1 升级的情况下使用 HTTP 2。这在直接使用 HTTP 2 时可能有用。例如：<br>
+[ curl --http2-prior-knowledge <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会直接使用 HTTP 2。</p>
+<h3 id="85-http3">85. <code>--http3</code></h3>
+<p>启用 HTTP v3。这在需要使用 HTTP 3.0 时非常有用。例如：<br>
+[ curl --http3 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会尝试使用 HTTP 3.0。</p>
+<h3 id="86-http3-only">86. <code>--http3-only</code></h3>
+<p>仅使用 HTTP v3。这在需要确保仅使用 HTTP 3.0 时非常有用。例如：<br>
+[ curl --http3-only <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 仅会使用 HTTP 3.0。</p>
+<h3 id="87-ignore-content-length">87. <code>--ignore-content-length</code></h3>
+<p>忽略服务器提供的内容长度。这在处理某些流式传输或当服务器错误报告长度时可能有用。例如：<br>
+[ curl --ignore-content-length <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 不会依赖 <code>Content-Length</code> 头。</p>
+<h3 id="88-include">88. <code>--include</code></h3>
+<p>在输出中包含 HTTP 响应头。这在需要查看完整响应时非常有用。例如：<br>
+[ curl --include <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会显示 HTTP 响应头和内容。</p>
+<h3 id="89-insecure">89. <code>--insecure</code></h3>
+<p>允许不安全的服务器连接，跳过 SSL 证书验证。这在测试环境中可能有用，但不建议在生产中使用。例如：<br>
+[ curl --insecure <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 不会验证服务器的 SSL 证书。</p>
+<h3 id="90-interface-name">90. <code>--interface &lt;name&gt;</code></h3>
+<p>指定要使用的网络接口。这在有多个网络连接时可能有用。例如：<br>
+[ curl --interface eth0 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>eth0</code> 接口。</p>
+<h3 id="91-ip-tos-string">91. <code>--ip-tos &lt;string&gt;</code></h3>
+<p>设置 IP 类型 of Service 或 Traffic Class。这在需要设置特定 QoS 时可能有用。例如：<br>
+[ curl --ip-tos ‘throughput’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会设置 TOS 为 <code>throughput</code>。</p>
+<h3 id="92-ipfs-gateway-URL">92. <code>--ipfs-gateway &lt;URL&gt;</code></h3>
+<p>指定用于 IPFS 的网关。这在通过 HTTP 网关访问 IPFS 时非常有用。例如：<br>
+[ curl --ipfs-gateway <a target="_blank" rel="noopener" href="http://ipfs.example.com">http://ipfs.example.com</a> <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会通过 <code>ipfs.example.com</code> 网关访问 <code>example.com</code>。</p>
+<h3 id="93-ipv4">93. <code>--ipv4</code></h3>
+<p>仅解析为 IPv4 地址。这在需要使用 IPv4 时非常有用。例如：<br>
+[ curl --ipv4 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 仅会使用 IPv4。</p>
+<h3 id="94-ipv6">94. <code>--ipv6</code></h3>
+<p>仅解析为 IPv6 地址。这在需要使用 IPv6 时非常有用。例如：<br>
+[ curl --ipv6 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 仅会使用 IPv6。</p>
+<h3 id="95-json-data">95. <code>--json &lt;data&gt;</code></h3>
+<p>指定要发送的 JSON 数据。这在需要发送 JSON 格式数据时非常有用。例如：<br>
+[ curl --json ‘{“name”: “Kimi”, “age”: 30}’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会发送一个 JSON 对象。</p>
+<h3 id="96-junk-session-cookies">96. <code>--junk-session-cookies</code></h3>
+<p>忽略从文件中读取的会话 cookies。这在不希望使用持久化 cookies 时可能有用。例如：<br>
+[ curl --junk-session-cookies -b cookies.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 不会使用 <code>cookies.txt</code> 中的会话 cookies。</p>
+<h3 id="97-keepalive-cnt-integer">97. <code>--keepalive-cnt &lt;integer&gt;</code></h3>
+<p>设置在连接上保持活动的请求数量。这在使用持久连接时可能有用。例如：<br>
+[ curl --keepalive-cnt 5 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在连接上保持活动最多 5 个请求。</p>
+<h3 id="98-keepalive-time-seconds">98. <code>--keepalive-time &lt;seconds&gt;</code></h3>
+<p>设置在发送下一个请求前保持活动的时间。例如：<br>
+[ curl --keepalive-time 30 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在发送下一个请求前保持活动 30 秒。</p>
+<h3 id="99-key-key">99. <code>--key &lt;key&gt;</code></h3>
+<p>指定要使用的私钥文件。这在需要使用特定私钥进行 SSL 认证时非常有用。例如：<br>
+[ curl --key private_key.pem <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>private_key.pem</code> 作为私钥。</p>
+<h3 id="100-key-type-type">100. <code>--key-type &lt;type&gt;</code></h3>
+<p>指定私钥文件的类型，支持 DER、PEM 或 ENG。例如：<br>
+[ curl --key-type PEM --key private_key.pem <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 PEM 格式的 <code>private_key.pem</code>。</p>
+<h3 id="101-krb-level">101. <code>--krb &lt;level&gt;</code></h3>
+<p>启用 Kerberos 认证，指定安全级别。例如：<br>
+[ curl --krb high -u username:password <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用高安全级别的 Kerberos 认证。</p>
+<h3 id="102-libcurl-file">102. <code>--libcurl &lt;file&gt;</code></h3>
+<p>生成给定命令行的 libcurl 代码。这在需要将 curl 命令转换为 libcurl 代码时非常有用。例如：<br>
+[ curl --libcurl libcurl_code.c <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会生成 <code>libcurl_code.c</code>，其中包含等效的 libcurl 代码。</p>
+<h3 id="103-limit-rate-speed">103. <code>--limit-rate &lt;speed&gt;</code></h3>
+<p>限制传输速度。例如：<br>
+[ curl --limit-rate 100K <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将传输速度限制为每秒 100 KB。</p>
+<h3 id="104-location-trusted">104. <code>--location-trusted</code></h3>
+<p>类似于 <code>--location</code>，但允许发送凭据到其他主机。这在重定向到不同的域时可能需要。例如：<br>
+[ curl --location-trusted -u username:password <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会跟随重定向，并在新的域上发送凭据。</p>
+<h3 id="105-login-options-options">105. <code>--login-options &lt;options&gt;</code></h3>
+<p>指定服务器登录选项。这在需要特定登录参数时可能有用。例如：<br>
+[ curl --login-options ‘login_option=value’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>login_option=value</code> 进行登录。</p>
+<h3 id="106-mail-auth-address">106. <code>--mail-auth &lt;address&gt;</code></h3>
+<p>指定原始电子邮件的发件人地址。这在通过 SMTP 发送邮件时可能有用。例如：<br>
+[ curl --mail-auth ‘from@example.com’ smtp://smtp.example.com ]<br>
+curl 会使用 <code>from@example.com</code> 作为发件人地址。</p>
+<h3 id="107-mail-from-address">107. <code>--mail-from &lt;address&gt;</code></h3>
+<p>指定发件人地址。例如：<br>
+[ curl --mail-from ‘from@example.com’ smtp://smtp.example.com ]<br>
+curl 会使用 <code>from@example.com</code> 作为发件人地址。</p>
+<h3 id="108-mail-rcpt-address">108. <code>--mail-rcpt &lt;address&gt;</code></h3>
+<p>指定收件人地址。例如：<br>
+[ curl --mail-rcpt ‘to@example.com’ smtp://smtp.example.com ]<br>
+curl 会将邮件发送到 <code>to@example.com</code>。</p>
+<h3 id="109-mail-rcpt-allowfails">109. <code>--mail-rcpt-allowfails</code></h3>
+<p>允许 RCPT TO 命令失败。这在某些 SMTP 交互中可能有用，当某些收件人地址可能无效时。例如：<br>
+[ curl --mail-rcpt-allowfails --mail-rcpt ‘to@example.com’ smtp://smtp.example.com ]<br>
+curl 会允许 RCPT TO 命令失败而不终止会话。</p>
+<h3 id="110-manual">110. <code>--manual</code></h3>
+<p>显示完整的手动。这在需要查看所有 curl 参数及其详细说明时非常有用。例如：<br>
+[ curl --manual ]<br>
+curl 会显示完整的手动。</p>
+<h3 id="111-max-filesize-bytes">111. <code>--max-filesize &lt;bytes&gt;</code></h3>
+<p>指定要下载的最大文件大小。超过这个大小时，curl 会拒绝下载。例如：<br>
+[ curl --max-filesize 1000000 <a target="_blank" rel="noopener" href="http://example.com/bigfile.zip">http://example.com/bigfile.zip</a> ]<br>
+curl 会拒绝下载超过 1 MB 的文件。</p>
+<h3 id="112-max-redirs-num">112. <code>--max-redirs &lt;num&gt;</code></h3>
+<p>指定允许的最大重定向次数。超过这个次数时，curl 会停止跟随重定向。例如：<br>
+[ curl --max-redirs 5 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 最多跟随 5 次重定向。</p>
+<h3 id="113-max-time-seconds">113. <code>--max-time &lt;seconds&gt;</code></h3>
+<p>设置 curl 运行的最大时间。超过这个时间时，curl 会超时。例如：<br>
+[ curl --max-time 30 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 最多运行 30 秒。</p>
+<h3 id="114-metalink">114. <code>--metalink</code></h3>
+<p>将给定的 URL 处理为 metalink XML 文件。这在使用 metalink 下载管理器时可能有用。例如：<br>
+[ curl --metalink <a target="_blank" rel="noopener" href="http://example.com/metalink.xml">http://example.com/metalink.xml</a> ]<br>
+curl 会处理 <code>metalink.xml</code> 中的镜像。</p>
+<h3 id="115-mptcp">115. <code>--mptcp</code></h3>
+<p>启用多路径 TCP。这在支持多路径 TCP 的系统上可能有用。例如：<br>
+[ curl --mptcp <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会尝试使用多路径 TCP。</p>
+<h3 id="116-negotiate">116. <code>--negotiate</code></h3>
+<p>使用 HTTP 协商（SPNEGO）认证。这通常与 <code>--user</code> 一起使用。例如：<br>
+[ curl --negotiate -u username:password <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 SPNEGO 认证。</p>
+<h3 id="117-netrc">117. <code>--netrc</code></h3>
+<p>从 <code>~/.netrc</code> 中读取凭据。这在不希望在命令行中指定凭据时非常有用。例如：<br>
+[ curl --netrc <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>~/.netrc</code> 中的凭据。</p>
+<h3 id="118-netrc-file-filename">118. <code>--netrc-file &lt;filename&gt;</code></h3>
+<p>指定一个替代的 netrc 文件。例如：<br>
+[ curl --netrc-file netrcfile.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>netrcfile.txt</code> 而不是 <code>~/.netrc</code>。</p>
+<h3 id="119-netrc-optional">119. <code>--netrc-optional</code></h3>
+<p>仅在需要时使用 netrc。这在 netrc 是可选的时可能有用。例如：<br>
+[ curl --netrc-optional <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在需要时使用 netrc。</p>
+<h3 id="120-no-alpn">120. <code>--no-alpn</code></h3>
+<p>禁用 ALPN（应用层协议协商）。这在某些旧的服务器不支持 ALPN 时可能有用。例如：<br>
+[ curl --no-alpn <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 不会使用 ALPN。</p>
+<h3 id="121-no-buffer">121. <code>--no-buffer</code></h3>
+<p>禁用输出流的缓冲。这在需要实时查看输出时非常有用。例如：<br>
+[ curl --no-buffer <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会直接输出数据，而不是缓冲。</p>
+<h3 id="122-no-clobber">122. <code>--no-clobber</code></h3>
+<p>在输出文件已存在时，curl 不会覆盖它。这在防止数据覆盖时非常有用。例如：<br>
+[ curl --no-clobber -o file.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+如果 <code>file.txt</code> 已存在，curl 不会覆盖它。</p>
+<h3 id="123-no-keepalive">123. <code>--no-keepalive</code></h3>
+<p>在请求后立即关闭连接，不保持活动。这在不需要持久连接时可能有用。例如：<br>
+[ curl --no-keepalive <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 不会保持连接活动。</p>
+<h3 id="124-no-npn">124. <code>--no-npn</code></h3>
+<p>禁用 NPN（下一代协议协商）。这在某些旧的服务器不支持 NPN 时可能有用。例如：<br>
+[ curl --no-npn <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 不会使用 NPN。</p>
+<h3 id="125-no-progress-meter">125. <code>--no-progress-meter</code></h3>
+<p>禁用 curl 的进度条。这在需要在日志中查看 clean 输出时非常有用。例如：<br>
+[ curl --no-progress-meter <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 不会显示进度条。</p>
+<h3 id="126-no-sessionid">126. <code>--no-sessionid</code></h3>
+<p>禁用 SSL 会话 ID 的重用。这在需要每次连接都使用新会话时可能有用。例如：<br>
+[ curl --no-sessionid <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 不会重用 SSL 会话 ID。</p>
+<h3 id="127-noproxy-no-proxy-list">127. <code>--noproxy &lt;no-proxy-list&gt;</code></h3>
+<p>指定一个逗号分隔的主机列表，这些主机不使用代理。这在某些主机需要直接访问时非常有用。例如：<br>
+[ curl --noproxy <a target="_blank" rel="noopener" href="http://example.com">example.com</a>,*.local <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 不会使用代理连接到 <code>example.com</code> 或任何以 <code>.local</code> 结尾的主机。</p>
+<h3 id="128-ntlm">128. <code>--ntlm</code></h3>
+<p>使用 HTTP NTLM 认证。这通常与 <code>--user</code> 一起使用。例如：<br>
+[ curl --ntlm -u username:password <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 NTLM 认证。</p>
+<h3 id="129-ntlm-wb">129. <code>--ntlm-wb</code></h3>
+<p>使用带有 winbind 的 HTTP NTLM 认证。这在使用 Samba 或 Active Directory 时可能有用。例如：<br>
+[ curl --ntlm-wb -u username:password <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用带有 winbind 的 NTLM 认证。</p>
+<h3 id="130-oauth2-bearer-token">130. <code>--oauth2-bearer &lt;token&gt;</code></h3>
+<p>指定 OAuth 2 Bearer 令牌。这在需要使用 OAuth 2 认证时非常有用。例如：<br>
+[ curl --oauth2-bearer ’ bearer_token’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在 <code>Authorization</code> 头中使用 <code> bearer_token</code>。</p>
+<h3 id="131-output-dir-dir">131. <code>--output-dir &lt;dir&gt;</code></h3>
+<p>指定要写入的输出文件的目录。例如：<br>
+[ curl --output-dir /path/to/dir -o file.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将 <code>file.txt</code> 保存到 <code>/path/to/dir</code>。</p>
+<h3 id="132-parallel">132. <code>--parallel</code></h3>
+<p>并行执行传输。这在需要同时处理多个请求时非常有用。例如：<br>
+[ curl --parallel <a target="_blank" rel="noopener" href="http://example.com/file1">http://example.com/file1</a> <a target="_blank" rel="noopener" href="http://example.com/file2">http://example.com/file2</a> ]<br>
+curl 会并行下载 <code>file1</code> 和 <code>file2</code>。</p>
+<h3 id="133-parallel-immediate">133. <code>--parallel-immediate</code></h3>
+<p>立即开始并行传输，不进行排序。这在需要最大化并行性时可能有用。例如：<br>
+[ curl --parallel-immediate <a target="_blank" rel="noopener" href="http://example.com/file1">http://example.com/file1</a> <a target="_blank" rel="noopener" href="http://example.com/file2">http://example.com/file2</a> ]<br>
+curl 会立即并行下载 <code>file1</code> 和 <code>file2</code>。</p>
+<h3 id="134-parallel-max-num">134. <code>--parallel-max &lt;num&gt;</code></h3>
+<p>指定最大并行传输数。例如：<br>
+[ curl --parallel-max 5 <a target="_blank" rel="noopener" href="http://example.com/file1">http://example.com/file1</a> <a target="_blank" rel="noopener" href="http://example.com/file2">http://example.com/file2</a> ]<br>
+curl 会限制并行传输数为 5。</p>
+<h3 id="135-pass-phrase">135. <code>--pass &lt;phrase&gt;</code></h3>
+<p>指定要使用的密语，通常用于私钥。例如：<br>
+[ curl --pass ‘my passphrase’ --key private_key.pem <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>my passphrase</code> 解密 <code>private_key.pem</code>。</p>
+<h3 id="136-path-as-is">136. <code>--path-as-is</code></h3>
+<p>告诉 curl 不要简化路径中的 <code>../</code> 和 <code>./</code>。这在需要精确匹配路径时非常有用。例如：<br>
+[ curl --path-as-is <a target="_blank" rel="noopener" href="http://example.com/path/with/../dots">http://example.com/path/with/../dots</a> ]<br>
+curl 会将路径 <code>path/with/../dots</code> 发送到服务器，不进行简化。</p>
+<h3 id="137-pinnedpubkey-hashes">137. <code>--pinnedpubkey &lt;hashes&gt;</code></h3>
+<p>指定要验证的服务器公钥的哈希值。这在需要确保连接到特定服务器时非常有用。例如：<br>
+[ curl --pinnedpubkey ‘sha256=server_public_key_hash’ <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会验证服务器的公钥是否匹配指定的哈希值。</p>
+<h3 id="138-post301">138. <code>--post301</code></h3>
+<p>在 301 重定向后继续使用 POST。这在需要在 301 重定向后保持 POST 方法时非常有用。例如：<br>
+[ curl --post301 -d ‘data’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+如果 <code>example.com</code> 重定向到 <code>https://example.com</code>，curl 会继续使用 POST。</p>
+<h3 id="139-post302">139. <code>--post302</code></h3>
+<p>类似于 <code>--post301</code>，但用于 302 重定向。例如：<br>
+[ curl --post302 -d ‘data’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在 302 重定向后保持 POST 方法。</p>
+<h3 id="140-post303">140. <code>--post303</code></h3>
+<p>类似于 <code>--post301</code>，但用于 303 重定向。例如：<br>
+[ curl --post303 -d ‘data’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在 303 重定向后保持 POST 方法。</p>
+<h3 id="141-preproxy-protocol-host-port">141. <code>--preproxy [protocol://]host[:port]</code></h3>
+<p>指定一个 pre-proxy 服务器，curl 会首先连接到这个服务器。这在需要通过另一个代理连接到主代理时可能有用。例如：<br>
+[ curl --preproxy socks5://preproxy:1080 -x <a target="_blank" rel="noopener" href="http://mainproxy:8080">http://mainproxy:8080</a> <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会首先连接到 <code>preproxy:1080</code>，然后通过 <code>mainproxy:8080</code>。</p>
+<h3 id="142-progress-bar">142. <code>--progress-bar</code></h3>
+<p>显示一个 progress 条。这在需要在终端中查看传输进度时非常有用。例如：<br>
+[ curl --progress-bar <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会显示一个 progress 条。</p>
+<h3 id="143-proto-protocols">143. <code>--proto &lt;protocols&gt;</code></h3>
+<p>启用或禁用特定的协议。例如：<br>
+[ curl --proto +http,https,ftp -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会仅使用 HTTP、HTTPS 和 FTP 协议。</p>
+<h3 id="144-proto-default-protocol">144. <code>--proto-default &lt;protocol&gt;</code></h3>
+<p>指定在没有指定 scheme 时使用的默认协议。例如：<br>
+[ curl --proto-default https <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将 <code>http://example.com</code> 视为 <code>https://example.com</code>。</p>
+<h3 id="145-proto-redir-protocols">145. <code>--proto-redir &lt;protocols&gt;</code></h3>
+<p>指定在重定向时允许使用的协议。例如：<br>
+[ curl --proto-redir +https,ftp -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 仅会在重定向到 HTTPS 或 FTP 时进行。</p>
+<h3 id="146-proxy-protocol-host-port">146. <code>--proxy [protocol://]host[:port]</code></h3>
+<p>指定一个代理服务器。这是 curl 中最常用的参数之一。例如：<br>
+[ curl -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会通过 <code>proxy:1080</code> 代理连接到 <code>example.com</code>。</p>
+<h3 id="147-proxy-anyauth">147. <code>--proxy-anyauth</code></h3>
+<p>允许使用任何可用的代理认证方法。这在不确定代理支持哪种认证方法时可能有用。例如：<br>
+[ curl --proxy-anyauth -x socks5://proxy:1080 -u user:pass <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用任何可用的认证方法进行代理认证。</p>
+<h3 id="148-proxy-basic">148. <code>--proxy-basic</code></h3>
+<p>使用基本认证进行代理认证。这在需要使用基本认证时非常有用。例如：<br>
+[ curl --proxy-basic -x socks5://proxy:1080 -u user:pass <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用基本认证进行代理认证。</p>
+<h3 id="149-proxy-ca-native">149. <code>--proxy-ca-native</code></h3>
+<p>使用系统默认的 CA 证书进行代理连接的验证。这在需要使用系统 CA 时可能有用。例如：<br>
+[ curl --proxy-ca-native -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用系统的 CA 证书验证代理连接。</p>
+<h3 id="150-proxy-cacert-file">150. <code>--proxy-cacert &lt;file&gt;</code></h3>
+<p>指定一个 CA 证书文件用于代理连接。例如：<br>
+[ curl --proxy-cacert ca_cert.pem -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>ca_cert.pem</code> 验证代理连接。</p>
+<h3 id="151-proxy-capath-dir">151. <code>--proxy-capath &lt;dir&gt;</code></h3>
+<p>指定一个包含 CA 证书的目录用于代理连接。例如：<br>
+[ curl --proxy-capath /etc/ssl/certs -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会在 <code>/etc/ssl/certs</code> 中查找 CA 证书用于代理连接。</p>
+<h3 id="152-proxy-cert-cert-passwd">152. <code>--proxy-cert &lt;cert[:passwd]&gt;</code></h3>
+<p>指定一个客户端证书用于代理连接。例如：<br>
+[ curl --proxy-cert client_cert.pem:password -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>client_cert.pem</code> 和密码 <code>password</code> 进行代理连接的客户端认证。</p>
+<h3 id="153-proxy-cert-type-type">153. <code>--proxy-cert-type &lt;type&gt;</code></h3>
+<p>指定代理连接的客户端证书类型，支持 DER、PEM 或 ENG。例如：<br>
+[ curl --proxy-cert-type PEM --proxy-cert client_cert.pem -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 PEM 格式的 <code>client_cert.pem</code>。</p>
+<h3 id="154-proxy-ciphers-list">154. <code>--proxy-ciphers &lt;list&gt;</code></h3>
+<p>指定用于代理连接的 SSL 密码套件。例如：<br>
+[ curl --proxy-ciphers ‘HIGH:!aNULL’ -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用高安全级别的密码套件用于代理连接。</p>
+<h3 id="155-proxy-crlfile-file">155. <code>--proxy-crlfile &lt;file&gt;</code></h3>
+<p>指定一个 CRL 文件用于代理连接的证书验证。例如：<br>
+[ curl --proxy-crlfile crl.pem -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>crl.pem</code> 验证代理连接的证书是否被吊销。</p>
+<h3 id="156-proxy-digest">156. <code>--proxy-digest</code></h3>
+<p>使用消化认证进行代理认证。这在需要使用消化认证时非常有用。例如：<br>
+[ curl --proxy-digest -x socks5://proxy:1080 -u user:pass <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用消化认证进行代理认证。</p>
+<h3 id="157-proxy-header-header-file">157. <code>--proxy-header &lt;header/@file&gt;</code></h3>
+<p>自定义代理连接的头。例如：<br>
+[ curl --proxy-header ‘X-Proxy-Header: Value’ -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会添加 <code>X-Proxy-Header: Value</code> 到代理连接的头中。</p>
+<h3 id="158-proxy-http2">158. <code>--proxy-http2</code></h3>
+<p>使用 HTTP/2 进行代理连接。这在需要使用 HTTP 2 与代理通信时可能有用。例如：<br>
+[ curl --proxy-http2 -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 HTTP 2 与代理通信。</p>
+<h3 id="159-proxy-insecure">159. <code>--proxy-insecure</code></h3>
+<p>允许不安全的代理连接，跳过 SSL 证书验证。这在测试环境中可能有用，但不建议在生产中使用。例如：<br>
+[ curl --proxy-insecure -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 不会验证代理的 SSL 证书。</p>
+<h3 id="160-proxy-key-key">160. <code>--proxy-key &lt;key&gt;</code></h3>
+<p>指定用于代理连接的私钥。例如：<br>
+[ curl --proxy-key private_key.pem -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>private_key.pem</code> 进行代理连接的 SSL 认证。</p>
+<h3 id="161-proxy-key-type-type">161. <code>--proxy-key-type &lt;type&gt;</code></h3>
+<p>指定用于代理连接的私钥类型，支持 DER、PEM 或 ENG。例如：<br>
+[ curl --proxy-key-type PEM --proxy-key private_key.pem -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 PEM 格式的 <code>private_key.pem</code>。</p>
+<h3 id="162-proxy-negotiate">162. <code>--proxy-negotiate</code></h3>
+<p>使用 SPNEGO 协商进行代理认证。这在需要使用 SPNEGO 时非常有用。例如：<br>
+[ curl --proxy-negotiate -x socks5://proxy:1080 -u user:pass <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 SPNEGO 进行代理认证。</p>
+<h3 id="163-proxy-ntlm">163. <code>--proxy-ntlm</code></h3>
+<p>使用 NTLM 认证进行代理认证。这在需要使用 NTLM 时非常有用。例如：<br>
+[ curl --proxy-ntlm -x socks5://proxy:1080 -u user:pass <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 NTLM 进行代理认证。</p>
+<h3 id="164-proxy-pass-phrase">164. <code>--proxy-pass &lt;phrase&gt;</code></h3>
+<p>指定用于代理连接的密语。例如：<br>
+[ curl --proxy-pass ‘my passphrase’ --proxy-cert client_cert.pem -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>my passphrase</code> 解密 <code>client_cert.pem</code>。</p>
+<h3 id="165-proxy-pinnedpubkey-hashes">165. <code>--proxy-pinnedpubkey &lt;hashes&gt;</code></h3>
+<p>指定用于代理连接的服务器公钥的哈希值。例如：<br>
+[ curl --proxy-pinnedpubkey ‘sha256=proxy_server_public_key_hash’ -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会验证代理服务器的公钥是否匹配指定的哈希值。</p>
+<h3 id="166-proxy-service-name-name">166. <code>--proxy-service-name &lt;name&gt;</code></h3>
+<p>指定用于代理连接的 Kerberos 服务名。例如：<br>
+[ curl --proxy-service-name ‘krbtgt’ -x socks5://proxy:1080 -u user:pass <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>krbtgt</code> 作为 Kerberos 服务名。</p>
+<h3 id="167-proxy-ssl-allow-beast">167. <code>--proxy-ssl-allow-beast</code></h3>
+<p>允许在代理连接中使用 BEAST 漏洞。这在需要与某些旧的代理服务器兼容时可能有用。例如：<br>
+[ curl --proxy-ssl-allow-beast -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会允许 BEAST 漏洞用于代理连接。</p>
+<h3 id="168-proxy-ssl-auto-client-cert">168. <code>--proxy-ssl-auto-client-cert</code></h3>
+<p>自动使用代理连接的客户端证书。这在需要自动选择证书时可能有用。例如：<br>
+[ curl --proxy-ssl-auto-client-cert -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会自动选择合适的客户端证书进行代理连接。</p>
+<h3 id="169-proxy-tls13-ciphers-ciphersuite-list">169. <code>--proxy-tls13-ciphers &lt;ciphersuite list&gt;</code></h3>
+<p>指定用于代理连接的 TLS 1.3 密码套件。例如：<br>
+[ curl --proxy-tls13-ciphers ‘TLS_AES_128_GCM_SHA256’ -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用指定的密码套件进行代理连接。</p>
+<h3 id="170-proxy-tlspassword-string">170. <code>--proxy-tlspassword &lt;string&gt;</code></h3>
+<p>指定用于代理连接的 TLS 密码。例如：<br>
+[ curl --proxy-tlspassword ‘my password’ -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>my password</code> 进行代理连接的 TLS 认证。</p>
+<h3 id="171-proxy-tlsuser-name">171. <code>--proxy-tlsuser &lt;name&gt;</code></h3>
+<p>指定用于代理连接的 TLS 用户名。例如：<br>
+[ curl --proxy-tlsuser ‘my username’ -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>my username</code> 进行代理连接的 TLS 认证。</p>
+<h3 id="172-proxy-tlsv1">172. <code>--proxy-tlsv1</code></h3>
+<p>使用 TLSv1 进行代理连接。例如：<br>
+[ curl --proxy-tlsv1 -x socks5://proxy:1080 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 TLSv1 进行代理连接。</p>
+<h3 id="173-proxy-user-user-password">173. <code>--proxy-user &lt;user:password&gt;</code></h3>
+<p>指定用于代理连接的用户和密码。这是 <code>--user</code> 的代理版本。例如：<br>
+[ curl -x socks5://proxy:1080 -u user:pass <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>user:pass</code> 进行代理认证。</p>
+<h3 id="174-proxy1-0-host-port">174. <code>--proxy1.0 &lt;host[:port]</code></h3>
+<p>使用 HTTP/1.0 代理。这在需要使用 HTTP 1.0 与代理通信时可能有用。例如：<br>
+[ curl --proxy1.0 socks5://proxy:1080 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 HTTP 1.0 与代理通信。</p>
+<h3 id="175-pubkey-key">175. <code>--pubkey &lt;key&gt;</code></h3>
+<p>指定要使用的 SSH 公钥。这在需要使用特定公钥进行 SSH 连接时非常有用。例如：<br>
+[ curl --pubkey public_key.pem sftp://sftp.example.com ]<br>
+curl 会使用 <code>public_key.pem</code> 进行 SSH 认证。</p>
+<h3 id="176-q-disable">176. <code>--q, --disable</code></h3>
+<p>禁用 .curlrc 配置文件。这在不希望使用默认配置时非常有用。例如：<br>
+[ curl --disable <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 不会读取任何配置文件。</p>
+<h3 id="177-range-range">177. <code>--range &lt;range&gt;</code></h3>
+<p>指定要检索的字节范围。这在部分下载或处理大文件时非常有用。例如：<br>
+[ curl --range 100-200 <a target="_blank" rel="noopener" href="http://example.com/file.txt">http://example.com/file.txt</a> ]<br>
+curl 会下载 <code>file.txt</code> 的第 100 到 200 个字节。</p>
+<h3 id="178-rate-max-request-rate">178. <code>--rate &lt;max request rate&gt;</code></h3>
+<p>指定最大请求速率。这在需要限制 curl 的请求频率时可能有用。例如：<br>
+[ curl --rate 10 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会限制请求速率为每秒 10 个。</p>
+<h3 id="179-raw">179. <code>--raw</code></h3>
+<p>不处理传输中的任何转换。这在需要接收原始数据时非常有用。例如：<br>
+[ curl --raw <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会输出原始的响应体。</p>
+<h3 id="180-referer-URL">180. <code>--referer &lt;URL&gt;</code></h3>
+<p>指定要发送的 referer 头。这在需要模拟从特定页面链接到另一个页面时非常有用。例如：<br>
+[ curl --referer <a target="_blank" rel="noopener" href="http://referer.com">http://referer.com</a> <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会发送 <code>Referer: http://referer.com</code> 头。</p>
+<h3 id="181-request-method">181. <code>--request &lt;method&gt;</code></h3>
+<p>指定要使用的 HTTP 方法。这在需要使用特定方法（如 PUT 或 DELETE）时非常有用。例如：<br>
+[ curl -X PUT -d ‘data’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 PUT 方法。</p>
+<h3 id="182-request-target-path">182. <code>--request-target &lt;path&gt;</code></h3>
+<p>指定要使用的请求路径。这在需要重写请求路径时可能有用。例如：<br>
+[ curl --request-target /path <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会请求 <code>/path</code> 而不是 <code>/</code>。</p>
+<h3 id="183-resolve-host-port-addr-addr">183. <code>--resolve &lt;[+]host:port:addr[,addr]...&gt;</code></h3>
+<p>指定要使用的特定 host:port 到 addr 的映射。这在需要绕过 DNS 或处理特定的网络配置时非常有用。例如：<br>
+[ curl --resolve example.com:80:192.168.1.100 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将 <code>example.com:80</code> 解析为 <code>192.168.1.100</code>。</p>
+<h3 id="184-retry-num">184. <code>--retry &lt;num&gt;</code></h3>
+<p>指定在遇到可重试的错误时重试的次数。例如：<br>
+[ curl --retry 5 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在遇到可重试的错误时重试最多 5 次。</p>
+<h3 id="185-retry-all-errors">185. <code>--retry-all-errors</code></h3>
+<p>在遇到任何错误时重试，而不仅仅是可重试的错误。例如：<br>
+[ curl --retry-all-errors --retry 5 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在遇到任何错误时重试最多 5 次。</p>
+<h3 id="186-retry-connrefused">186. <code>--retry-connrefused</code></h3>
+<p>仅在连接被拒绝时重试。这在处理间歇性的连接问题时可能有用。例如：<br>
+[ curl --retry-connrefused --retry 5 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 仅会在连接被拒绝时重试。</p>
+<h3 id="187-retry-delay-seconds">187. <code>--retry-delay &lt;seconds&gt;</code></h3>
+<p>指定每次重试之间的延迟时间。例如：<br>
+[ curl --retry 5 --retry-delay 10 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在每次重试之间等待 10 秒。</p>
+<h3 id="188-retry-max-time-seconds">188. <code>--retry-max-time &lt;seconds&gt;</code></h3>
+<p>指定重试的总时间。超过这个时间时，curl 会放弃。例如：<br>
+[ curl --retry 5 --retry-max-time 60 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在重试 5 次或 60 秒后放弃，以先到者为准。</p>
+<h3 id="189-sasl-authzid-identity">189. <code>--sasl-authzid &lt;identity&gt;</code></h3>
+<p>指定 SASL PLAIN 认证的 identity。例如：<br>
+[ curl --sasl-authzid ‘my_identity’ --sasl-ir -u user:pass smtp://smtp.example.com ]<br>
+curl 会使用 <code>my_identity</code> 进行 SASL 认证。</p>
+<h3 id="190-sasl-ir">190. <code>--sasl-ir</code></h3>
+<p>在 SASL 认证中使用初始响应。这在需要在初始请求中包含认证信息时可能有用。例如：<br>
+[ curl --sasl-ir -u user:pass smtp://smtp.example.com ]<br>
+curl 会在初始请求中包含 SASL 认证信息。</p>
+<h3 id="191-service-name-name">191. <code>--service-name &lt;name&gt;</code></h3>
+<p>指定 SPNEGO 认证的服务名。例如：<br>
+[ curl --service-name ‘krbtgt’ -u user:pass <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>krbtgt</code> 作为 SPNEGO 服务名。</p>
+<h3 id="192-show-error">192. <code>--show-error</code></h3>
+<p>在使用 <code>--silent</code> 时显示错误。这在需要在静默模式下查看错误时非常有用。例如：<br>
+[ curl --silent --show-error <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 不会显示 progress 条，但会在有错误时显示错误。</p>
+<h3 id="193-silent">193. <code>--silent</code></h3>
+<p>静默模式，不显示 progress 条或错误。这在需要在日志中查看 clean 输出时非常有用。例如：<br>
+[ curl --silent <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 不会显示任何 progress 或错误信息。</p>
+<h3 id="194-socks4-host-port">194. <code>--socks4 &lt;host[:port]</code></h3>
+<p>使用 SOCKS4 代理。例如：<br>
+[ curl --socks4 socks4:1080 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会通过 <code>socks4:1080</code> 代理连接到 <code>example.com</code>。</p>
+<h3 id="195-socks4a-host-port">195. <code>--socks4a &lt;host[:port]</code></h3>
+<p>使用 SOCKS4a 代理。这类似于 SOCKS4，但支持域名解析。例如：<br>
+[ curl --socks4a socks4a:1080 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会通过 <code>socks4a:1080</code> 代理连接到 <code>example.com</code>。</p>
+<h3 id="196-socks5-host-port">196. <code>--socks5 &lt;host[:port]</code></h3>
+<p>使用 SOCKS5 代理。例如：<br>
+[ curl --socks5 socks5:1080 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会通过 <code>socks5:1080</code> 代理连接到 <code>example.com</code>。</p>
+<h3 id="197-socks5-basic">197. <code>--socks5-basic</code></h3>
+<p>使用基本认证进行 SOCKS5 代理连接。例如：<br>
+[ curl --socks5-basic -x socks5://proxy:1080 -u user:pass <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用基本认证进行 SOCKS5 代理连接。</p>
+<h3 id="198-socks5-gssapi">198. <code>--socks5-gssapi</code></h3>
+<p>使用 GSS-API 认证进行 SOCKS5 代理连接。例如：<br>
+[ curl --socks5-gssapi -x socks5://proxy:1080 -u user:pass <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 GSS-API 认证进行 SOCKS5 代理连接。</p>
+<h3 id="199-socks5-gssapi-nec">199. <code>--socks5-gssapi-nec</code></h3>
+<p>使用 NEC 特定的 GSS-API 认证进行 SOCKS5 代理连接。例如：<br>
+[ curl --socks5-gssapi-nec -x socks5://proxy:1080 -u user:pass <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 NEC 特定的 GSS-API 认证进行 SOCKS5 代理连接。</p>
+<h3 id="200-socks5-gssapi-service-name">200. <code>--socks5-gssapi-service &lt;name&gt;</code></h3>
+<p>指定用于 SOCKS5 GSS-API 认证的服务名。例如：<br>
+[ curl --socks5-gssapi-service ‘krbtgt’ -x socks5://proxy:1080 -u user:pass <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>krbtgt</code> 作为 GSS-API 服务名。</p>
+<h3 id="201-socks5-hostname-host-port">201. <code>--socks5-hostname &lt;host[:port]</code></h3>
+<p>使用 SOCKS5 代理并发送 hostname 到代理。这在需要通过 SOCKS5 代理解析 hostname 时可能有用。例如：<br>
+[ curl --socks5-hostname socks5h:1080 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会通过 <code>socks5h:1080</code> 代理解析 <code>example.com</code>。</p>
+<h3 id="202-speed-limit-speed">202. <code>--speed-limit &lt;speed&gt;</code></h3>
+<p>指定最小的传输速度。低于这个速度时，curl 会超时。例如：<br>
+[ curl --speed-limit 100K <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会要求传输速度至少为每秒 100 KB。</p>
+<h3 id="203-speed-time-seconds">203. <code>--speed-time &lt;seconds&gt;</code></h3>
+<p>指定在触发速度限制前的等待时间。例如：<br>
+[ curl --speed-time 30 --speed-limit 100K <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在 30 秒内检查传输速度是否低于 100 KB/s。</p>
+<h3 id="204-ssl">204. <code>--ssl</code></h3>
+<p>尝试使用 SSL。这在需要强制使用 SSL 时非常有用。例如：<br>
+[ curl --ssl <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会尝试使用 SSL 连接。</p>
+<h3 id="205-ssl-allow-beast">205. <code>--ssl-allow-beast</code></h3>
+<p>允许 BEAST 漏洞。这在需要与某些旧的服务器兼容时可能有用。例如：<br>
+[ curl --ssl-allow-beast <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会允许 BEAST 漏洞。</p>
+<h3 id="206-ssl-auto-client-cert">206. <code>--ssl-auto-client-cert</code></h3>
+<p>自动使用合适的客户端证书。这在需要自动选择证书时非常有用。例如：<br>
+[ curl --ssl-auto-client-cert <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会自动选择合适的客户端证书。</p>
+<h3 id="207-ssl-no-revoke">207. <code>--ssl-no-revoke</code></h3>
+<p>禁用证书吊销检查。这在测试环境中可能有用，但不建议在生产中使用。例如：<br>
+[ curl --ssl-no-revoke <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 不会检查证书是否被吊销。</p>
+<h3 id="208-ssl-reqd">208. <code>--ssl-reqd</code></h3>
+<p>要求使用 SSL。这在需要确保使用 SSL 时非常有用。例如：<br>
+[ curl --ssl-reqd <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会要求使用 SSL 连接。</p>
+<h3 id="209-ssl-revoke-best-effort">209. <code>--ssl-revoke-best-effort</code></h3>
+<p>在无法验证吊销状态时忽略吊销检查。这在需要在无法验证吊销状态时继续进行时可能有用。例如：<br>
+[ curl --ssl-revoke-best-effort <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会在无法验证吊销状态时忽略吊销检查。</p>
+<h3 id="210-sslv2">210. <code>--sslv2</code></h3>
+<p>使用 SSLv2。这在需要与旧的服务器兼容时可能有用。例如：<br>
+[ curl --sslv2 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 SSLv2。</p>
+<h3 id="211-sslv3">211. <code>--sslv3</code></h3>
+<p>使用 SSLv3。这在需要与旧的服务器兼容时可能有用。例如：<br>
+[ curl --sslv3 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 SSLv3。</p>
+<h3 id="212-stderr-file">212. <code>--stderr &lt;file&gt;</code></h3>
+<p>指定要写入错误的文件。这在需要将错误分离到特定文件时非常有用。例如：<br>
+[ curl --stderr error.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将错误写入 <code>error.txt</code>。</p>
+<h3 id="213-styled-output">213. <code>--styled-output</code></h3>
+<p>启用 HTTP 头的格式化输出。这在需要更易读的输出时非常有用。例如：<br>
+[ curl --styled-output <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会以格式化的方式显示 HTTP 头。</p>
+<h3 id="214-suppress-connect-headers">214. <code>--suppress-connect-headers</code></h3>
+<p>在输出中抑制连接头。这在需要查看原始响应头时可能有用。例如：<br>
+[ curl --suppress-connect-headers <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 不会显示连接头。</p>
+<h3 id="215-tcp-fastopen">215. <code>--tcp-fastopen</code></h3>
+<p>使用 TCP 快速打开。这在需要提高性能时可能有用。例如：<br>
+[ curl --tcp-fastopen <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会尝试使用 TCP 快速打开。</p>
+<h3 id="216-tcp-nodelay">216. <code>--tcp-nodelay</code></h3>
+<p>设置 TCP_NODELAY 选项。这在需要禁用 Nagle 算法时可能有用。例如：<br>
+[ curl --tcp-nodelay <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会设置 TCP_NODELAY。</p>
+<h3 id="217-telnet-option-opt-val">217. <code>--telnet-option &lt;opt=val&gt;</code></h3>
+<p>指定 telnet 选项。这在通过 telnet 交互时可能有用。例如：<br>
+[ curl --telnet-option ‘mode=ascii’ telnet://example.com ]<br>
+curl 会设置 <code>mode=ascii</code> 选项。</p>
+<h3 id="218-tftp-blksize-value">218. <code>--tftp-blksize &lt;value&gt;</code></h3>
+<p>指定 TFTP BLKSIZE 选项。这在需要调整 TFTP 块大小时非常有用。例如：<br>
+[ curl --tftp-blksize 1024 tftp://example.com/file.txt ]<br>
+curl 会设置 BLKSIZE 为 1024。</p>
+<h3 id="219-tftp-no-options">219. <code>--tftp-no-options</code></h3>
+<p>不发送任何 TFTP 选项。这在需要使用默认 TFTP 设置时可能有用。例如：<br>
+[ curl --tftp-no-options tftp://example.com/file.txt ]<br>
+curl 不会发送任何 TFTP 选项。</p>
+<h3 id="220-time-cond-time">220. <code>--time-cond &lt;time&gt;</code></h3>
+<p>基于时间条件进行传输。这在需要基于时间条件下载文件时非常有用。例如：<br>
+[ curl --time-cond ‘2022-01-01’ <a target="_blank" rel="noopener" href="http://example.com/file.txt">http://example.com/file.txt</a> ]<br>
+curl 会基于 <code>2022-01-01</code> 的时间条件进行下载。</p>
+<h3 id="221-tls-max-VERSION">221. <code>--tls-max &lt;VERSION&gt;</code></h3>
+<p>指定允许的最大 TLS 版本。例如：<br>
+[ curl --tls-max 1.2 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用最大 TLS 1.2。</p>
+<h3 id="222-tls13-ciphers-list">222. <code>--tls13-ciphers &lt;list&gt;</code></h3>
+<p>指定要使用的 TLS 1.3 密码套件。例如：<br>
+[ curl --tls13-ciphers ‘TLS_AES_128_GCM_SHA256’ <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用指定的密码套件。</p>
+<h3 id="223-tlsauthtype-type">223. <code>--tlsauthtype &lt;type&gt;</code></h3>
+<p>指定要使用的 TLS 认证类型。例如：<br>
+[ curl --tlsauthtype ‘SRP’ --tlsuser ‘username’ --tlspassword ‘password’ <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 SRP 认证。</p>
+<h3 id="224-tlspassword-string">224. <code>--tlspassword &lt;string&gt;</code></h3>
+<p>指定要使用的 TLS 密码。例如：<br>
+[ curl --tlspassword ‘my password’ --tlsuser ‘username’ <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>my password</code> 进行 TLS 认证。</p>
+<h3 id="225-tlsuser-name">225. <code>--tlsuser &lt;name&gt;</code></h3>
+<p>指定要使用的 TLS 用户名。例如：<br>
+[ curl --tlsuser ‘username’ --tlspassword ‘password’ <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 <code>username</code> 进行 TLS 认证。</p>
+<h3 id="226-tlsv1">226. <code>--tlsv1</code></h3>
+<p>使用 TLSv1。这在需要确保使用至少 TLSv1 时非常有用。例如：<br>
+[ curl --tlsv1 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 TLSv1 或更高版本。</p>
+<h3 id="227-tlsv1-0">227. <code>--tlsv1.0</code></h3>
+<p>使用 TLSv1.0。例如：<br>
+[ curl --tlsv1.0 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 TLSv1.0。</p>
+<h3 id="228-tlsv1-1">228. <code>--tlsv1.1</code></h3>
+<p>使用 TLSv1.1。例如：<br>
+[ curl --tlsv1.1 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 TLSv1.1。</p>
+<h3 id="229-tlsv1-2">229. <code>--tlsv1.2</code></h3>
+<p>使用 TLSv1.2。例如：<br>
+[ curl --tlsv1.2 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 TLSv1.2。</p>
+<h3 id="230-tlsv1-3">230. <code>--tlsv1.3</code></h3>
+<p>使用 TLSv1.3。例如：<br>
+[ curl --tlsv1.3 <a target="_blank" rel="noopener" href="https://example.com">https://example.com</a> ]<br>
+curl 会使用 TLSv1.3。</p>
+<h3 id="231-tr-encoding">231. <code>--tr-encoding</code></h3>
+<p>请求使用传输编码。这在需要处理分块传输时非常有用。例如：<br>
+[ curl --tr-encoding <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会处理分块传输。</p>
+<h3 id="232-trace-file">232. <code>--trace &lt;file&gt;</code></h3>
+<p>将详细的 trace 信息写入文件。这在需要详细调试时非常有用。例如：<br>
+[ curl --trace trace.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将 trace 信息写入 <code>trace.txt</code>。</p>
+<h3 id="233-trace-ascii-file">233. <code>--trace-ascii &lt;file&gt;</code></h3>
+<p>类似于 <code>--trace</code>，但使用 ASCII。例如：<br>
+[ curl --trace-ascii trace.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将 trace 信息以 ASCII 格式写入 <code>trace.txt</code>。</p>
+<h3 id="234-trace-config-string">234. <code>--trace-config &lt;string&gt;</code></h3>
+<p>指定 trace 的详细配置。例如：<br>
+[ curl --trace-config ‘verbose’ --trace trace.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会以详细模式写入 trace 信息。</p>
+<h3 id="235-trace-ids">235. <code>--trace-ids</code></h3>
+<p>在 trace 输出中包含传输和连接 ID。例如：<br>
+[ curl --trace-ids --trace trace.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在 trace 中包含 ID。</p>
+<h3 id="236-trace-time">236. <code>--trace-time</code></h3>
+<p>在 trace 输出中包含时间信息。例如：<br>
+[ curl --trace-time --trace trace.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会在 trace 中包含时间戳。</p>
+<h3 id="237-unix-socket-path">237. <code>--unix-socket &lt;path&gt;</code></h3>
+<p>通过 Unix 域套接字连接。这在需要通过 Unix 域套接字连接到服务时非常有用。例如：<br>
+[ curl --unix-socket /var/run.sock http://local_service ]<br>
+curl 会通过 Unix 域套接字 <code>/var/run.sock</code> 连接到 <code>local_service</code>。</p>
+<h3 id="238-upload-file-file">238. <code>--upload-file &lt;file&gt;</code></h3>
+<p>指定要上传的文件。例如：<br>
+[ curl -T localfile.txt <a href="ftp://ftp.example.com">ftp://ftp.example.com</a> ]<br>
+curl 会将 <code>localfile.txt</code> 上传到 <code>ftp.example.com</code>。</p>
+<h3 id="239-url-url">239. <code>--url &lt;url&gt;</code></h3>
+<p>指定要使用的 URL。这是 curl 中最常用的参数之一。例如：<br>
+[ curl <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会请求 <code>http://example.com</code>。</p>
+<h3 id="240-url-query-data">240. <code>--url-query &lt;data&gt;</code></h3>
+<p>指定要附加到 URL 的查询字符串。例如：<br>
+[ curl --url-query ‘q=curl’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会请求 <code>http://example.com?q=curl</code>。</p>
+<h3 id="241-use-ascii">241. <code>--use-ascii</code></h3>
+<p>使用 ASCII 模式进行传输。这在处理文本数据时可能有用。例如：<br>
+[ curl --use-ascii <a href="ftp://ftp.example.com">ftp://ftp.example.com</a> ]<br>
+curl 会使用 ASCII 模式进行 FTP 传输。</p>
+<h3 id="242-user-user-password">242. <code>--user &lt;user:password&gt;</code></h3>
+<p>指定要使用的用户和密码。这是 <code>curl</code> 中常用的参数之一，用于基本认证。例如：<br>
+[ curl -u username:password <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会使用 <code>username:password</code> 进行基本认证。</p>
+<h3 id="243-user-agent-name">243. <code>--user-agent &lt;name&gt;</code></h3>
+<p>指定要使用的用户代理字符串。例如：<br>
+[ curl --user-agent ‘My Curl Client’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会发送 <code>User-Agent: My Curl Client</code> 头。</p>
+<h3 id="244-variable-name-text-file">244. <code>--variable &lt;[%]name=text/@file&gt;</code></h3>
+<p>指定变量替换。这在需要从文件中读取变量时可能有用。例如：<br>
+[ curl --variable ‘varname=@file.txt’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会从 <code>file.txt</code> 中读取 <code>varname</code> 的值。</p>
+<h3 id="245-verbose">245. <code>--verbose</code></h3>
+<p>增加详细输出，显示 progress 条和详细信息。例如：<br>
+[ curl --verbose <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会显示详细的请求和响应信息。</p>
+<h3 id="246-version">246. <code>--version</code></h3>
+<p>显示 curl 的版本信息。例如：<br>
+[ curl --version ]<br>
+curl 会显示其版本和编译选项。</p>
+<h3 id="247-vlan-priority-priority">247. <code>--vlan-priority &lt;priority&gt;</code></h3>
+<p>指定 VLAN 优先级。这在需要设置特定 VLAN 优先级时可能有用。例如：<br>
+[ curl --vlan-priority 5 <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会设置 VLAN 优先级为 5。</p>
+<h3 id="248-write-out-format">248. <code>--write-out &lt;format&gt;</code></h3>
+<p>指定传输完成后要写入的输出格式。例如：<br>
+[ curl --write-out ‘%{http_code}’ <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会输出 HTTP 状态码。</p>
+<h3 id="249-xattr">249. <code>--xattr</code></h3>
+<p>将元数据存储为扩展文件属性。这在需要将元数据与文件关联时可能有用。例如：<br>
+[ curl --xattr -o file.txt <a target="_blank" rel="noopener" href="http://example.com">http://example.com</a> ]<br>
+curl 会将元数据存储为 <code>file.txt</code> 的扩展属性。</p>
+<h3 id="结论">结论</h3>
+<p>通过详细解释每个参数，我更深入地理解了 curl 的强大功能。从基本的 HTTP 请求到复杂的网络配置，curl 的参数覆盖了各种网络交互的需求。尽管有些参数我之前已经熟悉，但许多参数对我来说是新的，这次练习极大地扩展了我的 curl 知识。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>curl命令参数解释翻译</div>
+      <div>https://mounthuangshan.github.io/计算机网络/计算机网络/curl命令参数解释翻译/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%94%BB%E7%95%A5%EF%BC%9A%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%86%99%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%941.%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%20(1)/" title="操作系统攻略：自己动手从零开始写操作系统——1">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">操作系统攻略：自己动手从零开始写操作系统——1</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86/%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E6%94%BB%E7%95%A5%EF%BC%9A%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E6%90%AD%E5%BB%BA%EF%BC%88%E9%99%84%E5%B8%A6%E6%B8%B8%E6%88%8F%E5%8E%8B%E7%BC%A9%E5%8C%85%EF%BC%89%20(1)/" title="图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)">
+                        <span class="hidden-mobile">图灵完备攻略：第一部分——基础逻辑电路搭建（附带游戏压缩包） (1)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

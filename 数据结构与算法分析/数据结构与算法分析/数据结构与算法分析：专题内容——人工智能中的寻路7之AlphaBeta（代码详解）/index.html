@@ -1,0 +1,726 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、算法描述 在考虑到对手的可能走法之后，Minimax算法能够较为恰当地找出玩家的最优走法。但是，在生成博弈树时，这个信息却没有使用！我们看看早先介绍的BoardEvaluation评分函数。回忆一下下图Minimax的探测：  这是从初始状态开始，玩家X走了两步，玩家O走了一步之后，生成的博弈树的一部分。我们可以注意到，Minimax算法的性能非常低下，即使每一个子搜索都能够表示一个负棋面状态">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析：专题内容——人工智能中的寻路7之AlphaBeta（代码详解）">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、算法描述 在考虑到对手的可能走法之后，Minimax算法能够较为恰当地找出玩家的最优走法。但是，在生成博弈树时，这个信息却没有使用！我们看看早先介绍的BoardEvaluation评分函数。回忆一下下图Minimax的探测：  这是从初始状态开始，玩家X走了两步，玩家O走了一步之后，生成的博弈树的一部分。我们可以注意到，Minimax算法的性能非常低下，即使每一个子搜索都能够表示一个负棋面状态">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C5d3af456037c43bc8129061a836d8074.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Cd23ff12fcb5f497e8409a515f0af73eb.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Cb6deb82d3872461682de28edd855b0e7.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C220db69c679541569152678c32562253.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C2d489e7c4d1e4702acd2fa5132a6c68d.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Ce864a771ff514dab92a0703bc05b1184.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.850Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C5d3af456037c43bc8129061a836d8074.png">
+  
+  
+  
+  <title>数据结构与算法分析：专题内容——人工智能中的寻路7之AlphaBeta（代码详解） - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析：专题内容——人工智能中的寻路7之AlphaBeta（代码详解）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析：专题内容——人工智能中的寻路7之AlphaBeta（代码详解）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、算法描述</h1>
+<p>在考虑到对手的可能走法之后，Minimax算法能够较为恰当地找出玩家的最优走法。但是，在生成博弈树时，这个信息却没有使用！我们看看早先介绍的BoardEvaluation评分函数。回忆一下下图Minimax的探测：<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C5d3af456037c43bc8129061a836d8074.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+这是从初始状态开始，玩家X走了两步，玩家O走了一步之后，生成的博弈树的一部分。我们可以注意到，Minimax算法的性能非常低下，即使每一个子搜索都能够表示一个负棋面状态。总共有36个节点需要评价。<br>
+Minimax并不会利用玩家O第一步走在左上角避免被秒杀这个事实。AlphaBeta算法使用一个固定的策略来从搜索树中剪除无效的搜索，而不是在搜索中采取特殊的策略来使用信息。使用AlphaBeta算法的博弈树等价扩展如下图所示。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Cd23ff12fcb5f497e8409a515f0af73eb.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1>二、复杂度分析</h1>
+<p><img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Cb6deb82d3872461682de28edd855b0e7.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>虽然得到的走法和Minimax的走法很类似，但是主要的改进就是大量节省了时间，大量的状态被从博弈树中剪除掉了。<br>
+因为AlphaBeta返回的结果和Minimax以及NegMax计算出来的几乎相同，那么唯一能够看出AlphaBeta好处的地方就是检查生成的博弈树的规模。这个任务是非常复杂的，因为如果对手的最优走法首先被评价，AlphaBeta能够节省大量的时间。当每个局面状态有b个可行走法时，追寻深度为d的AlphaBeta算法可能搜索的状态数目大约为$b^d$。如果走法是按照某种顺序降序排列，那么我们仍然需要评价所有的b个子节点（因为我们要选择最优的走法），但是，最好情况下我们只需要评价对手的第一种走法。在AlphaBeta追寻深度为2的图中，由于走法有序，在评价了一些走法之后，就能够进行剪枝，所以在这棵博弈树下，走法排序并不是最优的。<br>
+最好情况下，AlphaBeta在每一级为玩家评价b个局面状态，但是只评价对手的一个局面状态。所以，在博弈树的第d级，AlphaBeta只需要评价b<em>1</em>b*……<em>b</em>1个局面状态，而不是扩展出b<em>b</em>b*……<em>b</em>b个局面状态。所以局面状态的总数是bd/2，节省了巨大的开销。<br>
+AlphaBeta并不会试图简单地最小化状态的数目，AlphaBeta扩展的数目有可能和Minimax一样多，但是这种情况下，AlphaBeta扩展的深度是Minimax的两倍。<br>
+从经验上来比较Minimax和AlphaBeta，我们构建了一个一字棋初始棋面状态的集合，这些棋面状态至少能够走k步。然后定义追寻深度为d=9-k，保证所有可能的走法都会探测到，然后对比Minimax和AlphaBeta。结果见下表。我们看到AlphaBeta算法剪除掉了大量的状态。</p>
+<table>
+<thead>
+<tr>
+<th>k</th>
+<th>Minimax状态数</th>
+<th>AlphaBeta状态数</th>
+<th>减少程度</th>
+<th>波动范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>549,945</td>
+<td>27,565</td>
+<td>95%</td>
+<td>±1.3%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>549,936</td>
+<td>47,508</td>
+<td>91%</td>
+<td>±6.8%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>549,864</td>
+<td>112,086</td>
+<td>80%</td>
+<td>±10.2%</td>
+</tr>
+</tbody>
+</table>
+<p>每个比较都说明了AlphaBeta的巨大改进。而且有些情况能够解释为什么AlphaBeta如此优秀，例如这个局面状态：<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C220db69c679541569152678c32562253.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+AlphaBeta只需扩展47的局面状态（Minimax需要扩展8232个，节省了99.4%）来告知玩家X应该选择中间的方块。但是，能够得到这样大的性能改进的前提是可行走法有序，并且最优走法排在最前面。因为我们的一字棋的解不会排序走法，可能会得到一些异常结果。例如，将上面的棋面旋转180°：<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C2d489e7c4d1e4702acd2fa5132a6c68d.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+那么AlphaBeta只需要探测960个局面状态（节省了88.3%）。</p>
+<h1>三、适用情况</h1>
+<p>AlphaBeta算法也是搜索最好的走法，它能够记住如果玩家O走在左上角，那么玩家X的得分不会超过2这样的信息。对于玩家O的后续每一步，AlphaBeta会决定是否玩家X有至少一步这样的走法，这步走法能够比玩家O第一步要好。因此，博弈树只扩展了16个节点（相比Minimax节省了50%的开销）。更重要的是，如果这个部分的结果无关紧要，那么算法就不需要预计算可能的走法并且修改状态。<br>
+AlphaBeta选择Minimax也同样会选择的走法，但是会节省大量的开销。和之前描述的其他寻路算法一样，AlphaBeta算法也假设对手不会犯错，这样避免了搜索那些对局面没有影响的部分。AlphaBeta递归地搜索博弈树，并且维护两个值，α和β，如果α＜β，那么表示玩家α有胜利的机会。值α表示已经为玩家找到的最坏局面状态（如果没有找到即负无穷），并且声明玩家的走法能够保证不低于这个下界。α越大表示玩家能够表现得越好，如果α等于正无穷，那么玩家能够找到一步绝杀，并且搜索中值。β值表示现在的最好局面状态（如果没有找到即正无穷），即我们玩家能够达到的最好局面状态。β越小表示对手在限制玩家方面表现得越好。因为AlphaBeta算法有一个最大追寻深度，所以任何决定都受这个深度限制。<br>
+上图的博弈树给出了执行时候的[α,β]值；最开始为[-∞，∞]。使用追寻深度为2的搜索，仅仅只考虑玩家X接下来会采取的一步走法，AlphaBeta试着为玩家O找出最优走法。因为AlphaBeta是递归的，我们能够追寻其进程，对博弈树进行遍历。AlphaBeta指导玩家O首先应该占住左上角的位置。在评价了玩家X的5个可行走法之后，很明显玩家X只能保证α最小等于-2（使用一字棋的BoardEvaluation静态评估函数）。当AlphaBeta考虑O的第二步时，其[α,β]值现在是[-2，∞]，即“O做出最坏的决定能够达到的状态得分为-2，最好的决定可能赢得比赛”。当评价完玩家X的第一步对策，AlphaBeta发现X已经赢得比赛，所以将不会再考虑X的更多走法。<br>
+回忆一下AlphaBeta搜索是基于NegMax。AlphaBeta保证不会搜索无用节点。下图是在图Minimax的基础上进行追寻深度为3的搜索，我们可以看到AlphaBeta是如何剪枝的，Minimax的博弈树需要156个节点，而AlphaBeta博弈树只扩展了66个节点。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF7%E4%B9%8BAlphaBeta%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Ce864a771ff514dab92a0703bc05b1184.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+初始位置为节点n，玩家O需要考虑6个可行走法。在轮到玩家或者对手时都可以进行键值。在上图的搜索中，有两个这样的例子。</p>
+<ul>
+<li>轮到玩家<br>
+假设玩家O在下在左列中间的位置，X于是下在顶行中间的位置（搜索树中这是根节点的最左边的孙子节点）。现在，从O的角度来看，O能够得到的最好的分数是-1。当X走在底行中间，我们决定是否O能够赢得比赛时，将会用到这个值。这个时候[α,β]是[-∞,-1]。当O走在顶行的中间时，AlphaBeta进行评价，得到分数为1，因为这个值大于-1，所以在这个层级上的O剩余三个走法都可以忽略。</li>
+<li>轮到对手<br>
+假设玩家O在下在左列中间的位置，X于是下在右上角，那么将会立刻赢得比赛。AlphaBeta将不会考虑X的其他两个可行走法，因为在以玩家O上一步走法为根节点的子树中，其剩余的搜索节点都会剪除。</li>
+</ul>
+<p>搜索将会剪掉那些确定会失败的子树。当基于Minimax扩展出AlphaBeta时，存在两种剪枝的方法，α剪枝和β剪枝，当基于NegMax扩展出简单的AlphaBeta时，那么只有一种剪枝的方法。因为AlphaBeta是递归的，那么[α,β]表示玩家的获胜机会大小，[-β,α]表示对手获胜机会的大小。在递归调用AlphaBeta时，会轮流从玩家和对手的角度来考虑问题。AlphaBeta会返回Minimax（如果是基于NegMax扩展，返回和NegMax相同的结果）相同的结果，但是它只会很少地扩展博弈树。AlphaBeta仍然使用深度的限制，这样来看，它的行为非常类似于深度优先搜索。</p>
+<h1>四、算法实现</h1>
+<p>输入输出和Minimax相同。主要的区别是AlphaBeta将会利用已经计算过的状态来决定是否继续搜索特定的子树。<br>
+AlphaBeta实现基于NegMax扩展。一旦当前局面状态下，玩家不能保证一个更好的位置（α剪枝）或者对手不能强迫玩家走到一个更坏的位置（β剪枝），那么搜索终止。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;iostream&gt;<br>#include &lt;vector&gt;<br>#include &lt;memory&gt;<br>#include &lt;limits&gt;<br>#include &lt;algorithm&gt;<br><br><span class="hljs-comment">// Forward declarations</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IGameState</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IGameMove</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IPlayer</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IEvaluation</span>;<br><br><span class="hljs-comment">// Interface for game state</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IGameState</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; <span class="hljs-title function_">copy</span>() = <span class="hljs-number">0</span>;<br>    virtual ~<span class="hljs-title class_">IGameState</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// Interface for game move</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IGameMove</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">execute</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) = <span class="hljs-number">0</span>;<br>    virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">undo</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) = <span class="hljs-number">0</span>;<br>    virtual ~<span class="hljs-title class_">IGameMove</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// Interface for player</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IPlayer</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt;&gt; <span class="hljs-title function_">validMoves</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) = <span class="hljs-number">0</span>;<br>    virtual int <span class="hljs-built_in">eval</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) = <span class="hljs-number">0</span>;<br>    virtual ~<span class="hljs-title class_">IPlayer</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// Evaluation interface</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IEvaluation</span> &#123;<br><span class="hljs-attr">public</span>:<br>    virtual <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt; <span class="hljs-title function_">bestMove</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state,<br>                                              <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IPlayer</span>&gt; player,<br>                                              <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IPlayer</span>&gt; opponent) = <span class="hljs-number">0</span>;<br>    virtual ~<span class="hljs-title class_">IEvaluation</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// Move evaluation class</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MoveEvaluation</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt; move;<br>    int score;<br><br>    explicit <span class="hljs-title class_">MoveEvaluation</span>(int score) : <span class="hljs-title function_">move</span>(nullptr), <span class="hljs-title function_">score</span>(<span class="hljs-params">score</span>) &#123;&#125;<br>    <br>    <span class="hljs-title class_">MoveEvaluation</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt; m, int s) : <span class="hljs-title function_">move</span>(m), <span class="hljs-title function_">score</span>(<span class="hljs-params">s</span>) &#123;&#125;<br><br>    <span class="hljs-keyword">static</span> int <span class="hljs-title function_">minimum</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-keyword">return</span> <span class="hljs-attr">std</span>::numeric_limits&lt;int&gt;::<span class="hljs-title function_">min</span>(); &#125;<br>    <span class="hljs-keyword">static</span> int <span class="hljs-title function_">maximum</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-keyword">return</span> <span class="hljs-attr">std</span>::numeric_limits&lt;int&gt;::<span class="hljs-title function_">max</span>(); &#125;<br>&#125;;<br><br><span class="hljs-comment">// AlphaBeta evaluation class</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">AlphaBetaEvaluation</span> : public <span class="hljs-title class_">IEvaluation</span> &#123;<br><span class="hljs-attr">private</span>:<br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state;<br>    int ply;<br><br>    <span class="hljs-title class_">MoveEvaluation</span> <span class="hljs-title function_">alphabeta</span>(<span class="hljs-params">int ply, std::shared_ptr&lt;IPlayer&gt; player,</span><br><span class="hljs-params">                            std::shared_ptr&lt;IPlayer&gt; opponent,</span><br><span class="hljs-params">                            int alpha, int beta</span>) &#123;<br>        <span class="hljs-comment">// Get valid moves</span><br>        auto moves = player-&gt;<span class="hljs-title function_">validMoves</span>(state);<br>        <br>        <span class="hljs-comment">// If leaf node or no moves available, return evaluation</span><br>        <span class="hljs-keyword">if</span> (ply == <span class="hljs-number">0</span> || moves.<span class="hljs-title function_">empty</span>()) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-title class_">MoveEvaluation</span>(player-&gt;<span class="hljs-built_in">eval</span>(state));<br>        &#125;<br><br>        <span class="hljs-comment">// Initialize best move with alpha</span><br>        <span class="hljs-title class_">MoveEvaluation</span> <span class="hljs-title function_">best</span>(alpha);<br><br>        <span class="hljs-comment">// Try each move and update alpha</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> auto&amp; move : moves) &#123;<br>            <span class="hljs-comment">// Execute move</span><br>            move-&gt;<span class="hljs-title function_">execute</span>(state);<br>            <br>            <span class="hljs-comment">// Recursively evaluate position</span><br>            <span class="hljs-title class_">MoveEvaluation</span> me = <span class="hljs-title function_">alphabeta</span>(ply - <span class="hljs-number">1</span>, opponent, player, -beta, -alpha);<br>            <br>            <span class="hljs-comment">// Undo move</span><br>            move-&gt;<span class="hljs-title function_">undo</span>(state);<br><br>            <span class="hljs-comment">// Update alpha if better move found</span><br>            <span class="hljs-keyword">if</span> (-me.<span class="hljs-property">score</span> &gt; alpha) &#123;<br>                alpha = -me.<span class="hljs-property">score</span>;<br>                best = <span class="hljs-title class_">MoveEvaluation</span>(move, alpha);<br>            &#125;<br><br>            <span class="hljs-comment">// Pruning condition</span><br>            <span class="hljs-keyword">if</span> (alpha &gt;= beta) &#123;<br>                <span class="hljs-keyword">return</span> best;<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> best;<br>    &#125;<br><br><span class="hljs-attr">public</span>:<br>    explicit <span class="hljs-title class_">AlphaBetaEvaluation</span>(int searchPly) : <span class="hljs-title function_">ply</span>(<span class="hljs-params">searchPly</span>) &#123;&#125;<br><br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt; <span class="hljs-title function_">bestMove</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; s,<br>                                      <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IPlayer</span>&gt; player,<br>                                      <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IPlayer</span>&gt; opponent) override &#123;<br>        state = s-&gt;<span class="hljs-title function_">copy</span>();<br>        <span class="hljs-title class_">MoveEvaluation</span> move = <span class="hljs-title function_">alphabeta</span>(ply, player, opponent,<br>                                      <span class="hljs-title class_">MoveEvaluation</span>::<span class="hljs-title function_">minimum</span>(),<br>                                      <span class="hljs-title class_">MoveEvaluation</span>::<span class="hljs-title function_">maximum</span>());<br>        <span class="hljs-keyword">return</span> move.<span class="hljs-property">move</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// Example implementations for testing</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">TicTacToeState</span> : public <span class="hljs-title class_">IGameState</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-attr">std</span>::vector&lt;int&gt; board;<br>    <br>    <span class="hljs-title class_">TicTacToeState</span>() : <span class="hljs-title function_">board</span>(<span class="hljs-params"><span class="hljs-number">9</span>, <span class="hljs-number">0</span></span>) &#123;&#125;<br>    <br>    <span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; <span class="hljs-title function_">copy</span>() override &#123;<br>        auto newState = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">TicTacToeState</span>&gt;();<br>        newState-&gt;board = <span class="hljs-variable language_">this</span>-&gt;board;<br>        <span class="hljs-keyword">return</span> newState;<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">TicTacToeMove</span> : public <span class="hljs-title class_">IGameMove</span> &#123;<br><span class="hljs-attr">public</span>:<br>    int position;<br>    int player; <span class="hljs-comment">// 1 or -1</span><br>    <br>    <span class="hljs-title class_">TicTacToeMove</span>(int pos, int p) : <span class="hljs-title function_">position</span>(pos), <span class="hljs-title function_">player</span>(<span class="hljs-params">p</span>) &#123;&#125;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">execute</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) override &#123;<br>        auto gameState = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">TicTacToeState</span>&gt;(state);<br>        gameState-&gt;board[position] = player;<br>    &#125;<br>    <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">undo</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) override &#123;<br>        auto gameState = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">TicTacToeState</span>&gt;(state);<br>        gameState-&gt;board[position] = <span class="hljs-number">0</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">TicTacToePlayer</span> : public <span class="hljs-title class_">IPlayer</span> &#123;<br><span class="hljs-attr">private</span>:<br>    int playerMark;<br><br><span class="hljs-attr">public</span>:<br>    explicit <span class="hljs-title class_">TicTacToePlayer</span>(int mark) : <span class="hljs-title function_">playerMark</span>(<span class="hljs-params">mark</span>) &#123;&#125;<br>    <br>    <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt;&gt; <span class="hljs-title function_">validMoves</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) override &#123;<br>        auto gameState = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">TicTacToeState</span>&gt;(state);<br>        <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameMove</span>&gt;&gt; moves;<br>        <br>        <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>; i++) &#123;<br>            <span class="hljs-keyword">if</span> (gameState-&gt;board[i] == <span class="hljs-number">0</span>) &#123;<br>                moves.<span class="hljs-title function_">push_back</span>(<span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">TicTacToeMove</span>&gt;(i, playerMark));<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> moves;<br>    &#125;<br>    <br>    int <span class="hljs-built_in">eval</span>(<span class="hljs-attr">std</span>::shared_ptr&lt;<span class="hljs-title class_">IGameState</span>&gt; state) override &#123;<br>        auto gameState = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">TicTacToeState</span>&gt;(state);<br>        <br>        <span class="hljs-comment">// Check for win conditions</span><br>        <span class="hljs-keyword">const</span> <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-attr">std</span>::vector&lt;int&gt;&gt; lines = &#123;<br>            &#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>&#125;, &#123;<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>&#125;, &#123;<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>&#125;, <span class="hljs-comment">// rows</span><br>            &#123;<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>&#125;, &#123;<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>&#125;, &#123;<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">8</span>&#125;, <span class="hljs-comment">// columns</span><br>            &#123;<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,<span class="hljs-number">8</span>&#125;, &#123;<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>&#125;           <span class="hljs-comment">// diagonals</span><br>        &#125;;<br>        <br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> auto&amp; line : lines) &#123;<br>            int sum = <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">for</span> (int pos : line) &#123;<br>                sum += gameState-&gt;board[pos];<br>            &#125;<br>            <span class="hljs-keyword">if</span> (sum == <span class="hljs-number">3</span> * playerMark) <span class="hljs-keyword">return</span> <span class="hljs-number">1000</span>;<br>            <span class="hljs-keyword">if</span> (sum == -<span class="hljs-number">3</span> * playerMark) <span class="hljs-keyword">return</span> -<span class="hljs-number">1000</span>;<br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br>&#125;;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// Create initial game state</span><br>    auto gameState = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">TicTacToeState</span>&gt;();<br>    <br>    <span class="hljs-comment">// Create players</span><br>    auto player1 = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">TicTacToePlayer</span>&gt;(<span class="hljs-number">1</span>);  <span class="hljs-comment">// X player</span><br>    auto player2 = <span class="hljs-attr">std</span>::make_shared&lt;<span class="hljs-title class_">TicTacToePlayer</span>&gt;(-<span class="hljs-number">1</span>); <span class="hljs-comment">// O player</span><br>    <br>    <span class="hljs-comment">// Create evaluator with search depth of 4</span><br>    <span class="hljs-title class_">AlphaBetaEvaluation</span> <span class="hljs-title function_">evaluator</span>(<span class="hljs-number">4</span>);<br>    <br>    <span class="hljs-comment">// Make some moves to set up a game state</span><br>    gameState-&gt;board = &#123;<br>        <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>,<br>        <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>,<br>        -<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span><br>    &#125;;<br>    <br>    <span class="hljs-comment">// Get best move for player1</span><br>    auto bestMove = evaluator.<span class="hljs-title function_">bestMove</span>(gameState, player1, player2);<br>    <br>    <span class="hljs-keyword">if</span> (bestMove) &#123;<br>        auto move = <span class="hljs-attr">std</span>::dynamic_pointer_cast&lt;<span class="hljs-title class_">TicTacToeMove</span>&gt;(bestMove);<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;Best move for Player 1 (X): position &quot;</span> &lt;&lt; move-&gt;position &lt;&lt; <span class="hljs-attr">std</span>::endl;<br>        <br>        <span class="hljs-comment">// Execute the move to show the resulting board</span><br>        move-&gt;<span class="hljs-title function_">execute</span>(gameState);<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;\nResulting board:\n&quot;</span>;<br>        <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>; i++) &#123;<br>            char symbol = gameState-&gt;board[i] == <span class="hljs-number">1</span> ? <span class="hljs-string">&#x27;X&#x27;</span> : <br>                         gameState-&gt;board[i] == -<span class="hljs-number">1</span> ? <span class="hljs-string">&#x27;O&#x27;</span> : <span class="hljs-string">&#x27;.&#x27;</span>;<br>            <span class="hljs-attr">std</span>::cout &lt;&lt; symbol;<br>            <span class="hljs-keyword">if</span> (i % <span class="hljs-number">3</span> == <span class="hljs-number">2</span>) <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;<br>        &#125;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-attr">std</span>::cout &lt;&lt; <span class="hljs-string">&quot;No valid moves available\n&quot;</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>五、引用及参考文献</h1>
+<p>1.《算法设计手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析：专题内容——人工智能中的寻路7之AlphaBeta（代码详解）</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析：专题内容——人工智能中的寻路7之AlphaBeta（代码详解）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF4%E4%B9%8BA_%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：专题内容——人工智能中的寻路4之A_搜索（代码详解）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析：专题内容——人工智能中的寻路4之A_搜索（代码详解）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E5%9B%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%8D%95%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/" title="数据结构与算法分析：你真的理解图算法吗——单源最短路径（代码详解+万字长文）">
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解图算法吗——单源最短路径（代码详解+万字长文）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

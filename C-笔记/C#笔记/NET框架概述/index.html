@@ -1,0 +1,2940 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="0 概述 .NET 的应用开发框架旨在为不同类型的应用程序提供高度灵活、高效的开发环境。它包括适用于 Web、桌面、移动端、云计算 和 游戏开发 的多个框架。以下是它的主要组成部分及详细描述：  1. Web 开发框架 1.1 ASP.NET Core ASP.NET Core 是一个跨平台的高性能框架，用于构建现代化的 Web 应用和 API。它是 ASP.NET 的下一代版本，具有以下主要模块">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NET框架概述">
+<meta property="og:url" content="https://mounthuangshan.github.io/C-%E7%AC%94%E8%AE%B0/C#%E7%AC%94%E8%AE%B0/NET%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="0 概述 .NET 的应用开发框架旨在为不同类型的应用程序提供高度灵活、高效的开发环境。它包括适用于 Web、桌面、移动端、云计算 和 游戏开发 的多个框架。以下是它的主要组成部分及详细描述：  1. Web 开发框架 1.1 ASP.NET Core ASP.NET Core 是一个跨平台的高性能框架，用于构建现代化的 Web 应用和 API。它是 ASP.NET 的下一代版本，具有以下主要模块">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.849Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>NET框架概述 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NET框架概述"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          19k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          159 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NET框架概述</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>0 概述</h1>
+<p>.NET 的应用开发框架旨在为不同类型的应用程序提供高度灵活、高效的开发环境。它包括适用于 <strong>Web</strong>、<strong>桌面</strong>、<strong>移动端</strong>、<strong>云计算</strong> 和 <strong>游戏开发</strong> 的多个框架。以下是它的主要组成部分及详细描述：</p>
+<hr>
+<h2 id="1-Web-开发框架"><strong>1. Web 开发框架</strong></h2>
+<h3 id="1-1-ASP-NET-Core"><strong>1.1 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core</strong></h3>
+<p><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 是一个跨平台的高性能框架，用于构建现代化的 Web 应用和 API。它是 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> 的下一代版本，具有以下主要模块：</p>
+<h4 id="MVC-Model-View-Controller"><strong>MVC (Model-View-Controller)</strong></h4>
+<ul>
+<li>提供分层架构，用于构建动态 Web 应用。</li>
+<li>模块：
+<ul>
+<li><strong>Model</strong>：数据和业务逻辑。</li>
+<li><strong>View</strong>：用户界面层。</li>
+<li><strong>Controller</strong>：处理用户输入和更新模型或视图。</li>
+</ul>
+</li>
+</ul>
+<h4 id="Web-API"><strong>Web API</strong></h4>
+<ul>
+<li>用于构建 RESTful API，支持 JSON、XML 等格式。</li>
+<li>适合用于前后端分离的应用或移动端后台服务。</li>
+</ul>
+<h4 id="Razor-Pages"><strong>Razor Pages</strong></h4>
+<ul>
+<li>简化的 Web 应用开发模式，将页面逻辑和视图合并在一起。</li>
+<li>适合小型或单页面应用程序。</li>
+</ul>
+<h4 id="SignalR"><strong>SignalR</strong></h4>
+<ul>
+<li>实时通信框架，支持 WebSocket 和其他传输协议。</li>
+<li>常用于聊天应用、实时通知和多玩家游戏。</li>
+</ul>
+<h4 id="Blazor"><strong>Blazor</strong></h4>
+<ul>
+<li>使用 C# 替代 JavaScript 来构建交互式 Web 应用。</li>
+<li>支持两种模式：
+<ul>
+<li><strong>Blazor Server</strong>：逻辑运行在服务器端，UI 通过 SignalR 同步。</li>
+<li><strong>Blazor WebAssembly</strong>：逻辑运行在浏览器端，无需服务器连接。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-桌面应用开发框架"><strong>2. 桌面应用开发框架</strong></h2>
+<h3 id="2-1-Windows-Presentation-Foundation-WPF"><strong>2.1 Windows Presentation Foundation (WPF)</strong></h3>
+<ul>
+<li>面向 Windows 平台的桌面 UI 框架。</li>
+<li>支持高分辨率图形、动画和数据绑定。</li>
+<li>使用 <strong>XAML</strong> 定义 UI，代码与界面分离。</li>
+</ul>
+<h3 id="2-2-Windows-Forms-WinForms"><strong>2.2 Windows Forms (WinForms)</strong></h3>
+<ul>
+<li>经典的桌面应用开发框架，易于上手，适合小型企业应用。</li>
+<li>提供基础控件（如按钮、文本框、列表框）和事件驱动模型。</li>
+</ul>
+<h3 id="2-3-NET-MAUI-Multi-platform-App-UI"><strong>2.3 .NET MAUI (Multi-platform App UI)</strong></h3>
+<ul>
+<li>统一了桌面和移动应用开发，支持 Windows、macOS、iOS 和 Android。</li>
+<li>使用一套代码生成跨平台 UI。</li>
+<li>取代 Xamarin.Forms，支持更现代化的开发。</li>
+</ul>
+<hr>
+<h2 id="3-移动应用开发框架"><strong>3. 移动应用开发框架</strong></h2>
+<h3 id="3-1-Xamarin"><strong>3.1 Xamarin</strong></h3>
+<ul>
+<li>提供原生移动应用开发功能，使用 C# 和 .NET。</li>
+<li>支持 iOS 和 Android 的跨平台开发。</li>
+<li>包括：
+<ul>
+<li><strong>Xamarin.iOS / Xamarin.Android</strong>：直接调用平台特定 API。</li>
+<li><strong>Xamarin.Forms</strong>：基于共享 UI 的跨平台开发。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-NET-MAUI"><strong>3.2 .NET MAUI</strong></h3>
+<ul>
+<li>.NET MAUI 是 Xamarin 的继任者，简化了跨平台开发。</li>
+<li>特性：
+<ul>
+<li>统一项目结构，减少平台特定的代码。</li>
+<li>更强大的 UI 定制和性能优化。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="4-云计算和微服务开发框架"><strong>4. 云计算和微服务开发框架</strong></h2>
+<h3 id="4-1-Azure-SDK"><strong>4.1 Azure SDK</strong></h3>
+<ul>
+<li>微软 Azure 服务的开发工具包，支持与云端服务交互。</li>
+<li>模块：
+<ul>
+<li><strong>Azure Storage</strong>：文件、表、队列等存储服务。</li>
+<li><strong>Azure Functions</strong>：无服务器函数式计算。</li>
+<li><strong>Azure Kubernetes Service (AKS)</strong>：支持容器化应用。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-2-微服务架构支持"><strong>4.2 微服务架构支持</strong></h3>
+<ul>
+<li><strong>gRPC</strong>：高性能远程过程调用框架，适合微服务间通信。</li>
+<li><strong>Dapr (Distributed Application Runtime)</strong>：帮助构建分布式应用，简化状态管理、服务调用和发布订阅模型。</li>
+</ul>
+<hr>
+<h2 id="5-游戏开发框架"><strong>5. 游戏开发框架</strong></h2>
+<h3 id="5-1-Unity"><strong>5.1 Unity</strong></h3>
+<ul>
+<li>使用 C# 作为主要脚本语言的游戏引擎。</li>
+<li>支持 2D 和 3D 游戏开发。</li>
+<li>提供跨平台支持，包括 Windows、iOS、Android 和主流游戏主机。</li>
+</ul>
+<h3 id="5-2-MonoGame"><strong>5.2 MonoGame</strong></h3>
+<ul>
+<li>开源的游戏框架，基于 .NET 和 Mono。</li>
+<li>用于构建跨平台的 2D 游戏。</li>
+</ul>
+<hr>
+<h2 id="6-测试与调试支持"><strong>6. 测试与调试支持</strong></h2>
+<h3 id="6-1-MSTest-xUnit-NUnit"><strong>6.1 MSTest / xUnit / NUnit</strong></h3>
+<ul>
+<li>单元测试框架，支持自动化测试。</li>
+<li>集成到 Visual Studio 中，方便调试和测试。</li>
+</ul>
+<h3 id="6-2-SpecFlow"><strong>6.2 SpecFlow</strong></h3>
+<ul>
+<li>行为驱动开发 (BDD) 工具，与 .NET 无缝集成。</li>
+</ul>
+<hr>
+<h2 id="7-数据处理与持久化框架"><strong>7. 数据处理与持久化框架</strong></h2>
+<h3 id="7-1-Entity-Framework-Core"><strong>7.1 Entity Framework Core</strong></h3>
+<ul>
+<li>面向对象关系映射 (ORM) 工具。</li>
+<li>支持 LINQ 查询语法，简化数据库操作。</li>
+</ul>
+<h3 id="7-2-Dapper"><strong>7.2 Dapper</strong></h3>
+<ul>
+<li>轻量级 ORM，提供直接的 SQL 查询支持。</li>
+</ul>
+<h3 id="7-3-LINQ-Language-Integrated-Query"><strong>7.3 LINQ (Language Integrated Query)</strong></h3>
+<ul>
+<li>查询和操作数据集合的统一语法，适用于内存数据、数据库和 XML。</li>
+</ul>
+<hr>
+<h2 id="8-扩展和部署工具"><strong>8. 扩展和部署工具</strong></h2>
+<h3 id="8-1-NuGet"><strong>8.1 NuGet</strong></h3>
+<ul>
+<li>包管理工具，用于分发和管理库和依赖项。</li>
+</ul>
+<h3 id="8-2-MSBuild"><strong>8.2 MSBuild</strong></h3>
+<ul>
+<li>自动化构建工具，支持编译、测试和部署。</li>
+</ul>
+<h3 id="8-3-Docker-和-Kubernetes"><strong>8.3 Docker 和 Kubernetes</strong></h3>
+<ul>
+<li>Docker 支持应用容器化，Kubernetes 管理容器编排。</li>
+</ul>
+<hr>
+<h3 id="总结：层次关系"><strong>总结：层次关系</strong></h3>
+<ol>
+<li><strong>核心框架</strong>（如 .NET 和 Mono）支持所有框架运行。</li>
+<li><strong>Web 框架</strong>（<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core、Blazor 等）专注于动态和交互式应用。</li>
+<li><strong>桌面和移动框架</strong>（WPF、WinForms、Xamarin/.NET MAUI）覆盖本地开发需求。</li>
+<li><strong>云和微服务工具</strong>（Azure SDK、gRPC 等）为分布式系统提供支持。</li>
+<li><strong>游戏框架</strong>（Unity、MonoGame）专注娱乐应用开发。</li>
+</ol>
+<hr>
+<h1>1 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core</h1>
+<h2 id="一、前端">一、前端</h2>
+<h3 id="1-Blazor">1. Blazor</h3>
+<p>Blazor 是一个用于构建交互式 Web 应用的框架，允许开发者使用 C# 来编写客户端和服务器端的代码。Blazor 的架构分为几个独立的组件，每个组件负责不同的功能，这些组件共同协作来提供丰富的前端和后端支持。Blazor 的不同模式（Blazor WebAssembly 和 Blazor Server）也对这些组件有一些不同的要求。</p>
+<h4 id="Blazor-Hybrid">Blazor Hybrid</h4>
+<p>Blazor Hybrid 是一种利用 Blazor 技术来构建跨平台本地应用的开发模式。它结合了 Blazor 的 Web 技术优势和 .NET MAUI 或其他宿主框架的本地能力，为开发者提供了一个混合应用开发的解决方案。<br>
+<strong>Blazor Hybrid</strong> 是一种利用 Blazor 技术来构建跨平台本地应用的开发模式。它结合了 <strong>Blazor</strong> 的 Web 技术优势和 <strong>.NET MAUI</strong> 或其他宿主框架的本地能力，为开发者提供了一个混合应用开发的解决方案。</p>
+<hr>
+<h5 id="一、Blazor-Hybrid-的定义">一、Blazor Hybrid 的定义</h5>
+<p>Blazor Hybrid 是 Blazor 的一种应用模式，允许开发者使用 <strong>C#</strong> 和 <strong>Razor</strong>（HTML 和 C# 混合的标记语言）来构建 UI，同时运行在宿主应用中，而不是通过浏览器。</p>
+<p>在 Blazor Hybrid 模式下：</p>
+<ul>
+<li>UI 是基于 HTML 和 CSS 构建的，但它并不运行在 Web 浏览器中，而是直接运行在宿主框架的本地窗口中。</li>
+<li>应用逻辑直接运行在 .NET Runtime 上，不依赖 JavaScript 引擎或 WebAssembly。</li>
+</ul>
+<hr>
+<h5 id="二、Blazor-Hybrid-的组成">二、Blazor Hybrid 的组成</h5>
+<ol>
+<li>
+<p><strong>Blazor</strong></p>
+<ul>
+<li><strong>Razor 组件</strong>：用于构建 UI。</li>
+<li><strong>C# 逻辑</strong>：处理应用的业务逻辑。</li>
+<li><strong>HTML 和 CSS</strong>：定义布局和样式。</li>
+</ul>
+</li>
+<li>
+<p><strong>宿主框架</strong></p>
+<ul>
+<li>最常见的宿主是 <strong>.NET MAUI</strong>。</li>
+<li>宿主框架负责管理应用窗口和与本地平台的交互。</li>
+</ul>
+</li>
+<li>
+<p><strong>本地功能</strong></p>
+<ul>
+<li>通过宿主框架提供的平台 API，Blazor Hybrid 应用可以调用设备功能（如摄像头、文件系统、通知等）。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h5 id="三、Blazor-Hybrid-的特点">三、Blazor Hybrid 的特点</h5>
+<ol>
+<li>
+<p><strong>跨平台支持</strong></p>
+<ul>
+<li>支持 <strong>Windows</strong>、<strong>macOS</strong>、<strong>iOS</strong> 和 <strong>Android</strong>。</li>
+<li>一套代码库可运行在多种设备上。</li>
+</ul>
+</li>
+<li>
+<p><strong>直接运行在本地</strong></p>
+<ul>
+<li>不依赖浏览器和 WebAssembly，性能更高。</li>
+<li>应用逻辑运行在完整的 .NET Runtime 中，而不是沙盒环境。</li>
+</ul>
+</li>
+<li>
+<p><strong>共享代码</strong></p>
+<ul>
+<li>Blazor Hybrid 应用可以复用已有的 Razor 组件和代码。</li>
+<li>同时支持使用 MAUI 提供的本地功能和控件。</li>
+</ul>
+</li>
+<li>
+<p><strong>访问本地平台功能</strong></p>
+<ul>
+<li>通过 .NET MAUI 提供的跨平台 API 或依赖注入访问平台特定功能。</li>
+</ul>
+</li>
+<li>
+<p><strong>灵活性</strong></p>
+<ul>
+<li>可以结合本地 UI 控件和 Blazor 组件。</li>
+<li>支持与原生控件协同工作（如使用 MAUI 的控件和布局）。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h5 id="四、Blazor-Hybrid-的典型应用场景">四、Blazor Hybrid 的典型应用场景</h5>
+<ol>
+<li>
+<p><strong>跨平台企业级应用</strong></p>
+<ul>
+<li>如 CRM 系统、库存管理工具等。</li>
+<li>使用共享的 Blazor 组件开发，提高开发效率。</li>
+</ul>
+</li>
+<li>
+<p><strong>桌面和移动端扩展</strong></p>
+<ul>
+<li>为已有的 Blazor Web 应用增加桌面或移动端支持。</li>
+</ul>
+</li>
+<li>
+<p><strong>高性能需求</strong></p>
+<ul>
+<li>应用不依赖浏览器运行，避免 Web 渲染带来的性能瓶颈。</li>
+</ul>
+</li>
+<li>
+<p><strong>需要访问本地功能</strong></p>
+<ul>
+<li>如文件操作、设备传感器、摄像头等平台特定功能。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h5 id="五、Blazor-Hybrid-与其他-Blazor-模式的对比">五、Blazor Hybrid 与其他 Blazor 模式的对比</h5>
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>Blazor Server</strong></th>
+<th><strong>Blazor WebAssembly</strong></th>
+<th><strong>Blazor Hybrid</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>运行位置</strong></td>
+<td>服务器端</td>
+<td>客户端（浏览器，基于 WebAssembly）</td>
+<td>客户端（宿主框架，如 MAUI）</td>
+</tr>
+<tr>
+<td><strong>性能</strong></td>
+<td>网络延迟较高，需频繁与服务器交互</td>
+<td>依赖浏览器和 WebAssembly，性能中等</td>
+<td>运行在本地环境，性能最佳</td>
+</tr>
+<tr>
+<td><strong>本地功能访问</strong></td>
+<td>需通过 API 访问</td>
+<td>受限于浏览器 API</td>
+<td>直接调用本地平台功能</td>
+</tr>
+<tr>
+<td><strong>跨平台支持</strong></td>
+<td>需运行在浏览器</td>
+<td>运行在浏览器</td>
+<td>支持桌面和移动端的本地应用</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>企业内网应用、实时协作工具</td>
+<td>PWA 应用、轻量级客户端</td>
+<td>高性能跨平台桌面和移动应用</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h5 id="六、Blazor-Hybrid-的开发流程">六、Blazor Hybrid 的开发流程</h5>
+<ol>
+<li>
+<p><strong>创建项目</strong></p>
+<ul>
+<li>使用 Visual Studio，选择 .NET MAUI Blazor App 模板。</li>
+<li>项目结构包含：
+<ul>
+<li><strong>Blazor 组件</strong>：用于定义应用的 UI。</li>
+<li><strong>MAUI 支持文件</strong>：如 <code>MainPage.xaml</code> 和平台特定代码。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>编写 Blazor UI</strong></p>
+<ul>
+<li>在 <code>Pages</code> 文件夹中创建 Razor 组件（<code>.razor</code> 文件）。</li>
+<li>使用 HTML 和 C# 定义交互逻辑。</li>
+</ul>
+</li>
+<li>
+<p><strong>集成本地功能</strong></p>
+<ul>
+<li>使用 MAUI 的跨平台 API（如文件系统、通知）。</li>
+<li>如果需要平台特定代码，可通过依赖注入实现扩展。</li>
+</ul>
+</li>
+<li>
+<p><strong>调试与部署</strong></p>
+<ul>
+<li>通过 Visual Studio 的设备模拟器或物理设备调试。</li>
+<li>打包后可运行在目标平台上。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h5 id="七、Blazor-Hybrid-的优缺点">七、Blazor Hybrid 的优缺点</h5>
+<p><strong>优点</strong></p>
+<ol>
+<li><strong>开发效率高</strong>：共享代码库，支持快速构建跨平台应用。</li>
+<li><strong>性能优越</strong>：无需浏览器或 WebAssembly，直接运行在本地。</li>
+<li><strong>灵活性强</strong>：结合 Blazor 和 MAUI，既能复用 Web 组件，又能使用本地功能。</li>
+</ol>
+<p><strong>缺点</strong></p>
+<ol>
+<li><strong>依赖 MAUI</strong>：需要学习 MAUI 的使用。</li>
+<li><strong>包体积较大</strong>：由于需要包含完整的 .NET Runtime 和 MAUI 框架。</li>
+<li><strong>适用范围有限</strong>：不适合纯 Web 环境。</li>
+</ol>
+<hr>
+<h5 id="八、-Blazor-Hybrid的宿主框架">八、 Blazor Hybrid的宿主框架</h5>
+<p><strong>Blazor Hybrid</strong> 的宿主框架主要是用于托管 Blazor 组件并提供跨平台能力的框架。以下是常见的 Blazor Hybrid 宿主框架：</p>
+<hr>
+<ol>
+<li><strong>.NET MAUI</strong></li>
+</ol>
+<ul>
+<li><strong>简介</strong>：.NET MAUI (Multi-platform App UI) 是微软推出的跨平台框架，支持构建跨 Windows、macOS、iOS 和 Android 的应用。</li>
+<li><strong>作为 Blazor Hybrid 的宿主</strong>：
+<ul>
+<li>提供应用的主窗口和运行环境。</li>
+<li>支持嵌入 Blazor 组件（通过 <code>BlazorWebView</code> 控件）。</li>
+<li>提供访问本地平台功能的 API。</li>
+</ul>
+</li>
+<li><strong>适用场景</strong>：
+<ul>
+<li>构建桌面和移动端应用。</li>
+<li>需要集成 Blazor UI 和原生 UI 控件。</li>
+</ul>
+</li>
+<li><strong>特点</strong>：
+<ul>
+<li>完整支持跨平台。</li>
+<li>高度集成 .NET 环境，适合企业级和生产力应用。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ol start="2">
+<li><strong>WPF 和 WinForms</strong></li>
+</ol>
+<ul>
+<li><strong>简介</strong>：WPF（Windows Presentation Foundation）和 WinForms 是 Windows 平台上的传统桌面应用框架。</li>
+<li><strong>作为 Blazor Hybrid 的宿主</strong>：
+<ul>
+<li>通过 <code>BlazorWebView</code> 控件嵌入 Blazor 组件。</li>
+<li>为已有的 Windows 桌面应用添加 Web UI 功能。</li>
+</ul>
+</li>
+<li><strong>适用场景</strong>：
+<ul>
+<li>为现有的 WPF/WinForms 桌面应用引入 Web 技术。</li>
+<li>不需要跨平台，只专注于 Windows 桌面。</li>
+</ul>
+</li>
+<li><strong>特点</strong>：
+<ul>
+<li>专注于 Windows 应用。</li>
+<li>兼容性强，易于升级旧应用。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ol start="3">
+<li><strong><a target="_blank" rel="noopener" href="http://Electron.NET">Electron.NET</a></strong></li>
+</ol>
+<ul>
+<li><strong>简介</strong>：<a target="_blank" rel="noopener" href="http://Electron.NET">Electron.NET</a> 是一个基于 Electron 的 .NET 扩展，允许开发桌面应用。</li>
+<li><strong>作为 Blazor Hybrid 的宿主</strong>：
+<ul>
+<li>使用 Electron 提供的跨平台桌面窗口。</li>
+<li>Blazor 提供应用的 UI 和逻辑。</li>
+</ul>
+</li>
+<li><strong>适用场景</strong>：
+<ul>
+<li>构建跨平台桌面应用（Windows、macOS、Linux）。</li>
+<li>不需要直接访问本地平台功能。</li>
+</ul>
+</li>
+<li><strong>特点</strong>：
+<ul>
+<li>依赖于 Electron 的运行环境，可能导致包体积较大。</li>
+<li>使用 Web 技术构建桌面应用。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ol start="4">
+<li><strong>Uno Platform</strong></li>
+</ol>
+<ul>
+<li><strong>简介</strong>：Uno Platform 是一个支持跨平台（Windows、iOS、Android、macOS 和 Web）的 UI 框架。</li>
+<li><strong>作为 Blazor Hybrid 的宿主</strong>：
+<ul>
+<li>提供运行环境和 UI 容器。</li>
+<li>支持将 Blazor 组件嵌入 Uno Platform 应用。</li>
+</ul>
+</li>
+<li><strong>适用场景</strong>：
+<ul>
+<li>构建跨平台应用，并希望利用 Uno 的 UI 功能。</li>
+<li>希望复用 Blazor 的 Web UI 组件。</li>
+</ul>
+</li>
+<li><strong>特点</strong>：
+<ul>
+<li>强调 XAML 和 Web 技术的结合。</li>
+<li>支持 WebAssembly 部署。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ol start="5">
+<li><strong>Avalonia</strong></li>
+</ol>
+<ul>
+<li><strong>简介</strong>：Avalonia 是一个跨平台的桌面 UI 框架，支持 Windows、macOS 和 Linux。</li>
+<li><strong>作为 Blazor Hybrid 的宿主</strong>：
+<ul>
+<li>可以通过自定义集成托管 Blazor UI。</li>
+<li>适用于桌面应用开发。</li>
+</ul>
+</li>
+<li><strong>适用场景</strong>：
+<ul>
+<li>构建跨平台桌面应用。</li>
+<li>希望利用 Avalonia 的高性能渲染和自定义功能。</li>
+</ul>
+</li>
+<li><strong>特点</strong>：
+<ul>
+<li>灵活且高性能，适合桌面环境。</li>
+<li>社区支持广泛。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ol start="6">
+<li><strong>基于 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 的自定义宿主</strong></li>
+</ol>
+<ul>
+<li><strong>简介</strong>：Blazor 组件可以嵌入在 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 应用中，结合本地窗口（如 WinUI 或第三方框架）运行。</li>
+<li><strong>作为 Blazor Hybrid 的宿主</strong>：
+<ul>
+<li><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 提供服务器逻辑和 UI 组件。</li>
+<li>配合自定义窗口系统（如 CefSharp）展示 Blazor UI。</li>
+</ul>
+</li>
+<li><strong>适用场景</strong>：
+<ul>
+<li>自定义应用逻辑需求较高。</li>
+<li>需要灵活选择宿主技术。</li>
+</ul>
+</li>
+<li><strong>特点</strong>：
+<ul>
+<li>灵活但复杂。</li>
+<li>更适合高级开发者。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="宿主框架对比">宿主框架对比</h3>
+<table>
+<thead>
+<tr>
+<th><strong>宿主框架</strong></th>
+<th><strong>支持的目标平台</strong></th>
+<th><strong>特点</strong></th>
+<th><strong>适用场景</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.NET MAUI</td>
+<td>Windows, macOS, iOS, Android</td>
+<td>官方推荐，跨平台能力强，集成本地功能</td>
+<td>企业级跨平台应用</td>
+</tr>
+<tr>
+<td>WPF 和 WinForms</td>
+<td>Windows</td>
+<td>传统桌面框架，适合旧应用升级</td>
+<td>Windows 桌面应用</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://Electron.NET">Electron.NET</a></td>
+<td>Windows, macOS, Linux</td>
+<td>基于 Web 技术，跨平台，但体积较大</td>
+<td>跨平台桌面应用</td>
+</tr>
+<tr>
+<td>Uno Platform</td>
+<td>Windows, iOS, Android, macOS, Web</td>
+<td>支持多种平台，强调 XAML 与 Web 技术结合</td>
+<td>跨平台桌面和移动应用</td>
+</tr>
+<tr>
+<td>Avalonia</td>
+<td>Windows, macOS, Linux</td>
+<td>高性能渲染，适合桌面应用</td>
+<td>高度定制的桌面跨平台应用</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core</td>
+<td>自定义平台支持</td>
+<td>灵活，但需要额外集成工作</td>
+<td>特定需求的自定义跨平台解决方案</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>总结</strong>：<br>
+Blazor Hybrid 的宿主框架多种多样，选择时应根据应用的目标平台、功能需求和性能要求：</p>
+<ul>
+<li><strong>首选 .NET MAUI</strong>：如果需要完整的跨平台支持（Windows、macOS、iOS 和 Android）。</li>
+<li><strong>选择 WPF/WinForms</strong>：如果应用只需要运行在 Windows 桌面上。</li>
+<li><strong>选择 <a target="_blank" rel="noopener" href="http://Electron.NET">Electron.NET</a> 或 Uno Platform</strong>：如果需要基于 Web 技术的跨平台桌面支持。</li>
+<li><strong>选择 Avalonia</strong>：如果关注高性能渲染和桌面应用定制。</li>
+</ul>
+<p>Blazor Hybrid 是 Blazor 技术的延伸，通过结合 MAUI 等宿主框架，为开发者提供了构建跨平台本地应用的强大工具。它适合需要高性能、本地功能支持、以及代码复用的跨平台应用开发场景。</p>
+<h5 id="九-Blazor-Hybrid的跨平台特性">九 Blazor Hybrid的跨平台特性</h5>
+<p><strong>Blazor Hybrid</strong> 本身的跨平台能力依赖于 <strong>宿主框架</strong> 提供的平台支持。因此，如果宿主框架不具备跨平台能力，<strong>Blazor Hybrid</strong> 就无法实现跨平台。让我们深入分析这个问题。</p>
+<hr>
+<p><strong>Blazor Hybrid 的跨平台能力依赖宿主框架</strong></p>
+<p><strong>1. 宿主框架的核心作用</strong><br>
+Blazor Hybrid 是一种开发模式，它允许 Blazor 的组件运行在桌面或移动端本地应用中。它需要一个宿主框架来提供：</p>
+<ul>
+<li><strong>运行环境</strong>：负责加载 .NET Runtime 和执行 Blazor 组件。</li>
+<li><strong>窗口和视图管理</strong>：呈现用户界面。</li>
+<li><strong>平台功能访问</strong>：如文件系统、摄像头、传感器等设备特性。</li>
+</ul>
+<p>如果宿主框架本身只能支持单一平台（如 Windows），那么 Blazor Hybrid 应用也只能运行在该平台上。</p>
+<hr>
+<p><strong>Blazor Hybrid 是否独立具备跨平台能力？</strong></p>
+<ol>
+<li>
+<p><strong>Blazor 本质</strong>：</p>
+<ul>
+<li>Blazor 是一个用于构建 Web UI 的框架，它支持 WebAssembly 和服务器端渲染。</li>
+<li>在 Blazor Hybrid 模式下，Blazor 组件被嵌入到宿主框架中运行，而不再通过浏览器或 WebAssembly。</li>
+</ul>
+</li>
+<li>
+<p><strong>Blazor Hybrid 的依赖性</strong>：</p>
+<ul>
+<li>它无法脱离宿主框架单独运行。</li>
+<li>它的跨平台能力完全由宿主框架决定。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p><strong>如果宿主框架不能跨平台，Blazor Hybrid 的实现方案</strong></p>
+<ol>
+<li>
+<p><strong>单平台运行</strong>：</p>
+<ul>
+<li>如果宿主框架仅支持单一平台（如 WPF），那么 Blazor Hybrid 应用将局限于该平台运行，无法跨平台。</li>
+</ul>
+</li>
+<li>
+<p><strong>迁移到支持跨平台的宿主框架</strong>：</p>
+<ul>
+<li>为实现跨平台，可以将应用迁移到支持跨平台的框架（如 .NET MAUI 或 Uno Platform）。</li>
+</ul>
+</li>
+<li>
+<p><strong>分层架构设计</strong>：</p>
+<ul>
+<li>将 Blazor 组件与宿主框架解耦。</li>
+<li>使用共享的 Blazor 代码库，针对不同的宿主框架开发单独的实现，从而支持不同平台。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="Blazor-WebAssembly">Blazor WebAssembly</h4>
+<ul>
+<li><strong>功能</strong>：Blazor WebAssembly 是 Blazor 的一种模式，其中所有的应用代码（包括组件、逻辑、UI 等）会被编译成 WebAssembly，直接运行在浏览器中。这使得应用不依赖于服务器，客户端会完全处理所有的用户界面和交互逻辑。</li>
+<li><strong>职责</strong>：在浏览器中运行 C# 代码，实现与用户的交互、与后台的通信等。</li>
+</ul>
+<h4 id="Blazor-Server">Blazor Server</h4>
+<ul>
+<li><strong>功能</strong>：Blazor Server 是 Blazor 的另一种模式，其中应用代码运行在服务器上，客户端通过 SignalR 与服务器进行通信，UI 渲染和交互都依赖于服务器端的处理。客户端主要用于渲染 UI 和接收用户输入。</li>
+<li><strong>职责</strong>：服务器处理 UI 渲染和用户交互，客户端仅负责显示界面和发送交互事件。</li>
+</ul>
+<h4 id="Blazor-组件">Blazor 组件</h4>
+<ul>
+<li><strong>功能</strong>：组件是 Blazor 应用的基本构建块，每个组件都是一个可复用的 UI 单元，通常由 <code>.razor</code> 文件表示。组件可以包含 HTML、C# 代码和事件处理逻辑。它们支持参数、状态管理、生命周期方法等。</li>
+<li><strong>职责</strong>：负责呈现用户界面和处理逻辑，支持嵌套和复用。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript">@code &#123;<br>    private string message = <span class="hljs-string">&quot;Hello, Blazor!&quot;</span>;<br>&#125;<br><br>&lt;h1&gt;@message&lt;/h1&gt;<br></code></pre></td></tr></table></figure>
+<h4 id="Blazor-路由">Blazor 路由</h4>
+<ol>
+<li>
+<ul>
+<li><strong>功能</strong>：Blazor 路由系统允许用户在应用中导航，并根据 URL 渲染相应的组件。<code>@page</code> 指令用于指定组件处理的 URL 路径。</li>
+<li><strong>职责</strong>：根据浏览器的 URL 来渲染不同的组件，实现前端路由。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript">@page <span class="hljs-string">&quot;/home&quot;</span><br><br>&lt;h3&gt;<span class="hljs-title class_">Welcome</span> to the <span class="hljs-title class_">Home</span> <span class="hljs-title class_">Page</span>!&lt;/h3&gt;<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="Blazor-数据绑定">Blazor 数据绑定</h4>
+<ul>
+<li><strong>功能</strong>：Blazor 提供了多种数据绑定的方式，如单向绑定、双向绑定等。它允许 UI 与组件的属性、事件、状态等进行同步，确保 UI 随着数据变化而自动更新。</li>
+<li><strong>职责</strong>：自动将组件的状态与 UI 进行同步，并处理用户输入。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript">&lt;input @bind=<span class="hljs-string">&quot;message&quot;</span> /&gt;<br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>@message<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+<h4 id="Blazor-事件处理">Blazor 事件处理</h4>
+<ul>
+<li><strong>功能</strong>：Blazor 提供了强大的事件处理机制，通过事件绑定，可以将用户的操作（如点击按钮）与 C# 方法关联。</li>
+<li><strong>职责</strong>：处理用户输入事件（如点击、提交、输入）并执行相应的逻辑。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript">&lt;button @onclick=<span class="hljs-string">&quot;HandleClick&quot;</span>&gt;<span class="hljs-title class_">Click</span> <span class="hljs-title class_">Me</span>&lt;/button&gt;<br><br>@code &#123;<br>    private <span class="hljs-keyword">void</span> <span class="hljs-title class_">HandleClick</span>()<br>    &#123;<br>        message = <span class="hljs-string">&quot;Button clicked!&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="Blazor-状态管理">Blazor 状态管理</h4>
+<ol>
+<li>
+<ul>
+<li><strong>功能</strong>：Blazor 支持组件之间的数据共享和状态管理。组件可以通过参数传递数据，或通过服务在多个组件之间共享状态。</li>
+<li><strong>职责</strong>：管理组件和应用级的状态，确保状态的同步和共享。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript">@page <span class="hljs-string">&quot;/counter&quot;</span><br>@inject <span class="hljs-title class_">ICounterService</span> <span class="hljs-title class_">CounterService</span><br><br>&lt;h1&gt;<span class="hljs-title class_">Counter</span>: @<span class="hljs-title class_">CounterService</span>.<span class="hljs-property">Count</span>&lt;/h1&gt;<br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">onclick</span>=<span class="hljs-string">&quot;CounterService.Increment&quot;</span>&gt;</span>Increment<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="Blazor-生命周期">Blazor 生命周期</h4>
+<ol>
+<li>
+<ul>
+<li><strong>功能</strong>：Blazor 组件具有一系列生命周期方法，开发者可以通过这些方法在组件创建、渲染、销毁等过程中执行特定操作。</li>
+<li><strong>职责</strong>：管理组件的生命周期，执行初始化、更新、清理等操作。</li>
+</ul>
+<p><strong>生命周期方法</strong>：</p>
+<ul>
+<li><code>OnInitializedAsync</code> / <code>OnInitialized</code>：组件初始化时调用。</li>
+<li><code>OnParametersSetAsync</code> / <code>OnParametersSet</code>：组件参数更新时调用。</li>
+<li><code>OnAfterRenderAsync</code> / <code>OnAfterRender</code>：渲染后调用，用于执行额外的 UI 更新操作。</li>
+</ul>
+</li>
+</ol>
+<h4 id="Blazor-服务和依赖注入">Blazor 服务和依赖注入</h4>
+<ol>
+<li>
+<ul>
+<li><strong>功能</strong>：Blazor 使用 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 的依赖注入框架，支持服务的注入，使得应用的组件可以依赖外部服务、API 或其他组件。</li>
+<li><strong>职责</strong>：通过依赖注入管理服务的创建和共享，简化组件的服务调用和逻辑分离。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">@inject <span class="hljs-title class_">IWeatherService</span> <span class="hljs-title class_">WeatherService</span><br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="Blazor-JS-交互">Blazor JS 交互</h4>
+<ol>
+<li>
+<ul>
+<li><strong>功能</strong>：Blazor 提供与 JavaScript 代码的交互能力，允许 Blazor 组件调用 JavaScript 函数，或者由 JavaScript 调用 Blazor 组件的 C# 方法。</li>
+<li><strong>职责</strong>：通过 <code>IJSRuntime</code> 进行 Blazor 和 JavaScript 代码的交互。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript">@inject <span class="hljs-title class_">IJSRuntime</span> <span class="hljs-title class_">JSRuntime</span><br><br>&lt;button @onclick=<span class="hljs-string">&quot;InvokeJsFunction&quot;</span>&gt;<span class="hljs-title class_">Call</span> <span class="hljs-variable constant_">JS</span> <span class="hljs-title class_">Function</span>&lt;/button&gt;<br><br>@code &#123;<br>    private <span class="hljs-keyword">async</span> <span class="hljs-title class_">Task</span> <span class="hljs-title class_">InvokeJsFunction</span>()<br>    &#123;<br>        <span class="hljs-keyword">await</span> <span class="hljs-title class_">JSRuntime</span>.<span class="hljs-title class_">InvokeVoidAsync</span>(<span class="hljs-string">&quot;alert&quot;</span>, <span class="hljs-string">&quot;Hello from Blazor!&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="Blazor-表单和验证">Blazor 表单和验证</h4>
+<ul>
+<li><strong>功能</strong>：Blazor 提供强大的表单处理和验证功能，可以与模型绑定，进行表单验证，并自动处理表单提交。</li>
+<li><strong>职责</strong>：提供用于表单输入和数据验证的机制，确保用户输入的合法性。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript">&lt;<span class="hljs-title class_">EditForm</span> <span class="hljs-title class_">Model</span>=<span class="hljs-string">&quot;@person&quot;</span> <span class="hljs-title class_">OnValidSubmit</span>=<span class="hljs-string">&quot;HandleValidSubmit&quot;</span>&gt;<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">DataAnnotationsValidator</span> /&gt;</span></span><br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ValidationSummary</span> /&gt;</span></span><br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">InputText</span> @<span class="hljs-attr">bind-Value</span>=<span class="hljs-string">&quot;person.Name&quot;</span> /&gt;</span></span><br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>&gt;</span>Submit<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br>&lt;/<span class="hljs-title class_">EditForm</span>&gt;<br></code></pre></td></tr></table></figure>
+<h4 id="Blazor-组件复用和嵌套">Blazor 组件复用和嵌套</h4>
+<ol>
+<li>
+<ul>
+<li><strong>功能</strong>：Blazor 组件支持嵌套和复用，可以将常见的 UI 逻辑封装为组件，并在其他组件中复用。</li>
+<li><strong>职责</strong>：通过嵌套和传递参数来实现组件的复用和组合，增加应用的灵活性。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs razor">&lt;MyButton Text=&quot;Click Me&quot; @onclick=&quot;HandleClick&quot; /&gt;<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="2-Razor">2. Razor</h3>
+<p>在 <strong><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core</strong> 中，<strong>Razor</strong> 作为一个视图引擎，负责将动态生成的 HTML 页面与后端数据结合，生成最终呈现给用户的网页。Razor 引擎本身并非一个单独的模块，而是通过多个组件来实现其功能，提供动态内容生成、视图渲染等能力。</p>
+<h4 id="Razor-视图引擎">Razor 视图引擎</h4>
+<ol>
+<li>
+<ul>
+<li><strong>功能</strong>：Razor 视图引擎是用于动态生成 HTML 内容的核心组件。它通过 <strong>.cshtml</strong> 文件将 C# 代码嵌入到 HTML 模板中，然后编译和执行这些代码以生成最终的 HTML 内容。</li>
+<li><strong>职责</strong>：将 C# 代码与 HTML 结合，实现动态内容渲染。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">&lt;h1&gt;Hello, @Model.UserName&lt;/h1&gt;<br></code></pre></td></tr></table></figure>
+</li>
+<li></li>
+</ol>
+<h4 id="Razor-页面">Razor 页面</h4>
+<ul>
+<li><strong>功能</strong>：Razor Pages 是基于 Razor 的一种简化的页面模型，它将页面逻辑与 UI 结合在一起。它比 MVC 模式更加简单，避免了 Controller 和 Action 的复杂性，直接通过页面处理请求。</li>
+<li><strong>职责</strong>：用于构建动态 Web 页面，简化了传统的 MVC 模式，通过页面文件（<code>.cshtml</code>）和 PageModel 类（<code>.cshtml.cs</code>）来处理页面请求和逻辑。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<ul>
+<li><code>Index.cshtml</code>：定义页面的视图。</li>
+<li><code>Index.cshtml.cs</code>：定义页面的后端逻辑。</li>
+</ul>
+<h4 id="Razor-编译器">Razor 编译器</h4>
+<ul>
+<li><strong>功能</strong>：Razor 编译器负责将 <code>.cshtml</code> 文件编译成 C# 类，并将这些类动态加载到应用中，以便渲染视图时能够执行相应的代码逻辑。</li>
+<li><strong>职责</strong>：将 Razor 视图（<code>.cshtml</code> 文件）转换为 C# 类，支持代码的编译和执行。</li>
+</ul>
+<h4 id="Razor-模板引擎">Razor 模板引擎</h4>
+<ul>
+<li><strong>功能</strong>：Razor 模板引擎处理模板与数据的绑定工作，将动态数据填充到模板中并生成最终的 HTML 输出。它可以在控制器或 Razor 页面中调用。</li>
+<li><strong>职责</strong>：在视图渲染时处理数据绑定，动态填充 HTML 页面中的数据。</li>
+</ul>
+<h4 id="Razor-Layouts">Razor Layouts</h4>
+<ol>
+<li>
+<ul>
+<li><strong>功能</strong>：Razor 布局文件是一种页面模板，它允许在多个页面之间共享相同的 HTML 结构（如页头、页脚等），通过布局文件避免重复代码的书写。</li>
+<li><strong>职责</strong>：为页面提供一个统一的结构，布局文件会被嵌入到视图中，实现 UI 的一致性。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html">@&#123; Layout = &quot;_Layout.cshtml&quot;; &#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="Razor-部分视图">Razor 部分视图</h4>
+<ol>
+<li>
+<ul>
+<li><strong>功能</strong>：部分视图是一个可重用的 Razor 视图，它可以被多个页面或其他视图包含，常用于重复的 UI 组件（例如，导航栏、表单等）。</li>
+<li><strong>职责</strong>：封装和重用 HTML 代码，避免在多个视图中重复相同的代码。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html">@Html.Partial(&quot;_Header&quot;)<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="Razor-Helpers">Razor Helpers</h4>
+<ol>
+<li>
+<ul>
+<li><strong>功能</strong>：Razor Helpers 是一些小型的自定义函数，用于在视图中重复使用的逻辑。例如，常见的帮助器函数包括格式化日期、生成链接等。</li>
+<li><strong>职责</strong>：封装常用的逻辑，供视图文件中调用以简化代码和增加可维护性。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp">@helper FormatDate(DateTime date)<br>&#123;<br>    @date.ToString(<span class="hljs-string">&quot;yyyy-MM-dd&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="Razor-标签帮助器">Razor 标签帮助器</h4>
+<ul>
+<li><strong>功能</strong>：Tag Helpers 是一种新的功能，允许在 Razor 页面中直接使用 HTML 标签，通过属性绑定将数据传递到视图，并且可以与 C# 代码交互。它们用于生成 HTML 元素，并实现动态行为。</li>
+<li><strong>职责</strong>：增强 HTML 标记的功能性，能够直接操作 HTML 元素及其属性，并与服务器端代码进行交互。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">asp-action</span>=<span class="hljs-string">&quot;SubmitForm&quot;</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;post&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">asp-for</span>=<span class="hljs-string">&quot;UserName&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>&gt;</span>Submit<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h4 id="Razor-页面模型">Razor 页面模型</h4>
+<ul>
+<li><strong>功能</strong>：Tag Helpers 是一种新的功能，允许在 Razor 页面中直接使用 HTML 标签，通过属性绑定将数据传递到视图，并且可以与 C# 代码交互。它们用于生成 HTML 元素，并实现动态行为。</li>
+<li><strong>职责</strong>：增强 HTML 标记的功能性，能够直接操作 HTML 元素及其属性，并与服务器端代码进行交互。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">asp-action</span>=<span class="hljs-string">&quot;SubmitForm&quot;</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;post&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">asp-for</span>=<span class="hljs-string">&quot;UserName&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>&gt;</span>Submit<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h4 id="Razor-与-Blazor-的区别">Razor 与 Blazor 的区别</h4>
+<ul>
+<li><strong>Razor</strong> 是一个 <strong>服务器端</strong> 视图引擎，它用于将 C# 代码与 HTML 内容混合生成动态页面。Razor 本身并不提供客户端交互，所有的逻辑都在服务器上执行。</li>
+<li><strong>Blazor</strong> 是一个用于构建 <strong>客户端应用</strong> 的框架，它允许使用 C# 编写前端逻辑，并通过 WebAssembly 或 SignalR 与服务器进行交互。Blazor 可以运行在客户端，支持丰富的前端交互。</li>
+</ul>
+<h3 id="3-前端框架集成">3. 前端框架集成</h3>
+<p><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 支持与现代 JavaScript 前端框架（如 Vue.js、React 或 Angular）的集成。通过 SpaServices 中间件，开发者可以将这些前端框架与 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 后端整合，实现单页应用（SPA）架构。</p>
+<h2 id="二、后端">二、后端</h2>
+<p>在 <strong><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core</strong> 中，前端和后端组件是通过多个核心技术和框架来协同工作的。<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 提供了支持构建现代 Web 应用程序的多种组件，涵盖了从前端视图渲染、用户交互到后端逻辑处理和数据访问的完整体系。以下是 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 中主要的前端和后端组件。</p>
+<h3 id="1-Razor-Pages">1. Razor Pages</h3>
+<ul>
+<li><strong>用途</strong>：一种简化的 MVC 风格框架，用于构建基于页面的应用程序。每个页面具有与之相关的 <code>PageModel</code> 类和 Razor 视图。适用于简单的 Web 应用，减少了对控制器的需求。</li>
+<li><strong>主要组成</strong>：每个页面由一个 <code>.cshtml</code> 文件和一个对应的 <code>PageModel</code> 类组成。</li>
+</ul>
+<h4 id="Razor-页面文件">Razor 页面文件</h4>
+<h4 id="页面模型类">页面模型类</h4>
+<h4 id="路由支持">路由支持</h4>
+<h3 id="2-MVC">2. MVC</h3>
+<ul>
+<li><strong>用途</strong>：用于构建基于模型-视图-控制器（MVC）模式的 Web 应用程序。它帮助分离应用程序的处理逻辑、视图和数据层。</li>
+<li><strong>主要组成</strong>：
+<ul>
+<li><strong>Controller</strong>：处理请求并返回响应。</li>
+<li><strong>View</strong>：通过 Razor 引擎渲染 HTML 页面。</li>
+<li><strong>Model</strong>：表示应用程序的业务逻辑和数据模型。</li>
+</ul>
+</li>
+</ul>
+<h4 id="模型">模型</h4>
+<p>模型是应用程序的核心部分，负责处理与数据相关的逻辑。</p>
+<ul>
+<li>
+<p><strong>实体类（Entity Classes）</strong>：</p>
+<ul>
+<li>表示数据结构或数据库表的类。</li>
+<li>使用 EF Core 或其他 ORM 映射到数据库表。</li>
+<li>示例：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Product</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Id &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">decimal</span> Price &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据传输对象（DTO, Data Transfer Object）</strong>：</p>
+<ul>
+<li>用于在控制器和视图之间传递数据的轻量级对象。</li>
+<li>通常与实体类分离，以提高安全性和灵活性。</li>
+</ul>
+</li>
+<li>
+<p><strong>视图模型（View Models）</strong>：</p>
+<ul>
+<li>特定于视图的模型，整合多种数据来源，以满足前端渲染需求。</li>
+<li>示例：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ProductViewModel</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> FormattedPrice &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>验证模型（Validation Models）</strong>：</p>
+<ul>
+<li>使用 <strong>DataAnnotations</strong> 提供的属性进行输入验证。</li>
+<li>示例：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">LoginModel</span><br>&#123;<br>    [<span class="hljs-meta">Required</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Username &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br><br>    [<span class="hljs-meta">Required</span>]<br>    [<span class="hljs-meta">DataType(DataType.Password)</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Password &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="视图">视图</h4>
+<p>视图负责呈现用户界面，通常是动态生成的 HTML。</p>
+<ul>
+<li>
+<p><strong>Razor 模板引擎</strong>：</p>
+<ul>
+<li>使用 Razor 语法生成动态 HTML，嵌入 C# 代码以处理视图逻辑。</li>
+<li>示例：<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>@Model.Name<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Price: @Model.Price<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>视图模型（View Models）</strong>：</p>
+<ul>
+<li>视图通常会绑定到一个特定的 ViewModel，以显示数据。</li>
+</ul>
+</li>
+<li>
+<p><strong>部分视图（Partial Views）</strong>：</p>
+<ul>
+<li>可复用的小型视图片段。</li>
+<li>示例：<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html">@Html.Partial(&quot;_ProductPartial&quot;, product)<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>布局视图（Layout Views）</strong>：</p>
+<ul>
+<li>定义应用程序的通用页面结构（如头部和底部导航）。</li>
+<li>示例：<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>@ViewData[&quot;Title&quot;]<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    @RenderBody()<br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>标签助手（Tag Helpers）</strong>：</p>
+<ul>
+<li>使用类似 HTML 的语法创建动态内容。</li>
+<li>示例：<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">asp-controller</span>=<span class="hljs-string">&quot;Home&quot;</span> <span class="hljs-attr">asp-action</span>=<span class="hljs-string">&quot;Submit&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">asp-for</span>=<span class="hljs-string">&quot;Name&quot;</span> /&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="控制器">控制器</h4>
+<p>控制器负责处理用户请求并返回响应。它是连接模型和视图的桥梁。</p>
+<ul>
+<li>
+<p><strong>Action 方法</strong>：</p>
+<ul>
+<li>每个方法对应一个路由，可以返回视图、JSON 数据、文件等。</li>
+<li>示例：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> IActionResult <span class="hljs-title">Index</span>()</span><br>&#123;<br>    <span class="hljs-keyword">var</span> products = _productService.GetAll();<br>    <span class="hljs-keyword">return</span> View(products);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>返回类型</strong>：</p>
+<ul>
+<li><strong>ViewResult</strong>：返回视图。</li>
+<li><strong>JsonResult</strong>：返回 JSON 数据。</li>
+<li><strong>RedirectResult</strong>：重定向到另一个 URL。</li>
+<li><strong>ContentResult</strong>：返回纯文本或 HTML 内容。</li>
+<li><strong>FileResult</strong>：返回文件内容。</li>
+</ul>
+</li>
+<li>
+<p><strong>依赖注入</strong>：</p>
+<ul>
+<li>使用构造函数注入服务，例如数据库上下文或业务逻辑服务。</li>
+<li>示例：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">HomeController</span> : <span class="hljs-title">Controller</span><br>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> IProductService _productService;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">HomeController</span>(<span class="hljs-params">IProductService productService</span>)</span><br>    &#123;<br>        _productService = productService;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>路由（Routing）</strong>：</p>
+<ul>
+<li>定义控制器和操作方法如何映射到 URL。</li>
+<li>示例：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.MapControllerRoute(<br>    name: <span class="hljs-string">&quot;default&quot;</span>,<br>    pattern: <span class="hljs-string">&quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>过滤器（Filters）</strong>：</p>
+<ul>
+<li>用于在请求生命周期的不同阶段执行逻辑（如身份验证、日志记录）。</li>
+<li>示例：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp">[<span class="hljs-meta">Authorize</span>]<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">AdminController</span> : <span class="hljs-title">Controller</span><br>&#123;<br>    <span class="hljs-comment">// Action methods</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="3-SignaIR（实时通信）">3. SignaIR（实时通信）</h3>
+<ul>
+<li><strong>用途</strong>：用于构建实时应用程序，提供双向通信。SignalR 允许服务器和客户端之间进行实时消息传递。</li>
+<li><strong>主要组成</strong>：Hub 用于在服务器和客户端之间进行通信。</li>
+</ul>
+<h4 id="Hub">Hub</h4>
+<ul>
+<li><strong>功能</strong>：SignalR 使用 <strong>Hub</strong> 作为服务器和客户端通信的中心。Hub 是一个高层次的抽象，它允许客户端调用服务器上的方法，服务器也可以调用客户端上的方法。</li>
+<li><strong>定义</strong>：你可以通过继承 <code>Hub</code> 类来创建一个 Hub 类。<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ChatHub</span> : <span class="hljs-title">Hub</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task <span class="hljs-title">SendMessage</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> user, <span class="hljs-built_in">string</span> message</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">await</span> Clients.All.SendAsync(<span class="hljs-string">&quot;ReceiveMessage&quot;</span>, user, message);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Connection">Connection</h4>
+<ul>
+<li><strong>功能</strong>：SignalR 的连接是客户端和服务器之间的实时通讯管道。客户端通过 SignalR 客户端库与服务器建立连接。</li>
+<li><strong>概念</strong>：SignalR 通过 <strong>连接</strong> 管理客户端连接。每个连接都有一个唯一的 <strong>连接 ID</strong>，它用于标识客户端。连接也支持中断和重新连接等操作。</li>
+</ul>
+<h4 id="客户端通信">客户端通信</h4>
+<ul>
+<li><strong>功能</strong>：SignalR 提供了客户端 API，允许客户端从服务器接收数据，并且客户端也能向服务器发送请求。</li>
+<li><strong>在客户端的实现</strong>：客户端可以使用 JavaScript、.NET 或其他 SignalR 客户端库（如 Java, Swift）来与 SignalR Hub 进行通信。
+<ul>
+<li><strong>客户端调用服务器方法</strong>：客户端可以调用服务器上的方法。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> connection = <span class="hljs-keyword">new</span> signalR.<span class="hljs-title class_">HubConnectionBuilder</span>()<br>    .<span class="hljs-title function_">withUrl</span>(<span class="hljs-string">&quot;/chatHub&quot;</span>)<br>    .<span class="hljs-title function_">build</span>();<br><br>connection.<span class="hljs-title function_">invoke</span>(<span class="hljs-string">&quot;SendMessage&quot;</span>, <span class="hljs-string">&quot;User1&quot;</span>, <span class="hljs-string">&quot;Hello&quot;</span>).<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(err.<span class="hljs-title function_">toString</span>()));<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>服务器调用客户端方法</strong>：服务器可以调用连接的客户端上的方法，例如向客户端推送消息。<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ChatHub</span> : <span class="hljs-title">Hub</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task <span class="hljs-title">SendMessage</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> user, <span class="hljs-built_in">string</span> message</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">await</span> Clients.All.SendAsync(<span class="hljs-string">&quot;ReceiveMessage&quot;</span>, user, message);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="传输机制">传输机制</h4>
+<p>SignalR 支持多种传输机制，以确保实时通信的可靠性。这些传输机制包括：</p>
+<ul>
+<li><strong>WebSocket</strong>：这是最常用且性能最好的传输方式，它支持双向、全双工的通信。</li>
+<li><strong>长轮询（Long Polling）</strong>：如果客户端或服务器不支持 WebSocket，SignalR 会回退到长轮询。</li>
+<li><strong>服务器发送事件（Server-Sent Events）</strong>：另一种常见的传输方式，适用于单向通信的情况。</li>
+</ul>
+<p>SignalR 会根据客户端的能力自动选择最佳的传输方式。</p>
+<h4 id="连接管理">连接管理</h4>
+<ul>
+<li>
+<p><strong>连接生命周期</strong>：SignalR 管理客户端的连接生命周期，提供连接建立、断开、恢复等管理功能。</p>
+<ul>
+<li><strong>连接开始</strong>：客户端调用 <code>StartAsync</code> 方法建立连接。</li>
+<li><strong>连接结束</strong>：当客户端断开时，SignalR 会触发断开事件（如 <code>OnDisconnectedAsync</code>）。</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ChatHub</span> : <span class="hljs-title">Hub</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> Task <span class="hljs-title">OnConnectedAsync</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Client connected&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">base</span>.OnConnectedAsync();<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> Task <span class="hljs-title">OnDisconnectedAsync</span>(<span class="hljs-params">Exception exception</span>)</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Client disconnected&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">base</span>.OnDisconnectedAsync(exception);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="组（Groups）">组（Groups）</h4>
+<ul>
+<li><strong>功能</strong>：SignalR 允许你将客户端分组，便于进行分组广播。每个客户端可以加入一个或多个组，服务器可以向特定的组发送消息。</li>
+<li><strong>实现方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ChatHub</span> : <span class="hljs-title">Hub</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task <span class="hljs-title">JoinGroup</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> groupName</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">await</span> Groups.AddToGroupAsync(Context.ConnectionId, groupName);<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task <span class="hljs-title">LeaveGroup</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> groupName</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">await</span> Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task <span class="hljs-title">SendToGroup</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> groupName, <span class="hljs-built_in">string</span> message</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">await</span> Clients.Group(groupName).SendAsync(<span class="hljs-string">&quot;ReceiveMessage&quot;</span>, message);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="安全性">安全性</h4>
+<p>SignalR 提供了几种方式来增强连接的安全性：</p>
+<ul>
+<li><strong>身份验证和授权</strong>：你可以通过 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 的身份验证机制（如 Cookie、JWT 等）来保护 SignalR 连接。通过设置 SignalR 连接的身份验证上下文，来确保只有授权的客户端能够连接和进行通信。<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp">services.AddSignalR()<br>        .AddHubOptions&lt;ChatHub&gt;(options =&gt;<br>        &#123;<br>            options.EnableDetailedErrors = <span class="hljs-literal">true</span>;<br>        &#125;);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>SignalR 中间件</strong>：SignalR 也允许你为 Hub 添加中间件以进行身份验证和授权。</li>
+</ul>
+<h4 id="实时更新">实时更新</h4>
+<p>SignalR 主要用于 <strong>实时数据更新</strong>，这意味着你可以在客户端无需刷新页面的情况下实时接收到来自服务器的数据更新。常见应用场景包括：</p>
+<ul>
+<li><strong>聊天应用</strong>：即时消息和通知推送。</li>
+<li><strong>实时股票数据</strong>：实时数据流的显示。</li>
+<li><strong>多人游戏</strong>：游戏状态实时同步。</li>
+<li><strong>监控面板</strong>：实时更新仪表盘数据。</li>
+</ul>
+<h4 id="可靠性和重连机制">可靠性和重连机制</h4>
+<p>SignalR 提供了重连机制，能够确保在连接丢失后自动重新连接。这对于实时应用尤为重要，保证了客户端即使在网络不稳定时，仍然能够继续接收更新。</p>
+<ul>
+<li><strong>自动重连</strong>：SignalR 可以自动检测连接丢失，并在网络恢复后尝试重新连接。<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp">connection.onclose(<span class="hljs-keyword">async</span> () =&gt; &#123;<br>    <span class="hljs-keyword">await</span> start();  <span class="hljs-comment">// 自动重连逻辑</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="性能优化">性能优化</h4>
+<p>SignalR 还提供了对高性能的优化，例如支持连接的压缩、流式传输、分片等功能，以确保实时通信即使在大规模并发场景下也能稳定运行。</p>
+<h3 id="4-Web-API">4. Web API</h3>
+<p><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core Web API 是一种构建 HTTP 服务（如 RESTful APIs）的框架，它允许客户端通过 HTTP 协议与后端进行通信。Web API 主要用于提供数据服务，常见于移动应用、单页应用（SPA）和微服务架构等场景。</p>
+<h4 id="请求处理">请求处理</h4>
+<p>这些部分负责接收、路由和处理 HTTP 请求。</p>
+<h5 id="控制器-2">控制器</h5>
+<ul>
+<li><strong>功能</strong>：控制器是 Web API 中的核心部分，负责接收 HTTP 请求并返回响应。每个控制器通常对应 API 的一个资源集，如 <code>ProductsController</code> 或 <code>UsersController</code>。</li>
+<li><strong>定义</strong>：控制器继承自 <code>ControllerBase</code> 类，而不是 <code>Controller</code> 类，因为 Web API 不需要视图支持。</li>
+<li><strong>示例</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs csharp">[<span class="hljs-meta">ApiController</span>]  <span class="hljs-comment">// 自动启用模型验证</span><br>[<span class="hljs-meta">Route(<span class="hljs-string">&quot;api/[controller]&quot;</span>)</span>]<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ProductsController</span> : <span class="hljs-title">ControllerBase</span><br>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> IProductService _productService;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ProductsController</span>(<span class="hljs-params">IProductService productService</span>)</span><br>    &#123;<br>        _productService = productService;<br>    &#125;<br><br>    [<span class="hljs-meta">HttpGet</span>]<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> IActionResult <span class="hljs-title">GetProducts</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">var</span> products = _productService.GetAllProducts();<br>        <span class="hljs-keyword">return</span> Ok(products);<br>    &#125;<br><br>    [<span class="hljs-meta">HttpGet(<span class="hljs-string">&quot;&#123;id&#125;&quot;</span>)</span>]<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> IActionResult <span class="hljs-title">GetProduct</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> id</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">var</span> product = _productService.GetProductById(id);<br>        <span class="hljs-keyword">if</span> (product == <span class="hljs-literal">null</span>)<br>        &#123;<br>            <span class="hljs-keyword">return</span> NotFound();<br>        &#125;<br>        <span class="hljs-keyword">return</span> Ok(product);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="路由">路由</h5>
+<ul>
+<li><strong>功能</strong>：路由系统决定 HTTP 请求将如何与控制器方法匹配。在 Web API 中，通常使用特性路由（Attribute Routing）来定义路由规则。</li>
+<li><strong>定义</strong>：通过在控制器或方法上使用 <code>[Route]</code> 特性来定义路径。</li>
+<li><strong>示例</strong>：上面的 <code>ProductsController</code> 类通过 <code>[Route(&quot;api/[controller]&quot;)]</code> 定义了基础路由，而每个方法通过 <code>HttpGet</code>、<code>HttpPost</code> 等特性指定 HTTP 方法类型。</li>
+</ul>
+<p>示例：</p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp">[<span class="hljs-meta">HttpGet(<span class="hljs-string">&quot;&#123;id&#125;&quot;</span>)</span>]<br><span class="hljs-function"><span class="hljs-keyword">public</span> IActionResult <span class="hljs-title">GetProduct</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> id</span>)</span> &#123; ... &#125;<br></code></pre></td></tr></table></figure>
+<h5 id="动作方法">动作方法</h5>
+<ul>
+<li><strong>功能</strong>：每个控制器方法处理特定的 HTTP 请求，如 <code>GET</code>、<code>POST</code>、<code>PUT</code>、<code>DELETE</code> 等。</li>
+<li><strong>定义</strong>：通过特性（例如 <code>[HttpGet]</code>、<code>[HttpPost]</code>）定义每个方法的 HTTP 动作类型。</li>
+<li><strong>示例</strong>：<code>GetProduct</code> 方法是一个 <code>GET</code> 请求方法，用于获取特定产品。</li>
+</ul>
+<h4 id="数据传输">数据传输</h4>
+<p>这些部分负责模型的定义、绑定以及数据的验证。</p>
+<h5 id="模型-2">模型</h5>
+<ul>
+<li><strong>功能</strong>：模型是用于接收和发送数据的结构，通常与数据库实体对应。它们用于接收客户端发送的数据或将数据返回给客户端。</li>
+<li><strong>定义</strong>：可以使用 <strong>DTO</strong>（数据传输对象）模式来避免直接暴露数据库实体。</li>
+<li><strong>示例</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs csharp">     <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Product</span><br>     &#123;<br>         <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Id &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>         <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>         <span class="hljs-keyword">public</span> <span class="hljs-built_in">decimal</span> Price &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>     &#125;<br><span class="hljs-meta">##### 模型绑定</span><br>  - ASP.NET Core 会自动将 HTTP 请求中的数据（如查询字符串、请求体、URL 参数等）绑定到控制器方法的参数上。<br>  - 支持复杂类型的绑定，可以直接从请求的 JSON 或表单数据中提取值并填充到模型对象。<br><br>  示例：<br>  ```<span class="hljs-function">csharp</span><br><span class="hljs-function">  <span class="hljs-keyword">public</span> IActionResult <span class="hljs-title">CreateProduct</span>(<span class="hljs-params">[FromBody] Product product</span>)</span><br>  &#123;<br>      <span class="hljs-comment">// 处理产品创建</span><br>  &#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="模型验证">模型验证</h5>
+<ul>
+<li><strong>功能</strong>：<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 支持数据验证，确保客户端传递的请求数据符合预期。可以使用数据注释（如 <code>Required</code>、<code>StringLength</code>）进行验证。</li>
+<li><strong>定义</strong>：使用 <code>DataAnnotations</code> 特性来验证模型属性。</li>
+<li><strong>示例</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Product</span><br>&#123;<br>    [<span class="hljs-meta">Required</span>]<br>    [<span class="hljs-meta">StringLength(100)</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br><br>    [<span class="hljs-meta">Range(0.01, double.MaxValue)</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">decimal</span> Price &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="请求响应">请求响应</h4>
+<p>这些部分负责响应客户端的请求，确保数据正确返回并且有适当的 HTTP 状态码。</p>
+<h5 id="响应格式化">响应格式化</h5>
+<ul>
+<li><strong>功能</strong>：Web API 返回数据时，通常是以 JSON 或 XML 格式返回。<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 会根据请求头中的 <code>Accept</code> 参数自动选择响应格式，或由开发者指定返回类型。</li>
+<li><strong>定义</strong>：通过返回 <code>IActionResult</code> 或具体类型，<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 自动将结果序列化为 JSON 或 XML 格式。</li>
+<li><strong>示例</strong>：如果控制器方法返回一个对象，<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 会自动将其序列化为 JSON。<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">return</span> Ok(product);  <span class="hljs-comment">// 返回 JSON 格式</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="HTTP-状态码">HTTP 状态码</h5>
+<ul>
+<li>根据请求的处理结果，API 需要返回适当的 HTTP 状态码，如 <code>200 OK</code>、<code>201 Created</code>、<code>404 Not Found</code>、<code>500 Internal Server Error</code> 等。</li>
+<li>使用内置的 <code>Ok()</code>、<code>NotFound()</code>、<code>BadRequest()</code> 等方法来返回特定的状态码。</li>
+</ul>
+<p>示例：</p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">if</span> (product == <span class="hljs-literal">null</span>)<br>&#123;<br>    <span class="hljs-keyword">return</span> NotFound();  <span class="hljs-comment">// 返回 404</span><br>&#125;<br><span class="hljs-keyword">return</span> Ok(product);  <span class="hljs-comment">// 返回 200 OK</span><br></code></pre></td></tr></table></figure>
+<h4 id="其他支持功能">其他支持功能</h4>
+<p>这些部分是为了增强 API 的功能和可维护性。</p>
+<h5 id="依赖注入">依赖注入</h5>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 提供内置的依赖注入容器，用于注入服务，如数据库上下文、业务逻辑服务、缓存等。</li>
+<li>通过构造函数注入可以轻松获得这些服务实例，保持控制器代码的简洁性。</li>
+</ul>
+<p>示例：</p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> IProductService _productService;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ProductsController</span>(<span class="hljs-params">IProductService productService</span>)</span><br>&#123;<br>    _productService = productService;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="异常处理">异常处理</h5>
+<ul>
+<li>在 Web API 中，通常会使用中间件来捕获和处理未处理的异常，确保 API 返回一致的错误响应。</li>
+<li>可以通过 <code>try-catch</code> 或自定义中间件来处理和记录异常。</li>
+</ul>
+<p>示例：</p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">try</span><br>&#123;<br>    <span class="hljs-keyword">var</span> product = _productService.GetProduct(id);<br>    <span class="hljs-keyword">if</span> (product == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> NotFound();<br>    <span class="hljs-keyword">return</span> Ok(product);<br>&#125;<br><span class="hljs-keyword">catch</span> (Exception ex)<br>&#123;<br>    <span class="hljs-keyword">return</span> StatusCode(<span class="hljs-number">500</span>, <span class="hljs-keyword">new</span> &#123; message = <span class="hljs-string">&quot;Internal Server Error&quot;</span>, error = ex.Message &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="跨域资源共享">跨域资源共享</h5>
+<pre><code class="hljs">- **功能**：CORS（Cross-Origin Resource Sharing）允许客户端跨域访问 Web API，通常用于 Web 浏览器和其他前端应用。
+- **定义**：可以通过中间件配置 CORS 策略。
+- **示例**：
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp">services.AddCors(options =&gt;<br>&#123;<br>    options.AddPolicy(<span class="hljs-string">&quot;AllowAll&quot;</span>, builder =&gt;<br>    &#123;<br>        builder.AllowAnyOrigin()<br>               .AllowAnyMethod()<br>               .AllowAnyHeader();<br>    &#125;);<br>&#125;);<br></code></pre></td></tr></table></figure>
+</code></pre>
+<h5 id="认证与授权">认证与授权</h5>
+<ul>
+<li>Web API 中的认证用于确保请求者身份的合法性，而授权用于确保请求者是否有权访问特定资源。</li>
+<li>可以通过 JWT（JSON Web Token）、OAuth 或 Cookie 认证等方式实现。</li>
+</ul>
+<p>示例：</p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs csharp">[<span class="hljs-meta">Authorize</span>]<br>[<span class="hljs-meta">HttpGet</span>]<br><span class="hljs-function"><span class="hljs-keyword">public</span> IActionResult <span class="hljs-title">GetSecretData</span>()</span><br>&#123;<br>    <span class="hljs-keyword">return</span> Ok(<span class="hljs-keyword">new</span> &#123; message = <span class="hljs-string">&quot;This is protected data&quot;</span> &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="API-版本控制">API 版本控制</h5>
+<ul>
+<li>用于管理和发布多个版本的 API，避免破坏向后兼容性。</li>
+<li>可以通过 URL 路径、请求头或查询字符串来指定版本。</li>
+</ul>
+<p>示例：</p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs csharp">[<span class="hljs-meta">ApiVersion(<span class="hljs-string">&quot;1.0&quot;</span>)</span>]<br>[<span class="hljs-meta">Route(<span class="hljs-string">&quot;api/v&#123;version:apiVersion&#125;/products&quot;</span>)</span>]<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ProductsV1Controller</span> : <span class="hljs-title">ControllerBase</span><br>&#123;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="5-中间件">5 .中间件</h3>
+<p>在 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 中，中间件是请求处理管道中的组成部分，每个中间件都在处理 HTTP 请求时做特定的工作。中间件按顺序处理请求，通常用于验证、授权、日志记录、路由、静态文件服务、错误处理等。<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 提供了很多内建的中间件，开发者也可以创建自定义中间件。</p>
+<h4 id="请求处理类中间件">请求处理类中间件</h4>
+<p>这些中间件直接处理 HTTP 请求，执行特定的逻辑，例如验证、授权、路由等。它们通常会修改请求对象或控制请求流程。</p>
+<h5 id="身份验证中间件">身份验证中间件</h5>
+<ul>
+<li>
+<p><strong>功能</strong>：用于对请求进行身份验证，验证用户的身份信息（如 Cookie、JWT Token 等）。</p>
+</li>
+<li>
+<p><strong>启用方式</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseAuthentication();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="授权中间件">授权中间件</h5>
+<ul>
+<li><strong>功能</strong>：用于检查用户是否具有访问特定资源的权限。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseAuthorization();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="路由中间件">路由中间件</h5>
+<ul>
+<li><strong>功能</strong>：将 HTTP 请求映射到相应的终结点（例如控制器、Blazor 页面等）。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseRouting();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="端点中间件">端点中间件</h5>
+<ul>
+<li><strong>功能</strong>：根据路由信息决定请求的处理方式，通常与 MVC、Razor Pages 或 Blazor 结合使用。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseEndpoints(endpoints =&gt;<br>&#123;<br>    endpoints.MapControllers();  <span class="hljs-comment">// 映射控制器</span><br>    endpoints.MapRazorPages();   <span class="hljs-comment">// 映射 Razor Pages</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="会话中间件">会话中间件</h5>
+<ul>
+<li><strong>功能</strong>：用于处理会话状态（如 Cookies）。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseSession();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="静态文件和资源中间件">静态文件和资源中间件</h4>
+<p>这些中间件处理与文件和资源相关的请求，通常会直接返回静态内容（如 HTML、CSS、JavaScript、图片等）。</p>
+<h5 id="静态文件中间件">静态文件中间件</h5>
+<ul>
+<li><strong>功能</strong>：提供静态文件（如 HTML、CSS、JavaScript 文件、图片等）的服务。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseStaticFiles();  <span class="hljs-comment">// 默认处理 wwwroot 目录中的静态文件</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="响应压缩中间件">响应压缩中间件</h5>
+<h5 id="文件上传中间件">文件上传中间件</h5>
+<ul>
+<li><strong>功能</strong>：处理文件上传请求，通常与控制器一起使用来处理文件。</li>
+<li><strong>启用方式</strong>：通过 <strong>FormData</strong> 提交处理。</li>
+</ul>
+<h4 id="响应处理类中间件">响应处理类中间件</h4>
+<p>这些中间件通常处理响应对象，修改 HTTP 响应的内容、缓存、头部等信息。</p>
+<h5 id="缓存中间件">缓存中间件</h5>
+<ul>
+<li><strong>功能</strong>：为静态和动态内容提供缓存功能，以提高性能。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseResponseCaching();  <span class="hljs-comment">// 启用响应缓存</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="健康检查中间件">健康检查中间件</h5>
+<ul>
+<li><strong>功能</strong>：提供一个健康检查端点，以便监控服务的健康状况。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseHealthChecks(<span class="hljs-string">&quot;/health&quot;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="错误处理中间件">错误处理中间件</h5>
+<ul>
+<li><strong>功能</strong>：捕获应用中的异常并生成适当的错误响应。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseExceptionHandler(<span class="hljs-string">&quot;/Home/Error&quot;</span>);  <span class="hljs-comment">// 生产环境使用</span><br>app.UseDeveloperExceptionPage();  <span class="hljs-comment">// 开发环境使用</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="响应缓存中间件">响应缓存中间件</h5>
+<h5 id="防止跨站请求伪造（Anti-Forgery）中间件">防止跨站请求伪造（Anti-Forgery）中间件</h5>
+<ul>
+<li><strong>功能</strong>：防止跨站请求伪造（CSRF）攻击，确保请求的来源合法。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseAntiForgery();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="防止请求重定向（HSTS）-中间件">防止请求重定向（HSTS） 中间件</h5>
+<ul>
+<li><strong>功能</strong>：启用 HTTP 严格传输安全（HSTS），强制客户端与服务器使用 HTTPS。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseHsts();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="重定向中间件">重定向中间件</h5>
+<h4 id="安全性类中间件">安全性类中间件</h4>
+<p>这些中间件与应用程序的安全性相关，通常涉及加密、验证、跨站攻击防护等。</p>
+<h5 id="身份验证中间件-2">身份验证中间件</h5>
+<ul>
+<li>
+<p><strong>功能</strong>：用于对请求进行身份验证，验证用户的身份信息（如 Cookie、JWT Token 等）。</p>
+</li>
+<li>
+<p><strong>启用方式</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseAuthentication();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="授权中间件-2">授权中间件</h5>
+<ul>
+<li><strong>功能</strong>：用于检查用户是否具有访问特定资源的权限。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseAuthorization();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="跨源资源共享（CORS）中间件">跨源资源共享（CORS）中间件</h5>
+<ul>
+<li><strong>功能</strong>：控制哪些外部域能够访问服务器资源，通常用于跨域请求。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseCors(builder =&gt;<br>    builder.WithOrigins(<span class="hljs-string">&quot;http://example.com&quot;</span>).AllowAnyMethod().AllowAnyHeader());<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="HTTPS（SSL）-重定向中间件">HTTPS（SSL） 重定向中间件</h5>
+<ul>
+<li><strong>功能</strong>：将 HTTP 请求重定向到 HTTPS。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseHttpsRedirection();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="防跨站请求伪造（CSRF）中间件">防跨站请求伪造（CSRF）中间件</h5>
+<ul>
+<li><strong>功能</strong>：防止跨站请求伪造（CSRF）攻击，确保请求的来源合法。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseAntiForgery();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="HSTS-中间件">HSTS 中间件</h5>
+<ul>
+<li><strong>功能</strong>：启用 HTTP 严格传输安全（HSTS），强制客户端与服务器使用 HTTPS。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseHsts();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="性能优化类中间件">性能优化类中间件</h4>
+<p>这些中间件帮助提升应用程序的性能，通常涉及缓存、压缩等。</p>
+<h5 id="响应缓存中间件-2">响应缓存中间件</h5>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>缓存 HTTP 响应以减少重复生成响应的计算成本。适用于不频繁变化的内容，如静态页面或 API。</li>
+</ul>
+<p><strong>实现方式</strong>：</p>
+<ul>
+<li>添加中间件：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseResponseCaching();<br></code></pre></td></tr></table></figure>
+</li>
+<li>配置控制响应缓存的 HTTP Header（如 <code>Cache-Control</code>）：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs csharp">  [<span class="hljs-meta">ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)</span>]<br>  <span class="hljs-function"><span class="hljs-keyword">public</span> IActionResult <span class="hljs-title">Index</span>()</span><br>  &#123;<br>      <span class="hljs-keyword">return</span> View();<br>  &#125;<br><span class="hljs-meta">##### 响应压缩中间件</span><br>**功能**：<br>- 对服务器返回的响应内容进行压缩（如 Gzip、Brotli），减少传输内容的体积，从而提高客户端加载速度。<br><br>**实现方式**：<br>- 安装 `Microsoft.AspNetCore.ResponseCompression` 包并启用中间件：<br>  ```csharp<br>  app.UseResponseCompression();<br></code></pre></td></tr></table></figure>
+</li>
+<li>配置压缩选项（支持 MIME 类型等）：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp">services.AddResponseCompression(options =&gt;<br>&#123;<br>    options.EnableForHttps = <span class="hljs-literal">true</span>;<br>    options.MimeTypes = <span class="hljs-keyword">new</span>[] &#123; <span class="hljs-string">&quot;text/plain&quot;</span>, <span class="hljs-string">&quot;text/css&quot;</span>, <span class="hljs-string">&quot;application/javascript&quot;</span> &#125;;<br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="CDN-中间件">CDN 中间件</h5>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>使用 <strong>CDN</strong> 将静态内容（如图片、JS、CSS 等）分发到全球多个边缘节点，从最近的节点提供资源，从而减少延迟。</li>
+<li><strong><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core</strong> 中虽然没有专门的 CDN 中间件，但通过配置静态文件中间件 <code>UseStaticFiles</code> 并结合 CDN URL，可以实现内容加速。</li>
+</ul>
+<p><strong>实现方式</strong>：</p>
+<ul>
+<li>配置静态文件的路径指向 CDN：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseStaticFiles(<span class="hljs-keyword">new</span> StaticFileOptions<br>&#123;<br>    RequestPath = <span class="hljs-string">&quot;/static&quot;</span>,<br>    FileProvider = <span class="hljs-keyword">new</span> PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), <span class="hljs-string">&quot;wwwroot&quot;</span>))<br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="开发和调试工具类中间件">开发和调试工具类中间件</h4>
+<p>这些中间件主要用于开发和调试阶段，帮助开发者跟踪错误、记录日志等。</p>
+<h5 id="开发者异常页面中间件">开发者异常页面中间件</h5>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>在开发环境中显示详细的异常信息，包括堆栈跟踪和请求信息，方便调试。</li>
+</ul>
+<p><strong>实现方式</strong>：</p>
+<ul>
+<li>启用中间件（通常放在最顶部，优先捕获异常）：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp">  <span class="hljs-keyword">if</span> (env.IsDevelopment())<br>  &#123;<br>      app.UseDeveloperExceptionPage();<br>  &#125;<br><span class="hljs-meta">##### 请求日志记录中间件</span><br>- **功能**：记录请求和响应的详细日志，帮助调试和监控。<br>- **启用方式**：<br>  ```csharp<br>  app.UseSerilogRequestLogging();  <span class="hljs-comment">// 使用 Serilog 进行请求日志记录</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="请求跟踪中间件">请求跟踪中间件</h5>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>记录和跟踪每个请求的详细信息（如 URL、Headers、Body、响应时间等），方便日志分析和调试。</li>
+</ul>
+<p><strong>实现方式</strong>：</p>
+<ul>
+<li>可通过自定义中间件实现，或者集成第三方库如 <strong>Serilog</strong>、<strong>Application Insights</strong>。</li>
+<li>示例自定义中间件：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">RequestLoggingMiddleware</span><br>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> RequestDelegate _next;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">RequestLoggingMiddleware</span>(<span class="hljs-params">RequestDelegate next</span>)</span> =&gt; _next = next;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task <span class="hljs-title">Invoke</span>(<span class="hljs-params">HttpContext context</span>)</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">$&quot;Request Path: <span class="hljs-subst">&#123;context.Request.Path&#125;</span>&quot;</span>);<br>        <span class="hljs-keyword">await</span> _next(context);<br>    &#125;<br>&#125;<br>app.UseMiddleware&lt;RequestLoggingMiddleware&gt;();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="请求-响应计时器中间件">请求/响应计时器中间件</h5>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>测量每个请求和响应的时间，用于性能分析和优化。</li>
+</ul>
+<p><strong>实现方式</strong>：</p>
+<ul>
+<li>自定义中间件实现：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">TimingMiddleware</span><br>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> RequestDelegate _next;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">TimingMiddleware</span>(<span class="hljs-params">RequestDelegate next</span>)</span> =&gt; _next = next;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task <span class="hljs-title">Invoke</span>(<span class="hljs-params">HttpContext context</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">var</span> stopwatch = Stopwatch.StartNew();<br>        <span class="hljs-keyword">await</span> _next(context);<br>        stopwatch.Stop();<br>        Console.WriteLine(<span class="hljs-string">$&quot;Request <span class="hljs-subst">&#123;context.Request.Path&#125;</span> took <span class="hljs-subst">&#123;stopwatch.ElapsedMilliseconds&#125;</span> ms&quot;</span>);<br>    &#125;<br>&#125;<br>app.UseMiddleware&lt;TimingMiddleware&gt;();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="服务类中间件">服务类中间件</h4>
+<p>这些中间件与应用程序的后台服务有关，通常与任务调度、队列处理、异步请求等有关。</p>
+<h5 id="后台服务中间件">后台服务中间件</h5>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>用于处理定时任务、队列消费等后台任务，例如定时清理缓存、生成报告等。</li>
+<li>通常通过 <strong>IHostedService</strong> 或 <strong>BackgroundService</strong> 实现。</li>
+</ul>
+<p><strong>实现方式</strong>：</p>
+<ul>
+<li>示例实现后台服务：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyBackgroundService</span> : <span class="hljs-title">BackgroundService</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">async</span> Task <span class="hljs-title">ExecuteAsync</span>(<span class="hljs-params">CancellationToken stoppingToken</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">while</span> (!stoppingToken.IsCancellationRequested)<br>        &#123;<br>            Console.WriteLine(<span class="hljs-string">&quot;Background task running...&quot;</span>);<br>            <span class="hljs-keyword">await</span> Task.Delay(<span class="hljs-number">1000</span>, stoppingToken);<br>        &#125;<br>    &#125;<br>&#125;<br>services.AddHostedService&lt;MyBackgroundService&gt;();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="异步请求处理中间件">异步请求处理中间件</h5>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>用于处理长时间运行或异步的任务，避免阻塞主线程。例如，大型数据处理、文件生成。</li>
+</ul>
+<p><strong>实现方式</strong>：</p>
+<ul>
+<li>使用异步编程模型实现中间件：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.Use(<span class="hljs-keyword">async</span> (context, next) =&gt;<br>&#123;<br>    <span class="hljs-keyword">await</span> Task.Run(() =&gt; &#123; <span class="hljs-comment">/* 异步任务 */</span> &#125;);<br>    <span class="hljs-keyword">await</span> next.Invoke();<br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="其他工具和中间件">其他工具和中间件</h4>
+<p>这些是一些通用的工具类中间件，处理一般功能或与外部资源的交互。</p>
+<h5 id="CORS-中间件">CORS 中间件</h5>
+<ul>
+<li><strong>功能</strong>：控制哪些外部域能够访问服务器资源，通常用于跨域请求。</li>
+<li><strong>启用方式</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseCors(builder =&gt;<br>    builder.WithOrigins(<span class="hljs-string">&quot;http://example.com&quot;</span>).AllowAnyMethod().AllowAnyHeader());<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="反向代理中间件">反向代理中间件</h5>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>将客户端请求代理到其他服务或服务器上。例如，<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 应用作为反向代理，将请求转发到后端服务。</li>
+<li><strong>YARP (Yet Another Reverse Proxy)</strong> 是微软提供的反向代理库。</li>
+</ul>
+<p><strong>实现方式</strong>：</p>
+<ul>
+<li>安装 YARP 包并配置：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp">services.AddReverseProxy()<br>    .LoadFromConfig(Configuration.GetSection(<span class="hljs-string">&quot;ReverseProxy&quot;</span>));<br>app.MapReverseProxy();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="国际化中间件">国际化中间件</h5>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>处理多语言支持，通过 <code>Accept-Language</code> Header 自动切换语言环境。</li>
+<li>提供基于用户区域的内容，比如日期格式、本地化消息等。</li>
+</ul>
+<p><strong>实现方式</strong>：</p>
+<ul>
+<li>配置本地化服务：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs csharp">services.AddLocalization(options =&gt; options.ResourcesPath = <span class="hljs-string">&quot;Resources&quot;</span>);<br>services.Configure&lt;RequestLocalizationOptions&gt;(options =&gt;<br>&#123;<br>    <span class="hljs-keyword">var</span> supportedCultures = <span class="hljs-keyword">new</span>[] &#123; <span class="hljs-keyword">new</span> CultureInfo(<span class="hljs-string">&quot;en-US&quot;</span>), <span class="hljs-keyword">new</span> CultureInfo(<span class="hljs-string">&quot;fr-FR&quot;</span>) &#125;;<br>    options.DefaultRequestCulture = <span class="hljs-keyword">new</span> RequestCulture(<span class="hljs-string">&quot;en-US&quot;</span>);<br>    options.SupportedCultures = supportedCultures;<br>    options.SupportedUICultures = supportedCultures;<br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+<li>启用中间件：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseRequestLocalization();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="6-依赖注入">6 . 依赖注入</h3>
+<p><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 的 依赖注入（Dependency Injection, DI） 是框架的核心特性之一，它通过将服务的依赖关系从对象内部提取出来并提供给对象，从而实现了控制反转（IoC）。</p>
+<h4 id="服务注册">服务注册</h4>
+<p>服务注册是将服务的实现类与接口或抽象类进行关联的过程。这个过程是将应用中的服务告知依赖注入容器，并指定服务的生命周期。通常在 <code>Startup.cs</code> 或 <code>Program.cs</code> 文件中完成。</p>
+<ul>
+<li>
+<p><strong>功能</strong>：向 DI 容器注册服务。</p>
+</li>
+<li>
+<p><strong>注册方式</strong>：</p>
+<ul>
+<li><code>AddTransient&lt;TService, TImplementation&gt;</code>：为每次请求创建一个新实例。</li>
+<li><code>AddScoped&lt;TService, TImplementation&gt;</code>：为每个请求创建一个实例（适用于 Web 请求等作用域）。</li>
+<li><code>AddSingleton&lt;TService, TImplementation&gt;</code>：在整个应用生命周期内共享同一个实例。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp">services.AddTransient&lt;IProductService, ProductService&gt;();<br>services.AddScoped&lt;IProductRepository, ProductRepository&gt;();<br>services.AddSingleton&lt;ILogger, Logger&gt;();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="服务解析">服务解析</h4>
+<p>服务解析是指依赖注入容器根据需要提供服务的实例。它是服务实例获取的过程，通常通过构造函数注入、属性注入或方法注入的方式完成。</p>
+<ul>
+<li>
+<p><strong>功能</strong>：解析并提供已注册服务的实例。</p>
+</li>
+<li>
+<p><strong>方式</strong>：</p>
+<ul>
+<li><strong>构造函数注入</strong>：最常见的方式，通过构造函数自动注入所需的依赖。</li>
+<li><strong>属性注入</strong>：通过属性来注入依赖，通常不推荐，除非特别需要。</li>
+<li><strong>方法注入</strong>：通过方法的参数进行注入，通常在某些中间件或任务调度中使用。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ProductsController</span> : <span class="hljs-title">ControllerBase</span><br>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> IProductService _productService;<br><br>    <span class="hljs-comment">// 通过构造函数注入</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ProductsController</span>(<span class="hljs-params">IProductService productService</span>)</span><br>    &#123;<br>        _productService = productService;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="服务配置">服务配置</h4>
+<p>服务配置是为服务注入外部配置、参数或行为的过程。在注册服务时，可以通过 <strong>工厂方法</strong> 或外部配置文件（如 <code>appsettings.json</code>）来动态配置服务的行为。</p>
+<ul>
+<li>
+<p><strong>功能</strong>：通过动态配置参数或从外部源注入依赖来定制服务的行为。</p>
+</li>
+<li>
+<p><strong>方式</strong>：可以通过构造函数注入、属性注入或方法注入来实现配置。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp">services.AddScoped&lt;IEmailService&gt;(provider =&gt; <br>    <span class="hljs-keyword">new</span> EmailService(<span class="hljs-string">&quot;smtp.mailserver.com&quot;</span>));<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="服务作用域">服务作用域</h4>
+<p>服务作用域是服务生命周期的一部分，特别是对于 <strong>Scoped</strong> 类型的服务，管理作用域确保服务在请求的上下文内唯一。例如，在 Web 请求中，服务的生命周期可能会在整个请求过程中保持一致。</p>
+<ul>
+<li>
+<p><strong>功能</strong>：为服务定义作用域，确保 <strong>Scoped</strong> 类型的服务在每个请求或操作范围内唯一。</p>
+</li>
+<li>
+<p><strong>实现</strong>：通过在每个请求或自定义范围内创建服务实例，保证同一请求内的多个组件共享同一实例。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> (<span class="hljs-keyword">var</span> scope = serviceProvider.CreateScope())<br>&#123;<br>    <span class="hljs-keyword">var</span> scopedService = scope.ServiceProvider.GetRequiredService&lt;IScopedService&gt;();<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="生命周期管理">生命周期管理</h4>
+<p>生命周期管理是 DI 的核心功能之一，它管理服务实例的创建、存活和销毁时机。通过正确选择服务的生命周期，开发者可以确保服务在正确的范围内被共享或新建。</p>
+<ul>
+<li>
+<p><strong>功能</strong>：管理服务实例的生命周期，确保实例在应用的生命周期内正确创建和销毁。</p>
+</li>
+<li>
+<p><strong>生命周期种类</strong>：</p>
+<ul>
+<li><strong>Transient</strong>：每次请求都会创建新的实例。</li>
+<li><strong>Scoped</strong>：每个请求（或自定义作用域）共享同一个实例。</li>
+<li><strong>Singleton</strong>：整个应用生命周期内共享同一个实例。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp">services.AddTransient&lt;IProductService, ProductService&gt;();<br>services.AddScoped&lt;IProductRepository, ProductRepository&gt;();<br>services.AddSingleton&lt;ILogger, Logger&gt;();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="依赖注入容器">依赖注入容器</h4>
+<p>依赖注入容器是管理所有注册服务并提供解析功能的核心组件。<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 提供了一个内置的 <strong>容器（<code>IServiceProvider</code>）</strong>，它管理服务的生命周期和解析工作。</p>
+<ul>
+<li>
+<p><strong>功能</strong>：容器负责管理服务的注册、解析和生命周期管理。它实现了 <strong>控制反转（IoC）</strong> 原则，将服务的创建和依赖关系管理交给容器。</p>
+</li>
+<li>
+<p><strong>实现</strong>：<code>IServiceProvider</code> 接口和具体的 DI 容器实现（默认情况下，<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 使用内置容器）。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">var</span> serviceProvider = services.BuildServiceProvider();<br><span class="hljs-keyword">var</span> myService = serviceProvider.GetService&lt;IProductService&gt;();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="跨容器依赖注入">跨容器依赖注入</h4>
+<p><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 默认使用其内置的依赖注入容器，但在一些复杂的应用中，可能需要与第三方 DI 容器（如 Autofac、Ninject）集成。跨容器依赖注入允许在不同容器间共享服务。</p>
+<ul>
+<li>
+<p><strong>功能</strong>：与其他 DI 容器进行集成，支持更多功能和自定义场景。</p>
+</li>
+<li>
+<p><strong>实现</strong>：通常通过与第三方容器的集成，提供更灵活的生命周期管理、自动化注入和更复杂的依赖关系解析。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">var</span> builder = <span class="hljs-keyword">new</span> ContainerBuilder();<br>builder.Populate(services); <span class="hljs-comment">// 将 ASP.NET Core 的服务注册到 Autofac</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="7-数据访问">7 . 数据访问</h3>
+<ul>
+<li><strong>用途</strong>：跨平台的 ORM（对象关系映射）框架，用于简化数据库访问。EF Core 将数据库中的数据映射到应用程序中的 C# 对象，并提供 LINQ 查询支持。</li>
+<li><strong>主要组成</strong>：
+<ul>
+<li><strong>DbContext</strong>：表示数据库会话和数据库操作。</li>
+<li><strong>DbSet</strong>：用于查询和操作数据库表的集合。</li>
+</ul>
+</li>
+</ul>
+<h4 id="Entity-Framework-Core">Entity Framework Core</h4>
+<p>EF Core 是 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 的 ORM（对象关系映射）框架，用于简化数据库访问。它将数据库中的数据映射到应用程序中的对象，使得数据操作更加简便。</p>
+<h3 id="基本概念"><strong>基本概念</strong></h3>
+<ul>
+<li><strong>DbContext</strong>：是与数据库进行交互的主要类，封装了数据库操作的逻辑。
+<ul>
+<li>示例：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ApplicationDbContext</span> : <span class="hljs-title">DbContext</span><br>&#123;<br>    <span class="hljs-keyword">public</span> DbSet&lt;Product&gt; Products &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-keyword">public</span> DbSet&lt;Customer&gt; Customers &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>DbSet</strong>：用于表示数据库中的表，每个 <code>DbSet&lt;TEntity&gt;</code> 映射到一个表。</li>
+</ul>
+<h3 id="数据迁移"><strong>数据迁移</strong></h3>
+<ul>
+<li><strong>数据库迁移</strong>：EF Core 提供了迁移工具，用于将数据模型的变化反映到数据库结构中。
+<ul>
+<li><strong>添加迁移</strong>：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">dotnet ef migrations add MigrationName<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>更新数据库</strong>：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">dotnet ef database update<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据查询与操作"><strong>数据查询与操作</strong></h3>
+<ul>
+<li><strong>LINQ 查询</strong>：使用 LINQ 来查询数据库并返回实体对象。
+<ul>
+<li>示例：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">var</span> products = dbContext.Products.Where(p =&gt; p.Price &gt; <span class="hljs-number">100</span>).ToList();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>增删改查（CRUD）操作</strong>：
+<ul>
+<li><strong>添加</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp">dbContext.Products.Add(newProduct);<br>dbContext.SaveChanges();<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>删除</strong>：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp">dbContext.Products.Remove(product);<br>dbContext.SaveChanges();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="支持数据库提供程序"><strong>支持数据库提供程序</strong></h3>
+<p>EF Core 支持多种数据库提供程序，包括：</p>
+<ul>
+<li>SQL Server</li>
+<li>SQLite</li>
+<li>PostgreSQL</li>
+<li>MySQL</li>
+<li>InMemory（用于测试）</li>
+</ul>
+<hr>
+<h2 id="三、一些问题">三、一些问题</h2>
+<h3 id="Web-API与ASP-NET-Core-MVC以及Razor-Pages">Web <a target="_blank" rel="noopener" href="http://xn--APIASP-5p7i.NET">API与ASP.NET</a> Core MVC以及Razor Pages</h3>
+<p><strong>Web API</strong>、<strong><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core MVC</strong> 和 <strong>Razor Pages</strong> 都是 <strong><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core</strong> 中用于构建 Web 应用和服务的框架，但它们在目的、功能和使用场景上有所不同。下面是它们的<strong>区别和联系</strong>：</p>
+<h4 id="1-Web-API">1. <strong>Web API</strong></h4>
+<p><strong>定义：</strong><br>
+Web API 是 <strong><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core</strong> 中的一个框架，专门用于处理 HTTP 请求并返回数据，通常返回 <strong>JSON</strong> 或 <strong>XML</strong> 格式的响应。Web API 通常用于构建 RESTful 服务，供客户端（如移动应用、Web 前端、其他服务等）调用，主要关注数据传输，而不包含页面渲染。</p>
+<p><strong>主要特点：</strong></p>
+<ul>
+<li><strong>主要用于数据交互</strong>：Web API 处理的是数据交换，它不关心视图或前端呈现。</li>
+<li><strong>返回数据格式</strong>：默认返回 <strong>JSON</strong> 或 <strong>XML</strong> 格式的数据。</li>
+<li><strong>无视图支持</strong>：Web API 不处理视图或 HTML 渲染，通常与前端分离，前端通过 AJAX 或 HTTP 请求获取数据。</li>
+<li><strong>控制器</strong>：Web API 使用 <code>ControllerBase</code> 类的控制器，通过路由和 HTTP 动作方法（如 <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>）来处理请求。</li>
+<li><strong>无页面生命周期</strong>：Web API 不涉及页面生命周期，它专注于提供数据，通常用于服务端与客户端（如 JavaScript 应用或移动端）之间的交互。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs csharp">[<span class="hljs-meta">ApiController</span>]<br>[<span class="hljs-meta">Route(<span class="hljs-string">&quot;api/[controller]&quot;</span>)</span>]<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ProductsController</span> : <span class="hljs-title">ControllerBase</span><br>&#123;<br>    [<span class="hljs-meta">HttpGet</span>]<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> IActionResult <span class="hljs-title">GetProducts</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">var</span> products = _productService.GetAllProducts();<br>        <span class="hljs-keyword">return</span> Ok(products);  <span class="hljs-comment">// 返回 JSON 格式</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="2-ASP-NET-Core-MVC">2. <strong><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core MVC</strong></h4>
+<p><strong>定义：</strong><br>
+<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core MVC 是一个完整的 Web 应用开发框架，采用 <strong>MVC（Model-View-Controller）</strong> 设计模式，既支持前端渲染视图，又支持后端数据处理。它主要用于构建传统的 Web 应用，处理 HTML 页面、动态内容以及用户交互。</p>
+<p><strong>主要特点：</strong></p>
+<ul>
+<li><strong>页面渲染</strong>：支持页面渲染，通常与前端视图相关联。</li>
+<li><strong>数据绑定</strong>：通过模型绑定将用户输入（如表单数据）与后端模型关联。</li>
+<li><strong>控制器与视图</strong>：MVC 中的控制器处理用户请求，返回视图，视图通常是 <strong>Razor</strong> 模板，用于渲染 HTML 页面。</li>
+<li><strong>支持RESTful API</strong>：虽然 MVC 主要用于传统的网页应用，但它也可以用于构建 Web API（通过 <code>[ApiController]</code> 特性支持）。</li>
+<li><strong>视图支持</strong>：返回的是 <strong>HTML</strong> 页面，通常与客户端渲染相关。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ProductsController</span> : <span class="hljs-title">Controller</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> IActionResult <span class="hljs-title">Index</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">var</span> products = _productService.GetAllProducts();<br>        <span class="hljs-keyword">return</span> View(products);  <span class="hljs-comment">// 返回视图（HTML 页面）</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="3-Razor-Pages">3. <strong>Razor Pages</strong></h4>
+<p><strong>定义：</strong><br>
+Razor Pages 是 <strong><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core</strong> 中的一个框架，用于构建页面驱动的 Web 应用。它基于 <strong>Razor</strong> 视图引擎，用于生成动态 HTML 内容。Razor Pages 将页面逻辑与视图紧密结合，是一种更简洁的页面开发模式。</p>
+<p><strong>主要特点：</strong></p>
+<ul>
+<li><strong>页面驱动</strong>：Razor Pages 是页面驱动的，不使用控制器（Controller）。每个 Razor 页面都对应一个 <code>.cshtml</code> 文件，并且与其背后的代码紧密相关。</li>
+<li><strong>简化开发</strong>：相比于 MVC，Razor Pages 更加简化，因为每个页面有自己的处理逻辑（即 <code>PageModel</code>）。</li>
+<li><strong>易于管理</strong>：适用于简单或中等规模的应用，特别是当你希望按页面处理请求时。</li>
+<li><strong>不依赖控制器</strong>：每个 Razor 页面背后有一个 <code>PageModel</code> 类，而不是控制器类，这使得页面的逻辑和视图更清晰地结合。</li>
+<li><strong>适用于表单和数据提交</strong>：Razor Pages 非常适合处理提交表单、数据绑定和处理 POST 请求。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment">// Razor Page: Index.cshtml</span><br>@page<br>@model IndexModel<br><br>&lt;h1&gt;Welcome to Razor Pages&lt;/h1&gt;<br><br>&lt;form method=<span class="hljs-string">&quot;post&quot;</span>&gt;<br>    &lt;input type=<span class="hljs-string">&quot;text&quot;</span> name=<span class="hljs-string">&quot;message&quot;</span> /&gt;<br>    &lt;button type=<span class="hljs-string">&quot;submit&quot;</span>&gt;Submit&lt;/button&gt;<br>&lt;/form&gt;<br><br><span class="hljs-comment">// Razor Page Model: Index.cshtml.cs</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">IndexModel</span> : <span class="hljs-title">PageModel</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Message &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnPost</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> message</span>)</span><br>    &#123;<br>        Message = message;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="区别">区别</h4>
+<table>
+<thead>
+<tr>
+<th>特性/框架</th>
+<th><strong>Web API</strong></th>
+<th><strong><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core MVC</strong></th>
+<th><strong>Razor Pages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>目的</strong></td>
+<td>构建数据传输服务，通常为 RESTful API</td>
+<td>构建传统的 Web 应用，支持视图渲染</td>
+<td>构建页面驱动的 Web 应用，支持视图渲染</td>
+</tr>
+<tr>
+<td><strong>返回格式</strong></td>
+<td>JSON 或 XML</td>
+<td>HTML 页面</td>
+<td>HTML 页面</td>
+</tr>
+<tr>
+<td><strong>视图支持</strong></td>
+<td>无视图支持，专注于数据传输</td>
+<td>支持视图（HTML），使用 Razor 模板</td>
+<td>支持视图（HTML），使用 Razor 模板</td>
+</tr>
+<tr>
+<td><strong>控制器类型</strong></td>
+<td><code>ControllerBase</code></td>
+<td><code>Controller</code>（支持视图和数据交互）</td>
+<td><code>PageModel</code>（没有控制器）</td>
+</tr>
+<tr>
+<td><strong>路由方式</strong></td>
+<td>通过特性路由（如 <code>[Route]</code>）</td>
+<td>通过特性路由和区域来处理视图</td>
+<td>每个页面通过 <code>@page</code> 指令处理路由</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>主要用于服务端与客户端的数据交互</td>
+<td>适用于需要动态渲染 HTML 的 Web 应用</td>
+<td>适用于页面驱动的 Web 应用，尤其是表单处理</td>
+</tr>
+<tr>
+<td><strong>学习曲线</strong></td>
+<td>较低，专注于数据传输</td>
+<td>中等，涉及视图和页面生命周期</td>
+<td>较低，简单的页面处理</td>
+</tr>
+</tbody>
+</table>
+<h4 id="联系"><strong>联系</strong></h4>
+<ol>
+<li>
+<p><strong>共同点</strong>：</p>
+<ul>
+<li>它们都基于 <strong><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core</strong> 框架，支持 <strong>MVC</strong> 和 <strong>Razor</strong> 模板引擎。</li>
+<li>它们都使用路由系统来处理 HTTP 请求。</li>
+<li>它们都支持依赖注入，可以方便地注入服务（如数据库上下文、业务逻辑等）。</li>
+<li>它们都能处理 HTTP 请求，但 Web API 不关心视图和页面，而 MVC 和 Razor Pages 处理用户界面的呈现。</li>
+</ul>
+</li>
+<li>
+<p><strong>互通性</strong>：</p>
+<ul>
+<li><strong>Web API 和 MVC</strong>：你可以在同一个应用中同时使用 Web API 和 MVC，API 处理数据交互，而 MVC 负责处理页面呈现。很多应用都会结合这两者，MVC 用于前端，Web API 用于后端数据服务。</li>
+<li><strong>Razor Pages 与 MVC</strong>：Razor Pages 是 MVC 的一种简化方式，适用于页面驱动的应用，而 MVC 更加灵活，适合大型应用需要更多控制器和视图的分离。</li>
+</ul>
+</li>
+</ol>
+<h4 id="总结">总结</h4>
+<ul>
+<li><strong>Web API</strong> 专注于提供数据接口，返回 JSON 或 XML，通常用于前后端分离的应用。</li>
+<li><strong><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core MVC</strong> 适用于需要视图渲染的传统 Web 应用，它通过控制器和视图分离来管理业务逻辑和前端呈现。</li>
+<li><strong>Razor Pages</strong> 是一种简化的页面驱动框架，适用于需要快速构建动态 Web 应用的场景，特别是当每个页面都有自己的处理逻辑时。</li>
+</ul>
+<h3 id="前端路由与后端路由">前端路由与后端路由</h3>
+<p><strong>路由系统</strong> 在 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 中主要是一个 <strong>后端概念</strong>，但是它在前后端的协作中也发挥了重要作用，因此有时在前后端应用中都有体现。我们可以从 <strong>后端路由</strong> 和 <strong>前端路由</strong> 两个方面来详细说明。</p>
+<h4 id="后端路由系统（ASP-NET-Core-路由）"><strong>后端路由系统（<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 路由）</strong></h4>
+<p><a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 的路由系统主要用于处理 HTTP 请求，它决定了用户请求被哪个控制器、API 或页面处理。它属于 <strong>后端</strong> 的一部分，因为它负责将请求映射到应用程序的后端逻辑。</p>
+<p><strong>后端路由的工作流程：</strong></p>
+<ul>
+<li>当用户发送请求时，<a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 的路由系统会根据请求的 URL 匹配到相应的 <strong>控制器</strong>、<strong>API</strong> 或 <strong>Razor 页面</strong>。</li>
+<li>后端路由主要处理的内容包括：
+<ul>
+<li><strong>控制器路由</strong>：用于 MVC 和 Web API 请求，例如 <code>GET /products</code> 可以映射到 <code>ProductController</code>。</li>
+<li><strong>Razor 页面路由</strong>：用于 Razor Pages 请求，通过 URL 映射到某个页面。</li>
+<li><strong>自定义路由</strong>：可以通过 <code>MapControllerRoute</code> 或 <code>MapRazorPages</code> 来配置 URL 与处理逻辑的映射关系。</li>
+</ul>
+</li>
+</ul>
+<p><strong>后端路由示例：</strong><br>
+在 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 中，你可能会看到这样的路由定义：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs csharp">app.UseEndpoints(endpoints =&gt;<br>&#123;<br>    endpoints.MapControllerRoute(<br>        name: <span class="hljs-string">&quot;default&quot;</span>,<br>        pattern: <span class="hljs-string">&quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<ul>
+<li>这个例子中，路由系统将根据 URL 中的 <code>controller</code> 和 <code>action</code> 部分将请求分发到相应的控制器和方法。</li>
+</ul>
+<h4 id="前端路由系统"><strong>前端路由系统</strong></h4>
+<p>前端路由系统主要用于单页面应用（SPA）中，帮助客户端在浏览器中进行不同视图的展示，通常由 JavaScript 框架（如 <strong>React</strong>、<strong>Angular</strong>、<strong>Vue.js</strong>）提供。前端路由负责根据浏览器中的 URL 更新页面内容，而不需要重新加载整个页面。</p>
+<p><strong>前端路由的工作流程：</strong></p>
+<ul>
+<li>在 SPA 中，当用户点击链接或通过浏览器导航时，前端路由会拦截 URL 变化，并动态加载与该 URL 相关的页面或组件。</li>
+<li>前端路由通常会利用 JavaScript 控制浏览器的地址栏，并且不进行页面刷新，只会更新页面的显示部分。</li>
+</ul>
+<p><strong>前端路由示例：</strong><br>
+假设你使用 React 路由：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs jsx">&lt;<span class="hljs-title class_">Router</span>&gt;<br>  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;/home&quot;</span> <span class="hljs-attr">component</span>=<span class="hljs-string">&#123;HomePage&#125;</span> /&gt;</span></span><br>  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;/about&quot;</span> <span class="hljs-attr">component</span>=<span class="hljs-string">&#123;AboutPage&#125;</span> /&gt;</span></span><br>&lt;/<span class="hljs-title class_">Router</span>&gt;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>这里，前端路由根据 URL (<code>/home</code> 或 <code>/about</code>) 来决定渲染哪个组件。</li>
+</ul>
+<p><strong>总结：</strong></p>
+<ul>
+<li>
+<p><strong>后端路由</strong> 是 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core 中的核心部分，它决定了服务器如何处理来自客户端的请求。后端路由将请求映射到控制器、API 或 Razor 页面，确保应用程序能够正确地响应客户端的请求。</p>
+</li>
+<li>
+<p><strong>前端路由</strong> 主要用于单页面应用中，决定浏览器根据 URL 渲染哪些视图或组件。前端路由运行在客户端，通常由 JavaScript 框架（如 React、Angular、Vue）控制。</p>
+</li>
+</ul>
+<p>因此，<strong>后端路由系统</strong> 主要属于后端，用于处理 HTTP 请求并将其映射到相应的控制器或页面；<strong>前端路由系统</strong> 属于前端，用于在客户端控制页面内容的动态变化。</p>
+<h1>2 MAUI</h1>
+<p>MAUI（.NET Multi-platform App UI）是微软推出的跨平台用户界面框架，用于构建适用于多平台（包括 Android、iOS、Windows 和 macOS）的应用程序。它基于 Xamarin.Forms 演变而来，支持共享单一代码库。</p>
+<h2 id="MAUI组件">MAUI组件</h2>
+<p>MAUI 包含以下主要组件：</p>
+<ol>
+<li>
+<p><strong>应用框架</strong></p>
+<ul>
+<li>提供应用程序生命周期管理（如启动、挂起、恢复）。</li>
+<li>支持跨平台的应用程序入口点（<code>MauiProgram</code> 类和 <code>.NET Generic Host</code> 模型）。</li>
+</ul>
+</li>
+<li>
+<p><strong>用户界面（UI）元素</strong></p>
+<ul>
+<li><strong>布局（Layouts）</strong><br>
+如 <code>StackLayout</code>, <code>Grid</code>, <code>AbsoluteLayout</code>, 和 <code>FlexLayout</code>，用于组织界面元素。</li>
+<li><strong>控件（Controls）</strong><br>
+提供常见的 UI 控件，如 <code>Button</code>, <code>Label</code>, <code>Entry</code>, <code>ListView</code>, <code>CollectionView</code>, <code>ScrollView</code>。</li>
+<li><strong>页面（Pages）</strong><br>
+如 <code>ContentPage</code>, <code>NavigationPage</code>, <code>TabbedPage</code>, 和 <code>FlyoutPage</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>跨平台 API</strong></p>
+<ul>
+<li>提供统一的 API，支持平台无关的功能调用，如：
+<ul>
+<li>设备信息（<code>DeviceInfo</code>）</li>
+<li>文件访问（<code>FileSystem</code>）</li>
+<li>网络请求（<code>HttpClient</code> 和相关 API）</li>
+<li>剪贴板（<code>Clipboard</code>）</li>
+<li>传感器（<code>Geolocation</code>, <code>Accelerometer</code> 等）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>资源管理</strong></p>
+<ul>
+<li><strong>样式与主题</strong><br>
+使用 <code>ResourceDictionary</code> 定义跨平台的样式和主题。</li>
+<li><strong>图形资源</strong><br>
+支持矢量图形（如 SVG），通过单一资源适配不同分辨率。</li>
+<li><strong>字体和图标</strong><br>
+通过 <code>MauiAppBuilder</code> 注册字体和图标。</li>
+</ul>
+</li>
+<li>
+<p><strong>平台特定实现（Handlers）</strong></p>
+<ul>
+<li><strong>Handlers</strong> 替代 Xamarin.Forms 中的 Renderers，用于将跨平台控件映射到平台特定实现。</li>
+<li>支持自定义和扩展平台特定行为。</li>
+</ul>
+</li>
+<li>
+<p><strong>图形与绘图</strong></p>
+<ul>
+<li><strong>绘图（Graphics View）</strong><br>
+提供 <code>Canvas</code> API，可绘制形状、图像和文本。</li>
+<li><strong>动画</strong><br>
+支持控件的简单动画处理。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据绑定与 MVVM 支持</strong></p>
+<ul>
+<li>提供双向数据绑定功能，与 MVVM 模式无缝集成。</li>
+<li>支持 <code>ObservableCollection</code>, <code>Command</code>, 和数据模板。</li>
+</ul>
+</li>
+<li>
+<p><strong>依赖服务与扩展</strong></p>
+<ul>
+<li>使用内置的依赖注入（Dependency Injection）支持。</li>
+<li>支持注册和使用第三方库扩展功能。</li>
+</ul>
+</li>
+<li>
+<p><strong>Blazor Hybrid 集成</strong></p>
+<ul>
+<li>支持 Blazor 混合应用，允许将 Razor 组件嵌入到 MAUI 应用中。</li>
+</ul>
+</li>
+<li>
+<p><strong>工具支持</strong></p>
+</li>
+</ol>
+<ul>
+<li>与 Visual Studio 和 Visual Studio Code 深度集成。</li>
+<li>支持热重载（Hot Reload）和实时预览（Live Preview）。</li>
+</ul>
+<p><strong>UGUI</strong> 和 <strong>MAUI</strong> 是两个不同的技术框架，主要用于不同的场景，但它们在某些方面有一定的联系。以下是它们的详细对比与分析：</p>
+<hr>
+<h2 id="UGUI和MAUI">UGUI和MAUI</h2>
+<h3 id="一、UGUI-和-MAUI-的简介">一、UGUI 和 MAUI 的简介</h3>
+<p><strong>UGUI</strong></p>
+<ul>
+<li><strong>全称</strong>：Unity GUI（User Interface）</li>
+<li><strong>平台背景</strong>：UGUI 是 Unity 引擎中的用户界面系统，主要用于开发 2D/3D 游戏中的界面。</li>
+<li><strong>应用领域</strong>：游戏界面（HUD、菜单、按钮等）。</li>
+<li><strong>特点</strong>：
+<ul>
+<li>深度集成 Unity 引擎，与 2D/3D 游戏场景无缝融合。</li>
+<li>面向实时渲染，支持复杂动画、粒子效果等。</li>
+<li>基于组件系统，使用 GameObject 和 RectTransform 构建界面。</li>
+</ul>
+</li>
+</ul>
+<p><strong>MAUI</strong></p>
+<ul>
+<li><strong>全称</strong>：.NET Multi-platform App UI</li>
+<li><strong>平台背景</strong>：MAUI 是微软推出的跨平台开发框架，支持开发 Android、iOS、Windows 和 macOS 的应用。</li>
+<li><strong>应用领域</strong>：企业级应用、移动应用、桌面应用。</li>
+<li><strong>特点</strong>：
+<ul>
+<li>支持多平台单一代码库。</li>
+<li>使用 XAML 构建界面，强调数据绑定和 MVVM 模式。</li>
+<li>提供跨平台 API，同时允许平台特定扩展。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="二、UGUI-和-MAUI-的区别">二、UGUI 和 MAUI 的区别</h3>
+<table>
+<thead>
+<tr>
+<th><strong>比较维度</strong></th>
+<th><strong>UGUI</strong></th>
+<th><strong>MAUI</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>用途</strong></td>
+<td>游戏开发中的用户界面，面向 2D/3D 场景的实时渲染。</td>
+<td>通用跨平台应用开发，面向生产力工具和业务应用。</td>
+</tr>
+<tr>
+<td><strong>运行环境</strong></td>
+<td>Unity 引擎（支持多平台发布，如 PC、移动端、VR）。</td>
+<td>.NET 运行时（支持 Android、iOS、Windows、macOS）。</td>
+</tr>
+<tr>
+<td><strong>UI 构建方式</strong></td>
+<td>使用 Unity 编辑器中的拖拽组件系统（RectTransform）。</td>
+<td>使用 XAML 定义界面，结合 C# 进行逻辑开发。</td>
+</tr>
+<tr>
+<td><strong>渲染方式</strong></td>
+<td>基于 Unity 的实时渲染管线，支持复杂图形效果。</td>
+<td>原生控件渲染，关注性能和一致的用户体验。</td>
+</tr>
+<tr>
+<td><strong>开发语言</strong></td>
+<td>C# 和 Unity 的组件化框架。</td>
+<td>C# 和 .NET 框架，采用 MVVM 模式。</td>
+</tr>
+<tr>
+<td><strong>目标用户</strong></td>
+<td>游戏开发者，注重视觉效果和交互体验。</td>
+<td>软件开发者，注重生产力和跨平台兼容性。</td>
+</tr>
+<tr>
+<td><strong>性能优化</strong></td>
+<td>强调图形渲染性能，如帧率优化、Draw Call 管理。</td>
+<td>强调应用性能，如内存占用、UI 响应速度。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="三、UGUI-和-MAUI-的联系">三、UGUI 和 MAUI 的联系</h3>
+<ol>
+<li>
+<p><strong>使用 C# 语言</strong></p>
+<ul>
+<li>两者都使用 C# 作为主要开发语言，使得开发者在语言层面可以快速切换。</li>
+</ul>
+</li>
+<li>
+<p><strong>组件化开发</strong></p>
+<ul>
+<li>UGUI 使用 Unity 的组件系统（GameObject + RectTransform）。</li>
+<li>MAUI 使用控件和布局系统（Button, StackLayout 等）。</li>
+</ul>
+</li>
+<li>
+<p><strong>跨平台能力</strong></p>
+<ul>
+<li>UGUI 可以通过 Unity 的多平台发布功能支持不同设备。</li>
+<li>MAUI 通过 .NET 的抽象层实现多平台适配。</li>
+</ul>
+</li>
+<li>
+<p><strong>工具链的互补</strong></p>
+<ul>
+<li>UGUI 偏重于图形化界面和交互动画，适合游戏或视觉化较强的场景。</li>
+<li>MAUI 更注重业务逻辑和跨平台应用的高效开发。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="四、应用选择建议">四、应用选择建议</h3>
+<p><strong>适用 UGUI 的场景</strong></p>
+<ul>
+<li>游戏开发中的用户界面，例如主菜单、设置界面、技能面板等。</li>
+<li>需要高度自定义的动态界面（如动画、特效丰富的 UI）。</li>
+</ul>
+<p><strong>适用 MAUI 的场景</strong></p>
+<ul>
+<li>企业级应用，如移动端的业务系统或桌面办公工具。</li>
+<li>需要快速开发跨平台应用，并且注重与操作系统一致的用户体验。</li>
+</ul>
+<hr>
+<h3 id="五、实际项目中的配合">五、实际项目中的配合</h3>
+<p>在某些情况下，UGUI 和 MAUI 可以协同使用。例如：</p>
+<ul>
+<li>在 Unity 中开发的游戏可能需要一个独立的跨平台管理工具（如统计或登录界面），这些工具可以使用 MAUI 开发。</li>
+<li>在 MAUI 应用中嵌入 3D 场景展示，可以通过 Unity 提供的 WebGL 或平台 SDK 集成 Unity 内容。</li>
+</ul>
+<hr>
+<p>总结：<strong>UGUI 更适合面向实时渲染的游戏界面开发，MAUI 则是为生产力工具和业务应用设计的跨平台框架。</strong> 两者各有侧重，但都具有强大的跨平台能力和高度可扩展性，适合不同开发需求。</p>
+<h2 id="什么是跨平台">什么是跨平台</h2>
+<p>跨平台通常是指应用的<strong>整体跨平台能力</strong>，包括但不限于 UI 界面。跨平台技术的核心目标是通过一次开发，使应用能够在多个操作系统或设备上运行，具体包括以下几个方面：</p>
+<hr>
+<h3 id="1-UI-界面的跨平台">1. <strong>UI 界面的跨平台</strong></h3>
+<p>这是跨平台的一个关键部分，尤其对于用户体验至关重要。</p>
+<ul>
+<li>
+<p><strong>意义</strong>：</p>
+<ul>
+<li>不同平台（如 Android、iOS、Windows、macOS）的 UI 可能有不同的控件和交互设计规范。</li>
+<li>跨平台框架通过抽象出通用控件（如按钮、列表），让开发者专注于高层逻辑，而无需处理底层差异。</li>
+</ul>
+</li>
+<li>
+<p><strong>实现方式</strong>：</p>
+<ul>
+<li><strong>原生控件映射</strong>：框架根据目标平台调用系统的原生控件（如 MAUI、Flutter）。</li>
+<li><strong>自定义渲染</strong>：UI 由框架自己绘制，与平台无关（如 Unity 和 React Native 的某些模式）。</li>
+</ul>
+</li>
+<li>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>保证跨平台的一致性，降低 UI 开发和维护成本。</li>
+<li>在 MAUI 等框架中，UI 跨平台还支持部分平台定制，以满足特定需求。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="2-逻辑代码的跨平台">2. <strong>逻辑代码的跨平台</strong></h3>
+<p>跨平台技术的更高层次是实现<strong>业务逻辑和应用功能代码的共享</strong>。</p>
+<ul>
+<li>
+<p><strong>意义</strong>：</p>
+<ul>
+<li>大部分应用的核心功能（如数据库操作、API 请求、数据处理）与平台无关。</li>
+<li>通过代码共享，可以避免重复开发这些功能。</li>
+</ul>
+</li>
+<li>
+<p><strong>实现方式</strong>：</p>
+<ul>
+<li>使用共享的代码库（如 .NET 中的 Shared Projects 或 Portable Class Libraries）。</li>
+<li>利用统一的 API，屏蔽底层差异（如 MAUI 的跨平台 API，Flutter 的 Dart 层逻辑）。</li>
+</ul>
+</li>
+<li>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>提高开发效率：一套逻辑代码适配多平台。</li>
+<li>保证一致性：减少平台间功能实现的不一致问题。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="3-平台特定代码的支持">3. <strong>平台特定代码的支持</strong></h3>
+<p>尽管跨平台框架强调共享代码，但有些功能是平台特定的（如硬件接口、系统特性），这时需要灵活地支持特定代码。</p>
+<ul>
+<li>
+<p><strong>意义</strong>：</p>
+<ul>
+<li>平台特定功能（如 Android 的文件系统权限管理或 iOS 的手势导航）可能无法完全抽象。</li>
+<li>提供扩展点让开发者实现个性化需求。</li>
+</ul>
+</li>
+<li>
+<p><strong>实现方式</strong>：</p>
+<ul>
+<li><strong>依赖注入</strong>：通过接口定义通用功能，具体实现由不同平台提供。</li>
+<li><strong>条件编译</strong>：在不同平台上编写特定代码（如 <code>#if ANDROID</code>，<code>#if WINDOWS</code>）。</li>
+<li><strong>平台服务扩展</strong>：如 MAUI 的平台特定功能扩展（Handlers）。</li>
+</ul>
+</li>
+<li>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>保证框架的灵活性，避免因为特殊需求而放弃使用跨平台框架。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-整体跨平台的概念">4. <strong>整体跨平台的概念</strong></h3>
+<p>真正的整体跨平台涵盖了应用的<strong>UI 层</strong>、<strong>逻辑层</strong> 和 <strong>平台交互层</strong>，目标是最大程度地实现代码共享和复用。</p>
+<h4 id="框架支持情况对比：">框架支持情况对比：</h4>
+<table>
+<thead>
+<tr>
+<th><strong>功能</strong></th>
+<th><strong>MAUI</strong></th>
+<th><strong>Flutter</strong></th>
+<th><strong>Unity</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UI 跨平台</td>
+<td>使用原生控件（或平台映射控件）。</td>
+<td>自定义渲染控件，UI 完全一致。</td>
+<td>自定义渲染控件，支持 2D/3D 界面。</td>
+</tr>
+<tr>
+<td>逻辑代码跨平台</td>
+<td>使用共享 C# 逻辑。</td>
+<td>Dart 实现完全共享。</td>
+<td>使用共享 C# 逻辑。</td>
+</tr>
+<tr>
+<td>平台特定功能支持</td>
+<td>通过平台扩展（如依赖注入或 Handlers）。</td>
+<td>使用 Platform Channels 实现。</td>
+<td>通过插件或平台代码实现。</td>
+</tr>
+<tr>
+<td>整体跨平台能力</td>
+<td>高，适合企业级应用和工具开发。</td>
+<td>高，适合移动应用开发。</td>
+<td>高，适合游戏及交互性场景开发。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="总结-2">总结</h3>
+<p>跨平台应用的目标是实现 <strong>UI 层</strong> 和 <strong>逻辑层</strong> 的高效共享，尽量减少平台特定代码的编写，但并不排除对特殊需求的支持。</p>
+<ul>
+<li><strong>UI 跨平台</strong> 是用户最直接感受到的部分，确保一致的外观和体验。</li>
+<li><strong>逻辑代码跨平台</strong> 则最大化了代码复用性，是跨平台开发的核心优势。<br>
+MAUI 是典型的“整体跨平台”框架，它通过共享 UI 和逻辑，结合灵活的特定扩展，实现生产力和灵活性平衡。</li>
+</ul>
+<h1>3 <a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a></h1>
+<p><strong><a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a></strong> 是由微软开发的一个跨平台开源框架，旨在为 <strong>.NET 开发者</strong> 提供机器学习功能，支持 .NET 应用程序中的预测性和分析性任务。</p>
+<hr>
+<h3 id="ML-NET-的功能和用途"><strong><a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a> 的功能和用途</strong></h3>
+<p><a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a> 的目标是使 .NET 开发者能够轻松集成机器学习功能，而无需掌握深奥的机器学习知识或其他工具链。</p>
+<ul>
+<li>
+<p><strong>应用领域</strong>：</p>
+<ul>
+<li><strong>分类</strong>（如垃圾邮件检测、情感分析）</li>
+<li><strong>回归</strong>（如房价预测、销售预测）</li>
+<li><strong>推荐系统</strong>（如个性化推荐）</li>
+<li><strong>时间序列分析</strong>（如需求预测、日志分析）</li>
+<li><strong>图像分类</strong>（结合 TensorFlow 模型）</li>
+<li><strong>异常检测</strong>（如系统故障预测）</li>
+</ul>
+</li>
+<li>
+<p><strong>无缝集成</strong>：</p>
+<ul>
+<li>与 <strong>.NET Core</strong> 和 <strong>.NET Framework</strong> 紧密结合，适合构建 Web 应用、桌面应用和微服务。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="ML-NET-的主要内容"><strong><a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a> 的主要内容</strong></h3>
+<h4 id="1-训练机器学习模型"><strong>1. 训练机器学习模型</strong></h4>
+<ul>
+<li>
+<p>支持的学习任务：</p>
+<ul>
+<li><strong>分类任务</strong>：二分类、多分类。</li>
+<li><strong>回归任务</strong>：预测连续数值输出。</li>
+<li><strong>聚类任务</strong>：无监督分组。</li>
+<li><strong>推荐任务</strong>：基于用户和物品的协同过滤。</li>
+<li><strong>时间序列分析</strong>：预测未来值。</li>
+</ul>
+</li>
+<li>
+<p>支持的算法：</p>
+<ul>
+<li><strong>分类</strong>：Logistic Regression、Naive Bayes、Random Forest 等。</li>
+<li><strong>回归</strong>：Linear Regression、SDCA、FastTree Regression 等。</li>
+<li><strong>推荐</strong>：Matrix Factorization。</li>
+<li><strong>聚类</strong>：K-Means。</li>
+</ul>
+</li>
+<li>
+<p><strong>自定义训练</strong>：</p>
+<ul>
+<li>可在 <a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a> 中使用 <strong>自定义的训练管道</strong>，例如数据预处理、特征选择、模型训练等。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="2-模型加载与部署"><strong>2. 模型加载与部署</strong></h4>
+<ul>
+<li>
+<p><strong>模型加载</strong>：</p>
+<ul>
+<li>支持加载自定义训练的 <a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a> 模型 (<code>.zip</code> 文件)。</li>
+<li>集成外部框架的模型（如 TensorFlow SavedModel 和 ONNX 格式的模型）。</li>
+</ul>
+</li>
+<li>
+<p><strong>模型部署</strong>：</p>
+<ul>
+<li>部署于 <a target="_blank" rel="noopener" href="http://ASP.NET">ASP.NET</a> Core Web API 中，用于在线预测。</li>
+<li>嵌入桌面应用、云服务或 IoT 设备中。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="3-数据处理和特征工程"><strong>3. 数据处理和特征工程</strong></h4>
+<ul>
+<li>
+<p>支持的数据操作：</p>
+<ul>
+<li>数据归一化、标准化。</li>
+<li>文本特征提取（如 TF-IDF、词袋模型）。</li>
+<li>数值特征转换（如类别编码）。</li>
+<li>时间序列拆解与窗口化。</li>
+</ul>
+</li>
+<li>
+<p>数据集加载：</p>
+<ul>
+<li>从 CSV、数据库或内存数据源中加载数据。</li>
+<li>示例：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">var</span> data = mlContext.Data.LoadFromTextFile&lt;ModelInput&gt;(<span class="hljs-string">&quot;data.csv&quot;</span>, separatorChar: <span class="hljs-string">&#x27;,&#x27;</span>, hasHeader: <span class="hljs-literal">true</span>);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="4-自动机器学习（AutoML）"><strong>4. 自动机器学习（AutoML）</strong></h4>
+<ul>
+<li><strong><a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a> AutoML</strong>：
+<ul>
+<li>自动选择最佳模型和超参数，无需手动调整。</li>
+<li>使用工具 <strong>Model Builder</strong> 提供图形化界面。</li>
+<li>示例：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">dotnet add package Microsoft.ML.AutoML<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="5-图像与深度学习支持"><strong>5. 图像与深度学习支持</strong></h4>
+<ul>
+<li>支持通过集成外部框架进行图像分类和深度学习：
+<ul>
+<li><strong>TensorFlow 模型集成</strong>：加载 TensorFlow 模型进行推理。</li>
+<li><strong>ONNX 模型支持</strong>：通过 ONNX Runtime 加载跨框架的深度学习模型。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="6-开发工具和扩展"><strong>6. 开发工具和扩展</strong></h4>
+<ul>
+<li>
+<p><strong>Model Builder</strong>：</p>
+<ul>
+<li>Visual Studio 插件，提供无代码体验进行模型训练与集成。</li>
+</ul>
+</li>
+<li>
+<p><strong>CLI 工具</strong>：</p>
+<ul>
+<li>使用命令行训练模型。</li>
+</ul>
+</li>
+<li>
+<p><strong>支持 NuGet 包扩展</strong>：</p>
+<ul>
+<li>如 <code>Microsoft.ML.TimeSeries</code>、<code>Microsoft.ML.TensorFlow</code>。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="ML-NET-与-PyTorch、TensorFlow-的区别"><strong><a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a> 与 PyTorch、TensorFlow 的区别</strong></h3>
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong><a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a></strong></th>
+<th><strong>PyTorch</strong></th>
+<th><strong>TensorFlow</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>主要目标用户</strong></td>
+<td>.NET 开发者，强调无缝集成</td>
+<td>研究人员、数据科学家、深度学习开发者</td>
+<td>数据科学家、深度学习开发者</td>
+</tr>
+<tr>
+<td><strong>编程语言支持</strong></td>
+<td>仅支持 C# 和 F#</td>
+<td>多语言（Python, C++, Java 等）</td>
+<td>多语言（Python, Java, C++ 等）</td>
+</tr>
+<tr>
+<td><strong>模型类型</strong></td>
+<td>传统 ML 和部分深度学习</td>
+<td>深度学习和神经网络</td>
+<td>深度学习和神经网络</td>
+</tr>
+<tr>
+<td><strong>自动机器学习</strong></td>
+<td>提供 AutoML</td>
+<td>需结合外部工具实现（如 Auto-sklearn）</td>
+<td>需结合外部工具实现（如 Keras Tuner）</td>
+</tr>
+<tr>
+<td><strong>模型训练</strong></td>
+<td>内置算法，偏向简单机器学习任务</td>
+<td>灵活实现复杂模型</td>
+<td>强大但较为复杂</td>
+</tr>
+<tr>
+<td><strong>性能和优化</strong></td>
+<td>针对 .NET 优化，适合生产环境</td>
+<td>高性能深度学习库</td>
+<td>高性能但资源消耗大</td>
+</tr>
+<tr>
+<td><strong>硬件加速</strong></td>
+<td>仅通过集成外部工具支持 GPU 加速</td>
+<td>原生支持 GPU 和 TPU</td>
+<td>原生支持 GPU 和 TPU</td>
+</tr>
+<tr>
+<td><strong>生态系统</strong></td>
+<td>面向 .NET 应用程序</td>
+<td>数据科学和 AI 开发生态</td>
+<td>数据科学和 AI 开发生态</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="总结：ML-NET-的定位"><strong>总结：<a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a> 的定位</strong></h3>
+<ol>
+<li>
+<p><strong>适合 .NET 开发者</strong>：</p>
+<ul>
+<li>不需要精通机器学习即可快速构建简单的 ML 应用。</li>
+<li>注重与现有 .NET 应用程序的无缝集成。</li>
+</ul>
+</li>
+<li>
+<p><strong>与 PyTorch 等框架的差异</strong>：</p>
+<ul>
+<li>PyTorch 和 TensorFlow 是深度学习框架，适合高性能和复杂 AI 模型，而 <a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a> 更偏向传统机器学习任务，并简化了模型集成和部署流程。</li>
+</ul>
+</li>
+<li>
+<p><strong>实际场景</strong>：</p>
+<ul>
+<li>如果需要在 .NET 项目中快速实现预测功能，<a target="_blank" rel="noopener" href="http://ML.NET">ML.NET</a> 是首选。</li>
+<li>如果需要构建复杂的深度学习模型，应选择 PyTorch 或 TensorFlow。</li>
+</ul>
+</li>
+</ol>
+<h1>4 总结</h1>
+<p>本文并未设计云、物联网、游戏以及WPF等框架的内容。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C-%E7%AC%94%E8%AE%B0/" class="category-chain-item">C#笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NET框架概述</div>
+      <div>https://mounthuangshan.github.io/C-笔记/C#笔记/NET框架概述/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/Bug%E7%B1%BB/Bug%E7%B1%BB/Bug%E8%AE%B0%E5%BD%95%EF%BC%9Avscode%E7%99%BB%E5%BD%95github%E6%97%B6%E6%8A%A5%E9%94%99%E2%80%94%E2%80%94%E5%B0%9A%E6%9C%AA%E5%AE%8C%E6%88%90%E6%8E%88%E6%9D%83%E6%AD%A4%E6%89%A9%E5%B1%95%E4%BD%BF%E7%94%A8%20GitHub%20%E7%9A%84%E6%93%8D%E4%BD%9C%E3%80%82%E6%98%AF%E5%90%A6%E8%A6%81%E5%B0%9D%E8%AF%95%E5%85%B6%E4%BB%96%E6%96%B9%E5%BC%8F_%20(%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E5%99%A8)/" title="Bug记录：vscode登录github时报错——尚未完成授权此扩展使用 GitHub 的操作。是否要尝试其他方式_ (本地服务器)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Bug记录：vscode登录github时报错——尚未完成授权此扩展使用 GitHub 的操作。是否要尝试其他方式_ (本地服务器)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%99%E7%A8%8B%E7%B1%BB/%E6%95%99%E7%A8%8B%E7%B1%BB/Kali%20linux%E5%9C%A8WSL2%E4%B8%AD%E7%9A%84%E9%85%8D%E7%BD%AE%E5%B9%B6%E4%BD%BF%E7%94%A8kex%E5%AE%9E%E7%8E%B0%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%EF%BC%88%E6%95%99%E7%A8%8B%E6%80%BB%E7%BB%93%EF%BC%89%20(1)/" title="Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)">
+                        <span class="hidden-mobile">Kali linux在WSL2中的配置并使用kex实现图形界面（教程总结） (1)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

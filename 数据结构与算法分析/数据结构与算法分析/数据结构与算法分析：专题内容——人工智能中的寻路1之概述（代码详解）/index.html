@@ -1,0 +1,740 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、前言 如果一个问题没有明确的解决算法，那么我们就可以考虑使用寻路算法。在这章我们将讨论两种寻路算法，一种基于博弈树，另外一种基于搜索树。这两个方法本质上都是基于一种叫做状态树的通用结构。状态树的根节点表示初始状态，边表示两个状态之间可以转换。在树中进行搜索是非常有挑战性的，因为所有的状态并不会完全计算出来，要知道，状态的数目可是爆炸性增长的。在跳棋游戏中，有大约5×1020个不同的棋盘状态（S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析：专题内容——人工智能中的寻路1之概述（代码详解）">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF1%E4%B9%8B%E6%A6%82%E8%BF%B0%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、前言 如果一个问题没有明确的解决算法，那么我们就可以考虑使用寻路算法。在这章我们将讨论两种寻路算法，一种基于博弈树，另外一种基于搜索树。这两个方法本质上都是基于一种叫做状态树的通用结构。状态树的根节点表示初始状态，边表示两个状态之间可以转换。在树中进行搜索是非常有挑战性的，因为所有的状态并不会完全计算出来，要知道，状态的数目可是爆炸性增长的。在跳棋游戏中，有大约5×1020个不同的棋盘状态（S">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF1%E4%B9%8B%E6%A6%82%E8%BF%B0%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF1%E4%B9%8B%E6%A6%82%E8%BF%B0%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C0b6bb8f3629f4defbd9816d559fdc74c.png">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF1%E4%B9%8B%E6%A6%82%E8%BF%B0%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF1%E4%B9%8B%E6%A6%82%E8%BF%B0%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Ce2083ad4d2e64221af1dddd3a22e343a.png">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.850Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF1%E4%B9%8B%E6%A6%82%E8%BF%B0%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF1%E4%B9%8B%E6%A6%82%E8%BF%B0%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C0b6bb8f3629f4defbd9816d559fdc74c.png">
+  
+  
+  
+  <title>数据结构与算法分析：专题内容——人工智能中的寻路1之概述（代码详解） - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析：专题内容——人工智能中的寻路1之概述（代码详解）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          44 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析：专题内容——人工智能中的寻路1之概述（代码详解）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、前言</h1>
+<p>如果一个问题没有明确的解决算法，那么我们就可以考虑使用寻路算法。在这章我们将讨论两种寻路算法，一种基于博弈树，另外一种基于搜索树。这两个方法本质上都是基于一种叫做状态树的通用结构。状态树的根节点表示初始状态，边表示两个状态之间可以转换。在树中进行搜索是非常有挑战性的，因为所有的状态并不会完全计算出来，要知道，状态的数目可是爆炸性增长的。在跳棋游戏中，有大约5×1020个不同的棋盘状态（Schaeffer，2007）。因此这样的树将会在搜索时按需逐步构造。两种方法的特征如下：<br>
+<strong>博弈树</strong><br>
+两个玩家轮流移动棋子，即从初始状态开始修改游戏的状态。每一个游戏者都有很多赢面状态。同样也有一些“平局状态”，在平局状态下，没有人会赢得游戏。一个优秀的寻路算法能够帮助玩家最大化赢得比赛的机会，或者在不利的情况下帮助玩家保住平局。<br>
+<strong>搜索树</strong><br>
+给一个主体分配一个任务，从一个初始状态开始，通过一系列的移动，到达期望的目标状态。寻路算法能够得到从初始状态到目标状态的转移序列。</p>
+<h1>二、博弈树</h1>
+<p>有一种叫做一字棋的游戏，它需要一个3×3格的棋盘，玩家在棋盘上轮流画X或者O。第一个将三个标记画在同一行的玩家将会赢得这次游戏，如果没有足够的空间画标记并且没有玩家赢得游戏，那么这场游戏就是平局。10岁的孩子都知道先手玩家不可能失败，即使对手不会犯任何错误。一个一字棋的计算机程序同样也能够完成这样的工作，这个程序使用为组合对局（例如跳棋或者象棋，但是没有扑克，因为扑克含有更多的运气成分）设计的人工智能算法。在一个组合对局中，有一个初始局面状态，每个玩家轮流地进行游戏，更新局面状态，直到达到某些胜利条件（或者是平局，没有玩家将赢得比赛）。<br>
+一字棋游戏中，仅仅只有765个局面状态（忽略掉那些对称的局面）以及26 830个不同的比赛（Schaeffer，2002）。先手玩家总能够获胜或者保平，通常计算机专业的本科生都会被要求编写使用AI算法写一个一字棋的程序。我们仅仅需要构建博弈树（下图所示的是树的一部分），然后从当前局面状态（树中的顶部节点）开始，寻找到一条到达目标局面状态的路径，即胜利或者平局。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF1%E4%B9%8B%E6%A6%82%E8%BF%B0%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5C0b6bb8f3629f4defbd9816d559fdc74c.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+图 一字棋局面状态的部分博弈树</p>
+<p>博弈树的另外一个广为人知的名称是与或树，因为节点只有两种类型，与或者或。玩家O的博弈树如上图所示。顶部节点是一个或节点，因为我们仅仅在六个可能的下一步局面中选择一个而已。中间层节点是与节点，因为O的目标是无论X怎么下，O都能够至少收获平局。上图的博弈树仅仅是有一部分被展开，因为事实上在底层只有30个不同的局面状态。由于玩家O或者X都没有到达底层的局面状态，我们将会看到顶部的局面状态特别有意思。直观地说，一字棋程序至少要能够预先计算三步之后的局面，然后来指导玩家O如何应付当前的局面。<br>
+博弈树表示游戏中从初始局面开始，经过有效的规则能够达到的所有的局面状态集合，当然，由于这棵树的规模过于庞大，它不可能完全计算出来。寻路算法的目标就是从一个局面状态开始，寻找一个走法来最大化玩家赢得游戏的几率。我们因此将玩家的智能决策集合转换成一个在博弈树上的寻路问题。这个方法对于较小的博弈树来说，能够很好地完成任务，它也可以被修改来解决更加复杂的问题。<br>
+跳棋的棋盘是8×8，一开始有24粒棋子（12红12黑）。长久以来，研究人员都一直尝试着寻找先手玩家是否能够至少保平。虽然精确地计算出这个结果会很困难，但是我们还是能够估算出大概有5×1020个状态。这种情况下，博弈树的规模将会不可思议地庞大。经过近18年的计算（动用了多达200台计算机），Alberta大学的研究人员声称他们已经证明了如果双方都能完美地下每一步棋，那么结果将会是平局（Schaeffer，2007）。<br>
+在人工智能（AI）中，有些复杂的问题可以被转换成玩家轮流进行的组合对局游戏，在这种情况下，我们可以使用寻路算法来解决。早期的人工智能（Shannon，1950）研究人员考虑过制造一台下棋机器，并且研究出两种解决搜索问题的方法，并且沿用至今。<br>
+<strong>A类</strong><br>
+考虑双方将来可能的一些走法集合，这个走法集合是固定的，这个策略为先手玩家找到有利位置。因此，第一步的走法决定了局势发展的方向。<br>
+<strong>B类</strong><br>
+我们可以根据一些游戏的知识来添加一些自适应的决策，而不是简简单单地使用静态评估函数。显然地，（a）尽量多地评估能够达到目的的位置，来为下一步走法寻找到一个有利的位置，这时当前局面的评价真实反映了当前位置的重要性。以及（b）选择合适的走法，所以那些漫无目的的走法不会消耗宝贵的时间。<br>
+在本专题中，我们将会介绍一些最广泛使用并且最有效的方法来减少组合对局问题的搜索空间。我们首先介绍A类算法，在双人对局中，这类算法搜索博弈树，然后提供给玩家最优走法。是属于一种通用的方法。这些算法包括Minimax、AlphaBeta和NegMax。更高级的B类算法也会介绍（例如迭代加深）。<br>
+本专题讨论的算法复杂程度与数据建立的模型好坏程度息息相关。教科书或者Internet上的很多例子都是使用一个特定的对局来描述这类算法。但是，算法和对局结合得非常紧密。因此，我们希望设计一系列面向对象的接口，来将算法和对局分开。我们现在简单地概括一下博弈树算法的核心概念：<br>
+<strong>IGameState接口抽象出来重要的思想，这些思想能够指导局面状态的搜索。这个接口提供了如下的功能：</strong></p>
+<ul>
+<li>解释当前局面状态<br>
+isDraw()计算是否当前局面会导致平局，isWin()计算是否当前局面下某个玩家已经获胜。</li>
+<li>管理当前局面状态<br>
+copy()返回了当前局面的一份副本。所以玩家的移动可以不破坏原始局面状态，equivalent(IGameState)决定两个局面状态是否相等。</li>
+</ul>
+<p><strong>IPlayer接口抽象出玩家能够对局面做如下操作：</strong></p>
+<ul>
+<li>评估一个局面<br>
+eval(IGameState)返回一个整数，表示玩家对当前局面的一个看法，score(IGameScore)为玩家计算局面当前的得分。得到有效的走法validMoves(IGameState)返回当前局面下的有效走法。</li>
+</ul>
+<p>IGameMove接口定义了当前局面下的有效走法。走法类根据问题的不同而不同，因此搜索算法不需要了解这些类的特定实现。<br>
+IGameScore 定 义 了 得 分计算的接口。在本章中，我们使用BoardEvaluation计分函数来计算一字棋的得分，这个函数由Nil<br>
+Nilsson（1971）定义。nc(gs,p)返回一字棋局面下的行数、列数或者对角数，gs表示玩家p可能在一行连成三个的局面。我们定义score(IGameState gs,IPlayer player)如下：</p>
+<ul>
+<li>+∞如果玩家能够在当前局面gs下赢得游戏。</li>
+<li>-∞如果玩家在当前局面gs下输掉游戏。</li>
+<li>nc(gs,player)-nc(gs,opponent)，如果是当前局面会导致平局。</li>
+</ul>
+<p>从编程的角度来看，博弈树寻路算法的核心是实现上图所示的IEvaluation接口。<br>
+从一个表示当前局面状态的节点开始，算法假设对手走法相当完美，基于这样的假设，计算出玩家的最优走法。稍后我们将讨论如何在博弈树的搜索中使用MiniMax、NegMax以及AlphaBeta策略。</p>
+<h1>三、搜索树</h1>
+<p>八数码游戏是在一个3×3的网格上，放着8个小方块，分别标上1～8，有一个空的格子没有方块。这个空格周围（水平的或者垂直的）方块可以移动到这里，方块原有位置形成一个新的空格。这个游戏的目标就是从一个初始状态开始，移动空格周围的方块，达到目标状态。如下图所示。这种游戏不存在对手玩家，但是玩家的行为和博弈树描述的行为相似。我们将问题抽象成一个初始状态（搜索树的顶部节点），以及一个从当前状态达到目标状态（标记为&quot;GOAL&quot;）的走法序列。从下图的例子中，我们可以看到从初始节点到目标节点的路径用粗体标示出来，这条路径就是解法，一共用了8步。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF1%E4%B9%8B%E6%A6%82%E8%BF%B0%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89image%5Ce2083ad4d2e64221af1dddd3a22e343a.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+图 八数码搜索样例</p>
+<p>在这里我们使用术语搜索树，搜索树是表示一系列的中间棋面状态的树，寻路算法处理这些状态然后逐步推进。我们使用树这个结构是因为算法保证它不会处理两次同样的棋面状态。算法选择一种访问节点的顺序，然后根据这个顺序尝试达到目标状态。搜索树通常会快速增长到数百万个状态，本专题的算法将会告诉我们如何在搜索树中高效快速地搜索。想知道问题潜在的复杂度有多高吗？我们首先使用采用深度优先搜索和广度优先搜索的寻路算法。然后使用强有力的A*搜索算法，找到一个最小耗费的解（在特定的条件下）。我们将简单地概括一下核心概念：<br>
+<strong>INode接口抽象出了指导搜索棋面状态的核心概念。这个接口的作用如下：</strong></p>
+<ul>
+<li>得到有效的走法<br>
+validMoves()返回当前局面下的有效走法。</li>
+<li>评估一个局面<br>
+score(int)给当前局面的打一个整数分值，score()返回之前给当</li>
+<li>前局面赋予的分值。</li>
+<li>管理棋面状态<br>
+copy()返回当前棋面状态的一个副本（除开那些可选的数据），equivalent(INode)得出两个棋面状态是否等价（优秀的实现可以检测出对称棋面状态以及其他的等价情况）。key()返回一个对象，如果两个棋面状态的key()返回值相同，那么这两个棋面状态等价。</li>
+<li>管理棋面状态的可选数据<br>
+storedData(Object o) 得 到 和给定对象相关的棋面状态。storedData()返回的是可能会和当前局面相关的数据。</li>
+</ul>
+<p>INodeSet接口抽象出了INode集合组织形式的实现。有些算法需要队列，有些需要栈，有些需要平衡二叉搜索树。一旦选择了适当的结构（使用StateStorageFactory类），算法将会利用此结构能够支持的操作来维护INode集合。IMove接口定义了走法如何影响局面，不同的问题走法不同，搜索算法不需要关注于它们的实现。从编程角度来看，搜索搜索树时，寻路算法的核心是<br>
+ISearch接口的实现。我们知道解法后，能够反推出走法。<br>
+给定一个表示初始棋面状态的节点以及一个目标节点，ISearch的实现将会计算出一条路径，不可到达时将返回null。为了和博弈树分开，在这里我们使用了“棋面状态”这个术语。<br>
+<strong>关键思想</strong><br>
+一个看起来像是博弈的问题能够使用本章的算法来解吗？我们现在将要描述一下能够使用本章所述算法的问题的关键思想。<br>
+<strong>表示状态</strong><br>
+显然地，我们需要能够从当前位置中获取这个位置的所有状态信息。例如，在国际象棋中，王车移位的条件是（a）王与车从来没有动过，（b）自己的王与车之间没有棋子，以及王车之间的格子没有被对方的棋子威胁，（c）王没有被对方将军。注意（b）和（c）能够直接从当前棋面状态中推导出来，因此不需要存储，但是，我们需要存储王和车哪个已经移动过。<br>
+搜索树中的每个节点都是存储的相关局面状态信息。如果一个游戏能够产生一个指数级规模的博弈树，那么状态必须紧凑地存储。如果局面状态存在对称，例如四子棋、黑白棋或者十五数码游戏，那么搜索树的规模将会大幅减少，因为可以检测并且删除掉可以通过其他状态旋转或者翻转得到的状态。在国际象棋，跳棋或者黑白棋中，我们使用了一种叫做位棋盘的复杂表示方法来管理大量的状态，这样做的好处是性能能够得到令人印象深刻的改进。<br>
+<strong>计算可行走法</strong><br>
+在每个局面状态，必须要计算出一些可行走法。术语分支因子是指在任何局面下可行走法的总数。例如一字棋，在画标记之后，分支因子将会小于9（初始状态的分支因子）。3×3的魔方初始状态分支因子（平均）是13.5（Korf，1985），而四子棋大多数情况下分支因子为7。国际跳棋（不同于我们经常见到的那种）则复杂得多，因为玩家下棋需要遵守的规则比较复杂。分析过大量跳棋数据库之后，吃子位置的分支因子大概是1.20，而非吃子位置的分支因子是7.94，Schaeffer计算出整个比赛中，平均的分支因子为6.14（Schaeffer，2008 ） 。 而 围棋的初始分支因子超过360（Berlekamp和Wolfe,1997）。<br>
+许多算法对于走法的顺序是非常敏感的。事实上，如果某个游戏的分支因子非常高，而且走法由于某些原因没有被正确地排序，那么盲目地搜索博弈树是得不到解的。<br>
+<strong>使用启发式信息</strong><br>
+如果盲目搜索的算法不可能利用局面状态的信息，它仅仅是根据固定的策略。深度优先盲目搜索简单地迭代所有可行的走法，直到找到一个解法。而广度优先盲目搜索将会尝试完k步是否能够得到可行解之后再去尝试k+1步是否能够得到。我们可以通过如下几种方法来得到智能搜索（Barr和Feigenbaum，1981）。</p>
+<ul>
+<li>根据棋面状态选择如何扩展而不是使用固定的策略<br>
+并不一直使用深度优先或者广度优先结构，算法将根据当前需要在这两种策略中灵活转换。</li>
+<li>选择适当数目的可行走法，以及走的顺序<br>
+当考虑当前棋面状态下可行走法时，玩家必须评估一下这些走法，哪些走法看起来能够赢得比赛，而哪些看起来不会。另外，玩家可能会抛弃那些看起来不会赢得比赛的走法。</li>
+<li>选择棋面状态，剪枝搜索树<br>
+在搜索过程中，可能会获得新的知识，利用这些新知识，我们可以从选择列表中删除不必要的棋面状态。最通用的方法是定义一个静态的评价函数，在计算的过程中评价局面状态，排序可行走法。评价函数对寻路算法的性能影响非常大。事实上，使用了坏的评估函数的寻路算法将不可能在每一步选择到最优走法。有句谚语说得好：“错误的输入必然导致错误的输出。”<br>
+我们不会限制评价当前局面状态，一个评价函数能够短暂地扩展博弈树，插入一些走法，然后从中选择看起来能够为玩家带来更多好处的走法。但是现实往往不尽如人意，因为（a）这些操作的开销，以及（b）通用的选择逻辑。在A*搜索的讨论中，我们将会给出一个搜索八数码的样例，这个样例使用了不同的评价函数，我想你将会非常高兴地看到设计高效函数是一门含蓄的艺术。<br>
+静态函数必须考虑到当前所出位置的各种特征，返回一个整数得分，这个得分反映了玩家对当前位置的一个看法。例如，第一个成功的国际跳棋程序是由Arthur Samuel（1959）开发的，它评价每个棋盘位置，考虑游戏的多达24个特征，例如“棋子优势特性”（比较玩家和其对手的棋子数目）以及“获胜交换特性”（在胜利时交换棋子而不是在将要失败时）。很明显，如果评价函数能够做得足够好，那么一个下棋引擎可以看做是一名优秀的玩家。<br>
+<strong>最大扩展深度</strong><br>
+由于内存资源的限制，一些搜索算法在扩展搜索树和博弈树时会选择扩展到一定程度为止。这个方法有自己的局限性，例如一个玩家需要走很多步来布一个局。例如，在国际象棋中，经常会出现丢卒保车这样的现象，为了获得更多的利益而牺牲掉某些棋子，如果恰好在最大扩展深度的边界处牺牲掉某些棋子，那么我们做出的牺牲将不会得到任何回报。使用固定的扩展深度，程序不会搜索某条水平线以下的状态，这样就对成功搜索造成了不利的影响。</li>
+</ul>
+<h1>四、假设</h1>
+<p>我们假设问题的局面状态都可以高效地表示，并且在博弈树或者搜索树的节点上，只有有限多个可行走法。搜索空间事实上可能是一个图，而不是一棵树，因为到达同一个状态可能有多种走法。即便这样，我们也在一个类似于树而不是图的结构上使用寻路算法，并且评价线性的走法序列。<br>
+我们假设存在这样一个问题，我们叫它Tiny-Puzzle，作为深度优先搜索，广度优先搜索以及A*搜索的伪代码所描述的例子。在TinyPuzzle中，一个棋面状态包含两个非负数，s0和s1。每一个棋面状态存在两种可行走法——（1）增加s0，以及（2）增加s1，所以这个游戏的分支因子是2。例如，给定初始状态＜s0=0，s1=0＞，目标状态＜s0=1，s1=2＞能够在3步内达到：增加s1，增加s0，然后增加s1。</p>
+<h1>五、引用及参考文献</h1>
+<p>1.《算法设计手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析：专题内容——人工智能中的寻路1之概述（代码详解）</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析：专题内容——人工智能中的寻路1之概述（代码详解）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8E%E6%95%A3%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3+%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87%EF%BC%89/" title="数据结构与算法分析——你真的理解查找算法吗——基于散列的查找（代码详解+万字长文）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析——你真的理解查找算法吗——基于散列的查找（代码详解+万字长文）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%B8%93%E9%A2%98%E5%86%85%E5%AE%B9%E2%80%94%E2%80%94%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%AD%E7%9A%84%E5%AF%BB%E8%B7%AF2%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：专题内容——人工智能中的寻路2之深度优先搜索（代码详解）">
+                        <span class="hidden-mobile">数据结构与算法分析：专题内容——人工智能中的寻路2之深度优先搜索（代码详解）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

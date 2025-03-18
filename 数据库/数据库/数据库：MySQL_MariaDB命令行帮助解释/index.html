@@ -1,0 +1,2547 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="三、Mysql&#x2F;MariaDB 以下是MySQL客户端程序（如mysql）在连接到MySQL服务器时用于配置和控制客户端各种行为的命令行选项和参数的说明。以下列出了一些关键选项的解释： 一般选项：  -? 或 --help：显示帮助信息并退出。 –auto-rehash：在命令行界面中自动启用表和字段名的补全。使用--no-auto-rehash禁用。 -A, --no-auto-rehash：禁">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库：MySQL_MariaDB命令行帮助解释">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9AMySQL_MariaDB%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B8%AE%E5%8A%A9%E8%A7%A3%E9%87%8A/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="三、Mysql&#x2F;MariaDB 以下是MySQL客户端程序（如mysql）在连接到MySQL服务器时用于配置和控制客户端各种行为的命令行选项和参数的说明。以下列出了一些关键选项的解释： 一般选项：  -? 或 --help：显示帮助信息并退出。 –auto-rehash：在命令行界面中自动启用表和字段名的补全。使用--no-auto-rehash禁用。 -A, --no-auto-rehash：禁">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.849Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>数据库：MySQL_MariaDB命令行帮助解释 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据库：MySQL_MariaDB命令行帮助解释"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          17k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          144 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据库：MySQL_MariaDB命令行帮助解释</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>三、Mysql/MariaDB</h1>
+<p>以下是MySQL客户端程序（如<code>mysql</code>）在连接到MySQL服务器时用于配置和控制客户端各种行为的命令行选项和参数的说明。以下列出了一些关键选项的解释：</p>
+<h3 id="一般选项：">一般选项：</h3>
+<ul>
+<li><strong>-? 或 --help</strong>：显示帮助信息并退出。</li>
+<li><strong>–auto-rehash</strong>：在命令行界面中自动启用表和字段名的补全。使用<code>--no-auto-rehash</code>禁用。</li>
+<li><strong>-A, --no-auto-rehash</strong>：禁用自动重哈希，需要手动为表和字段补全进行重哈希。</li>
+<li><strong>–auto-vertical-output</strong>：如果查询结果超出终端宽度，则自动切换到垂直输出。</li>
+<li><strong>-B, --batch</strong>：禁用历史文件使用等交互功能，启用非交互模式（静默一些输出）。</li>
+<li><strong>–bind-address=name</strong>：指定客户端连接到服务器时应绑定的IP地址。</li>
+<li><strong>–character-sets-dir=name</strong>：指定字符集文件所在的目录。</li>
+<li><strong>–column-type-info</strong>：在查询结果中显示列类型信息。</li>
+<li><strong>-c, --comments</strong>：保留SQL查询中的注释，并将其发送到服务器。</li>
+<li><strong>-C, --compress</strong>：启用客户端和MySQL服务器之间的通信压缩。</li>
+<li><strong>–debug-info</strong>：提供MySQL客户端的调试信息。</li>
+<li><strong>-D, --database=name</strong>：指定连接到服务器时要使用的默认数据库。</li>
+<li><strong>–default-character-set=name</strong>：设置与服务器通信时的默认字符集。</li>
+<li><strong>–delimiter=name</strong>：指定用于分隔查询语句的分隔符。</li>
+<li><strong>-e, --execute=name</strong>：执行给定的SQL命令然后退出。</li>
+<li><strong>-E, --vertical</strong>：垂直打印查询结果（适用于宽结果集）。</li>
+<li><strong>-f, --force</strong>：即使发生SQL错误也强制执行。</li>
+<li><strong>–histignore=name</strong>：防止特定命令被记录到历史文件中。</li>
+<li><strong>-G, --named-commands</strong>：启用MySQL客户端的内部命令（例如，<code>\h</code>用于帮助）。</li>
+<li><strong>-i, --ignore-spaces</strong>：忽略函数名后的空格。</li>
+<li><strong>–init-command=name</strong>：连接到服务器时执行给定的SQL命令。</li>
+<li><strong>–local-infile</strong>：启用或禁用使用<code>LOAD DATA LOCAL INFILE</code>从本地文件加载数据。</li>
+<li><strong>-b, --no-beep</strong>：在出错时关闭蜂鸣声。</li>
+<li><strong>-h, --host=name</strong>：指定要连接的主机（IP或域名）。</li>
+<li><strong>-P, --port=#</strong>：指定要连接的端口号。</li>
+<li><strong>–ssl-mode=name</strong>：指定SSL连接模式（例如，<code>DISABLED</code>，<code>PREFERRED</code>）。</li>
+<li><strong>–ssl-cert=name</strong>：指定PEM格式的SSL证书。</li>
+<li><strong>–ssl-key=name</strong>：指定PEM格式的SSL密钥。</li>
+<li><strong>–ssl-ca=name</strong>：指定SSL连接的CA（证书颁发机构）文件。</li>
+<li><strong>–tls-version=name</strong>：指定要使用的TLS版本，如<code>TLSv1.2</code>或<code>TLSv1.3</code>。</li>
+<li><strong>-t, --table</strong>：以表格格式输出查询结果。</li>
+<li><strong>–tee=name</strong>：将所有输出追加到指定的文件（用于记录查询）。</li>
+<li><strong>-u, --user=name</strong>：指定登录的用户名。</li>
+<li><strong>-v, --verbose</strong>：启用详细输出，级别可递增。</li>
+<li><strong>-V, --version</strong>：输出版本信息并退出。</li>
+<li><strong>–wait</strong>：如果连接断开，则等待并重试连接。</li>
+<li><strong>–connect-timeout=#</strong>：指定等待连接建立的时间（秒）。</li>
+<li><strong>–max-allowed-packet=#</strong>：指定客户端将发送或接收的最大数据包大小。</li>
+<li><strong>–net-buffer-length=#</strong>：指定TCP/IP和套接字通信的缓冲区大小。</li>
+<li><strong>–select-limit=#</strong>：为<code>SELECT</code>查询返回的行数设置限制（与<code>--safe-updates</code>一起使用时很有用）。</li>
+<li><strong>–max-join-size=#</strong>：为连接中的行数设置限制（与<code>--safe-updates</code>一起使用时很有用）。</li>
+<li><strong>–show-warnings</strong>：在每个查询执行后显示警告。</li>
+</ul>
+<h3 id="SSL和加密选项：">SSL和加密选项：</h3>
+<ul>
+<li><strong>–ssl-fips-mode=name</strong>：为SSL启用或禁用FIPS（联邦信息处理标准）模式（适用于OpenSSL）。</li>
+<li><strong>–ssl-session-data=name</strong>：指定用于SSL会话重用的会话数据文件。</li>
+<li><strong>–ssl-session-data-continue-on-failed-reuse</strong>：即使无法重用SSL会话数据，也允许连接成功。</li>
+</ul>
+<h3 id="安全和身份验证：">安全和身份验证：</h3>
+<ul>
+<li><strong>–connect-expired-password</strong>：指示客户端在登录时可以处理过期密码。</li>
+<li><strong>–authentication-oci-client-config-profile=name</strong>：指定OCI（Oracle云基础设施）客户端配置配置文件。</li>
+<li><strong>–plugin-authentication-kerberos-client-mode=name</strong>：指定Kerberos身份验证模式（例如，<code>SSPI</code>，<code>GSSAPI</code>）。</li>
+<li><strong>–plugin-authentication-webauthn-client-preserve-privacy</strong>：在选择WebAuthn身份验证的凭据时保持隐私。</li>
+</ul>
+<h3 id="文件和目录选项：">文件和目录选项：</h3>
+<ul>
+<li><strong>–plugin-dir=name</strong>：指定客户端插件的目录。</li>
+<li><strong>–load-data-local-dir=name</strong>：指定使用<code>LOAD DATA LOCAL INFILE</code>加载数据时安全的目录。</li>
+</ul>
+<h3 id="其他选项：">其他选项：</h3>
+<ul>
+<li><strong>–telemetry-client</strong>：加载遥测客户端插件。</li>
+<li><strong>–syslog</strong>：将过滤后的交互命令记录到系统日志（syslog）。</li>
+<li><strong>–system-command</strong>：启用或禁用系统MySQL命令（默认情况下启用）。</li>
+</ul>
+<p>这些参数允许用户配置MySQL客户端如何与服务器交互、处理SSL连接、管理输出以及执行安全任务。其中许多选项用于优化性能、故障排除连接或自定义客户端环境。<br>
+这段描述是关于MySQL（或兼容MySQL的数据库系统，如MariaDB）命令行工具如何读取默认配置文件的参数说明。MySQL命令行工具，如<code>mysql</code>、<code>mysqladmin</code>等，允许用户通过命令行参数来指定配置选项，同时也支持从配置文件中读取配置。下面是对这些参数的详细解释：</p>
+<ol>
+<li>
+<p><strong>默认配置文件的读取顺序</strong>：</p>
+<ul>
+<li><code>C:\WINDOWS\my.ini</code></li>
+<li><code>C:\WINDOWS\my.cnf</code></li>
+<li><code>C:\my.ini</code></li>
+<li><code>C:\my.cnf</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.ini</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.cnf</code></li>
+</ul>
+<p>这些是在没有指定其他配置文件时，MySQL命令行工具会按照上述顺序尝试读取的配置文件路径。文件可以是<code>.ini</code>或<code>.cnf</code>格式，它们包含了数据库连接的默认配置选项。</p>
+</li>
+<li>
+<p><strong>读取的配置组</strong>：<code>mysql client</code></p>
+<ul>
+<li>这表示在上述配置文件中，MySQL命令行工具将查找名为<code>[mysql client]</code>的配置组。这个组下的配置将应用于MySQL客户端工具。</li>
+</ul>
+</li>
+<li>
+<p><strong>命令行参数</strong>：</p>
+<ul>
+<li><code>--print-defaults</code>：打印程序参数列表并退出。这个选项不会实际运行MySQL命令，而是列出所有读取的配置选项和它们的值。</li>
+<li><code>--no-defaults</code>：不从任何选项文件中读取默认选项，除了登录文件。这意味着即使存在上述路径中的配置文件，MySQL也不会读取它们。</li>
+<li><code>--defaults-file=#</code>：只从指定的文件<code>#</code>中读取默认选项。<code>#</code>应替换为实际的文件路径。</li>
+<li><code>--defaults-extra-file=#</code>：在读取全局文件后，再读取这个文件<code>#</code>。这允许用户指定一个额外的配置文件，它会在全局配置文件之后被读取，从而覆盖全局配置中的相同选项。</li>
+<li><code>--defaults-group-suffix=#</code>：除了读取标准配置组（如<code>[mysql client]</code>）外，还读取带有后缀<code>#</code>的组。例如，如果后缀是<code>-test</code>，则会读取<code>[mysql client-test]</code>。</li>
+<li><code>--login-path=#</code>：从登录文件中读取这个路径<code>#</code>。登录文件通常包含了多个预配置的数据库连接信息，<code>#</code>应替换为登录路径的名称。</li>
+<li><code>--no-login-paths</code>：不从登录路径文件中读取登录路径。这意味着即使存在登录路径文件，MySQL也不会使用它。</li>
+</ul>
+</li>
+</ol>
+<p>这些参数提供了灵活的方式来配置MySQL命令行工具的行为，允许用户根据需要从不同的源读取配置，以及覆盖默认配置。<br>
+下面是我们看到的是MySQL命令行工具的参数列表。每个参数都有其特定的作用，用于自定义MySQL客户端的行为。让我们从头开始，逐一解析这些参数。</p>
+<p><code>--auto-rehash</code> 设置为 <code>TRUE</code>。根据我的记忆，<code>auto-rehash</code> 的作用是在每次执行查询后自动重新计算提示信息。这在某些情况下可能会影响性能，但在交互式会话中，它能提供更顺畅的体验。因此，将其设置为 <code>TRUE</code> 是为了提高用户的便利性。</p>
+<p>接下来是 <code>--auto-vertical-output</code> 设置为 <code>FALSE</code>。这个参数决定了当执行一个查询时，结果是以垂直格式显示还是水平格式显示。将它设置为 <code>FALSE</code> 意味着默认情况下结果将以水平表格的形式显示，这是大多数用户更习惯的方式。</p>
+<p>再来看 <code>--bind-address</code>，这里没有提供默认值。这个参数用于指定MySQL客户端应该绑定到的本地网络接口。如果没有指定，它通常会绑定到所有可用的接口。在生产环境中，为了安全考虑，我们可能会指定一个特定的地址。</p>
+<p><code>--binary-as-hex</code> 设置为 <code>FALSE</code>。这个参数决定了二进制数据是否以十六进制形式显示。将它设置为 <code>FALSE</code> 意味着二进制数据将按原样显示，这在处理文本数据时更为直观。</p>
+<p><code>--character-sets-dir</code> 没有默认值。这个参数指定了字符集文件的位置。如果我们在编译MySQL时指定了一个特定的字符集，或者需要使用自定义字符集，这个参数就非常有用。</p>
+<p><code>--column-type-info</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL客户端将在结果集中包含列的数据类型信息。这在某些情况下可能有用，但通常会增加输出的复杂性。</p>
+<p><code>--comments</code> 设置为 <code>TRUE</code>。这个参数允许在SQL语句中包含注释。对于那些喜欢在代码中添加大量注释的人来说，这是一个方便的功能。</p>
+<p><code>--compress</code> 设置为 <code>FALSE</code>。这个参数决定了是否在客户端和服务器之间使用压缩连接。如果设置为 <code>TRUE</code>，可以减少传输数据的大小，但会增加CPU的负担。</p>
+<p><code>--database</code> 没有默认值。这个参数用于在连接时指定默认的数据库。如果没有指定，我们将连接到MySQL的默认数据库，通常是 <code>mysql</code>。</p>
+<p><code>--default-character-set</code> 设置为 <code>auto</code>。这意味着MySQL客户端将根据服务器的设置自动选择字符集。这在大多数情况下都能正常工作，但在处理特定字符集时可能需要手动指定。</p>
+<p><code>--delimiter</code> 设置为 <code>;</code>。这是MySQL中分隔SQL语句的默认分隔符。如果我们将它更改为其他字符，例如 <code>GO</code>，那么我们可以在执行多个语句之前构建更复杂的脚本。</p>
+<p><code>--enable-cleartext-plugin</code> 设置为 <code>FALSE</code>。这个参数与身份验证插件有关，如果设置为 <code>TRUE</code>，将允许使用明文身份验证方法。出于安全考虑，通常不建议这样做。</p>
+<p><code>--vertical</code> 设置为 <code>FALSE</code>。与 <code>--auto-vertical-output</code> 类似，这个参数决定了结果集的显示格式。将它设置为 <code>FALSE</code> 意味着结果将以水平表格的形式显示。</p>
+<p><code>--force</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL客户端将继续执行，即使遇到错误。这在某些情况下可能有用，但通常不建议这样做，因为错误可能是需要关注的重要问题。</p>
+<p><code>--histignore</code> 没有默认值。这个参数允许我们指定一个模式，用于忽略某些命令的执行历史。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--named-commands</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL客户端将允许使用命名的命令，如 <code>source</code> 或 <code>exit</code>，这在某些情况下可能有用。</p>
+<p><code>--ignore-spaces</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将忽略命令行中的空格。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--local-infile</code> 设置为 <code>FALSE</code>。这个参数决定了是否允许使用 <code>LOAD DATA LOCAL</code> 语句。由于安全原因，通常不建议这样做，但某些应用程序可能需要它。</p>
+<p><code>--no-beep</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将在某些操作时禁用蜂鸣声。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--host</code> 没有默认值。这个参数指定了要连接的MySQL服务器的主机名。如果没有指定，它将尝试连接到localhost。</p>
+<p><code>--dns-srv-name</code> 没有默认值。这个参数用于指定DNS服务发现的名称，用于查找MySQL服务器的地址。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--html</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将输出HTML格式的结果。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--xml</code> 设置为 <code>FALSE</code>。与 <code>--html</code> 类似，这个参数决定了结果是否以XML格式输出。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--line-numbers</code> 设置为 <code>TRUE</code>。这个参数决定了在执行脚本时是否显示行号。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--unbuffered</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将禁用输出缓冲，这意味着每个查询的结果将立即显示。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--column-names</code> 设置为 <code>TRUE</code>。这个参数决定了在结果集中是否显示列名。如果设置为 <code>FALSE</code>，结果将不包含列名，这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--sigint-ignore</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将忽略SIGINT信号，这意味着你不能使用 Ctrl+C 来中断操作。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--port</code> 设置为 <code>0</code>。这个参数指定了要连接的MySQL服务器的端口号。如果没有指定，它将使用默认的3306端口。</p>
+<p><code>--prompt</code> 设置为 <code>mysql&gt;</code>。这个参数自定义了MySQL客户端的提示符。你可以根据个人喜好进行更改，但通常保持默认值。</p>
+<p><code>--quick</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将使用 <code>--no-pager</code> 选项，这意味着它将直接输出结果，而不是通过分页程序。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--raw</code> 设置为 <code>FALSE</code>。这个参数决定了结果是否以原始格式显示，没有额外的处理。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--reconnect</code> 设置为 <code>TRUE</code>。如果设置为 <code>TRUE</code>，MySQL将在连接丢失时尝试重新连接到服务器。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--shared-memory-base-name</code> 没有默认值。这个参数用于指定共享内存的基名，用于与MySQL服务器进行共享内存连接。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--socket</code> 没有默认值。这个参数指定了要使用的Unix套接字文件。如果没有指定，它将使用默认的 <code>/var/lib/mysql/mysql.sock</code>。</p>
+<p><code>--server-public-key-path</code> 没有默认值。这个参数用于指定服务器公钥的路径，用于某些身份验证方法。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--get-server-public-key</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将从服务器请求公钥。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--ssl-ca</code> 没有默认值。这个参数指定了用于验证服务器证书的CA证书文件。</p>
+<p><code>--ssl-capath</code> 没有默认值。这个参数指定了包含CA证书的目录。</p>
+<p><code>--ssl-cert</code> 没有默认值。这个参数指定了客户端证书文件。</p>
+<p><code>--ssl-cipher</code> 没有默认值。这个参数指定了要使用的SSL密码套件。</p>
+<p><code>--ssl-key</code> 没有默认值。这个参数指定了客户端私钥文件。</p>
+<p><code>--ssl-crl</code> 没有默认值。这个参数指定了证书吊销列表文件。</p>
+<p><code>--ssl-crlpath</code> 没有默认值。这个参数指定了包含CRL文件的目录。</p>
+<p><code>--tls-version</code> 没有默认值。这个参数指定了要使用的TLS版本。</p>
+<p><code>--tls-ciphersuites</code> 没有默认值。这个参数指定了要使用的TLS密码套组。</p>
+<p><code>--ssl-session-data</code> 没有默认值。这个参数指定了SSL会话数据的路径。</p>
+<p><code>--ssl-session-data-continue-on-failed-reuse</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将在SSL会话重用失败时继续尝试。</p>
+<p><code>--tls-sni-servername</code> 没有默认值。这个参数指定了TLS SNI服务器名。</p>
+<p><code>--table</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将输出结果为表格格式。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--user</code> 设置为 <code>root</code>。这是连接到MySQL服务器时使用的用户名。</p>
+<p><code>--safe-updates</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将只允许使用 <code>WHERE</code> 子句的更新和删除操作，以防止意外的数据丢失。这是一个安全特性。</p>
+<p><code>--i-am-a-dummy</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将允许执行某些可能不安全的命令。不建议在生产环境中使用。</p>
+<p><code>--wait</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将在连接到服务器之前等待所有先前的连接关闭。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--connect-timeout</code> 设置为 <code>0</code>。这个参数指定了在放弃之前等待服务器连接的时间（以秒为单位）。0表示无限等待。</p>
+<p><code>--max-allowed-packet</code> 设置为 <code>16777216</code>。这个参数指定了MySQL服务器可以接收的最大数据包大小。如果设置得太小，可能会导致大查询失败。</p>
+<p><code>--net-buffer-length</code> 设置为 <code>16384</code>。这个参数指定了用于网络传输的缓冲区大小。调整这个参数可以提高性能。</p>
+<p><code>--select-limit</code> 设置为 <code>1000</code>。这个参数指定了 <code>SELECT</code> 语句返回的最大行数。这是一个安全特性，以防止意外的大量数据传输。</p>
+<p><code>--max-join-size</code> 设置为 <code>1000000</code>。这个参数指定了 <code>JOIN</code> 操作的最大行数。这也是一个安全特性，以防止服务器过载。</p>
+<p><code>--show-warnings</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将显示执行操作后的任何警告。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--plugin-dir</code> 没有默认值。这个参数指定了身份验证插件的目录。</p>
+<p><code>--default-auth</code> 没有默认值。这个参数指定了默认的身份验证插件。</p>
+<p><code>--binary-mode</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将使用二进制模式进行输入和输出，这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--connect-expired-password</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将允许使用过期的密码连接，但这不安全。</p>
+<p><code>--compression-algorithms</code> 没有默认值。这个参数指定了用于连接压缩的算法。</p>
+<p><code>--zstd-compression-level</code> 设置为 <code>3</code>。这个参数指定了使用zstd进行压缩时的压缩级别。</p>
+<p><code>--load-data-local-dir</code> 没有默认值。这个参数指定了 <code>LOAD DATA LOCAL</code> 命令可以从中加载文件的目录。</p>
+<p><code>--authentication-oci-client-config-profile</code> 没有默认值。这个参数指定了OCI（Oracle Cloud Infrastructure）身份验证配置文件。</p>
+<p><code>--oci-config-file</code> 没有默认值。这个参数指定了OCI配置文件的路径。</p>
+<p><code>--telemetry-client</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将启用遥测功能，收集使用数据并发送到MySQL服务器。这在某些情况下可能有用，但出于隐私考虑，通常不建议这样做。</p>
+<p><code>--plugin-authentication-webauthn-client-preserve-privacy</code> 设置为 <code>FALSE</code>。如果设置为 <code>TRUE</code>，MySQL将保留使用WebAuthn进行身份验证时的用户隐私。这在某些情况下可能有用，但通常不常用。</p>
+<p><code>--register-factor</code> 没有默认值。这个参数用于指定在某些身份验证方法中使用的注册因子。</p>
+<p><code>--system-command</code> 设置为 <code>TRUE</code>。这个参数允许执行系统命令，如 <code>!cmd</code>，在MySQL提示符下。这在某些情况下可能有用，但出于安全考虑，通常不建议这样做。</p>
+<h3 id="innochecksum-参数解释">innochecksum 参数解释</h3>
+<p><strong>帮助和版本参数：</strong></p>
+<ul>
+<li><code>-?, --help</code>: 显示帮助信息并退出。</li>
+<li><code>-I, --info</code>: 与 <code>-?</code> 相同。</li>
+<li><code>-V, --version</code>: 显示版本信息并退出。</li>
+</ul>
+<p><strong>操作参数：</strong></p>
+<ul>
+<li><code>-v, --verbose</code>: 详细模式（每 5 秒打印进度）。</li>
+<li><code>-c, --count</code>: 打印文件中的页数并退出。</li>
+<li><code>-s, --start-page=#</code>: 从指定的页码开始（基于 0）。</li>
+<li><code>-e, --end-page=#</code>: 在指定的页码结束（基于 0）。</li>
+<li><code>-p, --page=#</code>: 只检查指定的页码（基于 0）。</li>
+<li><code>-C, --strict-check=name</code>: 用户指定的严格校验和算法。</li>
+<li><code>-n, --no-check</code>: 忽略校验和验证。</li>
+<li><code>-a, --allow-mismatches=#</code>: 允许的最大校验和不匹配数。</li>
+<li><code>-w, --write=name</code>: 用户指定的重写校验和算法。</li>
+<li><code>-S, --page-type-summary</code>: 显示表空间中每种页面类型的计数。</li>
+<li><code>-D, --page-type-dump=name</code>: 为表空间中的每个页面转储页面类型信息。</li>
+<li><code>-l, --log=name</code>: 输出日志。</li>
+</ul>
+<p><strong>变量和布尔选项：</strong></p>
+<ul>
+<li><code>verbose</code>: 是否显示详细模式，默认为 FALSE。</li>
+<li><code>count</code>: 是否打印文件中的页数，默认为 FALSE。</li>
+<li><code>start-page</code>: 开始页码，默认为 0。</li>
+<li><code>end-page</code>: 结束页码，默认为 0。</li>
+<li><code>page</code>: 指定页码，默认为 0。</li>
+<li><code>strict-check</code>: 严格校验和算法，默认为 crc32。</li>
+<li><code>no-check</code>: 是否忽略校验和验证，默认为 FALSE。</li>
+<li><code>allow-mismatches</code>: 允许的最大校验和不匹配数，默认为 0。</li>
+<li><code>write</code>: 重写校验和算法，默认为 crc32。</li>
+<li><code>page-type-summary</code>: 是否显示每种页面类型的计数，默认为 FALSE。</li>
+<li><code>page-type-dump</code>: 无默认值。</li>
+<li><code>log</code>: 输出日志，无默认值。</li>
+</ul>
+<p>以下是 <code>myisamchk.exe</code> 工具的参数详细解释：</p>
+<h3 id="全局选项：">全局选项：</h3>
+<ul>
+<li><code>-H, --HELP</code>：显示帮助信息并退出。</li>
+<li><code>-?, --help</code>：与 <code>-H</code> 相同，显示帮助信息并退出。</li>
+<li><code>-t, --tmpdir=path</code>：指定临时文件的路径。可以指定多个路径，用分号（;）分隔，这些路径将轮流使用。</li>
+<li><code>-s, --silent</code>：只打印错误信息。使用两个 <code>-s</code> 可以使 <code>myisamchk</code> 非常安静，即减少输出。</li>
+<li><code>-v, --verbose</code>：打印更多的信息。可以与 <code>--description</code> 和 <code>--check</code> 选项一起使用。使用多个 <code>-v</code> 可以增加详细程度。</li>
+<li><code>-V, --version</code>：打印版本信息并退出。</li>
+<li><code>-w, --wait</code>：如果表被锁定，则等待。</li>
+</ul>
+<h3 id="检查选项（默认操作）：">检查选项（默认操作）：</h3>
+<ul>
+<li><code>-c, --check</code>：检查表是否有错误。</li>
+<li><code>-e, --extend-check</code>：非常彻底地检查表。仅在极端情况下使用，因为 <code>myisamchk</code> 通常能够在没有此开关的情况下找出表是否正常。</li>
+<li><code>-F, --fast</code>：只检查没有正确关闭的表。</li>
+<li><code>-C, --check-only-changed</code>：只检查自上次检查以来已更改的表。</li>
+<li><code>-f, --force</code>：如果表有任何错误，则使用 <code>-r</code> 重新启动。状态将更新为与 <code>--update-state</code> 相同。</li>
+<li><code>-i, --information</code>：打印被检查表的统计信息。</li>
+<li><code>-m, --medium-check</code>：比 <code>--extend-check</code> 快，但只能找到 99.99% 的错误。对大多数情况来说应该足够了。</li>
+<li><code>-U, --update-state</code>：如果发现任何错误，则标记表为已崩溃。</li>
+<li><code>-T, --read-only</code>：不标记表为已检查。</li>
+</ul>
+<h3 id="修复选项（使用-r-或-o-时）：">修复选项（使用 <code>-r</code> 或 <code>-o</code> 时）：</h3>
+<ul>
+<li><code>-B, --backup</code>：将 <code>.MYD</code> 文件备份为 <code>filename-time.BAK</code>。</li>
+<li><code>--correct-checksum</code>：更正表的校验和信息。</li>
+<li><code>-D, --data-file-length=#</code>：数据文件的最大长度（当数据文件满时重新创建数据文件）。</li>
+<li><code>-e, --extend-check</code>：尝试从数据文件中恢复每一行。通常这也会找到很多垃圾行；如果你不是完全绝望，不要使用此选项。</li>
+<li><code>-f, --force</code>：覆盖旧的临时文件。</li>
+<li><code>-k, --keys-used=#</code>：告诉 MyISAM 只更新一些特定的键。<code>#</code> 是一个位掩码，指示哪些键要使用。这可以用来加速插入操作。</li>
+<li><code>--max-record-length=#</code>：如果 <code>myisamchk</code> 不能分配内存来保存它，则跳过大于这个值的行。</li>
+<li><code>-r, --recover</code>：除了唯一键不唯一外，几乎可以修复任何问题。</li>
+<li><code>-n, --sort-recover</code>：即使临时文件会非常大，也强制使用排序恢复。</li>
+<li><code>-o, --safe-recover</code>：使用旧的恢复方法；比 <code>-r</code> 慢，但可以处理一些 <code>-r</code> 报告无法修复的数据文件的情况。</li>
+<li><code>--character-sets-dir=...</code>：字符集所在的目录。</li>
+<li><code>--set-collation=name</code>：更改索引使用的校对。</li>
+<li><code>-q, --quick</code>：通过不修改数据文件来快速修复。如果给出第二个 <code>-q</code>，则强制 <code>myisamchk</code> 修改原始数据文件，以防出现重复键。注意：数据文件损坏的表不能使用此选项修复。</li>
+<li><code>-u, --unpack</code>：解包由 <code>myisampack</code> 打包的文件。</li>
+</ul>
+<h3 id="其他操作：">其他操作：</h3>
+<ul>
+<li><code>-a, --analyze</code>：分析键的分布。这将使一些 MySQL 中的连接更快。你可以使用 <code>--description --verbose table_name</code> 来检查计算出的分布。</li>
+<li><code>--stats_method=name</code>：指定如何处理 NULL 值的索引统计信息收集代码。可能的值为 “nulls_unequal”（4.1/5.0 的默认值），“nulls_equal”（模拟 4.0）和 “nulls_ignored”。</li>
+<li><code>-d, --description</code>：打印有关表的一些信息。</li>
+<li><code>-A, --set-auto-increment[=value]</code>：强制自增起始值为此值或更高值。如果没有给出值，则将下一个自增值设置为自增键的最高使用值 + 1。</li>
+<li><code>-S, --sort-index</code>：排序索引块。这将加速应用程序中的 ‘read-next’ 操作。</li>
+<li><code>-R, --sort-records=#</code>：根据索引排序记录。这将使你的数据更加本地化，可能会加速事务（第一次排序可能非常慢）。</li>
+<li><code>-b, --block-search=#</code>：找到给定偏移量所属的记录或块。</li>
+</ul>
+<h3 id="默认选项：">默认选项：</h3>
+<p>默认选项按以下顺序从以下文件中读取：</p>
+<ul>
+<li><code>C:\WINDOWS\my.ini</code></li>
+<li><code>C:\WINDOWS\my.cnf</code></li>
+<li><code>C:\my.ini</code></li>
+<li><code>C:\my.cnf</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.ini</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.cnf</code></li>
+</ul>
+<p>读取的组为：<code>myisamchk</code></p>
+<h3 id="其他参数：">其他参数：</h3>
+<ul>
+<li><code>--print-defaults</code>：打印程序参数列表并退出。</li>
+<li><code>--no-defaults</code>：不要从任何选项文件中读取默认选项，除了登录文件。</li>
+<li><code>--defaults-file=#</code>：只从给定的文件 # 读取默认选项。</li>
+<li><code>--defaults-extra-file=#</code>：在全球文件之后读取此文件。</li>
+<li><code>--defaults-group-suffix=#</code>：也读取与组名和后缀拼接的组。</li>
+<li><code>--login-path=#</code>：从登录文件中读取此路径。</li>
+<li><code>--no-login-paths</code>：不要从登录路径文件中读取。</li>
+</ul>
+<h3 id="变量和布尔选项：">变量和布尔选项：</h3>
+<ul>
+<li><code>character-sets-dir</code>：字符集目录，无默认值。</li>
+<li><code>data-file-length</code>：数据文件长度，默认为 0。</li>
+<li><code>keys-used</code>：使用的键，位掩码，默认为 <code>18446744073709551615</code>。</li>
+<li><code>max-record-length</code>：最大记录长度，默认为 <code>9223372036854775807</code>。</li>
+<li><code>set-auto-increment</code>：设置自增值，默认为 0。</li>
+<li><code>set-collation</code>：设置校对，无默认值。</li>
+<li><code>sort-records</code>：排序记录，默认为 0。</li>
+<li><code>tmpdir</code>：临时目录，无默认值。</li>
+<li><code>key-buffer-size</code>：键缓冲区大小，默认为 <code>520192</code>。</li>
+<li><code>key-cache-block-size</code>：键缓存块大小，默认为 <code>1024</code>。</li>
+<li><code>myisam-block-size</code>：MyISAM 块大小，默认为 <code>1024</code>。</li>
+<li><code>read-buffer-size</code>：读取缓冲区大小，默认为 <code>262136</code>。</li>
+<li><code>write-buffer-size</code>：写入缓冲区大小，默认为 <code>262136</code>。</li>
+<li><code>sort-buffer-size</code>：排序缓冲区大小，默认为 <code>2097144</code>。</li>
+<li><code>myisam-sort-buffer-size</code>：MyISAM 排序缓冲区大小，默认为 <code>2097144</code>。</li>
+<li><code>sort-key-blocks</code>：排序键块数，默认为 <code>16</code>。</li>
+<li><code>decode-bits</code>：解码位，默认为 <code>9</code>。</li>
+<li><code>ft-min-word-len</code>：全文索引最小词长，默认为 <code>4</code>。</li>
+<li><code>ft-max-word-len</code>：全文索引最大词长，默认为 <code>84</code>。</li>
+<li><code>ft-stopword-file</code>：全文索引停用词文件，无默认值。</li>
+<li><code>stats-method</code>：统计方法，处理 NULL 值的方法，默认为 <code>nulls_unequal</code>。</li>
+</ul>
+<p>以下是 <code>myisam_ftdump.exe</code> 和 <code>myisampack.exe</code> 工具的参数详细解释：</p>
+<h3 id="myisam-ftdump-exe-参数：">myisam_ftdump.exe 参数：</h3>
+<ul>
+<li><code>-h, --help</code>：显示帮助信息并退出。</li>
+<li><code>-?, --help</code>：与 <code>-h</code> 相同，显示帮助信息并退出。</li>
+<li><code>-c, --count</code>：计算每个单词的统计信息，包括计数和全局权重。</li>
+<li><code>-d, --dump</code>：转储索引信息，包括数据偏移量和单词权重。</li>
+<li><code>-l, --length</code>：报告长度分布情况。</li>
+<li><code>-s, --stats</code>：报告全局统计信息。</li>
+<li><code>-v, --verbose</code>：详细模式，提供更多的输出信息。</li>
+</ul>
+<h3 id="myisampack-exe-参数：">myisampack.exe 参数：</h3>
+<ul>
+<li><code>-b, --backup</code>：在压缩表之前，将表备份为 <code>table_name.OLD</code>。</li>
+<li><code>--character-sets-dir=name</code>：指定字符集所在的目录。</li>
+<li><code>-#, --debug[=#]</code>：这是一个非调试版本，捕获此选项并退出。</li>
+<li><code>-f, --force</code>：即使压缩后的表变大，或临时文件已存在，也强制压缩表。</li>
+<li><code>-j, --join=name</code>：将所有给定的表合并到一个名为 <code>new_table_name</code> 的表中。所有表必须具有相同的布局。</li>
+<li><code>-?, --help</code>：显示帮助信息并退出。</li>
+<li><code>-s, --silent</code>：减少输出信息，更加安静。</li>
+<li><code>-T, --tmpdir=name</code>：指定临时目录以存储临时表。</li>
+<li><code>-t, --test</code>：不压缩表，只测试压缩操作。</li>
+<li><code>-v, --verbose</code>：提供关于进度和压缩结果的信息。使用多个 <code>-v</code> 可以增加详细程度。</li>
+<li><code>-V, --version</code>：输出版本信息并退出。</li>
+<li><code>-w, --wait</code>：如果表正在使用中，则等待并重试。</li>
+</ul>
+<h3 id="默认选项：-2">默认选项：</h3>
+<p>默认选项按以下顺序从以下文件中读取：</p>
+<ul>
+<li><code>C:\WINDOWS\my.ini</code></li>
+<li><code>C:\WINDOWS\my.cnf</code></li>
+<li><code>C:\my.ini</code></li>
+<li><code>C:\my.cnf</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.ini</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.cnf</code></li>
+</ul>
+<p>读取的组为：<code>myisampack</code></p>
+<h3 id="其他参数：-2">其他参数：</h3>
+<ul>
+<li><code>--print-defaults</code>：打印程序参数列表并退出。</li>
+<li><code>--no-defaults</code>：不要从任何选项文件中读取默认选项，除了登录文件。</li>
+<li><code>--defaults-file=#</code>：只从给定的文件 # 读取默认选项。</li>
+<li><code>--defaults-extra-file=#</code>：在全球文件之后读取此文件。</li>
+<li><code>--defaults-group-suffix=#</code>：也读取与组名和后缀拼接的组。</li>
+<li><code>--login-path=#</code>：从登录文件中读取此路径。</li>
+<li><code>--no-login-paths</code>：不要从登录路径文件中读取。</li>
+</ul>
+<h3 id="变量和布尔选项：-2">变量和布尔选项：</h3>
+<ul>
+<li><code>backup</code>：是否备份，默认为 FALSE。</li>
+<li><code>character-sets-dir</code>：字符集目录，无默认值。</li>
+<li><code>join</code>：合并表的名称，无默认值。</li>
+<li><code>wait</code>：是否等待，默认为 FALSE。</li>
+</ul>
+<h3 id="my-print-defaults-exe-参数：">my_print_defaults.exe 参数：</h3>
+<ul>
+<li><code>-c, --config-file=name</code>：已弃用，请使用 <code>--defaults-file</code> 代替。指定要读取的配置文件名称；如果没有给出扩展名，默认扩展名（例如 .ini 或 .cnf）将被添加。</li>
+<li><code>-#, --debug[=#]</code>：这是一个非调试版本，捕获此选项并退出。</li>
+<li><code>-c, --defaults-file=name</code>：与 <code>--config-file</code> 类似，但如果是第一个选项，则只读取此文件，不读取全局或用户配置文件；应该是第一个选项。</li>
+<li><code>-e, --defaults-extra-file=name</code>：在全球配置文件之后和用户主目录中的配置文件之前读取此文件；应该是第一个选项。</li>
+<li><code>-g, --defaults-group-suffix=name</code>：除了给定的组外，还读取带有此后缀的组。</li>
+<li><code>-e, --extra-file=name</code>：已弃用。与 <code>--defaults-extra-file</code> 相同。</li>
+<li><code>-n, --no-defaults</code>：忽略读取默认选项文件（除了登录文件）。</li>
+<li><code>-l, --login-path=name</code>：从登录文件中读取此路径。</li>
+<li><code>-x, --no-login-paths</code>：忽略读取登录文件。</li>
+<li><code>-s, --show</code>：以明文显示密码。</li>
+<li><code>-?, --help</code>：显示帮助信息并退出。</li>
+<li><code>-v, --verbose</code>：增加输出级别。</li>
+<li><code>-V, --version</code>：输出版本信息并退出。</li>
+</ul>
+<h3 id="示例用法：">示例用法：</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">D:\Scoop\apps\mysql-lts\current\bin\my_print_defaults.exe --defaults-file=example.cnf client mysql<br></code></pre></td></tr></table></figure>
+<p>这个命令使用 <code>example.cnf</code> 作为默认配置文件，打印 <code>client</code> 和 <code>mysql</code> 组的配置参数。</p>
+<p>以下是 <code>mysqladmin.exe</code> 工具的参数详细解释：</p>
+<h3 id="连接和服务器选项：">连接和服务器选项：</h3>
+<ul>
+<li><code>--bind-address=name</code>：指定 IP 地址绑定。</li>
+<li><code>-c, --count=#</code>：与 <code>-i</code>（<code>--sleep</code>）一起使用，指定重复执行命令的次数。</li>
+<li><code>-#, --debug[=#]</code>：这是一个非调试版本，捕获此选项并退出。</li>
+<li><code>--debug-check</code>：同上，捕获调试选项并退出。</li>
+<li><code>--debug-info</code>：同上，捕获调试选项并退出。</li>
+<li><code>-f, --force</code>：在执行如删除数据库等操作时不提示确认；在执行多个命令时，即使发生错误也继续执行。</li>
+<li><code>-C, --compress</code>：在服务器/客户端协议中使用压缩。</li>
+<li><code>--character-sets-dir=name</code>：指定字符集文件的目录。</li>
+<li><code>--default-character-set=name</code>：设置默认字符集。</li>
+<li><code>-?, --help</code>：显示帮助信息并退出。</li>
+<li><code>-h, --host=name</code>：连接到指定的主机。</li>
+<li><code>-b, --no-beep</code>：出错时关闭提示音。</li>
+<li><code>-p, --password[=name]</code>：连接到服务器时使用的密码。如果未指定密码，则会从终端（tty）请求输入。</li>
+<li><code>-,, --password1[=name]</code>：第一因素认证插件的密码。</li>
+<li><code>-,, --password2[=name]</code>：第二因素认证插件的密码。</li>
+<li><code>-,, --password3[=name]</code>：第三因素认证插件的密码。</li>
+<li><code>-W, --pipe</code>：使用命名管道连接到服务器。</li>
+<li><code>-P, --port=#</code>：用于连接的端口号，或0以使用默认值（优先顺序为 my.cnf 文件、环境变量 <code>$MYSQL_TCP_PORT</code>、<code>/etc/services</code>、内置默认值 3306）。</li>
+<li><code>--protocol=name</code>：用于连接的协议（tcp、socket、pipe、memory）。</li>
+<li><code>-r, --relative</code>：与 <code>-i</code> 一起使用时，显示当前值和前一个值之间的差异。目前仅与 <code>extended-status</code> 一起工作。</li>
+<li><code>--shared-memory-base-name=name</code>：共享内存的基名称。</li>
+<li><code>-s, --silent</code>：如果无法连接到服务器，则默默退出。</li>
+<li><code>-S, --socket=name</code>：用于连接的套接字文件。</li>
+<li><code>-i, --sleep=#</code>：重复执行命令，并在每次执行之间休眠指定的秒数。</li>
+<li><code>--ssl-mode=name</code>：SSL连接模式。</li>
+<li><code>--ssl-ca=name</code>：PEM格式的CA文件。</li>
+<li><code>--ssl-capath=name</code>：CA目录。</li>
+<li><code>--ssl-cert=name</code>：PEM格式的X509证书。</li>
+<li><code>--ssl-cipher=name</code>：要使用的SSL密码。</li>
+<li><code>--ssl-key=name</code>：PEM格式的X509密钥。</li>
+<li><code>--ssl-crl=name</code>：证书吊销列表。</li>
+<li><code>--ssl-crlpath=name</code>：证书吊销列表路径。</li>
+<li><code>--tls-version=name</code>：要使用的TLS版本，允许的值有 TLSv1.2 和 TLSv1.3。</li>
+<li><code>--ssl-fips-mode=name</code>：SSL FIPS模式（仅适用于OpenSSL）；允许的值有 OFF、ON、STRICT。</li>
+<li><code>--tls-ciphersuites=name</code>：要使用的TLS v1.3密码套件。</li>
+<li><code>--ssl-session-data=name</code>：用于启用SSL会话重用的会话数据文件。</li>
+<li><code>--ssl-session-data-continue-on-failed-reuse</code>：如果设置为ON，即使会话数据不能重用，也允许连接成功。</li>
+<li><code>--tls-sni-servername=name</code>：传递给服务器的SNI服务器名称。</li>
+<li><code>--server-public-key-path=name</code>：服务器公钥的文件路径，PEM格式。</li>
+<li><code>--get-server-public-key</code>：获取服务器公钥。</li>
+<li><code>-u, --user=name</code>：登录用户，如果未指定，则使用当前用户。</li>
+<li><code>-v, --verbose</code>：输出更多信息。</li>
+<li><code>-V, --version</code>：输出版本信息并退出。</li>
+<li><code>-E, --vertical</code>：垂直打印输出。类似于 <code>--relative</code>，但是垂直打印输出。</li>
+<li><code>-w, --wait[=#]</code>：如果连接失败，则等待并重试指定的次数。</li>
+<li><code>--connect-timeout=#</code>：连接超时时间。</li>
+<li><code>--shutdown-timeout=#</code>：关闭超时时间。</li>
+<li><code>--plugin-dir=name</code>：客户端插件目录。</li>
+<li><code>--default-auth=name</code>：默认的客户端认证插件。</li>
+<li><code>--enable-cleartext-plugin</code>：启用/禁用明文认证插件。</li>
+<li><code>--show-warnings</code>：执行后显示警告。</li>
+<li><code>--compression-algorithms=name</code>：在服务器/客户端协议中使用的压缩算法。有效的值包括 ‘zstd’、‘zlib’、‘uncompressed’ 的任意组合。</li>
+<li><code>--zstd-compression-level=#</code>：如果 <code>--compression-algorithms=zstd</code>，则在客户端/服务器协议中使用此压缩级别。有效范围是 1 到 22，包括两端，默认值为 3。</li>
+</ul>
+<h3 id="变量和布尔选项：-3">变量和布尔选项：</h3>
+<ul>
+<li><code>bind-address</code>：无默认值。</li>
+<li><code>count</code>：0。</li>
+<li><code>force</code>：FALSE。</li>
+<li><code>compress</code>：FALSE。</li>
+<li><code>character-sets-dir</code>：无默认值。</li>
+<li><code>default-character-set</code>：auto。</li>
+<li><code>host</code>：无默认值。</li>
+<li><code>no-beep</code>：FALSE。</li>
+<li><code>port</code>：0。</li>
+<li><code>relative</code>：FALSE。</li>
+<li><code>shared-memory-base-name</code>：无默认值。</li>
+<li><code>socket</code>：无默认值。</li>
+<li><code>sleep</code>：0。</li>
+<li><code>ssl-ca</code>：无默认值。</li>
+<li><code>ssl-capath</code>：无默认值。</li>
+<li><code>ssl-cert</code>：无默认值。</li>
+<li><code>ssl-cipher</code>：无默认值。</li>
+<li><code>ssl-key</code>：无默认值。</li>
+<li><code>ssl-crl</code>：无默认值。</li>
+<li><code>ssl-crlpath</code>：无默认值。</li>
+<li><code>tls-version</code>：无默认值。</li>
+<li><code>tls-ciphersuites</code>：无默认值。</li>
+<li><code>ssl-session-data</code>：无默认值。</li>
+<li><code>ssl-session-data-continue-on-failed-reuse</code>：FALSE。</li>
+<li><code>tls-sni-servername</code>：无默认值。</li>
+<li><code>server-public-key-path</code>：无默认值。</li>
+<li><code>get-server-public-key</code>：FALSE。</li>
+<li><code>user</code>：root。</li>
+<li><code>verbose</code>：FALSE。</li>
+<li><code>vertical</code>：FALSE。</li>
+<li><code>connect-timeout</code>：43200。</li>
+<li><code>shutdown-timeout</code>：3600。</li>
+<li><code>plugin-dir</code>：无默认值。</li>
+<li><code>default-auth</code>：无默认值。</li>
+<li><code>enable-cleartext-plugin</code>：FALSE。</li>
+<li><code>show-warnings</code>：FALSE。</li>
+<li><code>compression-algorithms</code>：无默认值。</li>
+<li><code>zstd-compression-level</code>：3。</li>
+</ul>
+<h3 id="默认选项：-3">默认选项：</h3>
+<p>默认选项按以下顺序从以下文件中读取：</p>
+<ul>
+<li><code>C:\WINDOWS\my.ini</code></li>
+<li><code>C:\WINDOWS\my.cnf</code></li>
+<li><code>C:\my.ini</code></li>
+<li><code>C:\my.cnf</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.ini</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.cnf</code></li>
+</ul>
+<p>读取的组为：<code>mysqladmin client</code></p>
+<h3 id="其他参数：-3">其他参数：</h3>
+<ul>
+<li><code>--print-defaults</code>：打印程序参数列表并退出。</li>
+<li><code>--no-defaults</code>：不要从任何选项文件中读取默认选项，除了登录文件。</li>
+<li><code>--defaults-file=#</code>：只从给定的文件 # 读取默认选项。</li>
+<li><code>--defaults-extra-file=#</code>：在全球文件之后读取此文件。</li>
+<li><code>--defaults-group-suffix=#</code>：也读取与组名和后缀拼接的组。</li>
+<li><code>--login-path=#</code>：从登录文件中读取此路径。</li>
+<li><code>--no-login-paths</code>：不要从登录路径文件中读取。</li>
+</ul>
+<h3 id="命令：">命令：</h3>
+<p><code>mysqladmin</code> 支持多种管理命令，包括但不限于：</p>
+<ul>
+<li><code>create databasename</code>：创建一个新数据库。</li>
+<li><code>debug</code>：指示服务器将调试信息写入日志。</li>
+<li><code>drop databasename</code>：删除数据库及其所有表。</li>
+<li><code>extended-status</code>：从服务器获取扩展状态消息。</li>
+<li><code>flush-hosts</code>：刷新所有缓存的主机。</li>
+<li><code>flush-logs</code>：刷新所有日志。</li>
+<li><code>flush-status</code>：清除状态变量。</li>
+<li><code>flush-tables</code>：刷新所有表。</li>
+<li><code>flush-privileges</code>：重新加载授权表（与 reload 相同）。</li>
+<li><code>kill id,id,...</code>：终止 MySQL 线程。</li>
+<li><code>password [new-password]</code>：以当前格式更改旧密码为新密码。</li>
+<li><code>ping</code>：检查 mysqld 是否存活。</li>
+<li><code>processlist</code>：显示服务器中活动的线程列表。</li>
+<li><code>reload</code>：重新加载授权表。</li>
+<li><code>refresh</code>：刷新所有表并关闭并打开日志文件。</li>
+<li><code>shutdown</code>：关闭服务器。</li>
+<li><code>status</code>：从服务器获取简短状态消息。</li>
+<li><code>start-replica</code>：开始复制。</li>
+<li><code>start-slave</code>：已弃用，请使用 <code>start-replica</code> 代替。</li>
+<li><code>stop-replica</code>：停止复制。</li>
+<li><code>stop-slave</code>：已弃用，请使用 <code>stop-replica</code> 代替。</li>
+<li><code>variables</code>：打印可用变量。</li>
+<li><code>version</code>：从服务器获取版本信息。</li>
+</ul>
+<p>这段文字是 <code>mysqlbinlog</code> 工具的帮助文档，它详细描述了该工具的各个参数和它们的用途。<code>mysqlbinlog</code> 是一个用于解析 MySQL 二进制日志文件的工具，可以将二进制日志文件的内容转换成可读的 SQL 语句。下面是对每个参数的详细解释：</p>
+<ol>
+<li>
+<p><code>-?, --help</code>：显示帮助信息并退出。</p>
+</li>
+<li>
+<p><code>--base64-output=name</code>：确定何时输出 base64 编码的 BINLOG 语句。‘never’ 表示不编码，‘decode-rows’ 在 --verbose 选项也给出时将行事件解码成注释的伪 SQL 语句，‘auto’ 仅在必要时（即对于基于行的事件和格式描述事件）输出 base64。默认值为 ‘auto’。</p>
+</li>
+<li>
+<p><code>--bind-address=name</code>：绑定到的 IP 地址。</p>
+</li>
+<li>
+<p><code>--character-sets-dir=name</code>：字符集文件的目录。</p>
+</li>
+<li>
+<p><code>-d, --database=name</code>：仅列出指定数据库的条目（仅限本地日志）。</p>
+</li>
+<li>
+<p><code>--rewrite-db=name</code>：重写行事件，使其可以应用到新数据库。</p>
+</li>
+<li>
+<p><code>-#, --debug[=#]</code>：这是一个非调试版本。捕获此选项并退出。</p>
+</li>
+<li>
+<p><code>--debug-check</code>：这是一个非调试版本。捕获此选项并退出。</p>
+</li>
+<li>
+<p><code>--debug-info</code>：这是一个非调试版本。捕获此选项并退出。</p>
+</li>
+<li>
+<p><code>--default-auth=name</code>：默认的客户端认证插件。</p>
+</li>
+<li>
+<p><code>-D, --disable-log-bin</code>：禁用二进制日志。如果你启用了 --to-last-log 并且将输出发送到同一个 MySQL 服务器，这很有用，以避免无限循环。在恢复崩溃后也使用它以避免重复你已经拥有的语句。需要 SUPER 权限。</p>
+</li>
+<li>
+<p><code>-F, --force-if-open</code>：如果第一个事件中设置了 IN_USE 标志，仍然运行，并且如果文件以截断的事件结束，不要失败。默认为开；使用 --skip-force-if-open 禁用。</p>
+</li>
+<li>
+<p><code>-f, --force-read</code>：强制读取未知的 binlog 事件。</p>
+</li>
+<li>
+<p><code>-H, --hexdump</code>：用十六进制和 ASCII 事件转储增强输出。</p>
+</li>
+<li>
+<p><code>-h, --host=name</code>：从服务器获取 binlog。</p>
+</li>
+<li>
+<p><code>-i, --idempotent</code>：通知服务器在应用行事件之前使用幂等模式。</p>
+</li>
+<li>
+<p><code>-l, --local-load=name</code>：为 LOAD DATA INFILE 准备指定目录中的本地临时文件。</p>
+</li>
+<li>
+<p><code>-o, --offset=#</code>：跳过前 N 个条目。</p>
+</li>
+<li>
+<p><code>-p, --password[=name]</code>：连接到远程服务器的密码。</p>
+</li>
+<li>
+<p><code>--plugin-dir=name</code>：客户端插件的目录。</p>
+</li>
+<li>
+<p><code>-P, --port=#</code>：用于连接的端口号或 0 为默认值。</p>
+</li>
+<li>
+<p><code>--protocol=name</code>：用于连接的协议。</p>
+</li>
+<li>
+<p><code>-R, --read-from-remote-server</code>：从 MySQL 服务器读取二进制日志。</p>
+</li>
+<li>
+<p><code>--read-from-remote-master=name</code>：已弃用，将在未来版本中移除。使用 read-from-remote-source 代替。</p>
+</li>
+<li>
+<p><code>--read-from-remote-source=name</code>：通过 COM_BINLOG_DUMP 或 COM_BINLOG_DUMP_GTID 命令从 MySQL 服务器读取二进制日志。</p>
+</li>
+<li>
+<p><code>--raw</code>：需要 -R。输出原始 binlog 数据而不是 SQL 语句，输出到日志文件。</p>
+</li>
+<li>
+<p><code>-r, --result-file=name</code>：将输出直接定向到给定文件。与 --raw 一起使用时，是文件名前缀。</p>
+</li>
+<li>
+<p><code>--server-id=#</code>：仅提取由具有给定 ID 的服务器创建的 binlog 条目。</p>
+</li>
+<li>
+<p><code>--server-id-bits=#</code>：设置 server-id 中重要位的数量。</p>
+</li>
+<li>
+<p><code>--set-charset=name</code>：在输出中添加 ‘SET NAMES character_set’。</p>
+</li>
+<li>
+<p><code>--shared-memory-base-name=name</code>：共享内存的基名称。</p>
+</li>
+<li>
+<p><code>-s, --short-form</code>：仅显示常规查询：没有额外信息和基于行的事件。这仅用于测试，不应在生产系统中使用。</p>
+</li>
+<li>
+<p><code>-S, --socket=name</code>：用于连接的套接字文件。</p>
+</li>
+<li>
+<p><code>--server-public-key-path=name</code>：服务器公钥的文件路径。</p>
+</li>
+<li>
+<p><code>--get-server-public-key</code>：获取服务器公钥。</p>
+</li>
+<li>
+<p><code>--ssl-mode=name</code>：SSL 连接模式。</p>
+</li>
+<li>
+<p><code>--ssl-ca=name</code>：PEM 格式的 CA 文件。</p>
+</li>
+<li>
+<p><code>--ssl-capath=name</code>：CA 目录。</p>
+</li>
+<li>
+<p><code>--ssl-cert=name</code>：PEM 格式的 X509 证书。</p>
+</li>
+<li>
+<p><code>--ssl-cipher=name</code>：使用的 SSL 加密算法。</p>
+</li>
+<li>
+<p><code>--ssl-key=name</code>：PEM 格式的 X509 密钥。</p>
+</li>
+<li>
+<p><code>--ssl-crl=name</code>：证书吊销列表。</p>
+</li>
+<li>
+<p><code>--ssl-crlpath=name</code>：证书吊销列表路径。</p>
+</li>
+<li>
+<p><code>--tls-version=name</code>：使用的 TLS 版本。</p>
+</li>
+<li>
+<p><code>--ssl-fips-mode=name</code>：SSL FIPS 模式。</p>
+</li>
+<li>
+<p><code>--tls-ciphersuites=name</code>：使用的 TLS v1.3 加密算法。</p>
+</li>
+<li>
+<p><code>--ssl-session-data=name</code>：用于启用 SSL 会话重用的会话数据文件。</p>
+</li>
+<li>
+<p><code>--ssl-session-data-continue-on-failed-reuse</code>：如果设置为 ON，即使会话数据不能重用，也允许连接成功。</p>
+</li>
+<li>
+<p><code>--tls-sni-servername=name</code>：传递给服务器的 SNI 服务器名称。</p>
+</li>
+<li>
+<p><code>--start-datetime=name</code>：从具有等于或晚于参数的日期和时间的第一个事件开始读取 binlog。</p>
+</li>
+<li>
+<p><code>-j, --start-position=#</code>：从位置 N 开始读取 binlog。</p>
+</li>
+<li>
+<p><code>--stop-datetime=name</code>：在具有等于或晚于参数的日期和时间的第一个事件停止读取 binlog。</p>
+</li>
+<li>
+<p><code>--stop-never</code>：等待服务器的更多数据而不是在最后一个日志结束时停止。</p>
+</li>
+<li>
+<p><code>--stop-never-slave-server-id=#</code>：已弃用，将在未来版本中移除。使用 connection-server-id 代替。</p>
+</li>
+<li>
+<p><code>--connection-server-id=#</code>：在使用 --read-from-remote-server 时报告的 server_id。</p>
+</li>
+<li>
+<p><code>--stop-position=#</code>：在位置 N 停止读取 binlog。</p>
+</li>
+<li>
+<p><code>-t, --to-last-log</code>：不停止在请求的 binlog 结束，而是继续打印直到 MySQL 服务器的最后一个 binlog。</p>
+</li>
+<li>
+<p><code>-u, --user=name</code>：作为用户名连接到远程服务器。</p>
+</li>
+<li>
+<p><code>-v, --verbose</code>：从行事件重建伪 SQL 语句。</p>
+</li>
+<li>
+<p><code>-V, --version</code>：打印版本并退出。</p>
+</li>
+<li>
+<p><code>--open-files-limit=#</code>：用于此程序的文件描述符限制。</p>
+</li>
+<li>
+<p><code>-c, --verify-binlog-checksum</code>：验证 binlog 事件的校验和。</p>
+</li>
+<li>
+<p><code>--binlog-row-event-max-size=#</code>：基于行的二进制日志事件的最大大小。</p>
+</li>
+<li>
+<p><code>--skip-gtids</code>：不保留全局事务标识符；而是使服务器执行事务，就好像它们是新的一样。</p>
+</li>
+<li>
+<p><code>--include-gtids=name</code>：打印提供的全局事务标识符的事件。</p>
+</li>
+<li>
+<p><code>--exclude-gtids=name</code>：打印所有事件，除了提供的全局事务标识符的事件。</p>
+</li>
+<li>
+<p><code>--print-table-metadata</code>：打印 Table_map_log_event 中存储的元数据。</p>
+</li>
+<li>
+<p><code>-C, --compress</code>：在服务器/客户端协议中使用压缩。</p>
+</li>
+<li>
+<p><code>--compression-algorithms=name</code>：在服务器/客户端协议中使用的压缩算法。</p>
+</li>
+<li>
+<p><code>--zstd-compression-level=#</code>：在客户端/服务器协议中使用的压缩级别。</p>
+</li>
+<li>
+<p><code>--require-row-format</code>：如果打印的事件不是使用行格式或其他禁止的事件（如 Load 指令或临时表的创建/删除）记录的，则失败。</p>
+</li>
+</ol>
+<h3 id="默认选项来源">默认选项来源</h3>
+<p>这部分说明了 <code>mysqlbinlog</code> 工具会从以下文件中按顺序读取默认选项：</p>
+<ul>
+<li><code>C:\WINDOWS\my.ini</code></li>
+<li><code>C:\WINDOWS\my.cnf</code></li>
+<li><code>C:\my.ini</code></li>
+<li><code>C:\my.cnf</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.ini</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.cnf</code></li>
+</ul>
+<p>这些文件包含了用于配置 MySQL 服务器和客户端工具的设置。<code>mysqlbinlog</code> 会按照上述顺序读取这些文件中的配置项，后面的文件会覆盖前面文件中相同配置项的值。</p>
+<h3 id="可接受的第一个参数">可接受的第一个参数</h3>
+<p>这部分说明了可以作为命令的第一个参数传递给 <code>mysqlbinlog</code> 的选项，用于指定默认选项文件或登录路径：</p>
+<ul>
+<li><code>--print-defaults</code>：打印程序参数列表并退出。</li>
+<li><code>--no-defaults</code>：不从任何选项文件中读取默认选项，除了登录文件。</li>
+<li><code>--defaults-file=#</code>：只从给定的文件 # 读取默认选项。</li>
+<li><code>--defaults-extra-file=#</code>：在读取全局文件后读取此文件。</li>
+<li><code>--defaults-group-suffix=#</code>：也读取与组名拼接后缀的组。</li>
+<li><code>--login-path=#</code>：从登录文件中读取此路径。</li>
+<li><code>--no-login-paths</code>：不从登录路径文件中读取登录路径。</li>
+</ul>
+<p>这些参数允许用户在运行 <code>mysqlbinlog</code> 时自定义配置文件的使用，以便在不同的环境中使用不同的配置。</p>
+<h3 id="变量和布尔选项">变量和布尔选项</h3>
+<p>这部分列出了所有可以通过命令行设置的变量和布尔选项，以及它们的默认值。这些选项可以在命令行中设置，也可以在配置文件中设置。如果用户没有提供值，那么将使用这里列出的默认值。例如：</p>
+<ul>
+<li><code>base64-output</code>：没有默认值。</li>
+<li><code>bind-address</code>：没有默认值。</li>
+<li><code>character-sets-dir</code>：没有默认值。</li>
+<li><code>database</code>：没有默认值。</li>
+<li><code>rewrite-db</code>：没有默认值。</li>
+<li><code>default-auth</code>：没有默认值。</li>
+<li><code>disable-log-bin</code>：默认为 FALSE。</li>
+<li><code>force-if-open</code>：默认为 TRUE。</li>
+<li><code>force-read</code>：默认为 FALSE。</li>
+<li><code>hexdump</code>：默认为 FALSE。</li>
+<li><code>host</code>：没有默认值。</li>
+<li><code>idempotent</code>：默认为 FALSE。</li>
+<li><code>local-load</code>：没有默认值。</li>
+<li><code>offset</code>：默认为 0。</li>
+<li><code>plugin-dir</code>：没有默认值。</li>
+<li><code>port</code>：默认为 0。</li>
+<li><code>read-from-remote-server</code>：默认为 FALSE。</li>
+<li><code>read-from-remote-master</code>：没有默认值。</li>
+<li><code>read-from-remote-source</code>：没有默认值。</li>
+<li><code>raw</code>：默认为 FALSE。</li>
+<li><code>result-file</code>：没有默认值。</li>
+<li><code>server-id</code>：默认为 0。</li>
+<li><code>server-id-bits</code>：默认为 32。</li>
+<li><code>set-charset</code>：没有默认值。</li>
+<li><code>shared-memory-base-name</code>：没有默认值。</li>
+<li><code>short-form</code>：默认为 FALSE。</li>
+<li><code>socket</code>：没有默认值。</li>
+<li><code>server-public-key-path</code>：没有默认值。</li>
+<li><code>get-server-public-key</code>：默认为 FALSE。</li>
+<li><code>ssl-ca</code>：没有默认值。</li>
+<li><code>ssl-capath</code>：没有默认值。</li>
+<li><code>ssl-cert</code>：没有默认值。</li>
+<li><code>ssl-cipher</code>：没有默认值。</li>
+<li><code>ssl-key</code>：没有默认值。</li>
+<li><code>ssl-crl</code>：没有默认值。</li>
+<li><code>ssl-crlpath</code>：没有默认值。</li>
+<li><code>tls-version</code>：没有默认值。</li>
+<li><code>tls-ciphersuites</code>：没有默认值。</li>
+<li><code>ssl-session-data</code>：没有默认值。</li>
+<li><code>ssl-session-data-continue-on-failed-reuse</code>：默认为 FALSE。</li>
+<li><code>tls-sni-servername</code>：没有默认值。</li>
+<li><code>start-datetime</code>：没有默认值。</li>
+<li><code>start-position</code>：默认为 4。</li>
+<li><code>stop-datetime</code>：没有默认值。</li>
+<li><code>stop-never</code>：默认为 FALSE。</li>
+<li><code>stop-never-slave-server-id</code>：默认为 -1。</li>
+<li><code>connection-server-id</code>：默认为 -1。</li>
+<li><code>stop-position</code>：默认为 18446744073709551615。</li>
+<li><code>to-last-log</code>：默认为 FALSE。</li>
+<li><code>user</code>：默认为 root。</li>
+<li><code>open-files-limit</code>：默认为 18432。</li>
+<li><code>verify-binlog-checksum</code>：默认为 FALSE。</li>
+<li><code>binlog-row-event-max-size</code>：默认为 4294967040。</li>
+<li><code>skip-gtids</code>：默认为 FALSE。</li>
+<li><code>include-gtids</code>：没有默认值。</li>
+<li><code>exclude-gtids</code>：没有默认值。</li>
+<li><code>print-table-metadata</code>：默认为 FALSE。</li>
+<li><code>compress</code>：默认为 FALSE。</li>
+<li><code>compression-algorithms</code>：没有默认值。</li>
+<li><code>zstd-compression-level</code>：默认为 3。</li>
+<li><code>require-row-format</code>：默认为 FALSE。</li>
+</ul>
+<p>这些变量和布尔选项允许用户根据需要调整 <code>mysqlbinlog</code> 的行为。</p>
+<p>以下是 <code>mysqlcheck</code> 工具的参数详细解释：</p>
+<h3 id="程序描述">程序描述</h3>
+<p><code>mysqlcheck</code> 是一个用于检查（CHECK）、修复（REPAIR）、分析（ANALYZE）或优化（OPTIMIZE）MySQL 数据库表的工具。不同的存储引擎可能不支持所有选项。如果多个选项被指定，只有最后一个选项会被使用。如果未指定任何选项，默认使用检查（CHECK）操作。</p>
+<h3 id="使用方法">使用方法</h3>
+<p><code>mysqlcheck</code> 的使用方法有三种：</p>
+<ol>
+<li>指定数据库和表进行操作。</li>
+<li>使用 <code>--databases</code> 选项指定多个数据库。</li>
+<li>使用 <code>--all-databases</code> 选项指定检查所有数据库。</li>
+</ol>
+<h3 id="默认选项来源-2">默认选项来源</h3>
+<p><code>mysqlcheck</code> 会从以下文件中按顺序读取默认选项：</p>
+<ul>
+<li><code>C:\WINDOWS\my.ini</code></li>
+<li><code>C:\WINDOWS\my.cnf</code></li>
+<li><code>C:\my.ini</code></li>
+<li><code>C:\my.cnf</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.ini</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.cnf</code></li>
+</ul>
+<p>读取的组为 <code>mysqlcheck client</code>。</p>
+<h3 id="参数详解">参数详解</h3>
+<ul>
+<li>
+<p><code>--print-defaults</code>：打印程序参数列表并退出。</p>
+</li>
+<li>
+<p><code>--no-defaults</code>：不从任何选项文件中读取默认选项，除了登录文件。</p>
+</li>
+<li>
+<p><code>--defaults-file=#</code>：只从给定的文件 # 读取默认选项。</p>
+</li>
+<li>
+<p><code>--defaults-extra-file=#</code>：在读取全局文件后读取此文件。</p>
+</li>
+<li>
+<p><code>--defaults-group-suffix=#</code>：也读取与组名拼接后缀的组。</p>
+</li>
+<li>
+<p><code>--login-path=#</code>：从登录文件中读取此路径。</p>
+</li>
+<li>
+<p><code>--no-login-paths</code>：不从登录路径文件中读取登录路径。</p>
+</li>
+<li>
+<p><code>-A, --all-databases</code>：检查所有数据库。</p>
+</li>
+<li>
+<p><code>-a, --analyze</code>：分析给定的表。</p>
+</li>
+<li>
+<p><code>-1, --all-in-1</code>：使用一个查询检查数据库中所有表。</p>
+</li>
+<li>
+<p><code>--auto-repair</code>：如果检查到表损坏，自动修复。</p>
+</li>
+<li>
+<p><code>--bind-address=name</code>：绑定到的 IP 地址。</p>
+</li>
+<li>
+<p><code>--character-sets-dir=name</code>：字符集文件目录。</p>
+</li>
+<li>
+<p><code>-c, --check</code>：检查表是否有错误。</p>
+</li>
+<li>
+<p><code>-C, --check-only-changed</code>：只检查自上次检查以来已更改或未正确关闭的表。</p>
+</li>
+<li>
+<p><code>-g, --check-upgrade</code>：检查表是否需要版本相关的更新。</p>
+</li>
+<li>
+<p><code>--compress</code>：在服务器/客户端协议中使用压缩。</p>
+</li>
+<li>
+<p><code>-B, --databases</code>：检查多个数据库。</p>
+</li>
+<li>
+<p><code>-#, --debug[=#]</code>：这是一个非调试版本，捕获此选项并退出。</p>
+</li>
+<li>
+<p><code>--default-character-set=name</code>：设置默认字符集。</p>
+</li>
+<li>
+<p><code>--default-auth=name</code>：默认的客户端认证插件。</p>
+</li>
+<li>
+<p><code>--enable-cleartext-plugin</code>：启用/禁用明文认证插件。</p>
+</li>
+<li>
+<p><code>-F, --fast</code>：只检查未正确关闭的表。</p>
+</li>
+<li>
+<p><code>-f, --force</code>：即使出现 SQL 错误也继续执行。</p>
+</li>
+<li>
+<p><code>-e, --extended</code>：使用扩展检查或修复。</p>
+</li>
+<li>
+<p><code>-?, --help</code>：显示帮助信息并退出。</p>
+</li>
+<li>
+<p><code>-h, --host=name</code>：连接到指定主机。</p>
+</li>
+<li>
+<p><code>-m, --medium-check</code>：比扩展检查快，但可能遗漏极少量错误。</p>
+</li>
+<li>
+<p><code>--write-binlog</code>：将 ANALYZE、OPTIMIZE 和 REPAIR 命令写入二进制日志。</p>
+</li>
+<li>
+<p><code>-o, --optimize</code>：优化表。</p>
+</li>
+<li>
+<p><code>-p, --password[=name]</code>：连接到服务器时使用的密码。</p>
+</li>
+<li>
+<p><code>-,, --password1[=name]</code>：第一因素认证插件的密码。</p>
+</li>
+<li>
+<p><code>-,, --password2[=name]</code>：第二因素认证插件的密码。</p>
+</li>
+<li>
+<p><code>-,, --password3[=name]</code>：第三因素认证插件的密码。</p>
+</li>
+<li>
+<p><code>-W, --pipe</code>：使用命名管道连接到服务器。</p>
+</li>
+<li>
+<p><code>--plugin-dir=name</code>：客户端插件目录。</p>
+</li>
+<li>
+<p><code>-P, --port=#</code>：用于连接的端口号或 0 为默认值。</p>
+</li>
+<li>
+<p><code>--protocol=name</code>：用于连接的协议。</p>
+</li>
+<li>
+<p><code>-q, --quick</code>：快速检查或修复。</p>
+</li>
+<li>
+<p><code>-r, --repair</code>：修复表。</p>
+</li>
+<li>
+<p><code>--shared-memory-base-name=name</code>：共享内存的基名称。</p>
+</li>
+<li>
+<p><code>-s, --silent</code>：只打印错误消息。</p>
+</li>
+<li>
+<p><code>--skip-database=name</code>：不处理指定的数据库。</p>
+</li>
+<li>
+<p><code>-S, --socket=name</code>：用于连接的套接字文件。</p>
+</li>
+<li>
+<p><code>--server-public-key-path=name</code>：服务器公钥的文件路径。</p>
+</li>
+<li>
+<p><code>--get-server-public-key</code>：获取服务器公钥。</p>
+</li>
+<li>
+<p><code>--ssl-mode=name</code>：SSL 连接模式。</p>
+</li>
+<li>
+<p><code>--ssl-ca=name</code>：PEM 格式的 CA 文件。</p>
+</li>
+<li>
+<p><code>--ssl-capath=name</code>：CA 目录。</p>
+</li>
+<li>
+<p><code>--ssl-cert=name</code>：PEM 格式的 X509 证书。</p>
+</li>
+<li>
+<p><code>--ssl-cipher=name</code>：使用的 SSL 加密算法。</p>
+</li>
+<li>
+<p><code>--ssl-key=name</code>：PEM 格式的 X509 密钥。</p>
+</li>
+<li>
+<p><code>--ssl-crl=name</code>：证书吊销列表。</p>
+</li>
+<li>
+<p><code>--ssl-crlpath=name</code>：证书吊销列表路径。</p>
+</li>
+<li>
+<p><code>--tls-version=name</code>：使用的 TLS 版本。</p>
+</li>
+<li>
+<p><code>--ssl-fips-mode=name</code>：SSL FIPS 模式。</p>
+</li>
+<li>
+<p><code>--tls-ciphersuites=name</code>：使用的 TLS v1.3 加密算法。</p>
+</li>
+<li>
+<p><code>--ssl-session-data=name</code>：用于启用 SSL 会话重用的会话数据文件。</p>
+</li>
+<li>
+<p><code>--ssl-session-data-continue-on-failed-reuse</code>：如果设置为 ON，即使会话数据不能重用，也允许连接成功。</p>
+</li>
+<li>
+<p><code>--tls-sni-servername=name</code>：传递给服务器的 SNI 服务器名称。</p>
+</li>
+<li>
+<p><code>--tables</code>：覆盖 <code>--databases</code> 选项。</p>
+</li>
+<li>
+<p><code>--use-frm</code>：使用 <code>.frm</code> 文件中的表结构进行修复。</p>
+</li>
+<li>
+<p><code>-u, --user=name</code>：登录用户名。</p>
+</li>
+<li>
+<p><code>-v, --verbose</code>：打印各种阶段的信息。</p>
+</li>
+<li>
+<p><code>-V, --version</code>：输出版本信息并退出。</p>
+</li>
+<li>
+<p><code>--compression-algorithms=name</code>：在服务器/客户端协议中使用的压缩算法。</p>
+</li>
+<li>
+<p><code>--zstd-compression-level=#</code>：在客户端/服务器协议中使用的 zstd 压缩级别。</p>
+</li>
+</ul>
+<h3 id="变量和布尔选项-2">变量和布尔选项</h3>
+<p>这些是可以在命令行设置的变量和布尔选项，以及它们的默认值。如果用户没有提供值，则使用这里列出的默认值。例如：</p>
+<ul>
+<li><code>all-databases</code>：默认为 FALSE。</li>
+<li><code>all-in-1</code>：默认为 FALSE。</li>
+<li><code>auto-repair</code>：默认为 FALSE。</li>
+<li><code>bind-address</code>：没有默认值。</li>
+<li><code>character-sets-dir</code>：没有默认值。</li>
+<li><code>compress</code>：默认为 FALSE。</li>
+<li><code>databases</code>：默认为 FALSE。</li>
+<li><code>default-character-set</code>：没有默认值。</li>
+<li><code>default-auth</code>：没有默认值。</li>
+<li><code>enable-cleartext-plugin</code>：默认为 FALSE。</li>
+<li><code>fast</code>：默认为 FALSE。</li>
+<li><code>force</code>：默认为 FALSE。</li>
+<li><code>extended</code>：默认为 FALSE。</li>
+<li><code>host</code>：没有默认值。</li>
+<li><code>write-binlog</code>：默认为 TRUE。</li>
+<li><code>plugin-dir</code>：没有默认值。</li>
+<li><code>port</code>：默认为 0。</li>
+<li><code>quick</code>：默认为 FALSE。</li>
+<li><code>shared-memory-base-name</code>：没有默认值。</li>
+<li><code>silent</code>：默认为 FALSE。</li>
+<li><code>skip-database</code>：没有默认值。</li>
+<li><code>socket</code>：没有默认值。</li>
+<li><code>server-public-key-path</code>：没有默认值。</li>
+<li><code>get-server-public-key</code>：默认为 FALSE。</li>
+<li><code>ssl-ca</code>：没有默认值。</li>
+<li><code>ssl-capath</code>：没有默认值。</li>
+<li><code>ssl-cert</code>：没有默认值。</li>
+<li><code>ssl-cipher</code>：没有默认值。</li>
+<li><code>ssl-key</code>：没有默认值。</li>
+<li><code>ssl-crl</code>：没有默认值。</li>
+<li><code>ssl-crlpath</code>：没有默认值。</li>
+<li><code>tls-version</code>：没有默认值。</li>
+<li><code>tls-ciphersuites</code>：没有默认值。</li>
+<li><code>ssl-session-data</code>：没有默认值。</li>
+<li><code>ssl-session-data-continue-on-failed-reuse</code>：默认为 FALSE。</li>
+<li><code>tls-sni-servername</code>：没有默认值。</li>
+<li><code>use-frm</code>：默认为 FALSE。</li>
+<li><code>user</code>：默认为 root。</li>
+<li><code>compression-algorithms</code>：没有默认值。</li>
+<li><code>zstd-compression-level</code>：默认为 3。</li>
+</ul>
+<p>以下是 <code>mysqldump</code> 工具的参数详细解释：</p>
+<h3 id="程序描述-2">程序描述</h3>
+<p><code>mysqldump</code> 是一个用于转储 MySQL 数据库和表的结构和内容的工具。</p>
+<h3 id="使用方法-2">使用方法</h3>
+<p><code>mysqldump</code> 支持多种使用方式：</p>
+<ol>
+<li>转储指定的数据库和表。</li>
+<li>使用 <code>--databases</code> 选项转储多个数据库。</li>
+<li>使用 <code>--all-databases</code> 选项转储所有数据库。</li>
+</ol>
+<h3 id="默认选项来源-3">默认选项来源</h3>
+<p><code>mysqldump</code> 会从以下文件中按顺序读取默认选项：</p>
+<ul>
+<li><code>C:\WINDOWS\my.ini</code></li>
+<li><code>C:\WINDOWS\my.cnf</code></li>
+<li><code>C:\my.ini</code></li>
+<li><code>C:\my.cnf</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.ini</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.cnf</code></li>
+</ul>
+<p>读取的组为 <code>mysqldump client</code>。</p>
+<h3 id="参数详解-2">参数详解</h3>
+<ul>
+<li>
+<p><code>--print-defaults</code>：打印程序参数列表并退出。</p>
+</li>
+<li>
+<p><code>--no-defaults</code>：不从任何选项文件中读取默认选项，除了登录文件。</p>
+</li>
+<li>
+<p><code>--defaults-file=#</code>：只从给定的文件 # 读取默认选项。</p>
+</li>
+<li>
+<p><code>--defaults-extra-file=#</code>：在读取全局文件后读取此文件。</p>
+</li>
+<li>
+<p><code>--defaults-group-suffix=#</code>：也读取与组名拼接后缀的组。</p>
+</li>
+<li>
+<p><code>--login-path=#</code>：从登录文件中读取此路径。</p>
+</li>
+<li>
+<p><code>--no-login-paths</code>：不从登录路径文件中读取登录路径。</p>
+</li>
+<li>
+<p><code>-A, --all-databases</code>：转储所有数据库。</p>
+</li>
+<li>
+<p><code>-Y, --all-tablespaces</code>：转储所有表空间。</p>
+</li>
+<li>
+<p><code>-y, --no-tablespaces</code>：不转储任何表空间信息。</p>
+</li>
+<li>
+<p><code>--add-drop-database</code>：在每个创建数据库语句前添加 DROP DATABASE。</p>
+</li>
+<li>
+<p><code>--add-drop-table</code>：在每个创建表语句前添加 DROP TABLE。</p>
+</li>
+<li>
+<p><code>--add-drop-trigger</code>：在每个创建触发器语句前添加 DROP TRIGGER。</p>
+</li>
+<li>
+<p><code>--add-locks</code>：在 INSERT 语句周围添加锁。</p>
+</li>
+<li>
+<p><code>--allow-keywords</code>：允许创建列名为关键字的列。</p>
+</li>
+<li>
+<p><code>--apply-replica-statements</code>：在转储中添加 ‘STOP REPLICA’ 和 ‘START REPLICA’ 语句。</p>
+</li>
+<li>
+<p><code>--bind-address=name</code>：绑定到的 IP 地址。</p>
+</li>
+<li>
+<p><code>--character-sets-dir=name</code>：字符集文件目录。</p>
+</li>
+<li>
+<p><code>--column-statistics</code>：添加 ANALYZE TABLE 语句以重新生成列统计信息。</p>
+</li>
+<li>
+<p><code>-i, --comments</code>：写入额外的信息。</p>
+</li>
+<li>
+<p><code>--compatible=name</code>：改变转储以兼容给定模式。</p>
+</li>
+<li>
+<p><code>--compact</code>：提供较少的详细输出。</p>
+</li>
+<li>
+<p><code>-c, --complete-insert</code>：使用完整的 INSERT 语句。</p>
+</li>
+<li>
+<p><code>-C, --compress</code>：在服务器/客户端协议中使用压缩。</p>
+</li>
+<li>
+<p><code>-a, --create-options</code>：包含所有 MySQL 特定的创建选项。</p>
+</li>
+<li>
+<p><code>-B, --databases</code>：转储多个数据库。</p>
+</li>
+<li>
+<p><code>-#, --debug[=#]</code>：这是一个非调试版本，捕获此选项并退出。</p>
+</li>
+<li>
+<p><code>--default-character-set=name</code>：设置默认字符集。</p>
+</li>
+<li>
+<p><code>--delete-source-logs</code>：备份前旋转日志，备份后清除所有旧的二进制日志。</p>
+</li>
+<li>
+<p><code>-K, --disable-keys</code>：在输出中包含禁用和启用键的语句。</p>
+</li>
+<li>
+<p><code>--dump-replica[=#]</code>：将源的二进制日志位置和文件名附加到转储的数据输出。</p>
+</li>
+<li>
+<p><code>-E, --events</code>：转储事件。</p>
+</li>
+<li>
+<p><code>-e, --extended-insert</code>：使用多行 INSERT 语法。</p>
+</li>
+<li>
+<p><code>--fields-terminated-by=name</code>：输出文件中的字段由给定字符串终止。</p>
+</li>
+<li>
+<p><code>--fields-enclosed-by=name</code>：输出文件中的字段由给定字符包围。</p>
+</li>
+<li>
+<p><code>--fields-optionally-enclosed-by=name</code>：输出文件中的字段可选地由给定字符包围。</p>
+</li>
+<li>
+<p><code>--fields-escaped-by=name</code>：输出文件中的字段由给定字符转义。</p>
+</li>
+<li>
+<p><code>-F, --flush-logs</code>：在开始转储前刷新日志文件。</p>
+</li>
+<li>
+<p><code>--flush-privileges</code>：在转储 mysql 数据库后发出 FLUSH PRIVILEGES 语句。</p>
+</li>
+<li>
+<p><code>-f, --force</code>：即使出现 SQL 错误也继续执行。</p>
+</li>
+<li>
+<p><code>-?, --help</code>：显示帮助信息并退出。</p>
+</li>
+<li>
+<p><code>--hex-blob</code>：以十六进制格式转储二进制字符串。</p>
+</li>
+<li>
+<p><code>-h, --host=name</code>：连接到指定主机。</p>
+</li>
+<li>
+<p><code>--ignore-error=name</code>：遇到指定错误代码时忽略。</p>
+</li>
+<li>
+<p><code>--ignore-table=name</code>：不转储指定的表。</p>
+</li>
+<li>
+<p><code>--include-source-host-port</code>：在转储中添加 ‘SOURCE_HOST’ 和 ‘SOURCE_PORT’。</p>
+</li>
+<li>
+<p><code>--insert-ignore</code>：使用 INSERT IGNORE 插入行。</p>
+</li>
+<li>
+<p><code>--lines-terminated-by=name</code>：输出文件中的行由给定字符串终止。</p>
+</li>
+<li>
+<p><code>-x, --lock-all-tables</code>：锁定所有表。</p>
+</li>
+<li>
+<p><code>-l, --lock-tables</code>：锁定所有表以供读取。</p>
+</li>
+<li>
+<p><code>--log-error=name</code>：将警告和错误追加到给定文件。</p>
+</li>
+<li>
+<p><code>--mysqld-long-query-time=#</code>：设置会话的 long_query_time。</p>
+</li>
+<li>
+<p><code>--source-data[=#]</code>：将二进制日志位置和文件名附加到输出。</p>
+</li>
+<li>
+<p><code>--max-allowed-packet=#</code>：发送或接收服务器的最大数据包长度。</p>
+</li>
+<li>
+<p><code>--net-buffer-length=#</code>：TCP/IP 和套接字通信的缓冲区大小。</p>
+</li>
+<li>
+<p><code>--no-autocommit</code>：用 autocommit/commit 语句包装表。</p>
+</li>
+<li>
+<p><code>-n, --no-create-db</code>：抑制为每个转储的数据库输出 CREATE DATABASE 语句。</p>
+</li>
+<li>
+<p><code>-t, --no-create-info</code>：不写入表创建信息。</p>
+</li>
+<li>
+<p><code>-d, --no-data</code>：不包含行信息。</p>
+</li>
+<li>
+<p><code>-N, --no-set-names</code>：等同于 <code>--skip-set-charset</code>。</p>
+</li>
+<li>
+<p><code>--opt</code>：启用一系列优化选项。</p>
+</li>
+<li>
+<p><code>--order-by-primary</code>：按主键排序每张表的行。</p>
+</li>
+<li>
+<p><code>-p, --password[=name]</code>：连接到服务器时使用的密码。</p>
+</li>
+<li>
+<p><code>-W, --pipe</code>：使用命名管道连接到服务器。</p>
+</li>
+<li>
+<p><code>-P, --port=#</code>：用于连接的端口号。</p>
+</li>
+<li>
+<p><code>--protocol=name</code>：用于连接的协议。</p>
+</li>
+<li>
+<p><code>-q, --quick</code>：不缓冲查询，直接转储到 stdout。</p>
+</li>
+<li>
+<p><code>-Q, --quote-names</code>：用反引号引用表和列名。</p>
+</li>
+<li>
+<p><code>--replace</code>：使用 REPLACE INTO 代替 INSERT INTO。</p>
+</li>
+<li>
+<p><code>-r, --result-file=name</code>：将输出直接定向到给定文件。</p>
+</li>
+<li>
+<p><code>-R, --routines</code>：转储存储过程（函数和过程）。</p>
+</li>
+<li>
+<p><code>--set-charset</code>：在输出中添加 ‘SET NAMES default_character_set’。</p>
+</li>
+<li>
+<p><code>--set-gtid-purged[=name]</code>：在输出中添加 ‘SET @@GLOBAL.GTID_PURGED’。</p>
+</li>
+<li>
+<p><code>--shared-memory-base-name=name</code>：共享内存的基名称。</p>
+</li>
+<li>
+<p><code>--single-transaction</code>：创建一致的快照。</p>
+</li>
+<li>
+<p><code>--dump-date</code>：在输出末尾添加转储日期。</p>
+</li>
+<li>
+<p><code>--skip-opt</code>：禁用 <code>--opt</code> 选项。</p>
+</li>
+<li>
+<p><code>-S, --socket=name</code>：用于连接的套接字文件。</p>
+</li>
+<li>
+<p><code>--server-public-key-path=name</code>：服务器公钥的文件路径。</p>
+</li>
+<li>
+<p><code>--get-server-public-key</code>：获取服务器公钥。</p>
+</li>
+<li>
+<p><code>--ssl-mode=name</code>：SSL 连接模式。</p>
+</li>
+<li>
+<p><code>--ssl-ca=name</code>：PEM 格式的 CA 文件。</p>
+</li>
+<li>
+<p><code>--ssl-capath=name</code>：CA 目录。</p>
+</li>
+<li>
+<p><code>--ssl-cert=name</code>：PEM 格式的 X509 证书。</p>
+</li>
+<li>
+<p><code>--ssl-cipher=name</code>：使用的 SSL 加密算法。</p>
+</li>
+<li>
+<p><code>--ssl-key=name</code>：PEM 格式的 X509 密钥。</p>
+</li>
+<li>
+<p><code>--ssl-crl=name</code>：证书吊销列表。</p>
+</li>
+<li>
+<p><code>--ssl-crlpath=name</code>：证书吊销列表路径。</p>
+</li>
+<li>
+<p><code>--tls-version=name</code>：使用的 TLS 版本。</p>
+</li>
+<li>
+<p><code>--ssl-fips-mode=name</code>：SSL FIPS 模式。</p>
+</li>
+<li>
+<p><code>--tls-ciphersuites=name</code>：使用的 TLS v1.3 加密算法。</p>
+</li>
+<li>
+<p><code>--ssl-session-data=name</code>：用于启用 SSL 会话重用的会话数据文件。</p>
+</li>
+<li>
+<p><code>--ssl-session-data-continue-on-failed-reuse</code>：即使会话数据不能重用，也允许连接成功。</p>
+</li>
+<li>
+<p><code>--tls-sni-servername=name</code>：传递给服务器的 SNI 服务器名称。</p>
+</li>
+<li>
+<p><code>-T, --tab=name</code>：为每个表创建制表符分隔的文本文件。</p>
+</li>
+<li>
+<p><code>--tables</code>：覆盖 <code>--databases</code> 选项。</p>
+</li>
+<li>
+<p><code>--output-as-version[=name]</code>：定义转储中使用的术语。</p>
+</li>
+<li>
+<p><code>--triggers</code>：转储每个转储表的触发器。</p>
+</li>
+<li>
+<p><code>--tz-utc</code>：在转储顶部设置 TIME_ZONE=‘+00:00’。</p>
+</li>
+<li>
+<p><code>-u, --user=name</code>：登录用户名。</p>
+</li>
+<li>
+<p><code>-v, --verbose</code>：打印各种阶段的信息。</p>
+</li>
+<li>
+<p><code>-V, --version</code>：输出版本信息并退出。</p>
+</li>
+<li>
+<p><code>-w, --where=name</code>：只转储选定的记录。</p>
+</li>
+<li>
+<p><code>-X, --xml</code>：将数据库转储为格式良好的 XML。</p>
+</li>
+<li>
+<p><code>--plugin-dir=name</code>：客户端插件目录。</p>
+</li>
+<li>
+<p><code>--default-auth=name</code>：默认的客户端认证插件。</p>
+</li>
+<li>
+<p><code>--enable-cleartext-plugin</code>：启用/禁用明文认证插件。</p>
+</li>
+<li>
+<p><code>-M, --network-timeout</code>：允许通过设置 max_allowed_packet 和 net_read_timeout/net_write_timeout 来转储大型表。</p>
+</li>
+<li>
+<p><code>--show-create-table-skip-secondary-engine</code>：控制是否转储 SECONDARY_ENGINE CREATE TABLE 子句。</p>
+</li>
+<li>
+<p><code>--compression-algorithms=name</code>：在服务器/客户端协议中使用的压缩算法。</p>
+</li>
+<li>
+<p><code>--zstd-compression-level=#</code>：在客户端/服务器协议中使用的 zstd 压缩级别。</p>
+</li>
+<li>
+<p><code>--skip-generated-invisible-primary-key</code>：控制是否转储生成的不可见主键和键列。</p>
+</li>
+<li>
+<p><code>--init-command=name</code>：连接到 MySQL 服务器时执行的单个 SQL 命令。</p>
+</li>
+<li>
+<p><code>--init-command-add=name</code>：添加 SQL 命令到连接到 MySQL 服务器时执行的命令列表。</p>
+</li>
+<li>
+<p><code>--ignore-views</code>：跳过转储表视图。</p>
+</li>
+<li>
+<p><code>--plugin-authentication-kerberos-client-mode=name</code>：Kerberos 认证模式。</p>
+</li>
+</ul>
+<h3 id="变量和布尔选项-3">变量和布尔选项</h3>
+<p>这些是可以在命令行设置的变量和布尔选项，以及它们的默认值。如果用户没有提供值，则使用这里列出的默认值。例如：</p>
+<ul>
+<li><code>all-databases</code>：默认为 FALSE。</li>
+<li><code>all-tablespaces</code>：默认为 FALSE。</li>
+<li><code>no-tablespaces</code>：默认为 FALSE。</li>
+<li><code>add-drop-database</code>：默认为 FALSE。</li>
+<li><code>add-drop-table</code>：默认为 TRUE。</li>
+<li><code>add-drop-trigger</code>：默认为 FALSE。</li>
+<li><code>add-locks</code>：默认为 TRUE。</li>
+<li><code>allow-keywords</code>：默认为 FALSE。</li>
+<li><code>apply-replica-statements</code>：默认为 FALSE。</li>
+<li><code>apply-slave-statements</code>：默认为 FALSE。</li>
+<li><code>bind-address</code>：没有默认值。</li>
+<li><code>character-sets-dir</code>：没有默认值。</li>
+<li><code>column-statistics</code>：默认为 TRUE。</li>
+<li><code>comments</code>：默认为 TRUE。</li>
+<li><code>compatible</code>：没有默认值。</li>
+<li><code>compact</code>：默认为 FALSE。</li>
+<li><code>complete-insert</code>：默认为 FALSE。</li>
+<li><code>compress</code>：默认为 FALSE。</li>
+<li><code>create-options</code>：默认为 TRUE。</li>
+<li><code>databases</code>：默认为 FALSE。</li>
+<li><code>default-character-set</code>：默认为 utf8mb4。</li>
+<li><code>delete-source-logs</code>：默认为 FALSE。</li>
+<li><code>delete-master-logs</code>：默认为 FALSE。</li>
+<li><code>disable-keys</code>：默认为 TRUE。</li>
+<li><code>dump-replica</code>：默认为 0。</li>
+<li><code>dump-slave</code>：默认为 0。</li>
+<li><code>events</code>：默认为 FALSE。</li>
+<li><code>extended-insert</code>：默认为 TRUE。</li>
+<li><code>fields-terminated-by</code>：没有默认值。</li>
+<li><code>fields-enclosed-by</code>：没有默认值。</li>
+<li><code>fields-optionally-enclosed-by</code>：没有默认值。</li>
+<li><code>fields-escaped-by</code>：没有默认值。</li>
+<li><code>flush-logs</code>：默认为 FALSE。</li>
+<li><code>flush-privileges</code>：默认为 FALSE。</li>
+<li><code>force</code>：默认为 FALSE。</li>
+<li><code>hex-blob</code>：默认为 FALSE。</li>
+<li><code>host</code>：没有默认值。</li>
+<li><code>ignore-error</code>：没有默认值。</li>
+<li><code>include-source-host-port</code>：默认为 FALSE。</li>
+<li><code>include-master-host-port</code>：默认为 FALSE。</li>
+<li><code>insert-ignore</code>：默认为 FALSE。</li>
+<li><code>lines-terminated-by</code>：没有默认值。</li>
+<li><code>lock-all-tables</code>：默认为 FALSE。</li>
+<li><code>lock-tables</code>：默认为 TRUE。</li>
+<li><code>log-error</code>：没有默认值。</li>
+<li><code>mysqld-long-query-time</code>：默认为 0。</li>
+<li><code>source-data</code>：默认为 0。</li>
+<li><code>master-data</code>：默认为 0。</li>
+<li><code>max-allowed-packet</code>：默认为 25165824。</li>
+<li><code>net-buffer-length</code>：默认为 1046528。</li>
+<li><code>no-autocommit</code>：默认为 FALSE。</li>
+<li><code>no-create-db</code>：默认为 FALSE。</li>
+<li><code>no-create-info</code>：默认为 FALSE。</li>
+<li><code>no-data</code>：默认为 FALSE。</li>
+<li><code>order-by-primary</code>：默认为 FALSE。</li>
+<li><code>port</code>：默认为 0。</li>
+<li><code>quick</code>：默认为 TRUE。</li>
+<li><code>quote-names</code>：默认为 TRUE。</li>
+<li><code>replace</code>：默认为 FALSE。</li>
+<li><code>routines</code>：默认为 FALSE。</li>
+<li><code>set-charset</code>：默认为 TRUE。</li>
+<li><code>shared-memory-base-name</code>：没有默认值。</li>
+<li><code>single-transaction</code>：默认为 FALSE。</li>
+<li><code>dump-date</code>：默认为 TRUE。</li>
+<li><code>socket</code>：没有默认值。</li>
+<li><code>server-public-key-path</code>：没有默认值。</li>
+<li><code>get-server-public-key</code>：默认为 FALSE。</li>
+<li><code>ssl-ca</code>：没有默认值。</li>
+<li><code>ssl-capath</code>：没有默认值。</li>
+<li><code>ssl-cert</code>：没有默认值。</li>
+<li><code>ssl-cipher</code>：没有默认值。</li>
+<li><code>ssl-key</code>：没有默认值。</li>
+<li><code>ssl-crl</code>：没有默认值。</li>
+<li><code>ssl-crlpath</code>：没有默认值。</li>
+<li><code>tls-version</code>：没有默认值。</li>
+<li><code>tls-ciphersuites</code>：没有默认值。</li>
+<li><code>ssl-session-data</code>：没有默认值。</li>
+<li><code>ssl-session-data-continue-on-failed-reuse</code>：默认为 FALSE。</li>
+<li><code>tls-sni-servername</code>：没有默认值。</li>
+<li><code>tab</code>：没有默认值。</li>
+<li><code>triggers</code>：默认为 TRUE。</li>
+<li><code>tz-utc</code>：默认为 TRUE。</li>
+<li><code>user</code>：默认为 root。</li>
+<li><code>verbose</code>：默认为 FALSE。</li>
+<li><code>where</code>：没有默认值。</li>
+<li><code>plugin-dir</code>：没有默认值。</li>
+<li><code>default-auth</code>：没有默认值。</li>
+<li><code>enable-cleartext-plugin</code>：默认为 FALSE。</li>
+<li><code>network-timeout</code>：默认为 TRUE。</li>
+<li><code>show-create-table-skip-secondary-engine</code>：默认为 FALSE。</li>
+<li><code>compression-algorithms</code>：没有默认值。</li>
+<li><code>zstd-compression-level</code>：默认为 3。</li>
+<li><code>skip-generated-invisible-primary-key</code>：默认为 FALSE。</li>
+<li><code>ignore-views</code>：默认为 FALSE。</li>
+</ul>
+<p>以下是 <code>mysqlimport</code> 工具的参数详细解释：</p>
+<h3 id="程序描述-3">程序描述</h3>
+<p><code>mysqlimport</code> 是一个用于从文本文件加载数据到 MySQL 数据库表的工具。文本文件的基本名称必须与要使用的表名相同。如果使用套接字连接到 MySQL 服务器，服务器将直接打开并读取文本文件。在其他情况下，客户端将打开文本文件。导入行时使用 SQL 命令 ‘LOAD DATA INFILE’。</p>
+<h3 id="使用方法-3">使用方法</h3>
+<p><code>mysqlimport</code> 的使用方法如下：</p>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs moonscript"><span class="hljs-name">D</span>:\Scoop\apps\mysql-lts\current\bin\mysqlimport.exe [OPTIONS] database textfile...<br></code></pre></td></tr></table></figure>
+<p>其中 <code>[OPTIONS]</code> 是可选参数，<code>database</code> 是目标数据库的名称，<code>textfile...</code> 是一个或多个文本文件。</p>
+<h3 id="默认选项来源-4">默认选项来源</h3>
+<p><code>mysqlimport</code> 会从以下文件中按顺序读取默认选项：</p>
+<ul>
+<li><code>C:\WINDOWS\my.ini</code></li>
+<li><code>C:\WINDOWS\my.cnf</code></li>
+<li><code>C:\my.ini</code></li>
+<li><code>C:\my.cnf</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.ini</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.cnf</code></li>
+</ul>
+<p>读取的组为 <code>mysqlimport client</code>。</p>
+<h3 id="参数详解-3">参数详解</h3>
+<ul>
+<li>
+<p><code>--print-defaults</code>：打印程序参数列表并退出。</p>
+</li>
+<li>
+<p><code>--no-defaults</code>：不从任何选项文件中读取默认选项，除了登录文件。</p>
+</li>
+<li>
+<p><code>--defaults-file=#</code>：只从给定的文件 # 读取默认选项。</p>
+</li>
+<li>
+<p><code>--defaults-extra-file=#</code>：在读取全局文件后读取此文件。</p>
+</li>
+<li>
+<p><code>--defaults-group-suffix=#</code>：也读取与组名拼接后缀的组。</p>
+</li>
+<li>
+<p><code>--login-path=#</code>：从登录文件中读取此路径。</p>
+</li>
+<li>
+<p><code>--no-login-paths</code>：不从登录路径文件中读取登录路径。</p>
+</li>
+<li>
+<p><code>--bind-address=name</code>：绑定到的 IP 地址。</p>
+</li>
+<li>
+<p><code>--character-sets-dir=name</code>：字符集文件目录。</p>
+</li>
+<li>
+<p><code>--default-character-set=name</code>：设置默认字符集。</p>
+</li>
+<li>
+<p><code>-c, --columns=name</code>：使用这些列导入数据，列名以逗号分隔。</p>
+</li>
+<li>
+<p><code>-C, --compress</code>：在服务器/客户端协议中使用压缩。</p>
+</li>
+<li>
+<p><code>-#, --debug[=#]</code>：这是一个非调试版本，捕获此选项并退出。</p>
+</li>
+<li>
+<p><code>--default-auth=name</code>：默认的客户端认证插件。</p>
+</li>
+<li>
+<p><code>-d, --delete</code>：首先从表中删除所有行。</p>
+</li>
+<li>
+<p><code>--enable-cleartext-plugin</code>：启用/禁用明文认证插件。</p>
+</li>
+<li>
+<p><code>--fields-terminated-by=name</code>：输入文件中的字段由给定字符串终止。</p>
+</li>
+<li>
+<p><code>--fields-enclosed-by=name</code>：导入文件中的字段由给定字符包围。</p>
+</li>
+<li>
+<p><code>--fields-optionally-enclosed-by=name</code>：输入文件中的字段可选地由给定字符包围。</p>
+</li>
+<li>
+<p><code>--fields-escaped-by=name</code>：输入文件中的字段由给定字符转义。</p>
+</li>
+<li>
+<p><code>-f, --force</code>：即使出现 SQL 错误也继续执行。</p>
+</li>
+<li>
+<p><code>-?, --help</code>：显示帮助信息并退出。</p>
+</li>
+<li>
+<p><code>-h, --host=name</code>：连接到指定主机。</p>
+</li>
+<li>
+<p><code>-i, --ignore</code>：如果发现重复的唯一键，则保留旧行。</p>
+</li>
+<li>
+<p><code>--ignore-lines=#</code>：忽略数据文件中的前 n 行。</p>
+</li>
+<li>
+<p><code>--lines-terminated-by=name</code>：输入文件中的行由给定字符串终止。</p>
+</li>
+<li>
+<p><code>-L, --local</code>：通过客户端读取所有文件。</p>
+</li>
+<li>
+<p><code>-l, --lock-tables</code>：锁定所有表以供写入（这会禁用线程）。</p>
+</li>
+<li>
+<p><code>--low-priority</code>：更新表时使用 LOW_PRIORITY。</p>
+</li>
+<li>
+<p><code>-p, --password[=name]</code>：连接到服务器时使用的密码。</p>
+</li>
+<li>
+<p><code>-,, --password1[=name]</code>：第一因素认证插件的密码。</p>
+</li>
+<li>
+<p><code>-,, --password2[=name]</code>：第二因素认证插件的密码。</p>
+</li>
+<li>
+<p><code>-,, --password3[=name]</code>：第三因素认证插件的密码。</p>
+</li>
+<li>
+<p><code>-W, --pipe</code>：使用命名管道连接到服务器。</p>
+</li>
+<li>
+<p><code>--plugin-dir=name</code>：客户端插件目录。</p>
+</li>
+<li>
+<p><code>-P, --port=#</code>：用于连接的端口号或 0 为默认值。</p>
+</li>
+<li>
+<p><code>--protocol=name</code>：用于连接的协议。</p>
+</li>
+<li>
+<p><code>-r, --replace</code>：如果发现重复的唯一键，则替换旧行。</p>
+</li>
+<li>
+<p><code>--shared-memory-base-name=name</code>：共享内存的基名称。</p>
+</li>
+<li>
+<p><code>-s, --silent</code>：更加安静，减少输出。</p>
+</li>
+<li>
+<p><code>-S, --socket=name</code>：用于连接的套接字文件。</p>
+</li>
+<li>
+<p><code>--server-public-key-path=name</code>：服务器公钥的文件路径。</p>
+</li>
+<li>
+<p><code>--get-server-public-key</code>：获取服务器公钥。</p>
+</li>
+<li>
+<p><code>--ssl-mode=name</code>：SSL 连接模式。</p>
+</li>
+<li>
+<p><code>--ssl-ca=name</code>：PEM 格式的 CA 文件。</p>
+</li>
+<li>
+<p><code>--ssl-capath=name</code>：CA 目录。</p>
+</li>
+<li>
+<p><code>--ssl-cert=name</code>：PEM 格式的 X509 证书。</p>
+</li>
+<li>
+<p><code>--ssl-cipher=name</code>：使用的 SSL 加密算法。</p>
+</li>
+<li>
+<p><code>--ssl-key=name</code>：PEM 格式的 X509 密钥。</p>
+</li>
+<li>
+<p><code>--ssl-crl=name</code>：证书吊销列表。</p>
+</li>
+<li>
+<p><code>--ssl-crlpath=name</code>：证书吊销列表路径。</p>
+</li>
+<li>
+<p><code>--tls-version=name</code>：使用的 TLS 版本。</p>
+</li>
+<li>
+<p><code>--ssl-fips-mode=name</code>：SSL FIPS 模式。</p>
+</li>
+<li>
+<p><code>--tls-ciphersuites=name</code>：使用的 TLS v1.3 加密算法。</p>
+</li>
+<li>
+<p><code>--ssl-session-data=name</code>：用于启用 SSL 会话重用的会话数据文件。</p>
+</li>
+<li>
+<p><code>--ssl-session-data-continue-on-failed-reuse</code>：即使会话数据不能重用，也允许连接成功。</p>
+</li>
+<li>
+<p><code>--tls-sni-servername=name</code>：传递给服务器的 SNI 服务器名称。</p>
+</li>
+<li>
+<p><code>--use-threads=#</code>：并行加载文件，参数是用于加载数据的线程数。</p>
+</li>
+<li>
+<p><code>-u, --user=name</code>：登录用户名。</p>
+</li>
+<li>
+<p><code>-v, --verbose</code>：打印各种阶段的信息。</p>
+</li>
+<li>
+<p><code>-V, --version</code>：输出版本信息并退出。</p>
+</li>
+<li>
+<p><code>--compression-algorithms=name</code>：在服务器/客户端协议中使用的压缩算法。</p>
+</li>
+<li>
+<p><code>--zstd-compression-level=#</code>：在客户端/服务器协议中使用的 zstd 压缩级别。</p>
+</li>
+</ul>
+<h3 id="变量和布尔选项-4">变量和布尔选项</h3>
+<p>这些是可以在命令行设置的变量和布尔选项，以及它们的默认值。如果用户没有提供值，则使用这里列出的默认值。例如：</p>
+<ul>
+<li><code>bind-address</code>：没有默认值。</li>
+<li><code>character-sets-dir</code>：没有默认值。</li>
+<li><code>default-character-set</code>：默认为 <code>auto</code>。</li>
+<li><code>columns</code>：没有默认值。</li>
+<li><code>compress</code>：默认为 <code>FALSE</code>。</li>
+<li><code>default-auth</code>：没有默认值。</li>
+<li><code>delete</code>：默认为 <code>FALSE</code>。</li>
+<li><code>enable-cleartext-plugin</code>：默认为 <code>FALSE</code>。</li>
+<li><code>fields-terminated-by</code>：没有默认值。</li>
+<li><code>fields-enclosed-by</code>：没有默认值。</li>
+<li><code>fields-optionally-enclosed-by</code>：没有默认值。</li>
+<li><code>fields-escaped-by</code>：没有默认值。</li>
+<li><code>force</code>：默认为 <code>FALSE</code>。</li>
+<li><code>host</code>：没有默认值。</li>
+<li><code>ignore</code>：默认为 <code>FALSE</code>。</li>
+<li><code>ignore-lines</code>：默认为 <code>0</code>。</li>
+<li><code>lines-terminated-by</code>：没有默认值。</li>
+<li><code>local</code>：默认为 <code>FALSE</code>。</li>
+<li><code>lock-tables</code>：默认为 <code>FALSE</code>。</li>
+<li><code>low-priority</code>：默认为 <code>FALSE</code>。</li>
+<li><code>plugin-dir</code>：没有默认值。</li>
+<li><code>port</code>：默认为 <code>0</code>。</li>
+<li><code>replace</code>：默认为 <code>FALSE</code>。</li>
+<li><code>shared-memory-base-name</code>：没有默认值。</li>
+<li><code>silent</code>：默认为 <code>FALSE</code>。</li>
+<li><code>socket</code>：没有默认值。</li>
+<li><code>server-public-key-path</code>：没有默认值。</li>
+<li><code>get-server-public-key</code>：默认为 <code>FALSE</code>。</li>
+<li><code>ssl-ca</code>：没有默认值。</li>
+<li><code>ssl-capath</code>：没有默认值。</li>
+<li><code>ssl-cert</code>：没有默认值。</li>
+<li><code>ssl-cipher</code>：没有默认值。</li>
+<li><code>ssl-key</code>：没有默认值。</li>
+<li><code>ssl-crl</code>：没有默认值。</li>
+<li><code>ssl-crlpath</code>：没有默认值。</li>
+<li><code>tls-version</code>：没有默认值。</li>
+<li><code>tls-ciphersuites</code>：没有默认值。</li>
+<li><code>ssl-session-data</code>：没有默认值。</li>
+<li><code>ssl-session-data-continue-on-failed-reuse</code>：默认为 <code>FALSE</code>。</li>
+<li><code>tls-sni-servername</code>：没有默认值。</li>
+<li><code>use-threads</code>：默认为 <code>0</code>。</li>
+<li><code>user</code>：默认为 <code>root</code>。</li>
+<li><code>verbose</code>：默认为 <code>FALSE</code>。</li>
+<li><code>compression-algorithms</code>：没有默认值。</li>
+<li><code>zstd-compression-level</code>：默认为 <code>3</code>。</li>
+</ul>
+<p>以下是 <code>mysql_secure_installation</code> 工具的参数详细解释：</p>
+<h3 id="程序描述-4">程序描述</h3>
+<p><code>mysql_secure_installation</code> 是 MySQL 的一个配置工具，用于帮助用户安全地设置 MySQL 服务器。它通常用于在安装后运行一系列步骤来增强服务器的安全性。</p>
+<h3 id="使用方法-4">使用方法</h3>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs moonscript"><span class="hljs-name">D</span>:\Scoop\apps\mysql-lts\current\bin\mysql_secure_installation.exe [OPTIONS]<br></code></pre></td></tr></table></figure>
+<p>其中 <code>[OPTIONS]</code> 是可选参数。</p>
+<h3 id="默认选项来源-5">默认选项来源</h3>
+<p><code>mysql_secure_installation</code> 会从以下文件中按顺序读取默认选项：</p>
+<ul>
+<li><code>C:\WINDOWS\my.ini</code></li>
+<li><code>C:\WINDOWS\my.cnf</code></li>
+<li><code>C:\my.ini</code></li>
+<li><code>C:\my.cnf</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.ini</code></li>
+<li><code>D:\Scoop\apps\mysql-lts\current\my.cnf</code></li>
+</ul>
+<p>读取的组为 <code>mysql_secure_installation</code> 和 <code>mysql client</code>。</p>
+<h3 id="参数详解-4">参数详解</h3>
+<ul>
+<li><code>-?, --help</code>：显示帮助信息并退出。</li>
+<li><code>-h, --host=name</code>：连接到指定的主机。</li>
+<li><code>-p, --password[=name]</code>：连接到服务器的密码。如果未给出密码，将从终端请求输入。</li>
+<li><code>-W, --pipe</code>：使用命名管道连接到服务器。</li>
+<li><code>-P, --port=#</code>：用于连接的端口号，或者设置为 0 以使用默认值，优先级顺序为 my.cnf 文件、环境变量 <code>$MYSQL_TCP_PORT</code>、<code>/etc/services</code>、内置默认值（3306）。</li>
+<li><code>--protocol=name</code>：用于连接的协议，可以是 <code>tcp</code>、<code>socket</code>、<code>pipe</code> 或 <code>memory</code>。</li>
+<li><code>--shared-memory-base-name=name</code>：共享内存的基名称。</li>
+<li><code>-S, --socket=name</code>：用于连接的套接字文件。</li>
+<li><code>--ssl-mode=name</code>：SSL 连接模式。</li>
+<li><code>--ssl-ca=name</code>：PEM 格式的 CA 文件。</li>
+<li><code>--ssl-capath=name</code>：CA 目录。</li>
+<li><code>--ssl-cert=name</code>：PEM 格式的 X509 证书。</li>
+<li><code>--ssl-cipher=name</code>：使用的 SSL 加密算法。</li>
+<li><code>--ssl-key=name</code>：PEM 格式的 X509 密钥。</li>
+<li><code>--ssl-crl=name</code>：证书吊销列表。</li>
+<li><code>--ssl-crlpath=name</code>：证书吊销列表路径。</li>
+<li><code>--tls-version=name</code>：使用的 TLS 版本，允许的值是 TLSv1.2 和 TLSv1.3。</li>
+<li><code>--ssl-fips-mode=name</code>：SSL FIPS 模式（仅适用于 OpenSSL），允许的值是 OFF、ON、STRICT。</li>
+<li><code>--tls-ciphersuites=name</code>：使用的 TLS v1.3 加密算法。</li>
+<li><code>--ssl-session-data=name</code>：用于启用 SSL 会话重用的会话数据文件。</li>
+<li><code>--ssl-session-data-continue-on-failed-reuse</code>：如果设置为 ON，即使会话数据不能重用，也允许连接成功。</li>
+<li><code>--tls-sni-servername=name</code>：传递给服务器的 SNI 服务器名称。</li>
+<li><code>-u, --user=name</code>：登录用户名，如果不是 root。</li>
+<li><code>-D, --use-default</code>：执行时不与用户交互。</li>
+</ul>
+<h3 id="变量和布尔选项-5">变量和布尔选项</h3>
+<p>这些是可以在命令行设置的变量和布尔选项，以及它们的默认值。如果用户没有提供值，则使用这里列出的默认值。例如：</p>
+<ul>
+<li><code>host</code>：默认为 <code>localhost</code>。</li>
+<li><code>port</code>：默认为 <code>0</code>。</li>
+<li><code>shared-memory-base-name</code>：默认为 <code>MYSQL</code>。</li>
+<li><code>socket</code>：没有默认值。</li>
+<li><code>ssl-ca</code>：没有默认值。</li>
+<li><code>ssl-capath</code>：没有默认值。</li>
+<li><code>ssl-cert</code>：没有默认值。</li>
+<li><code>ssl-cipher</code>：没有默认值。</li>
+<li><code>ssl-key</code>：没有默认值。</li>
+<li><code>ssl-crl</code>：没有默认值。</li>
+<li><code>ssl-crlpath</code>：没有默认值。</li>
+<li><code>tls-version</code>：没有默认值。</li>
+<li><code>tls-ciphersuites</code>：没有默认值。</li>
+<li><code>ssl-session-data</code>：没有默认值。</li>
+<li><code>ssl-session-data-continue-on-failed-reuse</code>：默认为 <code>FALSE</code>。</li>
+<li><code>tls-sni-servername</code>：没有默认值。</li>
+<li><code>user</code>：默认为 <code>root</code>。</li>
+<li><code>use-default</code>：默认为 <code>FALSE</code>。</li>
+</ul>
+<p>综上所述，这些参数为我们提供了强大的工具来自定义MySQL命令行工具的行为。通过逐步解析每个参数，我们可以更好地理解它们的作用，并在实际应用中做出明智的选择。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据库：MySQL_MariaDB命令行帮助解释</div>
+      <div>https://mounthuangshan.github.io/数据库/数据库/数据库：MySQL_MariaDB命令行帮助解释/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9APostgreSQL%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B8%AE%E5%8A%A9%E8%A7%A3%E9%87%8A/" title="数据库：PostgreSQL命令行帮助解释">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据库：PostgreSQL命令行帮助解释</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/nmap%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A%E7%BF%BB%E8%AF%91/" title="nmap命令参数解释翻译">
+                        <span class="hidden-mobile">nmap命令参数解释翻译</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

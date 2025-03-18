@@ -1,0 +1,747 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="一、算法描述 1.初始状态： 假设有一个数组 arr，长度为 n。 初始时，认为数组的第一个元素（arr[0]）是已排序的，其余元素（arr[1] 到 arr[n-1]）是未排序的。 2.从第二个元素开始遍历： 从数组的第二个元素（arr[1]）开始，依次取出每一个元素，记为 key。 在已排序部分寻找插入位置： 将 key 与已排序部分的元素（从后向前）进行比较。 如果 key 小于已排序部分的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法分析：你真的理解排序算法吗——插入算法（万字长文+代码详解)">
+<meta property="og:url" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87+%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3)/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="一、算法描述 1.初始状态： 假设有一个数组 arr，长度为 n。 初始时，认为数组的第一个元素（arr[0]）是已排序的，其余元素（arr[1] 到 arr[n-1]）是未排序的。 2.从第二个元素开始遍历： 从数组的第二个元素（arr[1]）开始，依次取出每一个元素，记为 key。 在已排序部分寻找插入位置： 将 key 与已排序部分的元素（从后向前）进行比较。 如果 key 小于已排序部分的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87+%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3)/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87+%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3">
+<meta property="og:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87+%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3)/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87+%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.850Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mounthuangshan.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87+%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3)/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87+%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3">
+  
+  
+  
+  <title>数据结构与算法分析：你真的理解排序算法吗——插入算法（万字长文+代码详解) - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法分析：你真的理解排序算法吗——插入算法（万字长文+代码详解)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          56 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构与算法分析：你真的理解排序算法吗——插入算法（万字长文+代码详解)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一、算法描述</h1>
+<h2 id="1-初始状态：">1.初始状态：</h2>
+<p>假设有一个数组 arr，长度为 n。<br>
+初始时，认为数组的第一个元素（arr[0]）是已排序的，其余元素（arr[1] 到 arr[n-1]）是未排序的。</p>
+<h2 id="2-从第二个元素开始遍历：">2.从第二个元素开始遍历：</h2>
+<p>从数组的第二个元素（arr[1]）开始，依次取出每一个元素，记为 key。<br>
+在已排序部分寻找插入位置：<br>
+将 key 与已排序部分的元素（从后向前）进行比较。<br>
+如果 key 小于已排序部分的某个元素 arr[j]，则将 arr[j] 向后移动一位（即 arr[j] = arr[j+1]）。<br>
+重复这一步骤，直到找到 key 的正确插入位置。</p>
+<h2 id="3-插入元素：">3.插入元素：</h2>
+<p>当找到 key 的正确插入位置后（即 arr[j] &gt; key 且 arr[j-1] &lt;= key 或 j == 0），将 key 插入到该位置（即 arr[j] = key）。</p>
+<h2 id="4-重复上述步骤：">4.重复上述步骤：</h2>
+<p>对未排序部分的每一个元素重复步骤 2 到 4，直到整个数组有序。</p>
+<h2 id="5-示例过程：">5.示例过程：</h2>
+<p>假设有一个数组 arr = [5, 2, 4, 6, 1, 3]，以下是插入排序的详细步骤：<br>
+初始状态：<br>
+已排序部分：[5]<br>
+未排序部分：[2, 4, 6, 1, 3]<br>
+处理 arr[1] = 2：<br>
+比较 2 和 5，2 小于 5，将 5 向后移动一位，插入 2。<br>
+已排序部分：[2, 5]<br>
+未排序部分：[4, 6, 1, 3]<br>
+处理 arr[2] = 4：<br>
+比较 4 和 5，4 小于 5，比较 4 和 2，4 大于 2，将 5 向后移动一位，插入 4。<br>
+已排序部分：[2, 4, 5]<br>
+未排序部分：[6, 1, 3]<br>
+处理 arr[3] = 6：<br>
+比较 6 和 5，6 大于 5，无需移动，直接插入。<br>
+已排序部分：[2, 4, 5, 6]<br>
+未排序部分：[1, 3]<br>
+处理 arr[4] = 1：<br>
+比较 1 和 6，1 小于 6，将 6 向后移动一位；<br>
+比较 1 和 5，1 小于 5，将 5 向后移动一位；<br>
+比较 1 和 4，1 小于 4，将 4 向后移动一位；<br>
+比较 1 和 2，1 小于 2，将 2 向后移动一位，插入 1。<br>
+已排序部分：[1, 2, 4, 5, 6]<br>
+未排序部分：[3]<br>
+处理 arr[5] = 3：<br>
+比较 3 和 6，3 小于 6，将 6 向后移动一位；<br>
+比较 3 和 5，3 小于 5，将 5 向后移动一位；<br>
+比较 3 和 4，3 小于 4，将 4 向后移动一位；<br>
+3 大于 2，无需再移动，直接插入 3。<br>
+已排序部分：[1, 2, 3, 4, 5, 6]<br>
+未排序部分：[]</p>
+<h1>二、复杂度分析</h1>
+<p>时间复杂度：<br>
+最优情况：O(n)（数组已排序）<br>
+最坏情况：O(n^2)（数组逆序）<br>
+平均情况：O(n^2)<br>
+空间复杂度：O(1)（原地排序，不需要额外空间）</p>
+<h1>三、适用情况</h1>
+<p>如果你有小规模数据需要排序，并且初始数据几乎是有序的，这个时候可以使用插入排序，什么样的数据集是小规模的，这个根据编程语言和机器的不同而存在不同的答案。事实上，元素的类型也是很重要的。如下图所示，插入排序需要移动60个已经有序的元素。由于只有15次迭代，平均每次迭代要移动4个元素。最优性能出现在数组是顺序有序的时候，如果数组是逆序有序的时候，那么很显然是最坏的情况。如果这个数组是已经几乎有序，插入排序将会做得很好，因为只需要移动很少的元素。<br>
+<img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87+%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述">image\数据结构与算法分析：你真的理解排序算法吗——插入算法（万字长文+代码详解)image\数据结构与算法分析：你真的理解排序算法吗——插入算法（万字长文+代码详解)image\4b4d30f540a54317b66ae67d949e6a3d.png)<br>
+在最好情况下，n个元素中每一个元素都在其正确的位置，因此插入排序将花费线性时间 O（n）。不过提这个也许看起来是没有价值的（你会有多大几率排序一个有序序列呢？），不过却是很重要的，因为插人排序将是我们在后面讲述的唯一基于比较的排序算法。<br>
+很多现实世界的数据都已经是部分有序了，所以若要使插入排序在现实数据上高效运行，优化和现实就会发生冲突。但是很不幸的，如果每一种输人数列排列出现概率是相等的，那么最优数据（所有元素已经有序）的概率仅仅是 1/n！。当 n=10 时，360000 个输入数据才会出现一个。注意重复元素越多，插入排序的效率越高，因为插入排序需要执行更少的交换操作。<br>
+不幸的是，插入排序在随机数据面前太过于保守。如果所有个元素都是不同的，而且数组是随机（数据的所有排列出现概率相等），那么每一个元素离其最终的位置平均距离是/3（注 2）。所以在平均情况和最坏情况下，n 个元素中的每个元素会被移动一个线性的距离，插入排序是二次方的运行时间，O（$n^2$）。<br>
+插入排序对于基于值的数据效率很低，因为很多内存需要移位，以给新的值腾出位置。如下表所示我们将会执行 10 次随机实验，排序个元素，最好和最坏结果将会被抛弃。这个表给出了剩余 8 次结果的平均值。注意这个实现是如何通过内存块移动而不是通过单独的内存交换来改善性能的。当数组大小加倍的时候，执行时间大约也会乘以 4，整好验证了插入算法的 O（$n^2$）性能。即使使用了内存块移动来改善性能，插入排序仍然是二次的，因为使用内存块移动的插入排序的性能是原生插入排序性能的常数倍（大约1/7）。插入排序的问题是它是一种保守的算法（叫做本地移位排序），这类算法每个元素一次移动一个位置。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs scss">这里这个使用内存块移动的插入排序跟C库函数中的memmove（）函数有关，下面是这个函数的介绍：<br>C 库函数 void *<span class="hljs-built_in">memmove</span>(void *str1, const void *str2, size_t n) 从 str2 顺序复制 n 个字符到 str1进行顺序替换  ，<br>但是在重叠内存块这方面，<span class="hljs-built_in">memmove</span>() 是比 <span class="hljs-built_in">memcpy</span>() 更安全的方法。如果目标区域和源区域有重叠的话，<br><span class="hljs-built_in">memmove</span>() 能够保证源串在被覆盖之前将重叠区域的字节拷贝到目标区域中，复制后源区域的内容会被更改。<br>如果目标区域与源区域没有重叠，则和 <span class="hljs-built_in">memcpy</span>() 函数功能相同。<br></code></pre></td></tr></table></figure>
+<p><img src="./%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E6%8F%92%E5%85%A5%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87+%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述">image\数据结构与算法分析：你真的理解排序算法吗——插入算法（万字长文+代码详解)image\数据结构与算法分析：你真的理解排序算法吗——插入算法（万字长文+代码详解)image\8762e6a476994cc692c56688a2c18541.png)<br>
+当插入排序去排序基于值的数据时，交换元素的操作将会更加的高效，编译器能够产生更高效的代码，以图最少地执行高开销的内存存取操作。</p>
+<h1>四、算法实现</h1>
+<p>插入排序需要一个额外的存储一个元素的空间来更好的执行，对于基于指针的排序，这样是没有必要的，但是对于基于值的排序来说，程序就需要分配足够的内存来存储值来为排序服务，排序完毕之后这块内存可以被释放。<br>
+基于指针的插入排序：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include&lt;stdio.<span class="hljs-property">h</span>&gt;<br>#include&lt;stdlib.<span class="hljs-property">h</span>&gt;<br><br><span class="hljs-comment">//基于指针的插入排序</span><br>int <span class="hljs-title function_">cmp</span>(<span class="hljs-params"><span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* x, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* y</span>)<br>&#123;<br>  int standard;<br>  <span class="hljs-comment">//这里比较时也是需要做强制类型转换</span><br>  standard = *(int*)x - *(int*)y;<br>  <br>  <span class="hljs-keyword">return</span> standard;<br>&#125;<br><span class="hljs-comment">/*cmp是一个指向比较函数的指针，该函数接收两个 const void* 类型的参数，并返回一个整数。</span><br><span class="hljs-comment">如果第一个参数应该排在第二个参数之前，则返回负数；如果两者相等，则返回零；</span><br><span class="hljs-comment">如果第一个参数应该排在第二个参数之后，则返回正数。*/</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">insertionSortPointers</span>(<span class="hljs-params"><span class="hljs-keyword">void</span> **ar,int n, int(*cmp)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *,<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *)</span>) <br>&#123;<br>  int j;<br>  <span class="hljs-keyword">for</span> (j = <span class="hljs-number">1</span>;j &lt; n;j++)<br>  &#123;<br>    int i = j - <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">void</span>* value = ar[j];<br>    <span class="hljs-keyword">while</span>(i&gt;=<span class="hljs-number">0</span>&amp;&amp;<span class="hljs-title function_">cmp</span>(ar[i],value)&gt;<span class="hljs-number">0</span>)<br>    &#123;<br>      ar[i + <span class="hljs-number">1</span>] = ar[i];<br>      i--;<br>    &#125;<br>    ar[i + <span class="hljs-number">1</span>] = value;<br>  &#125;<br><span class="hljs-comment">/*下面是这个循环的过程：</span><br><span class="hljs-comment">1.初始化循环变量j为1，这意味着我们从数组的第二个元素开始（因为假设第一个元素自成一个有序序列），一直到数组的最后一个</span><br><span class="hljs-comment">元素。</span><br><span class="hljs-comment">2.对于每个j（即数组的当前元素），我们首先将它的索引j-1赋值给变量i，并将该元素的值（通过指针value）保存起来。</span><br><span class="hljs-comment">这里i用于在已排序的部分（即数组的前j-1个元素）中从后向前遍历，寻找当前元素应该插入的位置。</span><br><span class="hljs-comment">3.进入一个内部while循环，条件是i大于等于0，并且cmp(ar[i], value)的结果大于0。这意味着只要i没有越界，并且已排序部分</span><br><span class="hljs-comment">的当前元素（ar[i]）大于要插入的元素（value），就继续执行循环体。</span><br><span class="hljs-comment">4.在循环体内，将已排序部分的当前元素（ar[i]）向后移动一个位置（即赋值给ar[i+1]），为要插入的元素腾出空间。</span><br><span class="hljs-comment">5.将i减1，继续检查前一个元素。</span><br><span class="hljs-comment">6.当while循环结束时，说明已经找到了要插入元素的位置（即i+1的位置），或者已经遍历完了已排序的部分（此时i小于0）。</span><br><span class="hljs-comment">7.将保存的值（value）插入到找到的位置（ar[i+1]）。</span><br><span class="hljs-comment">8.外部循环变量j加1，继续处理数组的下一个元素。</span><br><span class="hljs-comment">9.当外部循环结束时，整个数组ar就被排序好了。</span><br><span class="hljs-comment">这个过程实际上是插入排序的核心，它通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。</span><br><span class="hljs-comment">插入排序在实现上，通常采用in-place排序（即只需用到O(1)的额外空间的排序），因而在从后向前扫描过程中，找到相应位置并</span><br><span class="hljs-comment">插入时，不需要移动其它元素，只需将要插入的元素移动到新位置，其它元素相应后移一位。*/</span><br>&#125;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>)<br>&#123;<br>  int a = <span class="hljs-number">5</span>;<br>  int b = <span class="hljs-number">7</span>;<br>  int c = <span class="hljs-number">4</span>;<br>  int d = <span class="hljs-number">6</span>;<br>  int e = <span class="hljs-number">3</span>;<br>  int f = <span class="hljs-number">8</span>;<br>  int g = <span class="hljs-number">1</span>;<br>  int h = <span class="hljs-number">0</span>;<br>  int i = <span class="hljs-number">9</span>;<br>  int j = <span class="hljs-number">2</span>;<br>  <span class="hljs-comment">/*使用int* num[10]这样的数组作为参数传入insertionSortPointers中在C语言的编译器中是可以通过编译的，</span><br><span class="hljs-comment">  这就是void* 的泛型用法，由于void* 无法在C++中执行隐式转换，所以如果是传入void **ar这样的参数中则需要使用void* num[10]这样的数组，</span><br><span class="hljs-comment">  否则会报实参与形参不兼容的问题，因为在C++中有更加严格的类型安全检查，这是语言特性的问题*/</span><br>  <span class="hljs-keyword">void</span>* num[<span class="hljs-number">10</span>] = &#123;&amp;a,&amp;b,&amp;c,&amp;d,&amp;e,&amp;f ,&amp;g ,&amp;h ,&amp;i ,&amp;j &#125;;<br>  int n = <span class="hljs-title function_">sizeof</span>(num) / <span class="hljs-title function_">sizeof</span>(num[<span class="hljs-number">0</span>]);<br>  <span class="hljs-title function_">insertionSortPointers</span>(num,n,cmp);<br>  <span class="hljs-keyword">for</span> (i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">10</span>;i++)<br>  &#123;<br>    <span class="hljs-comment">//printf(&quot;%d&quot;,*num[i]);这是错误的打印void数组方法，下面是正确的：</span><br>    <span class="hljs-comment">// 将void*转换为int*并解引用  </span><br>    int* intPtr = (int*)num[i];<br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;num[%d] = %d\n&quot;</span>, i, *intPtr);<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>当A是基于值的形式存储时，这个数值被装入n行，并且分配给它一个固定大小的内存s。使用比较函数对值进行比较，也就是将值从一个位置复制到另外一个位置（比较函数的栈中）。下面是基于值的插入排序，这个程序使用了memove来高效的移动数据：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/*</span><br><span class="hljs-comment">#include&lt;stdio.h&gt;</span><br><span class="hljs-comment">#include&lt;stdlib.h&gt;</span><br><span class="hljs-comment">#include&lt;string.h&gt;</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">//基于值的插入排序</span><br><span class="hljs-comment">int cmp(const void* x, const void* y)</span><br><span class="hljs-comment">&#123;</span><br><span class="hljs-comment">  int standard;</span><br><span class="hljs-comment">  //这里比较时也是需要做强制类型转换</span><br><span class="hljs-comment">  standard = *(int*)x - *(int*)y;</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">  return standard;</span><br><span class="hljs-comment">&#125;</span><br><span class="hljs-comment">/*cmp是一个指向比较函数的指针，该函数接收两个 const void* 类型的参数，并返回一个整数。</span><br><span class="hljs-comment">如果第一个参数应该排在第二个参数之前，则返回负数；如果两者相等，则返回零；</span><br><span class="hljs-comment">如果第一个参数应该排在第二个参数之后，则返回正数。*/</span><br><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">insertionSortPointers</span>(<span class="hljs-params"><span class="hljs-keyword">void</span>* base, int n, int s, int(*cmp)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>*)</span>)<br>&#123;<br>  int j;<br>  <span class="hljs-comment">//临时保存一个元素</span><br>  <span class="hljs-keyword">void</span>* saved = <span class="hljs-title function_">malloc</span>(s);<br>  <span class="hljs-keyword">for</span> (j = <span class="hljs-number">1</span>;j &lt; n;j++)<br>  &#123;<br>    <span class="hljs-comment">//从末尾开始逆向遍历,直到i&lt;0或者找到一个相比较小的元素</span><br>    int i = j - <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">void</span>* value = (char*)base + j * s;<br>    <span class="hljs-keyword">while</span> (i &gt;= <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-title function_">cmp</span>((char*)base + i * s, value) &gt; <span class="hljs-number">0</span>)<br>    &#123;<br>      i--;<br>    &#125;<br>    <span class="hljs-comment">//如果已经在其正确的位置了，那么就没有必要移动，否则保存将要插入的值并且移动这一大块内存，将其插入适当的位置。</span><br>    <span class="hljs-keyword">if</span> (++i == j)<br>    &#123;<br>      <span class="hljs-keyword">continue</span>;<br>    &#125;<br>    <span class="hljs-comment">//保存要插入的值</span><br>    <span class="hljs-title function_">memmove</span>(saved, value, s);<br>    <span class="hljs-comment">//将后面的元素向后移动一个位置</span><br>    <span class="hljs-title function_">memmove</span>((char*)base + (i + <span class="hljs-number">1</span>) * s, (char*)base + i * s, s * (j - i));<br>    <span class="hljs-comment">//将保存的值插入到正确的位置</span><br>    <span class="hljs-title function_">memmove</span>((char*)base + i * s, saved, s);<br>    <br>  &#125;<br>  <span class="hljs-title function_">free</span>(saved);  <span class="hljs-comment">// 释放临时分配的内存</span><br>&#125;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>)<br>&#123;<br>  int a = <span class="hljs-number">5</span>;<br>  int b = <span class="hljs-number">7</span>;<br>  int c = <span class="hljs-number">4</span>;<br>  int d = <span class="hljs-number">6</span>;<br>  int e = <span class="hljs-number">3</span>;<br>  int f = <span class="hljs-number">8</span>;<br>  int g = <span class="hljs-number">1</span>;<br>  int h = <span class="hljs-number">0</span>;<br>  int i = <span class="hljs-number">9</span>;<br>  int j = <span class="hljs-number">2</span>;<br>  int base[<span class="hljs-number">10</span>] = &#123; a,b,c,d,e,f,g,h,i,j &#125;;<br>  int n = <span class="hljs-title function_">sizeof</span>(base) / <span class="hljs-title function_">sizeof</span>(base[<span class="hljs-number">0</span>]);<br>  <span class="hljs-title function_">insertionSortPointers</span>(base,n,<span class="hljs-title function_">sizeof</span>(base[<span class="hljs-number">0</span>]), cmp);<br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>;i &lt; <span class="hljs-number">10</span>;i++)<br>  &#123;<br>    <span class="hljs-comment">//printf(&quot;%d&quot;,*num[i]);这是错误的打印void数组方法，下面是正确的：</span><br>    <span class="hljs-comment">//将void*转换为int*并解引用  </span><br>    int intPtr = (int)base[i];<br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;base[%d] = %d\n&quot;</span>, i, intPtr);<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  <br>&#125;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">为什么为什么上面的base要转换强制转换为char类型：</span><br><span class="hljs-comment">在C语言中，将base指针转换为char*类型（即字符指针）是为了能够正确地按照字节偏移来访问数组中的元素。这是因为char类型</span><br><span class="hljs-comment">在C中定义为占用1个字节（byte），因此使用char*作为指针类型可以确保每次偏移都是按照1个字节来进行的。</span><br><span class="hljs-comment">在insertionSortPointers函数中，base是一个void*类型的指针，它指向数组的首元素。由于void*是一个通用指针类型，它不能</span><br><span class="hljs-comment">直接用于指针算术运算（如加法或减法），因为编译器不知道void*指向的数据类型的大小。因此，为了能够根据元素的大小s来正确</span><br><span class="hljs-comment">地计算数组中每个元素的地址，我们需要将base转换为一个已知大小的指针类型。</span><br><span class="hljs-comment">选择char*作为转换目标有几个原因：</span><br><span class="hljs-comment">标准定义：char类型在C标准中被定义为占用1个字节，这使得char*成为进行字节级操作的理想选择。</span><br><span class="hljs-comment">跨平台兼容性：使用char*进行指针算术可以确保在不同平台上的一致性，因为char的大小在所有平台上都是相同的（即1个字节）。</span><br><span class="hljs-comment">易于理解：将base转换为char*并进行偏移计算，可以清晰地表明我们是在进行字节级的操作，而不是基于某种特定数据类型的大</span><br><span class="hljs-comment">小。</span><br><span class="hljs-comment">在insertionSortPointers函数中，通过将base转换为char*类型的指针baseChar，我们可以使用baseChar + j * s来计算数组</span><br><span class="hljs-comment">中第j个元素的地址（假设数组元素的大小为s字节）。这样，无论数组中的元素是什么类型，我们都可以正确地计算出它们的地址，</span><br><span class="hljs-comment">并进行后续的插入排序操作。</span><br><span class="hljs-comment">最后，需要注意的是，在将base转换为char*之后，我们在比较函数cmp的调用中仍然需要将指针转换为const void*类型，这是因</span><br><span class="hljs-comment">为cmp函数的参数类型是const void*。这是为了确保类型安全，并允许cmp函数接受任何类型的指针作为参数。</span><br><span class="hljs-comment">*/</span><br></code></pre></td></tr></table></figure>
+<h1>五、算法优化</h1>
+<p>插入排序是一种简单直观的排序算法，它的基本思想是将一个记录插入到已经排好序的有序表中，从而得到一个新的、记录数增1的有序表。然而，插入排序在最坏情况下的时间复杂度为O(n^2)，这在实际应用中可能会成为性能瓶颈。因此，对插入排序进行优化是很重要的。以下是一些常见的插入排序优化方法：</p>
+<ol>
+<li>使用二分查找确定插入位置<br>
+在直接插入排序中，每次插入元素时都需要从有序序列的末尾开始逐个比较，直到找到插入位置。这个过程的时间复杂度是O(n)。为了优化这个过程，可以使用二分查找算法来快速确定插入位置。二分查找的时间复杂度是O(log n)，因此可以显著减少比较次数。但是需要注意的是，虽然比较次数减少了，但移动元素的次数并没有改变，因此整体时间复杂度仍然是O(n^2)。不过，在实际应用中，这种优化仍然可以带来一定的性能提升。下面是例子：</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;stdio.<span class="hljs-property">h</span>&gt;  <br>  <br><span class="hljs-comment">// 二分查找函数，返回插入位置  </span><br>int <span class="hljs-title function_">binarySearch</span>(<span class="hljs-params">int arr[], int item, int low, int high</span>) &#123;  <br>    <span class="hljs-keyword">if</span> (high &lt;= low)  <br>        <span class="hljs-keyword">return</span> (item &gt; arr[low]) ? (low + <span class="hljs-number">1</span>) : low;  <br>  <br>    int mid = (low + high) &gt;&gt; <span class="hljs-number">1</span>;  <br>  <br>    <span class="hljs-keyword">if</span> (item == arr[mid])  <br>        <span class="hljs-keyword">return</span> mid + <span class="hljs-number">1</span>;  <br>  <br>    <span class="hljs-keyword">if</span> (item &gt; arr[mid])  <br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">binarySearch</span>(arr, item, mid + <span class="hljs-number">1</span>, high);  <br>  <br>    <span class="hljs-keyword">return</span> <span class="hljs-title function_">binarySearch</span>(arr, item, low, mid - <span class="hljs-number">1</span>);  <br>&#125;  <br>  <br><span class="hljs-comment">// 插入排序函数，使用二分查找  </span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">insertionSortBinary</span>(<span class="hljs-params">int arr[], int n</span>) &#123;  <br>    int i, j, selected, loc;  <br>    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; n; ++i) &#123;  <br>        selected = arr[i];  <br>  <br>        <span class="hljs-comment">// 找到插入位置  </span><br>        loc = <span class="hljs-title function_">binarySearch</span>(arr, selected, <span class="hljs-number">0</span>, i - <span class="hljs-number">1</span>);  <br>  <br>        <span class="hljs-comment">// 移动元素以腾出空间  </span><br>        <span class="hljs-keyword">for</span> (j = i - <span class="hljs-number">1</span>; j &gt;= loc; --j)  <br>            arr[j + <span class="hljs-number">1</span>] = arr[j];  <br>  <br>        arr[loc] = selected;  <br>    &#125;  <br>&#125;  <br>  <br><span class="hljs-comment">// 测试函数  </span><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;  <br>    int arr[] = &#123;<span class="hljs-number">12</span>, <span class="hljs-number">11</span>, <span class="hljs-number">13</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>&#125;;  <br>    int n = <span class="hljs-title function_">sizeof</span>(arr) / <span class="hljs-title function_">sizeof</span>(arr[<span class="hljs-number">0</span>]);  <br>    <span class="hljs-title function_">insertionSortBinary</span>(arr, n);  <br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Sorted array: \n&quot;</span>);  <br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; n; i++)  <br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, arr[i]);  <br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);  <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  <br>&#125;<br></code></pre></td></tr></table></figure>
+<ol start="2">
+<li>希尔排序<br>
+希尔排序是插入排序的一种优化版本，也称为递减增量排序。它的基本思想是将数组分成若干个子数组，每个子数组进行插入排序。随着排序的进行，子数组的大小逐渐减小，直到整个数组被排序完成。希尔排序的关键在于选择合适的增量序列。常见的增量序列有希尔增量（即初始增量为数组长度的一半，后续增量减半）和希伯特增量等。希尔排序的时间复杂度为O(nlog n)，比直接插入排序要快得多。下面是例子：</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;stdio.<span class="hljs-property">h</span>&gt;  <br>  <br><span class="hljs-keyword">void</span> <span class="hljs-title function_">shellSort</span>(<span class="hljs-params">int arr[], int n</span>) &#123;  <br>    <span class="hljs-keyword">for</span> (int gap = n / <span class="hljs-number">2</span>; gap &gt; <span class="hljs-number">0</span>; gap /= <span class="hljs-number">2</span>) &#123;  <br>        <span class="hljs-keyword">for</span> (int i = gap; i &lt; n; i++) &#123;  <br>            int temp = arr[i];  <br>            int j;  <br>            <span class="hljs-keyword">for</span> (j = i; j &gt;= gap &amp;&amp; arr[j - gap] &gt; temp; j -= gap) &#123;  <br>                arr[j] = arr[j - gap];  <br>            &#125;  <br>            arr[j] = temp;  <br>        &#125;  <br>    &#125;  <br>&#125;  <br>  <br><span class="hljs-comment">// 测试函数  </span><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;  <br>    int arr[] = &#123;<span class="hljs-number">12</span>, <span class="hljs-number">34</span>, <span class="hljs-number">54</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;;  <br>    int n = <span class="hljs-title function_">sizeof</span>(arr) / <span class="hljs-title function_">sizeof</span>(arr[<span class="hljs-number">0</span>]);  <br>    <span class="hljs-title function_">shellSort</span>(arr, n);  <br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Sorted array: \n&quot;</span>);  <br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; n; i++)  <br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, arr[i]);  <br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);  <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  <br>&#125;<br></code></pre></td></tr></table></figure>
+<ol start="3">
+<li>优化元素移动<br>
+在直接插入排序中，每次插入元素时都需要移动元素来腾出空间。为了减少元素移动的次数，可以在比较过程中就进行元素的交换，而不是等到找到插入位置后再进行移动。这样可以避免在找到插入位置后进行大量的元素后移操作。此外，还可以使用“哨兵”元素来优化算法，即在有序序列的末尾添加一个比所有元素都大的元素作为哨兵，这样在插入元素时就不需要每次都检查是否越界了。优化元素移动的目的是减少不必要的赋值操作，从而加速排序过程。然而，这种优化并没有改变插入排序的基本性质，即每次插入操作仍然需要O(n)次比较和可能的元素移动。因此，总的时间复杂度仍然是O(n^2)。下面是例子：</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;stdio.<span class="hljs-property">h</span>&gt;  <br>  <br><span class="hljs-keyword">void</span> <span class="hljs-title function_">insertionSortWithSentinel</span>(<span class="hljs-params">int arr[], int n</span>) &#123;  <br>    int i, j, key;  <br>    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; n; i++) &#123;  <br>        key = arr[i];  <br>        j = i - <span class="hljs-number">1</span>;  <br>  <br>        <span class="hljs-comment">// 添加哨兵元素，减少边界检查  </span><br>        arr[i] = <span class="hljs-variable constant_">INT_MIN</span>; <span class="hljs-comment">// 假设INT_MIN是数组中最小的可能值  </span><br>  <br>        <span class="hljs-keyword">while</span> (arr[j] &gt; key) &#123;  <br>            arr[j + <span class="hljs-number">1</span>] = arr[j];  <br>            j--;  <br>        &#125;  <br>        arr[j + <span class="hljs-number">1</span>] = key;  <br>  <br>        <span class="hljs-comment">// 恢复哨兵位置的值（实际上是多余的，因为哨兵只是为了减少比较）  </span><br>        <span class="hljs-comment">// 但为了保持数组完整性，这里还是将其恢复为原来的值  </span><br>        <span class="hljs-comment">// 在实际应用中，可以省略这一步，因为哨兵的值在循环结束后不再重要  </span><br>        arr[i] = key; <span class="hljs-comment">// 这里实际上是多余的，因为key已经被正确放置了  </span><br>    &#125;  <br>&#125;  <br>  <br><span class="hljs-comment">// 注意：上面的实现中哨兵的使用并不标准，因为插入排序通常不需要哨兵。  </span><br><span class="hljs-comment">// 这里只是为了展示如何通过减少边界检查来优化（尽管这种优化在这个特定实现中并不明显）。  </span><br><span class="hljs-comment">// 在实际应用中，可以直接省略哨兵相关的代码，并简单地注意边界条件。  </span><br>  <br><span class="hljs-comment">// 正确的优化应该是减少不必要的元素移动，而不是引入哨兵。  </span><br><span class="hljs-comment">// 下面的代码是更标准的插入排序，没有哨兵，但优化了元素移动：  </span><br>  <br><span class="hljs-keyword">void</span> <span class="hljs-title function_">optimizedInsertionSort</span>(<span class="hljs-params">int arr[], int n</span>) &#123;  <br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">1</span>; i &lt; n; i++) &#123;  <br>        int key = arr[i];  <br>        int j = i - <span class="hljs-number">1</span>;  <br>  <br>        <span class="hljs-comment">// 直接在比较中移动元素，减少额外的赋值操作  </span><br>        <span class="hljs-keyword">while</span> (j &gt;= <span class="hljs-number">0</span> &amp;&amp; arr[j] &gt; key) &#123;  <br>            arr[j + <span class="hljs-number">1</span>] = arr[j];  <br>            j--;  <br>        &#125;  <br>        arr[j + <span class="hljs-number">1</span>] = key;  <br>    &#125;  <br>&#125;  <br>  <br><span class="hljs-comment">// 测试函数（使用optimizedInsertionSort）  </span><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;  <br>    int arr[] = &#123;<span class="hljs-number">12</span>, <span class="hljs-number">11</span>, <span class="hljs-number">13</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>&#125;;  <br>    int n = <span class="hljs-title function_">sizeof</span>(arr) / <span class="hljs-title function_">sizeof</span>(arr[<span class="hljs-number">0</span>]);  <br>    <span class="hljs-title function_">optimizedInsertionSort</span>(arr, n);  <br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Sorted array: \n&quot;</span>);  <br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; n; i++)  <br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, arr[i]);  <br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);  <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  <br>&#125;<br></code></pre></td></tr></table></figure>
+<ol start="4">
+<li>并行化<br>
+对于大规模数据排序，可以考虑使用并行化技术来加速插入排序。通过将数据分成多个块，并在不同的处理器或线程上对每个块进行插入排序，然后合并这些有序块来得到最终的有序数组。这种方法可以充分利用多核处理器的并行计算能力，提高排序速度。但是需要注意的是，并行化也会带来额外的同步和通信开销，因此需要仔细设计算法以平衡这些开销和并行化带来的性能提升。并行化插入排序旨在利用多个处理器核心来加速排序过程。<br>
+然而，由于插入排序的局部性较好但并行性较差，因此并行化带来的性能提升可能有限。在理想情况下，如果可以将数组均匀地分割成多个子数组并在多个处理器核心上并行排序，则时间复杂度可以降低到接近O(n log n)（这取决于并行归并或快速排序等高效并行排序算法的性能）。但在实践中，由于并行化带来的开销和同步问题，实际性能可能低于这个理论值。下面是例子：</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs javascript">#include &lt;stdio.<span class="hljs-property">h</span>&gt;<br>#include &lt;stdlib.<span class="hljs-property">h</span>&gt;<br>#include &lt;omp.<span class="hljs-property">h</span>&gt;<br><br><span class="hljs-comment">// 插入排序函数</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">insertion_sort</span>(<span class="hljs-params">int arr[], int start, int end</span>) &#123;<br>    <span class="hljs-keyword">for</span> (int i = start + <span class="hljs-number">1</span>; i &lt;= end; i++) &#123;<br>        int key = arr[i];<br>        int j = i - <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">while</span> (j &gt;= start &amp;&amp; arr[j] &gt; key) &#123;<br>            arr[j + <span class="hljs-number">1</span>] = arr[j];<br>            j--;<br>        &#125;<br>        arr[j + <span class="hljs-number">1</span>] = key;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 合并函数，用于合并两部分排序的数组</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">int arr[], int left, int mid, int right</span>) &#123;<br>    int n1 = mid - left + <span class="hljs-number">1</span>;<br>    int n2 = right - mid;<br>    int *L = (int *)<span class="hljs-title function_">malloc</span>(n1 * <span class="hljs-title function_">sizeof</span>(int));<br>    int *R = (int *)<span class="hljs-title function_">malloc</span>(n2 * <span class="hljs-title function_">sizeof</span>(int));<br><br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; n1; i++)<br>        L[i] = arr[left + i];<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; n2; i++)<br>        R[i] = arr[mid + <span class="hljs-number">1</span> + i];<br><br>    int i = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>, k = left;<br>    <span class="hljs-keyword">while</span> (i &lt; n1 &amp;&amp; j &lt; n2) &#123;<br>        <span class="hljs-keyword">if</span> (L[i] &lt;= R[j])<br>            arr[k++] = L[i++];<br>        <span class="hljs-keyword">else</span><br>            arr[k++] = R[j++];<br>    &#125;<br><br>    <span class="hljs-keyword">while</span> (i &lt; n1)<br>        arr[k++] = L[i++];<br>    <span class="hljs-keyword">while</span> (j &lt; n2)<br>        arr[k++] = R[j++];<br><br>    <span class="hljs-title function_">free</span>(L);<br>    <span class="hljs-title function_">free</span>(R);<br>&#125;<br><br><span class="hljs-comment">// 并行化的插入排序</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">parallel_insertion_sort</span>(<span class="hljs-params">int arr[], int n</span>) &#123;<br>    int num_threads = <span class="hljs-title function_">omp_get_max_threads</span>();<br>    int chunk_size = n / num_threads;<br><br>    <span class="hljs-comment">// 使用OpenMP并行区域</span><br>    #pragma omp parallel <span class="hljs-keyword">for</span><br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; num_threads; i++) &#123;<br>        int start = i * chunk_size;<br>        int end = (i == num_threads - <span class="hljs-number">1</span>) ? (n - <span class="hljs-number">1</span>) : (start + chunk_size - <span class="hljs-number">1</span>);<br>        <span class="hljs-title function_">insertion_sort</span>(arr, start, end);<br>    &#125;<br><br>    <span class="hljs-comment">// 合并排序后的各个部分</span><br>    <span class="hljs-keyword">for</span> (int size = chunk_size; size &lt; n; size *= <span class="hljs-number">2</span>) &#123;<br>        <span class="hljs-keyword">for</span> (int left = <span class="hljs-number">0</span>; left &lt; n - size; left += <span class="hljs-number">2</span> * size) &#123;<br>            int mid = left + size - <span class="hljs-number">1</span>;<br>            int right = (left + <span class="hljs-number">2</span> * size - <span class="hljs-number">1</span> &lt; n) ? (left + <span class="hljs-number">2</span> * size - <span class="hljs-number">1</span>) : (n - <span class="hljs-number">1</span>);<br>            <span class="hljs-title function_">merge</span>(arr, left, mid, right);<br>        &#125;<br>    &#125;<br>&#125;<br><br>int <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) &#123;<br>    int arr[] = &#123;<span class="hljs-number">12</span>, <span class="hljs-number">11</span>, <span class="hljs-number">13</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>&#125;;<br>    int n = <span class="hljs-title function_">sizeof</span>(arr) / <span class="hljs-title function_">sizeof</span>(arr[<span class="hljs-number">0</span>]);<br><br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Unsorted array: \n&quot;</span>);<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; n; i++)<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, arr[i]);<br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br><br>    <span class="hljs-title function_">parallel_insertion_sort</span>(arr, n);<br><br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;Sorted array: \n&quot;</span>);<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; n; i++)<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, arr[i]);<br>    <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>并行化插入排序通常不是插入排序的常用优化方法，因为插入排序的局部性很好，但并行化带来的开销可能大于其性能提升。然而，对于非常大的数据集，并且当你有多个处理器核心可用时，可以考虑使用并行算法。<br>
+并行化插入排序的一个简单方法是使用分治法，将数组分成多个子数组，在每个子数组上并行执行插入排序，然后合并这些有序子数组。然而，这种方法通常不如其他并行排序算法（如并行归并排序或并行快速排序）高效。<br>
+并行化的实现依赖于具体的并行编程框架（如OpenMP、Pthreads、Cilk等），并且实现起来相对复杂，你可以根据所选的并行编程框架和具体需求来实现并行插入排序。<br>
+请注意，上面的optimizedInsertionSort函数实际上并没有引入哨兵，而是直接优化了元素移动。在插入排序中，哨兵的使用并不是标准的优化方法，因此我在示例中进行了说明并提供了更标准的优化实现。<br>
+综上所述，插入排序的优化方法包括使用二分查找确定插入位置、希尔排序、优化元素移动以及并行化等。这些方法可以在不同程度上提高插入排序的性能，使其在处理大规模数据时更加高效。</p>
+<h1>六、参考及引用文献</h1>
+<p>1.《算法设计手册》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" class="category-chain-item">数据结构与算法分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法分析：你真的理解排序算法吗——插入算法（万字长文+代码详解)</div>
+      <div>https://mounthuangshan.github.io/数据结构与算法分析/数据结构与算法分析/数据结构与算法分析：你真的理解排序算法吗——插入算法（万字长文+代码详解)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：你真的理解查找算法吗——二分查找（代码详解）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解查找算法吗——二分查找（代码详解）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E4%BD%A0%E7%9C%9F%E7%9A%84%E7%90%86%E8%A7%A3%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E5%90%97%E2%80%94%E2%80%94%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%EF%BC%88%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3%EF%BC%89/" title="数据结构与算法分析：你真的理解查找算法吗——顺序查找（代码详解）">
+                        <span class="hidden-mobile">数据结构与算法分析：你真的理解查找算法吗——顺序查找（代码详解）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,1424 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="0 为了避免忘记delete用new创建的对象，建议使用unique_ptr或者shared_ptr。 为了避免因忘记释放 new 分配的内存而导致内存泄漏，C++ 提供了智能指针 std::unique_ptr 和 std::shared_ptr，它们通过自动管理对象的生命周期来提升代码的安全性和简洁性。以下是具体建议和解释：  1. std::unique_ptr：独占所有权的智能指针   特">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++程序设计语言笔记——抽象机制：类层次">
+<meta property="og:url" content="https://mounthuangshan.github.io/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%8A%BD%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%9A%E7%B1%BB%E5%B1%82%E6%AC%A1/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="0 为了避免忘记delete用new创建的对象，建议使用unique_ptr或者shared_ptr。 为了避免因忘记释放 new 分配的内存而导致内存泄漏，C++ 提供了智能指针 std::unique_ptr 和 std::shared_ptr，它们通过自动管理对象的生命周期来提升代码的安全性和简洁性。以下是具体建议和解释：  1. std::unique_ptr：独占所有权的智能指针   特">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.849Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>C++程序设计语言笔记——抽象机制：类层次 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C++程序设计语言笔记——抽象机制：类层次"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          76 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C++程序设计语言笔记——抽象机制：类层次</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>0 为了避免忘记delete用new创建的对象，建议使用unique_ptr或者shared_ptr。</h1>
+<p>为了避免因忘记释放 <code>new</code> 分配的内存而导致内存泄漏，C++ 提供了智能指针 <code>std::unique_ptr</code> 和 <code>std::shared_ptr</code>，它们通过自动管理对象的生命周期来提升代码的安全性和简洁性。以下是具体建议和解释：</p>
+<hr>
+<h3 id="1-std-unique-ptr：独占所有权的智能指针"><strong>1. <code>std::unique_ptr</code>：独占所有权的智能指针</strong></h3>
+<ul>
+<li>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>独占对象的所有权，同一时间只能有一个 <code>unique_ptr</code> 指向该对象。</li>
+<li>当 <code>unique_ptr</code> 离开作用域时，自动调用 <code>delete</code> 释放对象。</li>
+<li>轻量高效，几乎无额外开销（与裸指针性能接近）。</li>
+</ul>
+</li>
+<li>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>对象不需要共享所有权，仅需单一管理者时。</li>
+<li>替代明确的 <code>new</code>/<code>delete</code> 操作。</li>
+</ul>
+</li>
+<li>
+<p><strong>用法示例</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;memory&gt;</span></span><br><br><span class="hljs-comment">// 使用 new 创建对象并立即包装为 unique_ptr</span><br><span class="hljs-function">std::unique_ptr&lt;MyClass&gt; <span class="hljs-title">ptr</span><span class="hljs-params">(<span class="hljs-keyword">new</span> MyClass())</span></span>;<br><span class="hljs-comment">// 或者更推荐使用 make_unique（C++14 起支持）</span><br><span class="hljs-keyword">auto</span> ptr = std::<span class="hljs-built_in">make_unique</span>&lt;MyClass&gt;();<br><br><span class="hljs-comment">// 对象会在 ptr 离开作用域时自动释放</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="2-std-shared-ptr：共享所有权的智能指针"><strong>2. <code>std::shared_ptr</code>：共享所有权的智能指针</strong></h3>
+<ul>
+<li>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>允许多个 <code>shared_ptr</code> 共享对象的所有权。</li>
+<li>通过引用计数机制管理生命周期，当最后一个 <code>shared_ptr</code> 销毁时释放对象。</li>
+<li>引用计数会带来微小性能开销。</li>
+</ul>
+</li>
+<li>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>需要多个指针共享同一对象（如跨函数、线程传递）。</li>
+<li>避免手动跟踪对象的生命周期。</li>
+</ul>
+</li>
+<li>
+<p><strong>用法示例</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;memory&gt;</span></span><br><br><span class="hljs-comment">// 使用 make_shared 创建对象（更高效，减少内存分配次数）</span><br><span class="hljs-keyword">auto</span> ptr = std::<span class="hljs-built_in">make_shared</span>&lt;MyClass&gt;();<br><span class="hljs-keyword">auto</span> ptr2 = ptr; <span class="hljs-comment">// 引用计数增加</span><br><br><span class="hljs-comment">// 对象会在所有 shared_ptr 离开作用域后自动释放</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="3-注意事项"><strong>3. 注意事项</strong></h3>
+<ul>
+<li>
+<p><strong>避免混合使用裸指针和智能指针</strong>：</p>
+<ul>
+<li>一旦将裸指针交给智能指针管理，不要再手动操作原始指针。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">MyClass* raw_ptr = <span class="hljs-keyword">new</span> <span class="hljs-built_in">MyClass</span>();<br><span class="hljs-function">std::unique_ptr&lt;MyClass&gt; <span class="hljs-title">ptr</span><span class="hljs-params">(raw_ptr)</span></span>;<br><span class="hljs-comment">// 错误：不要再用 raw_ptr，可能导致重复释放！</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>循环引用问题</strong>：</p>
+<ul>
+<li><code>shared_ptr</code> 可能导致循环引用，从而内存泄漏。此时需用 <code>std::weak_ptr</code> 打破循环。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> &#123;<br>    std::shared_ptr&lt;B&gt; b_ptr;<br>&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> &#123;<br>    std::weak_ptr&lt;A&gt; a_ptr; <span class="hljs-comment">// 用 weak_ptr 避免循环引用</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>优先使用 <code>make_unique</code> 和 <code>make_shared</code></strong>：</p>
+<ul>
+<li>提供异常安全，且减少内存分配次数（<code>make_shared</code> 将对象和控制块合并分配）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-总结"><strong>4. 总结</strong></h3>
+<ul>
+<li>
+<p><strong>使用智能指针的优势</strong>：</p>
+<ul>
+<li><strong>自动内存管理</strong>：避免忘记 <code>delete</code> 导致泄漏。</li>
+<li><strong>异常安全</strong>：即使代码抛出异常，资源也会正确释放。</li>
+<li><strong>代码简洁性</strong>：减少 <code>new</code>/<code>delete</code> 的显式调用。</li>
+</ul>
+</li>
+<li>
+<p><strong>选择策略</strong>：</p>
+<ul>
+<li>默认首选 <code>unique_ptr</code>（独占所有权，性能更优）。</li>
+<li>需要共享对象时用 <code>shared_ptr</code>，但需注意潜在循环引用。</li>
+</ul>
+</li>
+</ul>
+<p>通过合理使用智能指针，可以显著降低 C++ 内存管理的复杂度，同时提升程序的健壮性。</p>
+<h1>1 不要在作为接口的基类中放置数据成员。</h1>
+<p>在面向对象设计中，将数据成员放置在作为接口的基类中通常被视为不良实践，因为这会导致<strong>接口与实现的耦合</strong>、<strong>违反单一职责原则</strong>，并可能引发<strong>资源管理问题</strong>。以下是具体原因和替代方案：</p>
+<hr>
+<h3 id="1-为什么基类接口不应包含数据成员？"><strong>1. 为什么基类接口不应包含数据成员？</strong></h3>
+<h4 id="1-破坏接口的抽象性"><strong>(1) 破坏接口的抽象性</strong></h4>
+<ul>
+<li><strong>接口的核心目的是定义行为</strong>（即“做什么”），而非存储状态（即“如何做”或“需要什么数据”）。</li>
+<li>若基类包含数据成员，则它不再是纯粹的抽象接口，而是混合了实现细节，导致派生类必须依赖这些数据，即使它们并不需要。</li>
+</ul>
+<h4 id="2-增加耦合性"><strong>(2) 增加耦合性</strong></h4>
+<ul>
+<li>所有派生类<strong>必须继承基类的数据成员</strong>，即使某些派生类不需要这些数据。</li>
+<li>如果基类数据成员的类型或初始化方式发生变化，所有派生类可能都需要修改，违反<strong>开放-封闭原则</strong>。</li>
+</ul>
+<h4 id="3-资源管理复杂性"><strong>(3) 资源管理复杂性</strong></h4>
+<ul>
+<li>如果基类数据成员涉及资源（如内存、文件句柄），派生类可能需要处理基类的构造/析构逻辑，导致代码冗余和潜在错误。</li>
+<li>例如：基类数据成员为 <code>std::vector</code> 时，派生类需确保基类构造函数正确初始化它。</li>
+</ul>
+<h4 id="4-多重继承冲突"><strong>(4) 多重继承冲突</strong></h4>
+<ul>
+<li>若派生类需继承多个包含数据成员的基类，可能引发<strong>数据成员名称冲突</strong>，需要通过作用域解析符显式访问，降低可维护性。</li>
+</ul>
+<hr>
+<h3 id="2-替代方案"><strong>2. 替代方案</strong></h3>
+<h4 id="1-使用纯虚接口"><strong>(1) 使用纯虚接口</strong></h4>
+<ul>
+<li><strong>定义纯虚函数</strong>：基类仅声明方法，不包含任何数据成员。</li>
+<li><strong>示例</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Drawable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>= <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Drawable</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> : <span class="hljs-keyword">public</span> Drawable &#123;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-type">int</span> x, y;  <span class="hljs-comment">// 数据成员在派生类中定义</span><br>  <span class="hljs-type">double</span> radius;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span> </span>&#123; <span class="hljs-comment">/* 实现绘制逻辑 */</span> &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-分离接口与数据"><strong>(2) 分离接口与数据</strong></h4>
+<ul>
+<li>将数据成员封装到独立的类中，通过<strong>组合</strong>而非继承共享数据。</li>
+<li><strong>示例</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 数据容器</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">ShapeData</span> &#123;<br>  <span class="hljs-type">int</span> x, y;<br>  <span class="hljs-type">double</span> radius;<br>&#125;;<br><br><span class="hljs-comment">// 接口</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Drawable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>= <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Drawable</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// 实现类组合数据</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> : <span class="hljs-keyword">public</span> Drawable &#123;<br><span class="hljs-keyword">private</span>:<br>  ShapeData data;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span> </span>&#123; <span class="hljs-comment">/* 使用 data 绘制 */</span> &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3-非虚接口模式（NVI）"><strong>(3) 非虚接口模式（NVI）</strong></h4>
+<ul>
+<li>基类通过非虚函数定义公共逻辑，虚函数提供可扩展点，同时避免暴露数据。</li>
+<li><strong>示例</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Drawable</span> &#123;<br><span class="hljs-keyword">protected</span>:<br>  <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">do_draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">// 派生类实现</span><br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;<br>    <span class="hljs-comment">// 可在此添加公共逻辑（如日志、锁）</span><br>    <span class="hljs-built_in">do_draw</span>();<br>  &#125;<br>  <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Drawable</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> : <span class="hljs-keyword">public</span> Drawable &#123;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-type">int</span> x, y;<br>  <span class="hljs-type">double</span> radius;<br><span class="hljs-keyword">protected</span>:<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">do_draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span> </span>&#123; <span class="hljs-comment">/* 绘制逻辑 */</span> &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="3-例外情况"><strong>3. 例外情况</strong></h3>
+<p>如果所有派生类<strong>确实需要共享公共数据</strong>，可以谨慎地在基类中添加数据成员，但需满足以下条件：</p>
+<ol>
+<li><strong>数据与接口强相关</strong>：例如所有形状都需要位置 <code>(x, y)</code>。</li>
+<li><strong>数据不可变</strong>：通过 <code>const</code> 或只读方法保护数据，防止派生类意外修改。</li>
+<li><strong>避免资源依赖</strong>：数据应为平凡类型（如 <code>int</code>, <code>double</code>），不涉及动态资源管理。</li>
+</ol>
+<p><strong>示例</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Drawable</span> &#123;<br><span class="hljs-keyword">protected</span>:<br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> x, y;  <span class="hljs-comment">// 只读数据，所有派生类都需要位置</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Drawable</span>(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y) : <span class="hljs-built_in">x</span>(x), <span class="hljs-built_in">y</span>(y) &#123;&#125;<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Drawable</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="4-总结-2"><strong>4. 总结</strong></h3>
+<ul>
+<li><strong>接口应专注于定义行为</strong>，而非存储状态。</li>
+<li>通过<strong>纯虚接口</strong>、<strong>组合</strong>或<strong>NVI模式</strong>分离接口与实现，提高代码灵活性和可维护性。</li>
+<li>仅在极端情况下（如所有派生类强制需要共享不可变数据）才在基类中包含数据成员。</li>
+</ul>
+<h1>2 用抽象类表示接口。</h1>
+<p>在 C++ 中，可以通过<strong>抽象类</strong>（包含纯虚函数的类）来定义接口。这种方式能强制派生类实现接口约定的行为，同时保持接口与实现的分离。以下是具体实践和示例：</p>
+<hr>
+<h3 id="1-定义纯抽象接口类"><strong>1. 定义纯抽象接口类</strong></h3>
+<ul>
+<li><strong>核心规则</strong>：
+<ul>
+<li><strong>所有方法均为纯虚函数</strong>（<code>= 0</code>），不提供默认实现。</li>
+<li><strong>无数据成员</strong>，避免状态与接口耦合。</li>
+<li><strong>声明虚析构函数</strong>（允许通过基类指针安全销毁派生类对象）。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 定义接口</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Drawable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>= <span class="hljs-number">0</span>;       <span class="hljs-comment">// 纯虚函数</span><br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Drawable</span>() = <span class="hljs-keyword">default</span>;       <span class="hljs-comment">// 虚析构函数</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-派生类实现接口"><strong>2. 派生类实现接口</strong></h3>
+<ul>
+<li>必须覆盖所有纯虚函数，否则派生类也会成为抽象类。</li>
+<li>使用 <code>override</code> 关键字明确表示重写基类方法（C++11 起支持）。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 实现接口的具体类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> : <span class="hljs-keyword">public</span> Drawable &#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">int</span> x, y;<br>    <span class="hljs-type">double</span> radius;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Circle</span>(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y, <span class="hljs-type">double</span> r) : <span class="hljs-built_in">x</span>(x), <span class="hljs-built_in">y</span>(y), <span class="hljs-built_in">radius</span>(r) &#123;&#125;<br><br>    <span class="hljs-comment">// 实现接口方法</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Drawing Circle at (&quot;</span> &lt;&lt; x &lt;&lt; <span class="hljs-string">&quot;, &quot;</span> &lt;&lt; y <br>                  &lt;&lt; <span class="hljs-string">&quot;) with radius &quot;</span> &lt;&lt; radius &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-通过基类指针使用接口"><strong>3. 通过基类指针使用接口</strong></h3>
+<ul>
+<li>利用多态性，客户端代码只需依赖接口，无需知道具体实现。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 通过基类指针操作接口</span><br>    Drawable* shape = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Circle</span>(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">5.0</span>);<br>    shape-&gt;<span class="hljs-built_in">draw</span>();  <span class="hljs-comment">// 输出: Drawing Circle at (10, 20) with radius 5</span><br><br>    <span class="hljs-keyword">delete</span> shape;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="4-使用智能指针管理对象"><strong>4. 使用智能指针管理对象</strong></h3>
+<ul>
+<li>避免手动 <code>delete</code>，结合 <code>std::unique_ptr</code> 或 <code>std::shared_ptr</code> 自动释放资源。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;memory&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 使用 unique_ptr 管理对象</span><br>    std::unique_ptr&lt;Drawable&gt; shape = std::<span class="hljs-built_in">make_unique</span>&lt;Circle&gt;(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">5.0</span>);<br>    shape-&gt;<span class="hljs-built_in">draw</span>();  <span class="hljs-comment">// 自动释放资源</span><br><br>    <span class="hljs-comment">// 通过接口容器管理多个对象</span><br>    std::vector&lt;std::unique_ptr&lt;Drawable&gt;&gt; shapes;<br>    shapes.<span class="hljs-built_in">push_back</span>(std::<span class="hljs-built_in">make_unique</span>&lt;Circle&gt;(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">3.0</span>));<br>    shapes.<span class="hljs-built_in">push_back</span>(std::<span class="hljs-built_in">make_unique</span>&lt;Rectangle&gt;(<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">20</span>));<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; s : shapes) &#123;<br>        s-&gt;<span class="hljs-built_in">draw</span>();<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="5-接口扩展与组合"><strong>5. 接口扩展与组合</strong></h3>
+<ul>
+<li><strong>单一职责原则</strong>：每个接口只负责一组相关功能。</li>
+<li><strong>组合接口</strong>：通过多继承组合多个接口（避免菱形继承问题）。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 定义多个接口</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Drawable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Drawable</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Resizable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">resize</span><span class="hljs-params">(<span class="hljs-type">double</span> factor)</span> </span>= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Resizable</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// 实现多个接口的类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> : <span class="hljs-keyword">public</span> Drawable, <span class="hljs-keyword">public</span> Resizable &#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">double</span> radius;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span> </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">resize</span><span class="hljs-params">(<span class="hljs-type">double</span> factor)</span> <span class="hljs-keyword">override</span> </span>&#123; radius *= factor; &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="6-接口的工厂模式"><strong>6. 接口的工厂模式</strong></h3>
+<ul>
+<li>通过工厂函数返回接口指针，隐藏具体实现类的构造细节。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 工厂函数</span><br><span class="hljs-function">std::unique_ptr&lt;Drawable&gt; <span class="hljs-title">createShape</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; type)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;circle&quot;</span>) &#123;<br>        <span class="hljs-keyword">return</span> std::<span class="hljs-built_in">make_unique</span>&lt;Circle&gt;(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1.0</span>);<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;rectangle&quot;</span>) &#123;<br>        <span class="hljs-keyword">return</span> std::<span class="hljs-built_in">make_unique</span>&lt;Rectangle&gt;(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">3.0</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nullptr</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">auto</span> shape = <span class="hljs-built_in">createShape</span>(<span class="hljs-string">&quot;circle&quot;</span>);<br>    shape-&gt;<span class="hljs-built_in">draw</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="7-接口设计的注意事项"><strong>7. 接口设计的注意事项</strong></h3>
+<ol>
+<li><strong>避免在接口中添加数据成员</strong>：保持接口纯粹，仅定义行为。</li>
+<li><strong>禁止复制/移动操作</strong>（如需）：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Drawable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Drawable</span>(<span class="hljs-type">const</span> Drawable&amp;) = <span class="hljs-keyword">delete</span>;<br>    Drawable&amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> Drawable&amp;) = <span class="hljs-keyword">delete</span>;<br>    <span class="hljs-comment">// ...</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>接口的稳定性</strong>：修改接口会导致所有派生类需要适配，设计时需慎重。</li>
+</ol>
+<hr>
+<h3 id="总结"><strong>总结</strong></h3>
+<ul>
+<li><strong>抽象类 = 接口</strong>：通过纯虚函数定义行为契约。</li>
+<li><strong>多态性</strong>：客户端代码通过基类指针/引用操作对象。</li>
+<li><strong>解耦与扩展</strong>：接口与实现分离，支持未来灵活扩展。</li>
+</ul>
+<p>通过抽象类表示接口，是 C++ 中实现多态和设计高质量、可维护代码的核心手段。</p>
+<h1>3 为抽象基类定义一个虚析构函数确保其正确地清理资源。</h1>
+<p>在C++中，为抽象基类定义虚析构函数是确保多态对象正确释放资源的关键步骤。以下是详细的步骤说明和示例：</p>
+<hr>
+<h3 id="1-为什么需要虚析构函数？"><strong>1. 为什么需要虚析构函数？</strong></h3>
+<ul>
+<li><strong>多态删除问题</strong>：当通过基类指针删除派生类对象时，若基类析构函数非虚，只会调用基类的析构函数，导致派生类资源泄漏。</li>
+<li><strong>解决方案</strong>：将基类析构函数声明为虚函数，确保派生类析构函数被正确调用。</li>
+</ul>
+<hr>
+<h3 id="2-如何为抽象基类定义虚析构函数？"><strong>2. 如何为抽象基类定义虚析构函数？</strong></h3>
+<h4 id="1-声明虚析构函数"><strong>(1) 声明虚析构函数</strong></h4>
+<ul>
+<li>在抽象基类中声明析构函数为 <code>virtual</code>，即使类中存在其他纯虚函数。</li>
+<li><strong>示例</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">AbstractBase</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">AbstractBase</span>() = <span class="hljs-keyword">default</span>;  <span class="hljs-comment">// 虚析构函数</span><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">doSomething</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;     <span class="hljs-comment">// 纯虚函数</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-纯虚析构函数的特殊情况"><strong>(2) 纯虚析构函数的特殊情况</strong></h4>
+<ul>
+<li>若需将析构函数声明为纯虚函数（如强制派生类实现），仍需提供实现。</li>
+<li><strong>示例</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">AbstractBase</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">AbstractBase</span>() = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 纯虚析构函数</span><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">doSomething</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;<br>&#125;;<br><br><span class="hljs-comment">// 必须提供析构函数实现</span><br>AbstractBase::~<span class="hljs-built_in">AbstractBase</span>() &#123;&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="3-验证资源正确释放"><strong>3. 验证资源正确释放</strong></h3>
+<h4 id="1-派生类实现析构函数"><strong>(1) 派生类实现析构函数</strong></h4>
+<ul>
+<li>派生类析构函数负责释放自身资源。</li>
+<li><strong>示例</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : <span class="hljs-keyword">public</span> AbstractBase &#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">int</span>* data;  <span class="hljs-comment">// 假设动态分配的资源</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Derived</span>() : <span class="hljs-built_in">data</span>(<span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[<span class="hljs-number">100</span>]) &#123;&#125;<br>    ~<span class="hljs-built_in">Derived</span>() <span class="hljs-keyword">override</span> &#123;<br>        <span class="hljs-keyword">delete</span>[] data;  <span class="hljs-comment">// 释放派生类资源</span><br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Derived destructor called.&quot;</span> &lt;&lt; std::endl;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">doSomething</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Doing something...&quot;</span> &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-通过基类指针删除对象"><strong>(2) 通过基类指针删除对象</strong></h4>
+<ul>
+<li>正确调用派生类和基类的析构函数。</li>
+<li><strong>示例</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    AbstractBase* obj = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Derived</span>();<br>    obj-&gt;<span class="hljs-built_in">doSomething</span>();<br>    <span class="hljs-keyword">delete</span> obj;  <span class="hljs-comment">// 调用 Derived::~Derived() 和 AbstractBase::~AbstractBase()</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<strong>输出</strong>：<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs delphi">Doing something...<br>Derived <span class="hljs-function"><span class="hljs-keyword">destructor</span> <span class="hljs-title">called</span>.</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="4-未使用虚析构函数的后果"><strong>4. 未使用虚析构函数的后果</strong></h3>
+<ul>
+<li>若基类析构函数非虚，通过基类指针删除派生类对象时：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">AbstractBase</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    ~<span class="hljs-built_in">AbstractBase</span>() &#123;&#125;  <span class="hljs-comment">// 非虚析构函数</span><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">doSomething</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    AbstractBase* obj = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Derived</span>();<br>    <span class="hljs-keyword">delete</span> obj;  <span class="hljs-comment">// 仅调用 AbstractBase::~AbstractBase()</span><br>    <span class="hljs-comment">// Derived::~Derived() 未被调用，导致内存泄漏！</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="5-最佳实践"><strong>5. 最佳实践</strong></h3>
+<ol>
+<li><strong>所有多态基类必须使用虚析构函数</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">AbstractBase</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">AbstractBase</span>() = <span class="hljs-keyword">default</span>;<br>    <span class="hljs-comment">// ...</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>避免纯虚析构函数（除非必要）</strong>：
+<ul>
+<li>使用 <code>virtual ~ClassName() = default</code> 简化代码。</li>
+</ul>
+</li>
+<li><strong>结合智能指针</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::unique_ptr&lt;AbstractBase&gt; obj = std::<span class="hljs-built_in">make_unique</span>&lt;Derived&gt;();<br>    obj-&gt;<span class="hljs-built_in">doSomething</span>();<br>    <span class="hljs-comment">// 无需手动 delete，资源自动释放</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<h3 id="总结-2"><strong>总结</strong></h3>
+<ul>
+<li><strong>虚析构函数</strong>确保通过基类指针删除派生类对象时，完整调用派生类和基类的析构函数。</li>
+<li><strong>抽象基类必须声明虚析构函数</strong>以防止资源泄漏。</li>
+<li><strong>使用 <code>override</code> 和智能指针</strong>可提升代码安全性和可维护性。</li>
+</ul>
+<h1>4 在规模较大的类层次中用override显式地覆盖。</h1>
+<p>在规模较大的类层次中，使用 <code>override</code> 关键字显式标记虚函数覆盖是提升代码安全性、可维护性和可读性的关键实践。以下是详细指南：</p>
+<hr>
+<h3 id="1-为什么必须使用-override？"><strong>1. 为什么必须使用 <code>override</code>？</strong></h3>
+<h4 id="1-编译时检查覆盖的正确性"><strong>(1) 编译时检查覆盖的正确性</strong></h4>
+<ul>
+<li><strong>检测签名不匹配</strong>：若派生类函数签名与基类虚函数不一致（如参数类型、<code>const</code> 限定符遗漏），<code>override</code> 会触发编译错误。</li>
+<li><strong>避免意外隐藏基类函数</strong>：防止因名称或参数不同而创建新函数而非覆盖。</li>
+</ul>
+<h4 id="2-明确表达设计意图"><strong>(2) 明确表达设计意图</strong></h4>
+<ul>
+<li>清晰表明该函数旨在覆盖基类行为，而非新增功能或隐藏基类方法。</li>
+</ul>
+<h4 id="3-支持重构"><strong>(3) 支持重构</strong></h4>
+<ul>
+<li>当基类虚函数签名变化时，所有未正确覆盖的派生类函数会立即报错。</li>
+</ul>
+<hr>
+<h3 id="2-如何正确使用-override？"><strong>2. 如何正确使用 <code>override</code>？</strong></h3>
+<h4 id="1-语法规则"><strong>(1) 语法规则</strong></h4>
+<ul>
+<li>在派生类成员函数声明后添加 <code>override</code>。</li>
+<li><strong>仅用于虚函数覆盖</strong>，不可用于非虚函数或新函数。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">doWork</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> <span class="hljs-type">const</span></span>;<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Base</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : <span class="hljs-keyword">public</span> Base &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">doWork</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span></span>;  <span class="hljs-comment">// 正确：签名匹配</span><br>    <span class="hljs-comment">// void doWork(float x) override;    // 错误：参数类型不匹配，触发编译错误</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="2-必须与基类虚函数严格匹配"><strong>(2) 必须与基类虚函数严格匹配</strong></h4>
+<ul>
+<li><strong>函数签名</strong>（参数类型、数量、顺序、<code>const</code>/<code>volatile</code> 限定符、引用限定符）必须一致。</li>
+<li><strong>返回类型</strong>：协变返回类型允许派生类返回更具体的类型（如派生类指针）。</li>
+</ul>
+<hr>
+<h3 id="3-大型类层次中的典型场景"><strong>3. 大型类层次中的典型场景</strong></h3>
+<h4 id="1-多层继承中的覆盖"><strong>(1) 多层继承中的覆盖</strong></h4>
+<ul>
+<li>中间基类可能已覆盖虚函数，派生类需确保覆盖最新版本。</li>
+<li><strong>示例</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Shape</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Polygon</span> : <span class="hljs-keyword">public</span> Shape &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span></span>;  <span class="hljs-comment">// 覆盖 Shape::draw</span><br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Hexagon</span> : <span class="hljs-keyword">public</span> Polygon &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span></span>;  <span class="hljs-comment">// 覆盖 Polygon::draw</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-接口类与实现类"><strong>(2) 接口类与实现类</strong></h4>
+<ul>
+<li>纯虚接口要求派生类必须覆盖所有方法，<code>override</code> 确保正确性。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Database</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">connect</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; sql)</span> </span>= <span class="hljs-number">0</span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MySQL</span> : <span class="hljs-keyword">public</span> Database &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">connect</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;              <span class="hljs-comment">// 必须覆盖</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; sql)</span> <span class="hljs-keyword">override</span></span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="4-常见错误及-override-的作用"><strong>4. 常见错误及 <code>override</code> 的作用</strong></h3>
+<h4 id="1-参数类型不匹配"><strong>(1) 参数类型不匹配</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">process</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span></span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : <span class="hljs-keyword">public</span> Base &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">process</span><span class="hljs-params">(<span class="hljs-type">float</span> value)</span> <span class="hljs-keyword">override</span></span>;  <span class="hljs-comment">// 错误：参数类型不匹配，编译报错</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="2-const-限定符遗漏"><strong>(2) <code>const</code> 限定符遗漏</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">log</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : <span class="hljs-keyword">public</span> Base &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">log</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;  <span class="hljs-comment">// 错误：缺少 const，编译报错</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="3-基类未声明虚函数"><strong>(3) 基类未声明虚函数</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">initialize</span><span class="hljs-params">()</span></span>;  <span class="hljs-comment">// 非虚函数</span><br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : <span class="hljs-keyword">public</span> Base &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">initialize</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;  <span class="hljs-comment">// 错误：基类无虚函数可覆盖</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="5-最佳实践-2"><strong>5. 最佳实践</strong></h3>
+<ol>
+<li><strong>对所有覆盖使用 <code>override</code></strong>：
+<ul>
+<li>即使基类函数是纯虚函数，也需添加 <code>override</code>。</li>
+</ul>
+</li>
+<li><strong>结合 <code>final</code> 禁止进一步覆盖</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LeafNode</span> : <span class="hljs-keyword">public</span> BaseNode &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">execute</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">final</span></span>;  <span class="hljs-comment">// 禁止派生类覆盖</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>启用编译器警告</strong>：
+<ul>
+<li>使用 <code>-Wsuggest-override</code>（GCC/Clang）或 <code>/w14833</code>（MSVC）提示遗漏的 <code>override</code>。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="6-总结"><strong>6. 总结</strong></h3>
+<ul>
+<li><strong><code>override</code> 是大型项目的守护者</strong>：在复杂类层次中，显式标记覆盖能提前拦截错误，避免调试时的痛苦。</li>
+<li><strong>强制代码一致性</strong>：团队编码规范中应要求所有虚函数覆盖使用 <code>override</code>。</li>
+</ul>
+<h1>5 用抽象类支持接口继承。</h1>
+<p>在 C++ 中，使用<strong>抽象类</strong>（包含纯虚函数的类）可以清晰地支持<strong>接口继承</strong>，即通过基类定义接口规范，强制派生类实现约定行为。这种方式实现了接口与实现的分离，是面向对象设计中的重要原则。以下是具体实践和示例：</p>
+<hr>
+<h3 id="1-定义抽象类（接口）"><strong>1. 定义抽象类（接口）</strong></h3>
+<ul>
+<li><strong>核心规则</strong>：
+<ol>
+<li><strong>所有方法声明为纯虚函数</strong>（<code>= 0</code>），不提供默认实现。</li>
+<li><strong>无数据成员</strong>，避免接口与状态耦合。</li>
+<li><strong>声明虚析构函数</strong>（确保多态删除时的资源正确释放）。</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 定义接口：可绘制对象的抽象基类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Drawable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>= <span class="hljs-number">0</span>;    <span class="hljs-comment">// 纯虚函数</span><br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Drawable</span>() = <span class="hljs-keyword">default</span>;   <span class="hljs-comment">// 虚析构函数</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-派生类实现接口-2"><strong>2. 派生类实现接口</strong></h3>
+<ul>
+<li><strong>必须覆盖所有纯虚函数</strong>，否则派生类仍为抽象类。</li>
+<li>使用 <code>override</code> 明确表示覆盖基类方法，增强安全性和可读性。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 具体实现：圆形类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> : <span class="hljs-keyword">public</span> Drawable &#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">int</span> x, y;<br>    <span class="hljs-type">double</span> radius;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Circle</span>(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y, <span class="hljs-type">double</span> r) : <span class="hljs-built_in">x</span>(x), <span class="hljs-built_in">y</span>(y), <span class="hljs-built_in">radius</span>(r) &#123;&#125;<br><br>    <span class="hljs-comment">// 覆盖接口方法</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Drawing Circle at (&quot;</span> &lt;&lt; x &lt;&lt; <span class="hljs-string">&quot;, &quot;</span> &lt;&lt; y <br>                  &lt;&lt; <span class="hljs-string">&quot;) with radius &quot;</span> &lt;&lt; radius &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-接口继承的优势"><strong>3. 接口继承的优势</strong></h3>
+<h4 id="1-强制行为规范"><strong>(1) 强制行为规范</strong></h4>
+<ul>
+<li>所有派生类必须实现接口定义的方法，保证代码的<strong>一致性</strong>。</li>
+<li>示例：所有 <code>Drawable</code> 派生类必须实现 <code>draw()</code>。</li>
+</ul>
+<h4 id="2-多态性支持"><strong>(2) 多态性支持</strong></h4>
+<ul>
+<li>客户端代码通过基类指针/引用操作对象，无需关心具体实现。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">renderScene</span><span class="hljs-params">(<span class="hljs-type">const</span> std::vector&lt;Drawable*&gt;&amp; objects)</span> </span>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; obj : objects) &#123;<br>        obj-&gt;<span class="hljs-built_in">draw</span>();  <span class="hljs-comment">// 多态调用具体实现</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="3-解耦与扩展性"><strong>(3) 解耦与扩展性</strong></h4>
+<ul>
+<li>新增派生类（如 <code>Rectangle</code>）无需修改接口或客户端代码。</li>
+<li>示例扩展：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Rectangle</span> : <span class="hljs-keyword">public</span> Drawable &#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">int</span> width, height;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span> </span>&#123; <span class="hljs-comment">/* 实现矩形绘制 */</span> &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="4-多重接口继承"><strong>4. 多重接口继承</strong></h3>
+<ul>
+<li>一个类可以继承多个抽象类，实现多个接口的复用。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 定义第二个接口：可缩放对象</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Scalable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">scale</span><span class="hljs-params">(<span class="hljs-type">double</span> factor)</span> </span>= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Scalable</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// 实现多个接口的类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> : <span class="hljs-keyword">public</span> Drawable, <span class="hljs-keyword">public</span> Scalable &#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">double</span> radius;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span> </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">scale</span><span class="hljs-params">(<span class="hljs-type">double</span> factor)</span> <span class="hljs-keyword">override</span> </span>&#123; radius *= factor; &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="5-工厂模式与接口"><strong>5. 工厂模式与接口</strong></h3>
+<ul>
+<li>通过工厂函数返回接口指针，隐藏具体实现类的构造细节。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 工厂函数</span><br><span class="hljs-function">std::unique_ptr&lt;Drawable&gt; <span class="hljs-title">createShape</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; type)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;circle&quot;</span>) &#123;<br>        <span class="hljs-keyword">return</span> std::<span class="hljs-built_in">make_unique</span>&lt;Circle&gt;(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1.0</span>);<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == <span class="hljs-string">&quot;rectangle&quot;</span>) &#123;<br>        <span class="hljs-keyword">return</span> std::<span class="hljs-built_in">make_unique</span>&lt;Rectangle&gt;(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">3.0</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nullptr</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="6-注意事项"><strong>6. 注意事项</strong></h3>
+<h4 id="1-避免接口污染"><strong>(1) 避免接口污染</strong></h4>
+<ul>
+<li><strong>单一职责原则</strong>：每个抽象类仅定义一组相关操作。
+<ul>
+<li>错误示例：<code>Drawable</code> 接口包含 <code>saveToFile()</code> 方法（与绘制无关）。</li>
+<li>正确做法：拆分接口，如 <code>Persistable</code> 负责持久化。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-禁止实例化抽象类"><strong>(2) 禁止实例化抽象类</strong></h4>
+<ul>
+<li>抽象类无法直接创建对象：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// Drawable obj;  // 错误：抽象类不能实例化</span><br>Drawable* ptr = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Circle</span>();  <span class="hljs-comment">// 正确：通过派生类实例化</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3-使用智能指针管理资源"><strong>(3) 使用智能指针管理资源</strong></h4>
+<ul>
+<li>结合 <code>std::unique_ptr</code> 或 <code>std::shared_ptr</code> 自动释放对象。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">std::vector&lt;std::unique_ptr&lt;Drawable&gt;&gt; shapes;<br>shapes.<span class="hljs-built_in">push_back</span>(std::<span class="hljs-built_in">make_unique</span>&lt;Circle&gt;(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">5.0</span>));<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="7-示例：完整代码"><strong>7. 示例：完整代码</strong></h3>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;memory&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><br><span class="hljs-comment">// 接口：可绘制对象</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Drawable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Drawable</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// 具体实现：圆形</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> : <span class="hljs-keyword">public</span> Drawable &#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">int</span> x, y;<br>    <span class="hljs-type">double</span> radius;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Circle</span>(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y, <span class="hljs-type">double</span> r) : <span class="hljs-built_in">x</span>(x), <span class="hljs-built_in">y</span>(y), <span class="hljs-built_in">radius</span>(r) &#123;&#125;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Circle at (&quot;</span> &lt;&lt; x &lt;&lt; <span class="hljs-string">&quot;, &quot;</span> &lt;&lt; y <br>                  &lt;&lt; <span class="hljs-string">&quot;), radius &quot;</span> &lt;&lt; radius &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 客户端代码</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::vector&lt;std::unique_ptr&lt;Drawable&gt;&gt; shapes;<br>    shapes.<span class="hljs-built_in">push_back</span>(std::<span class="hljs-built_in">make_unique</span>&lt;Circle&gt;(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">5.0</span>));<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; shape : shapes) &#123;<br>        shape-&gt;<span class="hljs-built_in">draw</span>();  <span class="hljs-comment">// 输出：Circle at (10, 20), radius 5</span><br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="总结-3"><strong>总结</strong></h3>
+<ul>
+<li><strong>抽象类 = 接口</strong>：通过纯虚函数定义行为契约，不包含实现或数据。</li>
+<li><strong>接口继承</strong>：强制派生类实现规范，支持多态和代码扩展。</li>
+<li><strong>最佳实践</strong>：
+<ul>
+<li>使用 <code>override</code> 明确覆盖。</li>
+<li>结合智能指针和工厂模式提升安全性。</li>
+<li>遵循单一职责原则拆分接口。</li>
+</ul>
+</li>
+</ul>
+<p>通过抽象类实现接口继承，是构建灵活、可维护的面向对象系统的基石。</p>
+<h1>6 用含有数据成员的基类支持实现继承。</h1>
+<p>在 C++ 中，通过<strong>含有数据成员的基类支持实现继承</strong>是一种常见的代码复用手段，适用于多个派生类需要共享公共数据和部分实现逻辑的场景。以下是具体的设计方法、示例和注意事项：</p>
+<hr>
+<h3 id="1-适用场景"><strong>1. 适用场景</strong></h3>
+<ul>
+<li><strong>共享公共数据</strong>：多个派生类需要相同的属性（如 <code>Shape</code> 基类的 <code>color</code> 和 <code>position</code>）。</li>
+<li><strong>复用基础逻辑</strong>：基类提供通用方法的默认实现（如 <code>Animal</code> 基类的 <code>eat()</code> 方法）。</li>
+<li><strong>减少代码冗余</strong>：避免在派生类中重复定义相同的数据成员和初始化代码。</li>
+</ul>
+<hr>
+<h3 id="2-设计示例：图形类层次"><strong>2. 设计示例：图形类层次</strong></h3>
+<h4 id="1-基类定义公共数据和方法"><strong>(1) 基类定义公共数据和方法</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Shape</span> &#123;<br><span class="hljs-keyword">protected</span>:<br>    std::string color;  <span class="hljs-comment">// 所有派生类共享的颜色属性</span><br>    <span class="hljs-type">int</span> x, y;           <span class="hljs-comment">// 公共坐标</span><br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Shape</span>(<span class="hljs-type">const</span> std::string&amp; color, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)<br>        : <span class="hljs-built_in">color</span>(color), <span class="hljs-built_in">x</span>(x), <span class="hljs-built_in">y</span>(y) &#123;&#125;<br><br>    <span class="hljs-comment">// 公共方法：移动图形（所有派生类共享逻辑）</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">move</span><span class="hljs-params">(<span class="hljs-type">int</span> newX, <span class="hljs-type">int</span> newY)</span> </span>&#123;<br>        x = newX;<br>        y = newY;<br>    &#125;<br><br>    <span class="hljs-comment">// 虚方法：计算面积（派生类必须或可以覆盖）</span><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">double</span> <span class="hljs-title">area</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>= <span class="hljs-number">0</span>;  <span class="hljs-comment">// 纯虚函数，强制派生类实现</span><br><br>    <span class="hljs-comment">// 虚析构函数确保正确释放资源</span><br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Shape</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="2-派生类继承数据并扩展功能"><strong>(2) 派生类继承数据并扩展功能</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> : <span class="hljs-keyword">public</span> Shape &#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">double</span> radius;  <span class="hljs-comment">// 派生类特有数据</span><br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Circle</span>(<span class="hljs-type">const</span> std::string&amp; color, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y, <span class="hljs-type">double</span> radius)<br>        : <span class="hljs-built_in">Shape</span>(color, x, y), <span class="hljs-built_in">radius</span>(radius) &#123;&#125;<br><br>    <span class="hljs-comment">// 覆盖基类纯虚函数</span><br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">area</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">3.14159</span> * radius * radius;<br>    &#125;<br><br>    <span class="hljs-comment">// 扩展新方法</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setRadius</span><span class="hljs-params">(<span class="hljs-type">double</span> r)</span> </span>&#123; radius = r; &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Rectangle</span> : <span class="hljs-keyword">public</span> Shape &#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">int</span> width, height;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Rectangle</span>(<span class="hljs-type">const</span> std::string&amp; color, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y, <span class="hljs-type">int</span> w, <span class="hljs-type">int</span> h)<br>        : <span class="hljs-built_in">Shape</span>(color, x, y), <span class="hljs-built_in">width</span>(w), <span class="hljs-built_in">height</span>(h) &#123;&#125;<br><br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">area</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> width * height;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-关键设计原则"><strong>3. 关键设计原则</strong></h3>
+<h4 id="1-数据成员的访问控制"><strong>(1) 数据成员的访问控制</strong></h4>
+<ul>
+<li><strong><code>protected</code> 成员</strong>：允许派生类直接访问基类数据，但需谨慎使用，避免破坏封装。</li>
+<li><strong>提供访问方法</strong>：若需控制数据访问，可封装为 <code>protected</code> 或 <code>public</code> 方法。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Shape</span> &#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">int</span> x, y;<br><span class="hljs-keyword">protected</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">getX</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> x; &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setX</span><span class="hljs-params">(<span class="hljs-type">int</span> newX)</span> </span>&#123; x = newX; &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-构造函数的初始化"><strong>(2) 构造函数的初始化</strong></h4>
+<ul>
+<li><strong>基类构造函数负责初始化公共数据</strong>，派生类通过成员初始化列表传递参数。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">Circle::<span class="hljs-built_in">Circle</span>(...) : <span class="hljs-built_in">Shape</span>(color, x, y), <span class="hljs-built_in">radius</span>(radius) &#123;&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3-虚函数的分层设计"><strong>(3) 虚函数的分层设计</strong></h4>
+<ul>
+<li><strong>纯虚函数</strong>：强制派生类实现特定行为（如 <code>area()</code>）。</li>
+<li><strong>非纯虚函数</strong>：提供默认实现，派生类可选择覆盖（如 <code>printInfo()</code>）。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Shape</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">printInfo</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Color: &quot;</span> &lt;&lt; color &lt;&lt; <span class="hljs-string">&quot;, Position: (&quot;</span> &lt;&lt; x &lt;&lt; <span class="hljs-string">&quot;, &quot;</span> &lt;&lt; y &lt;&lt; <span class="hljs-string">&quot;)&quot;</span>;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="4-潜在陷阱与解决方案"><strong>4. 潜在陷阱与解决方案</strong></h3>
+<h4 id="1-脆弱的基类问题（Fragile-Base-Class-Problem）"><strong>(1) 脆弱的基类问题（Fragile Base Class Problem）</strong></h4>
+<ul>
+<li><strong>问题</strong>：基类修改（如新增数据成员）可能导致所有派生类受影响。</li>
+<li><strong>解决方案</strong>：
+<ul>
+<li>尽量保持基类稳定，仅添加非破坏性改动。</li>
+<li>优先使用组合而非继承（若共享逻辑而非数据）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-菱形继承（重复数据）"><strong>(2) 菱形继承（重复数据）</strong></h4>
+<ul>
+<li><strong>问题</strong>：多重继承时，派生类可能多次继承同一基类，导致数据重复。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> &#123; <span class="hljs-type">int</span> data; &#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> : <span class="hljs-keyword">public</span> A &#123;&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> : <span class="hljs-keyword">public</span> A &#123;&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">D</span> : <span class="hljs-keyword">public</span> B, <span class="hljs-keyword">public</span> C &#123;&#125;;  <span class="hljs-comment">// D 包含两份 A::data</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>解决方案</strong>：使用虚继承（但需谨慎设计）。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> : <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">public</span> A &#123;&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> : <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">public</span> A &#123;&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">D</span> : <span class="hljs-keyword">public</span> B, <span class="hljs-keyword">public</span> C &#123;&#125;;  <span class="hljs-comment">// D 仅包含一份 A::data</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3-数据封装性破坏"><strong>(3) 数据封装性破坏</strong></h4>
+<ul>
+<li><strong>问题</strong>：<code>protected</code> 数据成员暴露实现细节，派生类可能误修改。</li>
+<li><strong>解决方案</strong>：
+<ul>
+<li>将数据成员设为 <code>private</code>，通过受保护方法访问。</li>
+<li>避免在基类中暴露数据修改接口，除非必要。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="5-对比：接口继承-vs-实现继承"><strong>5. 对比：接口继承 vs. 实现继承</strong></h3>
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>接口继承（抽象类）</strong></th>
+<th><strong>实现继承（含数据成员的基类）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>核心目的</td>
+<td>定义行为规范</td>
+<td>复用代码和数据</td>
+</tr>
+<tr>
+<td>数据成员</td>
+<td>无</td>
+<td>包含公共数据</td>
+</tr>
+<tr>
+<td>方法实现</td>
+<td>纯虚函数（无默认实现）</td>
+<td>提供默认实现（可覆盖）</td>
+</tr>
+<tr>
+<td>典型场景</td>
+<td>多态、插件架构</td>
+<td>共享数据和基础逻辑</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="6-最佳实践"><strong>6. 最佳实践</strong></h3>
+<ol>
+<li><strong>优先使用组合而非继承</strong>：仅在明确需要复用数据或实现时使用继承。</li>
+<li><strong>最小化基类数据成员</strong>：仅包含真正共享的数据。</li>
+<li><strong>避免 <code>protected</code> 数据成员</strong>：除非有明确需求，否则用 <code>private</code> + 受保护方法。</li>
+<li><strong>慎用多重继承</strong>：优先通过接口继承（抽象类）和单一实现继承组合功能。</li>
+</ol>
+<hr>
+<h3 id="总结-4"><strong>总结</strong></h3>
+<p>通过基类包含数据成员支持实现继承，可以有效减少代码冗余并共享通用逻辑，但需谨慎设计以避免耦合性和维护性问题。核心原则是：</p>
+<ul>
+<li><strong>明确数据共享需求</strong>：仅在派生类真正需要时在基类中添加数据。</li>
+<li><strong>分层虚函数设计</strong>：合理使用纯虚函数和非纯虚函数平衡灵活性与复用性。</li>
+<li><strong>封装与访问控制</strong>：通过 <code>private</code> 和受保护方法维护数据安全性。</li>
+</ul>
+<h1>7 用普通的多重继承表示特征的组合。</h1>
+<p>在 C++ 中，通过<strong>普通的多重继承</strong>（非虚继承）组合多个独立特征（Traits）是一种灵活但需要谨慎使用的设计方式。这种方式允许派生类从多个基类继承不同的功能，从而实现模块化的代码复用。以下是具体设计方法、示例和注意事项：</p>
+<hr>
+<h3 id="1-核心思想"><strong>1. 核心思想</strong></h3>
+<ul>
+<li><strong>特征类（Traits）</strong>：每个基类表示一个独立的特征（如 <code>Flyable</code>、<code>Swimmable</code>），包含该特征的实现。</li>
+<li><strong>组合特征</strong>：派生类通过多重继承组合多个特征类，形成具有复合行为的对象。</li>
+</ul>
+<hr>
+<h3 id="2-示例：角色能力组合"><strong>2. 示例：角色能力组合</strong></h3>
+<h4 id="1-定义特征基类"><strong>(1) 定义特征基类</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 飞行能力</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Flyable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fly</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Flying at 100 m/s&quot;</span> &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 游泳能力</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Swimmable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">swim</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Swimming at 5 m/s&quot;</span> &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 攻击能力</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Attackable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">attack</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Attacking with 10 damage&quot;</span> &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="2-派生类组合特征"><strong>(2) 派生类组合特征</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 组合飞行和攻击能力</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Dragon</span> : <span class="hljs-keyword">public</span> Flyable, <span class="hljs-keyword">public</span> Attackable &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">roar</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Roaring loudly!&quot;</span> &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 组合游泳和攻击能力</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Shark</span> : <span class="hljs-keyword">public</span> Swimmable, <span class="hljs-keyword">public</span> Attackable &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">bite</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Biting with 20 damage!&quot;</span> &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="3-使用复合对象"><strong>(3) 使用复合对象</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    Dragon dragon;<br>    dragon.<span class="hljs-built_in">fly</span>();      <span class="hljs-comment">// 输出: Flying at 100 m/s</span><br>    dragon.<span class="hljs-built_in">attack</span>();   <span class="hljs-comment">// 输出: Attacking with 10 damage</span><br>    dragon.<span class="hljs-built_in">roar</span>();     <span class="hljs-comment">// 输出: Roaring loudly!</span><br><br>    Shark shark;<br>    shark.<span class="hljs-built_in">swim</span>();      <span class="hljs-comment">// 输出: Swimming at 5 m/s</span><br>    shark.<span class="hljs-built_in">attack</span>();    <span class="hljs-comment">// 输出: Attacking with 10 damage</span><br>    shark.<span class="hljs-built_in">bite</span>();      <span class="hljs-comment">// 输出: Biting with 20 damage!</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-优势"><strong>3. 优势</strong></h3>
+<ul>
+<li><strong>模块化设计</strong>：每个特征类职责单一，易于维护和扩展。</li>
+<li><strong>灵活组合</strong>：通过多重继承快速创建复合对象（如 <code>Dragon</code> = <code>Flyable + Attackable</code>）。</li>
+<li><strong>代码复用</strong>：避免在每个派生类中重复实现相同功能。</li>
+</ul>
+<hr>
+<h3 id="4-潜在问题与解决方案"><strong>4. 潜在问题与解决方案</strong></h3>
+<h4 id="1-方法名冲突（菱形继承无关）"><strong>(1) 方法名冲突（菱形继承无关）</strong></h4>
+<ul>
+<li><strong>问题</strong>：若多个基类有同名方法，调用时会产生二义性。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> &#123; <span class="hljs-keyword">public</span>: <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">doWork</span><span class="hljs-params">()</span></span>; &#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> &#123; <span class="hljs-keyword">public</span>: <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">doWork</span><span class="hljs-params">()</span></span>; &#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> : <span class="hljs-keyword">public</span> A, <span class="hljs-keyword">public</span> B &#123;&#125;;<br><br>C obj;<br>obj.<span class="hljs-built_in">doWork</span>();  <span class="hljs-comment">// 错误：ambiguous call</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>解决方案</strong>：使用作用域解析符显式指定。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">obj.A::<span class="hljs-built_in">doWork</span>();  <span class="hljs-comment">// 调用 A 的版本</span><br>obj.B::<span class="hljs-built_in">doWork</span>();  <span class="hljs-comment">// 调用 B 的版本</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-构造函数调用顺序"><strong>(2) 构造函数调用顺序</strong></h4>
+<ul>
+<li><strong>规则</strong>：基类构造函数按继承顺序调用（与成员初始化列表无关）。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> : <span class="hljs-keyword">public</span> A, <span class="hljs-keyword">public</span> B &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">C</span>() : <span class="hljs-built_in">B</span>(), <span class="hljs-built_in">A</span>() &#123;&#125;  <span class="hljs-comment">// 实际调用顺序：A() → B()</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>建议</strong>：在派生类构造函数中显式初始化所有基类。</li>
+</ul>
+<h4 id="3-数据重复（菱形继承）"><strong>(3) 数据重复（菱形继承）</strong></h4>
+<ul>
+<li><strong>问题</strong>：若多个基类继承同一祖先，派生类可能包含重复数据。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123; <span class="hljs-type">int</span> data; &#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> : <span class="hljs-keyword">public</span> Base &#123;&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> : <span class="hljs-keyword">public</span> Base &#123;&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> : <span class="hljs-keyword">public</span> A, <span class="hljs-keyword">public</span> B &#123;&#125;;  <span class="hljs-comment">// C 包含两份 Base::data</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>解决方案</strong>：改用虚继承（但需重新设计类层次）。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> : <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">public</span> Base &#123;&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> : <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">public</span> Base &#123;&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> : <span class="hljs-keyword">public</span> A, <span class="hljs-keyword">public</span> B &#123;&#125;;  <span class="hljs-comment">// C 只含一份 Base::data</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="5-适用场景"><strong>5. 适用场景</strong></h3>
+<ul>
+<li><strong>正交特征组合</strong>：各特征之间无依赖关系，如游戏角色能力、设备功能模块。</li>
+<li><strong>静态行为组合</strong>：特征在编译时确定，无需运行时动态切换。</li>
+<li><strong>轻量级复用</strong>：避免为简单功能引入复杂设计模式（如策略模式）。</li>
+</ul>
+<hr>
+<h3 id="6-替代方案对比"><strong>6. 替代方案对比</strong></h3>
+<table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>优点</strong></th>
+<th><strong>缺点</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>多重继承</td>
+<td>直接、代码简洁</td>
+<td>易产生二义性、菱形继承问题</td>
+</tr>
+<tr>
+<td>组合（对象成员）</td>
+<td>更安全、解耦</td>
+<td>需手动转发方法调用</td>
+</tr>
+<tr>
+<td>策略模式</td>
+<td>动态切换行为、避免继承问题</td>
+<td>需要额外接口类和对象封装</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="7-最佳实践"><strong>7. 最佳实践</strong></h3>
+<ol>
+<li><strong>保持特征类轻量</strong>：避免包含复杂状态或相互依赖。</li>
+<li><strong>优先使用组合</strong>：若特征可能动态变化或需要解耦，用对象成员代替继承。</li>
+<li><strong>明确命名规范</strong>：
+<ul>
+<li>特征类名以 <code>-able</code> 结尾（如 <code>Flyable</code>）。</li>
+<li>方法名避免冲突（如 <code>fly()</code> 而非 <code>act()</code>）。</li>
+</ul>
+</li>
+<li><strong>谨慎处理菱形继承</strong>：仅在必要时使用虚继承，并充分测试。</li>
+</ol>
+<hr>
+<h3 id="总结-5"><strong>总结</strong></h3>
+<p>普通多重继承为特征组合提供了直接的语法支持，但需警惕二义性和数据重复问题。在以下场景中可优先考虑：</p>
+<ul>
+<li>特征之间完全独立。</li>
+<li>需要编译时静态组合。</li>
+<li>追求代码简洁性和复用性。</li>
+</ul>
+<p>对于复杂系统，可结合组合、策略模式等设计，平衡灵活性与安全性。</p>
+<h1>8 用多重继承把实现和接口分离开来。</h1>
+<p>在 C++ 中，通过<strong>多重继承</strong>将接口与实现分离是一种经典设计模式（类似 <strong>接口继承 + 实现混入</strong>），可以清晰地区分抽象接口和具体实现，同时保持代码的灵活性和可维护性。以下是具体的设计方法和示例：</p>
+<hr>
+<h3 id="1-核心思想-2"><strong>1. 核心思想</strong></h3>
+<ul>
+<li><strong>接口类</strong>：定义纯虚函数（无数据成员），表示抽象行为。</li>
+<li><strong>实现类</strong>：提供接口的具体实现（可包含数据成员和辅助方法）。</li>
+<li><strong>具体类</strong>：通过多重继承<strong>接口类</strong>和<strong>实现类</strong>，将接口与实现解耦。</li>
+</ul>
+<hr>
+<h3 id="2-设计示例：日志系统"><strong>2. 设计示例：日志系统</strong></h3>
+<h4 id="1-定义接口类"><strong>(1) 定义接口类</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 日志写入接口</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ILogger</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">log</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; message)</span> </span>= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">ILogger</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="2-定义实现类（可复用）"><strong>(2) 定义实现类（可复用）</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 基础实现：控制台日志</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ConsoleLoggerImpl</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">log</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; message)</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;[Console] &quot;</span> &lt;&lt; message &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 另一个实现：文件日志</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FileLoggerImpl</span> &#123;<br><span class="hljs-keyword">private</span>:<br>    std::string filename;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">FileLoggerImpl</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; filename)</span> : filename(filename) &#123;</span>&#125;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">log</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; message)</span> </span>&#123;<br>        <span class="hljs-function">std::ofstream <span class="hljs-title">file</span><span class="hljs-params">(filename, std::ios::app)</span></span>;<br>        <span class="hljs-keyword">if</span> (file) &#123;<br>            file &lt;&lt; <span class="hljs-string">&quot;[File] &quot;</span> &lt;&lt; message &lt;&lt; std::endl;<br>        &#125;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="3-具体类组合接口与实现"><strong>(3) 具体类组合接口与实现</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 控制台日志器：继承接口 + 控制台实现</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ConsoleLogger</span> : <span class="hljs-keyword">public</span> ILogger, <span class="hljs-keyword">public</span> ConsoleLoggerImpl &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// 直接复用 ConsoleLoggerImpl 的 log 方法</span><br>    <span class="hljs-keyword">using</span> ConsoleLoggerImpl::log;  <span class="hljs-comment">// 显式引入实现</span><br>&#125;;<br><br><span class="hljs-comment">// 文件日志器：继承接口 + 文件实现</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FileLogger</span> : <span class="hljs-keyword">public</span> ILogger, <span class="hljs-keyword">public</span> FileLoggerImpl &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">FileLogger</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; filename)</span></span><br><span class="hljs-function">        : FileLoggerImpl(filename) &#123;</span>&#125;<br>    <br>    <span class="hljs-keyword">using</span> FileLoggerImpl::log;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="4-客户端代码通过接口操作"><strong>(4) 客户端代码通过接口操作</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">logMessage</span><span class="hljs-params">(ILogger* logger)</span> </span>&#123;<br>    logger-&gt;<span class="hljs-built_in">log</span>(<span class="hljs-string">&quot;Hello, World!&quot;</span>);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    ConsoleLogger consoleLogger;<br>    <span class="hljs-built_in">logMessage</span>(&amp;consoleLogger);  <span class="hljs-comment">// 输出: [Console] Hello, World!</span><br><br>    <span class="hljs-function">FileLogger <span class="hljs-title">fileLogger</span><span class="hljs-params">(<span class="hljs-string">&quot;log.txt&quot;</span>)</span></span>;<br>    <span class="hljs-built_in">logMessage</span>(&amp;fileLogger);     <span class="hljs-comment">// 写入文件: [File] Hello, World!</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-进阶设计：动态切换实现"><strong>3. 进阶设计：动态切换实现</strong></h3>
+<h4 id="1-定义通用实现基类"><strong>(1) 定义通用实现基类</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 通用日志实现基类（可扩展）</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">LoggerImplBase</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">logImpl</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; message)</span> </span>= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">LoggerImplBase</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-comment">// 接口类保持不变</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ILogger</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">log</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; message)</span> </span>= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">ILogger</span>() = <span class="hljs-keyword">default</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="2-具体实现类"><strong>(2) 具体实现类</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NetworkLoggerImpl</span> : <span class="hljs-keyword">public</span> LoggerImplBase &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">logImpl</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; message)</span> <span class="hljs-keyword">override</span> </span>&#123;<br>        <span class="hljs-comment">// 模拟网络发送日志</span><br>        std::cout &lt;&lt; <span class="hljs-string">&quot;[Network] &quot;</span> &lt;&lt; message &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="3-动态组合类"><strong>(3) 动态组合类</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Logger</span> : <span class="hljs-keyword">public</span> ILogger, <span class="hljs-keyword">private</span> LoggerImplBase &#123;<br><span class="hljs-keyword">private</span>:<br>    LoggerImplBase* impl;  <span class="hljs-comment">// 持有实现对象（可动态切换）</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">Logger</span><span class="hljs-params">(LoggerImplBase* impl)</span> : impl(impl) &#123;</span>&#125;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">log</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; message)</span> <span class="hljs-keyword">override</span> </span>&#123;<br>        impl-&gt;<span class="hljs-built_in">logImpl</span>(message);<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setImpl</span><span class="hljs-params">(LoggerImplBase* newImpl)</span> </span>&#123;<br>        impl = newImpl;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="4-使用示例"><strong>(4) 使用示例</strong></h4>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    ConsoleLoggerImpl consoleImpl;<br>    NetworkLoggerImpl networkImpl;<br><br>    <span class="hljs-function">Logger <span class="hljs-title">logger</span><span class="hljs-params">(&amp;consoleImpl)</span></span>;<br>    logger.<span class="hljs-built_in">log</span>(<span class="hljs-string">&quot;Test&quot;</span>);  <span class="hljs-comment">// 输出: [Console] Test</span><br><br>    logger.<span class="hljs-built_in">setImpl</span>(&amp;networkImpl);<br>    logger.<span class="hljs-built_in">log</span>(<span class="hljs-string">&quot;Test&quot;</span>);  <span class="hljs-comment">// 输出: [Network] Test</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="4-关键优势"><strong>4. 关键优势</strong></h3>
+<ol>
+<li>
+<p><strong>接口与实现解耦</strong>：</p>
+<ul>
+<li>接口类 (<code>ILogger</code>) 稳定，不依赖具体实现。</li>
+<li>实现类 (<code>ConsoleLoggerImpl</code>) 可独立修改或扩展。</li>
+</ul>
+</li>
+<li>
+<p><strong>复用实现逻辑</strong>：</p>
+<ul>
+<li>同一实现类可被多个接口组合（如 <code>FileLoggerImpl</code> 可同时用于 <code>ILogger</code> 和 <code>IAuditTrail</code>）。</li>
+</ul>
+</li>
+<li>
+<p><strong>灵活切换实现</strong>：</p>
+<ul>
+<li>运行时动态更换实现（如从文件日志切换到网络日志）。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="5-注意事项"><strong>5. 注意事项</strong></h3>
+<h4 id="1-避免菱形继承"><strong>(1) 避免菱形继承</strong></h4>
+<ul>
+<li>若接口类和实现类有共同基类，需使用 <strong>虚继承</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ILogger</span> : <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">public</span> UtilityBase &#123; <span class="hljs-comment">/* ... */</span> &#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">LoggerImplBase</span> : <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">public</span> UtilityBase &#123; <span class="hljs-comment">/* ... */</span> &#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-控制实现类访问权限"><strong>(2) 控制实现类访问权限</strong></h4>
+<ul>
+<li>使用 <code>private</code> 或 <code>protected</code> 继承实现类，防止暴露内部细节：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ConsoleLogger</span> : <span class="hljs-keyword">public</span> ILogger, <span class="hljs-keyword">private</span> ConsoleLoggerImpl &#123;<br>    <span class="hljs-keyword">using</span> ConsoleLoggerImpl::log;  <span class="hljs-comment">// 仅向接口公开必要方法</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3-优先使用组合"><strong>(3) 优先使用组合</strong></h4>
+<ul>
+<li>如果不需要多重继承的特性，可以用组合代替：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ConsoleLogger</span> : <span class="hljs-keyword">public</span> ILogger &#123;<br><span class="hljs-keyword">private</span>:<br>    ConsoleLoggerImpl impl;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">log</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; msg)</span> <span class="hljs-keyword">override</span> </span>&#123; impl.<span class="hljs-built_in">log</span>(msg); &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="6-总结-2"><strong>6. 总结</strong></h3>
+<p>通过多重继承将接口与实现分离，可以实现以下目标：</p>
+<ul>
+<li><strong>接口清晰</strong>：抽象层定义行为，无实现细节。</li>
+<li><strong>实现复用</strong>：多个具体类共享同一套实现逻辑。</li>
+<li><strong>灵活扩展</strong>：新增实现类不影响已有接口。</li>
+</ul>
+<p>此模式适用于需要高扩展性和解耦的场景（如插件系统、跨平台适配），但需谨慎管理继承关系以避免复杂性。对于简单场景，优先考虑组合或策略模式。</p>
+<h1>9 用虚基类表示层次中一部分（而非全部）类公有的内容。</h1>
+<p>在C++中，使用虚基类可以有效地表示类层次中部分类（而非全部）公有的内容，确保这些内容在继承链中仅存在一份实例，避免冗余和歧义。以下为具体实现方法和示例：</p>
+<hr>
+<h3 id="1-定义虚基类"><strong>1. 定义虚基类</strong></h3>
+<ul>
+<li><strong>目的</strong>：封装部分类共有的属性和方法。</li>
+<li><strong>关键</strong>：使用<code>virtual</code>关键字继承，并确保析构函数为虚函数。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><br><span class="hljs-comment">// 虚基类：表示可维护的车辆属性（仅部分类需要）</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Maintainable</span> &#123;<br><span class="hljs-keyword">protected</span>:<br>    std::string lastMaintenanceDate;  <span class="hljs-comment">// 公有属性</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Maintainable</span>(<span class="hljs-type">const</span> std::string&amp; date) : <span class="hljs-built_in">lastMaintenanceDate</span>(date) &#123;&#125;<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">scheduleMaintenance</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;  <span class="hljs-comment">// 纯虚函数</span><br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Maintainable</span>() = <span class="hljs-keyword">default</span>;       <span class="hljs-comment">// 虚析构函数</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-部分派生类虚继承"><strong>2. 部分派生类虚继承</strong></h3>
+<ul>
+<li><strong>规则</strong>：仅需共享该内容的类虚继承自基类。</li>
+<li><strong>注意</strong>：虚基类的构造函数由最派生类直接调用。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 飞机类：需要维护功能</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Airplane</span> : <span class="hljs-keyword">public</span> <span class="hljs-keyword">virtual</span> Maintainable &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Airplane</span>(<span class="hljs-type">const</span> std::string&amp; date) : <span class="hljs-built_in">Maintainable</span>(date) &#123;&#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">scheduleMaintenance</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Airplane maintenance scheduled on &quot;</span> &lt;&lt; lastMaintenanceDate &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 直升机类：需要维护功能</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Helicopter</span> : <span class="hljs-keyword">public</span> <span class="hljs-keyword">virtual</span> Maintainable &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Helicopter</span>(<span class="hljs-type">const</span> std::string&amp; date) : <span class="hljs-built_in">Maintainable</span>(date) &#123;&#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">scheduleMaintenance</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Helicopter maintenance scheduled on &quot;</span> &lt;&lt; lastMaintenanceDate &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 汽车类：不需要维护功能</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Car</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">drive</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;Car driving&quot;</span> &lt;&lt; std::endl; &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-验证共享内容唯一性"><strong>3. 验证共享内容唯一性</strong></h3>
+<ul>
+<li><strong>场景</strong>：若存在类多重继承自多个虚基类派生类，虚继承确保基类唯一。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 混合动力飞行器：同时继承Airplane和Helicopter</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">HybridVehicle</span> : <span class="hljs-keyword">public</span> Airplane, <span class="hljs-keyword">public</span> Helicopter &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// 直接调用虚基类构造函数（最派生类负责初始化）</span><br>    <span class="hljs-built_in">HybridVehicle</span>(<span class="hljs-type">const</span> std::string&amp; date) : <span class="hljs-built_in">Maintainable</span>(date), <span class="hljs-built_in">Airplane</span>(date), <span class="hljs-built_in">Helicopter</span>(date) &#123;&#125;<br>    <br>    <span class="hljs-comment">// 重写维护逻辑</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">scheduleMaintenance</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Hybrid maintenance on &quot;</span> &lt;&lt; lastMaintenanceDate &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="4-客户端代码"><strong>4. 客户端代码</strong></h3>
+<ul>
+<li><strong>接口使用</strong>：仅含虚基类的派生类可访问其方法。</li>
+<li><strong>普通类无影响</strong>：如<code>Car</code>不继承<code>Maintainable</code>，无相关方法。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-function">Airplane <span class="hljs-title">plane</span><span class="hljs-params">(<span class="hljs-string">&quot;2023-10-01&quot;</span>)</span></span>;<br>    plane.<span class="hljs-built_in">scheduleMaintenance</span>();  <span class="hljs-comment">// 输出: Airplane maintenance scheduled on 2023-10-01</span><br><br>    <span class="hljs-function">Helicopter <span class="hljs-title">heli</span><span class="hljs-params">(<span class="hljs-string">&quot;2023-11-01&quot;</span>)</span></span>;<br>    heli.<span class="hljs-built_in">scheduleMaintenance</span>();   <span class="hljs-comment">// 输出: Helicopter maintenance scheduled on 2023-11-01</span><br><br>    <span class="hljs-function">HybridVehicle <span class="hljs-title">hybrid</span><span class="hljs-params">(<span class="hljs-string">&quot;2023-12-01&quot;</span>)</span></span>;<br>    hybrid.<span class="hljs-built_in">scheduleMaintenance</span>(); <span class="hljs-comment">// 输出: Hybrid maintenance on 2023-12-01</span><br><br>    Car car;<br>    car.<span class="hljs-built_in">drive</span>();                  <span class="hljs-comment">// 输出: Car driving</span><br>    <span class="hljs-comment">// car.scheduleMaintenance(); // 错误：Car 不包含此方法</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="5-关键优势"><strong>5. 关键优势</strong></h3>
+<ul>
+<li><strong>避免数据冗余</strong>：虚基类内容在继承链中仅存一份。</li>
+<li><strong>明确接口边界</strong>：仅需共享功能的类继承虚基类。</li>
+<li><strong>支持灵活组合</strong>：可多重继承虚基类的派生类，无需担心重复。</li>
+</ul>
+<hr>
+<h3 id="6-注意事项-2"><strong>6. 注意事项</strong></h3>
+<ol>
+<li><strong>构造函数调用</strong>：最派生类必须直接调用虚基类构造函数。</li>
+<li><strong>析构函数</strong>：虚基类析构函数必须为虚函数。</li>
+<li><strong>设计约束</strong>：仅在部分类需要共享内容时使用，避免过度复杂化层次。</li>
+</ol>
+<hr>
+<h3 id="总结-6"><strong>总结</strong></h3>
+<p>通过虚基类，可以精准地为类层次中的部分类提供公共内容，同时避免多重继承的冗余问题。此模式适用于需要严格控制共享数据唯一性且部分类需特定功能的场景，如设备管理、游戏角色能力系统等。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C-%E7%AC%94%E8%AE%B0/" class="category-chain-item">C++笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C++程序设计语言笔记——抽象机制：类层次</div>
+      <div>https://mounthuangshan.github.io/C-笔记/C++笔记/C++程序设计语言笔记——抽象机制：类层次/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%8A%BD%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%9A%E7%89%B9%E4%BE%8B%E5%8C%96/" title="C++程序设计语言笔记——抽象机制：特例化">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C++程序设计语言笔记——抽象机制：特例化</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%8A%BD%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%9A%E6%B3%9B%E5%9E%8B%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" title="C++程序设计语言笔记——抽象机制：泛型程序设计">
+                        <span class="hidden-mobile">C++程序设计语言笔记——抽象机制：泛型程序设计</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

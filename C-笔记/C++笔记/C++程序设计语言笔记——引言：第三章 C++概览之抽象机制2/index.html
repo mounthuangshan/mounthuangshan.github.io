@@ -1,0 +1,795 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="黄山">
+  <meta name="keywords" content="C/C++,Python,C#,Go,Web,AI,游戏开发,网络安全">
+  
+    <meta name="description" content="0 抽象类型 complex 和 Vector 等类型之所以被称为具体类型（concrete type），是因为它们的表现形式属于定义的一部分。在这一点上，它们与内置类型很相似。相反，抽象类型（abstract type）则将使用者与类的实现细节完全隔离开来。为了做到这一点，我们分离接口与表现形式并且放弃了纯局部变量。因为我们对抽象类型的表现形式一无所知（甚至对它的大小也不了解），所以必须从自由存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++程序设计语言笔记——引言：第三章 C++概览之抽象机制2">
+<meta property="og:url" content="https://mounthuangshan.github.io/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%BC%95%E8%A8%80%EF%BC%9A%E7%AC%AC%E4%B8%89%E7%AB%A0%20C++%E6%A6%82%E8%A7%88%E4%B9%8B%E6%8A%BD%E8%B1%A1%E6%9C%BA%E5%88%B62/">
+<meta property="og:site_name" content="钺不言">
+<meta property="og:description" content="0 抽象类型 complex 和 Vector 等类型之所以被称为具体类型（concrete type），是因为它们的表现形式属于定义的一部分。在这一点上，它们与内置类型很相似。相反，抽象类型（abstract type）则将使用者与类的实现细节完全隔离开来。为了做到这一点，我们分离接口与表现形式并且放弃了纯局部变量。因为我们对抽象类型的表现形式一无所知（甚至对它的大小也不了解），所以必须从自由存">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-18T18:19:05.000Z">
+<meta property="article:modified_time" content="2025-03-18T18:19:05.849Z">
+<meta property="article:author" content="黄山">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>C++程序设计语言笔记——引言：第三章 C++概览之抽象机制2 - 钺不言</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mounthuangshan.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C++程序设计语言笔记——引言：第三章 C++概览之抽象机制2"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-19 02:19" pubdate>
+          2025年3月19日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          51 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C++程序设计语言笔记——引言：第三章 C++概览之抽象机制2</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>0 抽象类型</h1>
+<p>complex 和 Vector 等类型之所以被称为具体类型（concrete type），是因为它们的表现形式属于定义的一部分。在这一点上，它们与内置类型很相似。相反，抽象类型（abstract type）则将使用者与类的实现细节完全隔离开来。为了做到这一点，我们分离接口与表现形式并且放弃了纯局部变量。因为我们对抽象类型的表现形式一无所知（甚至对它的大小也不了解），所以必须从自由存储为对象分配空间，然后通过引用或指针访问对象。<br>
+首先，我们为 Container 类设计接口，Container 类可以看成是比 Vector 更抽象的一个版本：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Container</span><br>&#123;<br><span class="hljs-attr">public</span>:<br>  virtual doule&amp; operator[](int) = <span class="hljs-number">0</span>;<span class="hljs-comment">//纯虚函数</span><br>  virtual int <span class="hljs-title function_">size</span>() <span class="hljs-keyword">const</span> = <span class="hljs-number">0</span>;<span class="hljs-comment">//常量成员函数</span><br>  virtual ~<span class="hljs-title class_">Container</span>() &#123;&#125;<span class="hljs-comment">//析构函数</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>对于后面定义的那些特定容器来说，上面这个类是个纯粹的接口。关键字 virtual 的意思是“可能随后在其派生类中重新定义”。意料之中，我们把这种用关键字 virtual 声明的函数称为虚函数（virtual function）。Container 的派生类负责为 Container 接口提供具体实现。看起来有点奇怪的=0说明该函数是纯虚函数，意味着 Container 的派生类必须定义这个函数。因此，我们不能单纯定义一个 Container 的对象，Container 只是作为接口出现，它的派生类负责具体实现 operator［（）和 size（）。含有纯虚函数的类称为抽象类（abstract class）。Container的用法是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">use</span>(<span class="hljs-params">Contatiner&amp; c</span>)<br>&#123;<br>  <span class="hljs-keyword">const</span> int sz = c.<span class="hljs-title function_">size</span>();<br>  <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; it = sz; ++i)<br>  &#123;<br>    cout &lt;&lt; c[i] &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>  &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>请注意 use（）是如何在完全忽视实现细节的情况下使用 Cortainer 接口的。它使用了 size（）和[]，却根本不知道是哪个类型实现了它们。如果一个类负责为其他一些类提供接口，那么我们把前者称为多态类型（polymorphic type）。<br>
+作为一个抽象类，在 Container 中没有构造函数，毕竟它没有有什么数据需要初始化。另一方面，Container 含有一个析构函数，而且该析构函数是 virtual 的。这也不难理解，因为抽象类需要通过引用或指针来操纵，而当我们试图通过一个指针销毁 Container 时，我们并不清楚它的实现部分到底拥有哪些资源。<br>
+一个容器为了实现抽象类 Container 接口所需的函数，可以使用具体类 Vector：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Vector_container</span> : public <span class="hljs-title class_">Container</span><span class="hljs-comment">//Vector_container实现了Container</span><br>&#123;<br>  <span class="hljs-title class_">Vector</span> v;<br><span class="hljs-attr">public</span>:<br>  <span class="hljs-title class_">Vector</span>_container(int s) :<span class="hljs-title function_">v</span>(<span class="hljs-params">s</span>) &#123;&#125;<span class="hljs-comment">//含有s个元素的Vector</span><br>  ~<span class="hljs-title class_">Vector</span>_container() &#123;&#125;<br>  double&amp; operator[](int i) <br>  &#123;<br>    <span class="hljs-keyword">return</span> v[i];<br>  &#125;<br>  int <span class="hljs-title function_">size</span>()<span class="hljs-keyword">const</span> <br>  &#123;<br>    <span class="hljs-keyword">return</span> v.<span class="hljs-title function_">size</span>(); <br>  &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>：public 可读作“派生自”或“是···的子类型”。我们说 Vector＿container 类派生（derived）自 Container 类，而 Container 类是 Vector＿container 类的基类（base）。还有另外一种叫法，分别把 Vector＿container 和 Container 叫做子类（subclass）和超类（superclass）。派生类从它的基类继承成员，所以我们通常把基类和派生类的这种关联关系叫做继承（inheritance）。<br>
+成员 operator［］（）和 size（）覆盖（override）了基类 Container 中对应的成员（见 20。3。2 节）。析构函数～Vector＿container（）则覆盖了基类的析构函数～Container（）。注意，成员 v 的析构函数（Vector（））被其类的析构函数（Vector＿container（））隐式调用。<br>
+-对于像 use（Container＆）这样的函数来说，可以在完全不了解一个 Container 实现细节的情况下使用它，但还需另外某个函数（g）为其创建可供操作的对象。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">g</span>(<span class="hljs-params"></span>)<br>&#123;<br>  <span class="hljs-title class_">Vector</span>_container vc&#123; <span class="hljs-number">10</span>,<span class="hljs-number">9</span>,<span class="hljs-number">8</span>,<span class="hljs-number">7</span>,<span class="hljs-number">6</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span> &#125;;<br>  <span class="hljs-title function_">use</span>(vc);	<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>因为use()只知道Container的接口而不了解Vector_container，因此对于Container的其他实现，use()仍能正常工作。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//Lixt_container实现了Container</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">List_container</span> :public <span class="hljs-title class_">Container</span> <br>&#123;<br>  <span class="hljs-attr">std</span>::initializer_list&lt;double&gt;ld;<span class="hljs-comment">//一个double类型的标准库list</span><br><span class="hljs-attr">public</span>:<br>  <span class="hljs-title class_">List</span>_container() &#123;&#125;<span class="hljs-comment">//空列表</span><br>  <span class="hljs-title class_">List</span>_container(initializer_list&lt;double&gt;il) :ld&#123; il &#125; &#123;&#125;<br>  ~<span class="hljs-title class_">List</span>_container() &#123;&#125;<br>  double&amp; operator[](int i);<br>  int <span class="hljs-title function_">size</span>()<span class="hljs-keyword">const</span> &#123; <span class="hljs-keyword">return</span> ld.<span class="hljs-title function_">size</span>(); &#125;<br>&#125;;<br><br>double&amp; <span class="hljs-title class_">List</span><span class="hljs-attr">_container</span>::operator[](int i)<br>&#123;<br>  <span class="hljs-keyword">for</span> (auto&amp; x : ld)<br>  &#123;<br>    <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>)<br>    &#123;<br>      <span class="hljs-keyword">return</span> x;<br>    &#125;<br>    --i;<br>  &#125;<br>  <span class="hljs-keyword">throw</span> <span class="hljs-title function_">out_of_range</span>(<span class="hljs-string">&quot;List container&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在这段代码中，类的表现形式是一个标准库 list<double>。一般情况下，我们不会用 list 实现一个带下标的容器，毕竟 list 取下标的性能很难与 vector 相比。不过，本例中我们只是用它完成一个与前一个实现完全不同的版本。<br>
+我们可以通过一个函数创建一个 List_container，然后让 use（）使用它：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">h</span>(<span class="hljs-params"></span>)<br>&#123;<br>     <span class="hljs-title class_">List</span>_container lc=&#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>&#125;;<br>     <span class="hljs-title function_">use</span>(lc);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这段代码的关键点是 use（Container&amp;）并不清楚它的实参是 Vector_container，List container，还是其他什么容器，它也根本不需要知道。它只要了解 Container 定义的接口就可以了。因此，不论 List_container 的实现发生了改变还是我们使用了 Container 的一个全新派生类，都不需要重新编译 use（Container&amp;）。<br>
+灵活性背后唯一的不足是，我们只能通过引用或指针操作对象。<br>
+下面是对上面的总结：</p>
+<ul>
+<li>具体类型（Concrete Type）<br>
+1.定义：具体类型是指其表现形式（即内存布局和成员数据）是定义的一部分的类型。例如，complex 和 Vector 类型就是具体类型，因为它们的实现细节（如内存布局）是已知的。<br>
+2.特性：与内置类型相似，具体类型的实例化对象可以直接使用。</li>
+<li>抽象类型（Abstract Type）<br>
+1.定义：抽象类型将使用者与类的实现细节完全隔离开来。用户只能通过接口与抽象类型交互，而无法直接访问其内部实现。<br>
+2.实现：通过定义包含纯虚函数（pure virtual function）的类来实现抽象类型。纯虚函数用 = 0 标记，表示派生类必须提供该函数的实现。<br>
+3.内存管理：由于抽象类型的具体表现形式未知，通常使用动态内存分配（通过引用或指针）来管理抽象类型的对象。</li>
+<li>多态类型（Polymorphic Type）<br>
+1.定义：多态类型是指可以通过基类接口访问不同派生类实现的类型。<br>
+2.实现：通过继承关系和虚函数实现多态性。基类定义接口，派生类提供具体实现。<br>
+3.用途：多态性允许在不知道具体对象类型的情况下调用对象的方法，从而提高了代码的灵活性和可扩展性。</li>
+<li>继承（Inheritance）<br>
+1.定义：继承是面向对象编程中的一种机制，允许一个类（派生类）继承另一个类（基类）的属性和方法。<br>
+2.作用：继承实现了代码的重用和扩展。通过继承，派生类可以获取基类的功能，并在此基础上添加新的功能或修改现有功能。</li>
+<li>代码分析<br>
+1.Container 类：作为抽象基类，定义了 operator[] 和 size() 两个纯虚函数，以及一个虚析构函数。这个类提供了一个接口，派生类必须实现这些接口。<br>
+2.Vector_container 类：派生自 Container 类，使用 Vector 类型作为内部存储，并实现了 Container 类中的纯虚函数。<br>
+3.List_container 类：另一个派生自 Container 类的类，使用 std::initializer_list<double> 作为内部存储，并实现了 Container 类中的纯虚函数。这个类展示了如何使用不同的内部数据结构来实现相同的接口。<br>
+4.use 函数：一个接受 Container 引用作为参数的函数，展示了多态性的使用。它不知道传递给它的具体对象类型，但可以通过 Container 接口调用对象的方法。</li>
+<li>关键点<br>
+1.接口与实现分离：抽象类提供了一种定义接口的方式，而派生类则负责实现这些接口。这种分离使得代码更加模块化和易于维护。<br>
+2.动态多态性：通过基类指针或引用来调用派生类的方法，实现了动态多态性。这允许在运行时决定使用哪个派生类的实现。<br>
+3.灵活性：多态性提高了代码的灵活性，因为可以在不修改现有代码的情况下添加新的派生类。<br>
+内存管理：由于抽象类型的具体实现未知，通常需要使用动态内存分配来管理对象。这增加了内存管理的复杂性，但提供了更大的灵活性。</li>
+<li>注意事项<br>
+1.虚析构函数：对于包含虚函数的类，应该定义一个虚析构函数。这确保了当通过基类指针删除派生类对象时，能够正确调用派生类的析构函数。<br>
+2.性能考虑：虽然多态性提供了很大的灵活性，但它也增加了函数调用的开销（因为需要查找虚函数表）。在性能敏感的应用中，需要权衡这些开销。<br>
+这里你可能有一个问题，C++是如何判断什么时候用重载运算符，什么时候用内置运算符的，规则如下：</li>
+<li>函数名和语法形式：<br>
+重载的运算符是通过成员函数或友元函数来实现的，这些函数具有特殊的函数名，即operator后跟运算符符号。例如，重载加法运算符的函数名是operator+。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br><span class="hljs-attr">public</span>:<br>    <span class="hljs-title class_">MyClass</span> operator+(<span class="hljs-keyword">const</span> <span class="hljs-title class_">MyClass</span>&amp; other) <span class="hljs-keyword">const</span>; <span class="hljs-comment">// 重载加法运算符</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>当在表达式中使用+运算符，并且操作数的类型是MyClass或MyClass的派生类时，编译器会查找这个重载的operator+函数。</p>
+<ul>
+<li>作用域和可见性：<br>
+重载的运算符函数必须在其作用域内可见。如果运算符函数是类的成员函数，则它自然在类的作用域内。如果运算符函数是友元函数，则它必须在友元声明中提及，并且在调用时可见。</li>
+<li>参数匹配：<br>
+编译器会根据重载运算符函数的参数列表来确定哪个函数应该被调用。对于成员函数，左操作数（通常是*this）是隐式的，而右操作数（或额外的操作数，对于多元运算符）是显式的函数参数。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">MyClass</span> a, b;<br><span class="hljs-title class_">MyClass</span> c = a + b; <span class="hljs-comment">// 调用 MyClass::operator+(const MyClass&amp; other)</span><br>在这个例子中，a是左操作数，b是右操作数，编译器会查找一个接受<span class="hljs-keyword">const</span> <span class="hljs-title class_">MyClass</span>&amp;类型参数的operator+成员函数。<br></code></pre></td></tr></table></figure>
+<ul>
+<li>内置运算符的优先级和结合性：<br>
+内置运算符具有固定的优先级和结合性，这些规则在C++语法中是硬编码的。重载的运算符不会改变这些规则；它们只是提供了在特定类型上应用这些规则的新方式。</li>
+<li>类型转换：<br>
+如果重载的运算符函数的参数类型与操作数的类型不完全匹配，编译器会尝试应用类型转换规则来找到匹配的函数。这包括用户定义的转换函数和编译器生成的转换（如从派生类到基类的转换）。</li>
+<li>错误处理和歧义消除：<br>
+如果存在多个可能的重载运算符函数（例如，通过继承获得的多个重载），编译器会应用重载解析规则来确定哪个函数应该被调用。如果无法确定唯一的函数，编译器将报错，指出重载冲突或歧义。</li>
+</ul>
+<h1>1 虚函数</h1>
+<p>我们进一步思考Container的用法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">use</span>(<span class="hljs-params">Contatiner&amp; c</span>)<br>&#123;<br>  <span class="hljs-keyword">const</span> int sz = c.<span class="hljs-title function_">size</span>();<br>  <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; it = sz; ++i)<br>  &#123;<br>    cout &lt;&lt; c[i] &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>  &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>一个有趣的问题是：use()中的 c[i]是如何解析到正确的 operator()的？当 h()调用 use()时，必须调用 List_container 的 operator<a href=""></a>；而当 g()调用 use()时，必须调用 Vector_container 的 operator<a href=""></a>。要想达到这种效果，Contairer 对象就必须包含一些有助于它在运行时选择正确函数的信息。常见的做法是编译器将虚函数的名字转换成函数指针表中对应的索引值，这张表就是所谓的虚函数表（virtual function table）。或简称为 vtbl。每个含有虚函数的类都有它自己的 vtbl 用于辨识虚函数，其工作机理如下图所示：<br>
+![在这里插入图片描述](./C++程序设计语言笔记——引言：第三章 C++概览之抽象机制2image\ed04c82071284a67974ff18853b451eb.png)<br>
+即使调用函数不清楚对象的大小和数据布局， vtbl 中的函数也能确保对象被正确使用。调用函数的实现只需要知道 Container 中 vtbl 指针的位置以及每个虚函数对应的索引就可以了。这种虚调用机制的效率非常接近“普通函数调用”机制（相差不超过 25%），而它的空间开销包括两部分：如果类包含虚函数，则该类的每个对象需要一个额外的指针；另外每个这样的类需要一个 vtbl。</p>
+<h1>2 类层次</h1>
+<p>Container 是一个非常简单的类层次的例子，所谓类层次（class hierarchy）是指通过派生（如 ：public）创建的一组类，在框架中有序排列。我们使用类层次表示具有层次关系的概念，比如“消防车是卡车的一种，卡车是车辆的一种”以及“笑脸是一个圆，圆是一个形状”。在实际应用中，大的类层次动辄包含上百个类，不论深度还是宽度都很大。不过在本节，我们只考虑一个半写实的小例子，那就是屏幕上的形状：<br>
+![在这里插入图片描述](./C++程序设计语言笔记——引言：第三章 C++概览之抽象机制2image\d17bc0afb0004957948e40a13805db38.png)<br>
+箭头表示继承关系。例如，Circle 类派生自 Shape 类。要想把上面这个简单的图例写成代码，我们首先需要说明一个类，令其定义所有这些形状的公共属性：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Shape</span><br>&#123;<br><span class="hljs-attr">public</span>:<br>  virual <span class="hljs-title class_">Point</span> <span class="hljs-title function_">center</span>()<span class="hljs-keyword">const</span> = <span class="hljs-number">0</span>;<span class="hljs-comment">//纯虚函数</span><br>  virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">move</span>(<span class="hljs-title class_">Point</span> to) = <span class="hljs-number">0</span>;<br>  virual <span class="hljs-keyword">void</span> <span class="hljs-title function_">draw</span>() <span class="hljs-keyword">const</span> = <span class="hljs-number">0</span>;<span class="hljs-comment">//在当前“画布”上绘制</span><br>  virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">rotate</span>(int angle) = <span class="hljs-number">0</span>;<br>  virtua ~<span class="hljs-title class_">Shape</span>() &#123;&#125;<span class="hljs-comment">//析构函数</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>这个接口显然是一个抽象类：对于每种 Shape 来说，它们的表现形式基本上各不相同（除了 vtbl 指针的位置之外）。基于上面的定义，我们就能编写函数令其操纵由形状指针组成的向量了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//将v的元素按照指定角度旋转</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">rotate_all</span>(<span class="hljs-params">vector&lt;Shape*&gt;&amp; v, int angle</span>)<br>&#123;<br>  <span class="hljs-keyword">for</span> (auto p : v)<br>  &#123;<br>    p.<span class="hljs-title function_">rotate</span>(angle);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>要定义一种具体的形状，首先必须指明它是一个Shape，然后规定其特有的属性（包括虚函数）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs javascrip">class Circle :public Shape<br>&#123;<br>public:<br>  Circle(Point p, int rr);//构造函数<br>  Point center() const<br>  &#123;<br>    return x;<br>  &#125;<br>  void move(Point to)<br>  &#123;<br>    x = to;<br>  &#125;<br>  void draw()const;<br>  void rotate(int) &#123;&#125;<br>private:<br>  Point x;//圆心<br>  int r;//半径<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>到目前为止，Shape和Circle涉及的语法知识并不比Container和Vector_container多多少，但是我们可以继续构造：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Smiley</span> :public <span class="hljs-title class_">Circle</span><br>&#123;<br><span class="hljs-attr">public</span>:<br>  <span class="hljs-title class_">Smiley</span>(<span class="hljs-title class_">Point</span> p, int r); <span class="hljs-title class_">Circle</span>&#123; p,e &#125;, mounth&#123; nullptr &#125;&#123;&#125;<br>  ~<span class="hljs-title class_">Smiley</span>()<br>  &#123;<br>    <span class="hljs-keyword">delete</span> mouth;<br>    <span class="hljs-keyword">for</span> (auto p : eyes)<span class="hljs-keyword">delete</span> p;<br>  &#125;<br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">move</span>(<span class="hljs-title class_">Point</span> to);<br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">draw</span>()<span class="hljs-keyword">const</span>;<br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">rotate</span>(int);<br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">add_eye</span>(<span class="hljs-params">Shape* s</span>)<br>  &#123;<br>    eyes.<span class="hljs-title function_">push_back</span>(s);<br>  &#125;<br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">set_mouth</span>(<span class="hljs-title class_">Shape</span>* s);<br>  virtual <span class="hljs-keyword">void</span> <span class="hljs-title function_">wink</span>(int i);<span class="hljs-comment">//眨眼数i</span><br><span class="hljs-attr">private</span>:<br>  vector&lt;<span class="hljs-title class_">Shape</span>*&gt;eyes;<span class="hljs-comment">//通常包含两只眼睛</span><br>  <span class="hljs-title class_">Shape</span>* mounth;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>成员函数 push_back（）把它的实参添加给 vector（此处是 eyes），每次将向量的长度加 1。<br>
+接下来通过调用 Smiley 的基类（Circle）的 draw（）和 Smiley 的成员（eyes）的 draw（）来定义 Smiley：：draw（）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascrip">void Smiley::draw()<br>&#123;<br>  Circle::draw();<br>  for (auto p : eyes)<br>  &#123;<br>    p.draw();<br>  &#125;<br>  mouth.draw();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>请注意，Smiley 把它的 eyes 放在标准库 vector 中，然后在析构函数里把它们释放掉了。Shape 的析构函数是个虚函数，Smiley 的析构函数覆盖了它对于抽象类来说，因为其派生类的对象通常是通过抽象基类的接口操纵的，所以基类中中必须有一个虚析构函数。当我们使用一个基类指针释放派生类对象时，虚函数调用机制能够确保我们调用正确的析构函数，然后该析构函数再隐式地调用其基类的析构函数和成员的析构函数。<br>
+在上面这个简化的示例中，在表示人脸的圆圈中恰当地放置眼睛和嘴的任务交给程序员去完成。<br>
+当我们通过派生的方式定义新类时，可以向其中添加数据成员或者新的操作，或者都添加。这种机制一方面提供了巨大的灵活性，同时也可能带来混淆，从而造成糟糕的设计。总的来说，类层次提供了两种便利：</p>
+<ul>
+<li>接口继承（Interface inheritance）：派生类对象可以用在任何需要基类对象的地方。也就是说，基类看起来像是派生类的接口一样。Container 和 Shape 就是很好的例子，这样的类通常是抽象类。</li>
+<li>实现继承（Implementation inheritance）：基类负责提供可以简化派生类实现的函数或数据。Smiley 使用 Circle 的构造函数和 Circle：draw（）就是例子，这样的基类通常含有数据成员和构造函数。</li>
+</ul>
+<p>具体类，尤其是表现形式不复杂的类，其行为非常类似于内置类型：我们将其定义为局部变量，通过它们的名字访问它们，随意拷贝它们，等等。类层次中的类则有所区别：我们倾向于通过 new 在自由存储中为其分配空间，然后通过指针或引用访问它们。例如，我们设计这样一个函数，它首先从输入流中读取描述形状的数据，然后构造对应的Shape对象：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs javascript">enum <span class="hljs-keyword">class</span> <span class="hljs-title class_">Kind</span> &#123;circle,triangle,smiley&#125;;<br><br><span class="hljs-comment">//从输入流is中读取形状描述信息</span><br><span class="hljs-title class_">Shape</span>* <span class="hljs-title function_">read_shape</span>(<span class="hljs-params">istream&amp; is</span>)<br>&#123;<br>  <span class="hljs-comment">//从is中读取形状描述信息，找到形状的种类k</span><br>  <span class="hljs-keyword">switch</span> ()<br>  &#123;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title class_">Kind</span> ::<span class="hljs-attr">circle</span>:<br>    <span class="hljs-comment">//读入cicle数据&#123;Point,int&#125;；到p和r</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Circle</span>&#123; p,r &#125;;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title class_">Kind</span>::<span class="hljs-attr">triangle</span>:<br>    <span class="hljs-comment">//读入triange数据&#123;Point,Point,Point&#125;到p1,p2和p3</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Triangle</span>&#123; p1,p2,p3 &#125;;<br>    <span class="hljs-keyword">case</span> <span class="hljs-title class_">Kind</span>::smiley&#123; p,r &#125;;<br>    ps.<span class="hljs-title function_">add_eye</span>(e1);<br>    ps.<span class="hljs-title function_">add_eye</span>(e2);<br>    ps.<span class="hljs-title function_">set_mouth</span>(m);<br>    <span class="hljs-keyword">return</span> ps;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>程序使用该函数的方式如下图所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">user</span>(<span class="hljs-params"></span>)<br>&#123;<br>  <span class="hljs-attr">std</span>::vector&lt;<span class="hljs-title class_">Shape</span>*&gt;v;<br>  <span class="hljs-keyword">while</span> (cin)<br>  &#123;<br>    v.<span class="hljs-title function_">push_back</span>(<span class="hljs-title function_">read_shape</span>(cin));<br>  &#125;<br>  <span class="hljs-title function_">draw_all</span>(v);<span class="hljs-comment">//对每个元素调用draw()</span><br>  <span class="hljs-title function_">rotate_all</span>(v, <span class="hljs-number">45</span>);<span class="hljs-comment">//对每个元素调用rotate（45）</span><br>  <span class="hljs-keyword">for</span> (auto p : v)<br>  &#123;<br>    <span class="hljs-keyword">delete</span> p;<span class="hljs-comment">//注意最后要删除掉元素</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上面这个例子显然非常简单，尤其是并没有做任何错误处理。不过我们还是能从中看出user（）并不知道它操纵的具体是哪种形状。user（）的代码只需编译一次就可以使用随后添加到程序中的新 Shape。我们注意到在 user（） 外没有任何指向这些形状的指针，因此 user（）应该负责释放掉它们。这项工作由 delete 运算符完成并且完全依赖于 Shape 的虚析构函数。因为该析构函数是虚函数，所以，delete 会调用最终派生类的析构函数。这一点非常关键：因为派生类可能有很多种需要释放的资源（如文件句柄、锁、输出流等）。此例中，Smiley 需要释放掉它的 eyes 和 mouth 对象。<br>
+有经验的程序员可能已经发现，上面的程序有两处漏洞：</p>
+<ul>
+<li>使用者有可能未能 delete 掉 read_shape（） 返回的指针。</li>
+<li>Shape 指针容器的拥有者可能没有 delete 指针所指的对象。</li>
+</ul>
+<p>从这层意义上来看，函数返回一个指向自由存储上的对象的指针是非常危险的。<br>
+一种解决方案是不要返回一个“裸指针”，而是返回一个标准库 unique_ptr，并且把 unique_ptr 存放在容器中：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs javascript">unique_ptr&lt;<span class="hljs-title class_">Shape</span>&gt;read_shape&#123;istream&amp; is&#125;<span class="hljs-comment">//从输入流is读取形状描述信息</span><br>&#123;<br>  <span class="hljs-comment">//从is中读取形状描述信息，找到形状的种类k</span><br>  <span class="hljs-keyword">switch</span> ()<br>  &#123;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title class_">Kind</span>::<span class="hljs-attr">circle</span>:<br>    <span class="hljs-comment">//读入cicle数据&#123;Point,int&#125;；到p和r</span><br>    <span class="hljs-keyword">return</span> unique_ptr&lt;<span class="hljs-title class_">Shape</span>&gt;&#123;<span class="hljs-keyword">new</span> <span class="hljs-title class_">Circle</span>&#123; p,r &#125;&#125;;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title class_">Kind</span>::<span class="hljs-attr">triangle</span>:<br>    <span class="hljs-comment">//读入triange数据&#123;Point,Point,Point&#125;到p1,p2和p3</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Triangle</span>&#123; p1,p2,p3 &#125;;<br>    <span class="hljs-keyword">case</span> <span class="hljs-title class_">Kind</span>::smiley&#123; p,r &#125;;<br>    ps.<span class="hljs-title function_">add_eye</span>(e1);<br>    ps.<span class="hljs-title function_">add_eye</span>(e2);<br>    ps.<span class="hljs-title function_">set_mouth</span>(m);<br>    <span class="hljs-keyword">return</span> ps;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">user</span>(<span class="hljs-params"></span>)<br>&#123;<br>  <span class="hljs-title function_">vector</span>(unique_ptr&lt;<span class="hljs-title class_">Shape</span> &gt;&gt; v);<br>  <span class="hljs-keyword">while</span> (cin)<br>  &#123;<br>    v.<span class="hljs-title function_">push_back</span>(<span class="hljs-title function_">read_shape</span>(cin));<br>  &#125;<br>  <span class="hljs-title function_">draw_all</span>(v);<span class="hljs-comment">//对每个元素调用draw()</span><br>  <span class="hljs-title function_">rotate_all</span>(v, <span class="hljs-number">45</span>);<span class="hljs-comment">//对每个元素调用rotate（45）</span><br>&#125;<span class="hljs-comment">//所有形状被隐式销毁</span><br></code></pre></td></tr></table></figure>
+<p>这样对象就由 unique_ptr 拥有了。当不再需要对象时，换句话说，当对象的 unique_ptr 离开了作用域时，unique_ptr 将释放掉所指的对象。<br>
+要令 unique。_ptr 版本的 user()能够正确运行，必须首先构建接受 vector&lt;unique ptr<Shape>&gt;的 draw_all()和 rotate all()。<br>
+这里需要扩展一下C++的智能指针：<br>
+C++11 引入了 3 个智能指针类型：</p>
+<ul>
+<li>std::unique_ptr<T> ：独占资源所有权的指针。</li>
+<li>std::shared_ptr<T> ：共享资源所有权的指针。</li>
+<li>std::weak_ptr<T> ：共享资源的观察者，需要和 std::shared_ptr 一起使用，不影响资源的生命周期。</li>
+<li>std::auto_ptr 已被废弃。</li>
+</ul>
+<p>下面是介绍：</p>
+<ul>
+<li>std::unique_ptr<br>
+简单说，当我们独占资源的所有权的时候，可以使用 std::unique_ptr 对资源进行管理——离开 unique_ptr 对象的作用域时，会自动释放资源。这是很基本的 RAII 思想。</li>
+<li>std::shared_ptr<br>
+std::shared_ptr 其实就是对资源做引用计数——当引用计数为 0 的时候，自动释放资源。一个 shared_ptr 对象的内存开销要比裸指针和无自定义 deleter 的 unique_ptr 对象略大。<br>
+无自定义 deleter 的 unique_ptr 只需要将裸指针用 RAII 的手法封装好就行，无需保存其它信息，所以它的开销和裸指针是一样的。如果有自定义 deleter，还需要保存 deleter 的信息。<br>
+shared_ptr 需要维护的信息有两部分：<br>
+1.指向共享资源的指针。<br>
+2.引用计数等共享资源的控制信息——实现上是维护一个指向控制信息的指针。</li>
+<li>std::weak_ptr<br>
+std::weak_ptr 要与 std::shared_ptr 一起使用。 一个 std::weak_ptr 对象看做是 std::shared_ptr 对象管理的资源的观察者，它不影响共享资源的生命周期：<br>
+如果需要使用 weak_ptr 正在观察的资源，可以将 weak_ptr 提升为 shared_ptr。<br>
+当 shared_ptr 管理的资源被释放时，weak_ptr 会自动变成 nullptr。<br>
+当 shared_ptr 析构并释放共享资源的时候，只要 weak_ptr 对象还存在，控制块就会保留，weak_ptr 可以通过控制块观察到对象是否存活。</li>
+</ul>
+<p>下面是对上面的代码都干了什么的总结：</p>
+<ul>
+<li>Shape 类：这是一个抽象基类，定义了所有形状应该支持的基本操作，如获取中心（center）、移动（move）、绘制（draw）和旋转（rotate）。由于这些函数被声明为纯虚函数（= 0），Shape 类不能被实例化。</li>
+<li>Circle 类：继承自 Shape 类，表示一个圆。它实现了 Shape 类中的纯虚函数，包括一个用于存储圆心位置和半径的私有成员变量。</li>
+<li>Smiley 类：继承自 Circle 类，表示一个带有眼睛和嘴巴的笑脸。它添加了眼睛（eyes，一个 Shape* 的向量）和嘴巴（mouth，一个 Shape*）作为成员变量，并覆盖了 move、draw 和 rotate 方法。此外，它添加了一个 wink 方法来模拟眨眼。</li>
+<li>rotate_all 函数：接受一个 Shape* 的向量和一个角度作为参数，遍历向量中的每个形状，并调用它们的 rotate 方法来旋转指定角度。注意，这里有一个错误（见下文）。</li>
+<li>read_shape 函数：这个函数的目的是从输入流中读取形状的描述信息，并根据这些信息创建并返回相应形状的对象。然而，这个函数的实现是不完整的，包括一个空的 switch 语句和错误的语法。</li>
+<li>user 函数：这个函数模拟用户从输入中读取形状，将它们存储在一个向量中，然后对这些形状进行绘制、旋转，并在最后释放它们占用的内存。</li>
+</ul>
+<h1>3 总结</h1>
+<p>下一篇我们将介绍C++的拷贝和移动。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C-%E7%AC%94%E8%AE%B0/" class="category-chain-item">C++笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C++程序设计语言笔记——引言：第三章 C++概览之抽象机制2</div>
+      <div>https://mounthuangshan.github.io/C-笔记/C++笔记/C++程序设计语言笔记——引言：第三章 C++概览之抽象机制2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>黄山</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%BC%95%E8%A8%80%EF%BC%9A%E7%AC%AC%E4%B8%89%E7%AB%A0%20C++%E6%A6%82%E8%A7%88%E4%B9%8B%E6%8A%BD%E8%B1%A1%E6%9C%BA%E5%88%B61/" title="C++程序设计语言笔记——引言：第三章 C++概览之抽象机制1">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C++程序设计语言笔记——引言：第三章 C++概览之抽象机制1</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/C-%E7%AC%94%E8%AE%B0/C++%E7%AC%94%E8%AE%B0/C++%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%BC%95%E8%A8%80%EF%BC%9A%E7%AC%AC%E4%B8%89%E7%AB%A0%20C++%E6%A6%82%E8%A7%88%E4%B9%8B%E6%8A%BD%E8%B1%A1%E6%9C%BA%E5%88%B63/" title="C++程序设计语言笔记——引言：第三章 C++概览之抽象机制3">
+                        <span class="hidden-mobile">C++程序设计语言笔记——引言：第三章 C++概览之抽象机制3</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
